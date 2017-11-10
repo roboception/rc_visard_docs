@@ -1,0 +1,231 @@
+.. include:: global_rst.glb
+
+.. _sect-maintenance:
+
+Maintenance
+===========
+
+.. Warning:: The customer does not need to open the |rcvisard|'s housing to perform
+      maintenance. Unauthorized opening will void the warranty.
+
+.. _sect-lens-cleaning:
+
+Lens cleaning
+-------------
+
+Glass lenses with antireflective coating are used to reduce glare. Please take special 
+care when cleaning the lenses. To clean them, use a soft lens-cleaning brush to remove 
+dust or dirt particles. Then use a clean microfiber cloth that is designed to clean lenses, 
+and gently wipe the lens using a circular motion to avoid scratches that may compromise 
+the sensor's performance. For stubborn dirt, high purity isopropanol or a lens cleaning 
+solution formulated for coated lenses (such as the Uvex Clear family of products) may be used.
+
+.. _sect-maintenance-camera-calibration:
+
+Camera calibration
+------------------
+
+The cameras are calibrated during production. Under normal operation conditions, the calibration
+will be valid for the life time of the sensor. High impact, such as occurring when dropping
+the |rc_visard|, can change the camera's parameters slightly. In this case, calibration can
+be verified and recalibration undertaken via the |webgui| 
+(see :doc:`camera_calibration`:latex:`, Section \ref{camera_calibration:sect-camera-calibration}`).
+
+.. _sect-updating-the-firmware:
+
+Updating the firmware
+---------------------
+
+.. index::
+   pair: firmware; version
+   pair: firmware; update
+   pair: firmware; mender
+   single: Web GUI; update
+
+Information about the current firmware image version can be found on the 
+:ref:`sect-web-gui`'s :latex:`(Section \ref{installation:sect-web-gui})` *System* tab 
+in the *System information* row.
+It can also be accessed via the |rcvisard|'s
+:ref:`sect-rest-api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+using the :http:get:`/system` request. Users can use either the |webgui| or the |restapi|
+to update the firmware.
+
+.. Warning:: After a firmware update, all of the software components' configured parameters
+      will be reset to their defaults.
+      Please make sure these settings are persisted on the application-side
+      or client PC (e.g., using the
+      :ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`)
+      to request all parameters and store them prior to executing the update.
+
+      The following settings are excluded from this and will be
+      persisted across a firmware update:
+
+      -  the |rcvisard|'s network configuration including an optional static IP address and the
+         user-specifed device name,
+      -  the latest result of the :doc:`handeye_calibration`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})`,
+         i.e., recalibrating the |rcvisard| w.r.t. a robot is not required, unless mounting
+         has changed, and
+      -  the latest result of the :doc:`camera_calibration`:latex:`\:(Section \ref{camera_calibration:sect-camera-calibration})`,
+         i.e., recalibration of the |rcvisard|'s stereo cameras is not required.
+
+
+Step 1: Download the newest firmware version.
+   Firmware updates will be supplied from of a Mender artifact file
+   identified by its ``.mender`` suffix.
+   If a new firmware update is available for your |rcvisard| device, the
+   respective file can be downloaded to a local computer from
+   http://www.roboception.com/download.
+
+
+Step 2: Upload the update file.
+   To update with the |rcvisard|'s |restapi|, users
+   may refer to the :http:post:`/system/update` request.
+
+   To update the firmware via the |webgui|, locate the *Software Update* row
+   on the *System* tab
+   and press the *Upload Update* button (see :numref:`fig-update-system-tab`).
+   Select the desired update image file (file extension ``.mender``)
+   from the local file system and open it to start the update.
+
+   .. _fig-update-system-tab:
+   .. figure:: images/webgui_system_update.png
+      :width: 80 %
+      :align: center
+
+      Web GUI *System* tab
+
+   .. note:: Depending on the network architecture and configuration the
+         upload may take several minutes. During the update via the |webgui|,
+         a progress bar indicates the progress of the upload as shown in
+         :numref:`fig-update-progress-bar`.
+
+   .. _fig-update-progress-bar:
+   .. figure:: images/webgui_update_progress_bar.png
+      :width: 80 %
+      :align: center
+
+      Software update progress bar
+
+   .. Note:: Depending on the web browser, the update progress status shown in :numref:`fig-update-progress-bar`
+      may indicate the completion of the update too early. Please wait until the context window shown in
+      :numref:`fig-update-reboot` opens. Expect an overall update time of at least five minutes.
+
+   .. _fig-update-reboot:
+   .. figure:: images/webgui_update_reboot.png
+      :width: 80 %
+      :align: center
+
+      Software Update Rebooting Screen
+
+   .. Warning:: Do not close the web-browser tab which contains the Web GUI or press the renew
+      button on this tab, because it will abort the update procedure. In that case,
+      repeat the update procedure from the beginning.
+
+Step 3: Reboot the |rcvisard|.
+   To apply a firmware update to the |rcvisard|
+   device, a reboot is required after having uploaded the new image version.
+
+   .. index::
+      single: active partition
+      single: inactive partition
+
+   .. Note:: The new image version is uploaded to the inactive partition of the |rcvisard|. Only after rebooting
+      will the inactive partition be activated, and the active partition will become inactive.
+      If the updated firmware image cannot be loaded, this partition of the |rcvisard| remains inactive and
+      the previously installed firmware version from the active partition will be used automatically.
+
+   As for the |restapi|, the reboot can be performed by the
+   :http:put:`/system/reboot` request.
+
+   After having uploaded the new firmware via the |webgui|, a context window
+   is opened as shown in :numref:`fig-update-reboot` offering to reboot
+   the device immediately or to postpone it. To reboot the |rcvisard|
+   at a later time, use the *Reboot* button on the |webgui|'s *System* tab.
+
+Step 4: Confirm the firmware update.
+   After rebooting the |rcvisard|, please check the firmware image version
+   number of the currently active image to make sure that the updated image
+   was successfully loaded. You can do so either via the
+   |webgui|'s *System* tab or via the |restapi|'s :http:get:`/system/update` request.
+
+   Please contact Roboception in case the firmware update could not be applied successfully.
+
+
+.. _sect-restoring-the-previous-firmware-version:
+
+Restoring the previous firmware version
+---------------------------------------
+
+.. index::
+   pair: rollback; firmware
+   single: inactive partition
+
+After a successful firmware update, the previous firmware image is stored on
+the inactive partition of the |rcvisard| and can be restored in case needed.
+This procedure is called a *rollback*.
+
+.. note:: Using the latest firmware as provided
+      by Roboception is strongly recommended. Hence, rollback functionality should only be
+      used  in case of serious issues with the updated firmware version.
+
+Rollback functionality is only accessible via the |rcvisard|'s
+:ref:`sect-rest-api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+using the :http:put:`/system/rollback` request. It can be issued 
+using any HTTP-compatible client or using a web browser as described in
+:ref:`sect-swagger-ui`:latex:`\:(Section \ref{rest_api:sect-swagger-ui})`.
+Like the update process, the rollback requires a subsequent device reboot 
+to activate the restored firmware version.
+
+.. Warning:: Like during a firmware update, all software components'
+      parameters will be reset to their defaults. Please make sure
+      these settings are persisted on the application-side
+      or client PC (e.g., using the
+      :ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`)
+      prior to executing the rollback.
+
+.. _sect-rebooting:
+
+Rebooting the |rcvisard|
+------------------------
+
+.. index::
+   single: reboot
+
+An |rcvisard| reboot is necessary after updating the firmware or
+performing a software rollback. It can be issued either
+programmatically, via the |rcvisard|'s
+:ref:`sect-rest-api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+using the :http:put:`/system/reboot` request, or manually on the
+:ref:`sect-web-gui`'s :latex:`(Section \ref{installation:sect-web-gui})` *System* tab.
+The reboot is finished when the LED turns green again.
+
+
+.. _sect-updating-license:
+
+Updating the software license
+-----------------------------
+
+Licenses that are purchased from Roboception for enabling additional features can be installed
+via the :ref:`sect-web-gui`'s :latex:`(Section \ref{installation:sect-web-gui})` *System* panel.
+
+
+.. _sect-downloading-log-files:
+
+Downloading log files
+---------------------
+
+.. index::
+   pair: log files; download
+   single: Web GUI; logs
+
+During operation, the |rcvisard| logs important information, warnings, and errors into files. If the |rcvisard| exhibits unexpected
+or erroneous behavior, the log files can be used to trace its origin.
+Log messages can be viewed and filtered using
+the :ref:`sect-web-gui`'s :latex:`(Section \ref{installation:sect-web-gui})` *Logs* tab. If contacting the
+support (:ref:`sect-contact`:latex:`, Section \ref{contact:sect-contact}`), the log files
+are very useful for tracking possible problems. To download them as a .tar.gz file,
+click on *Download all logs* on the |webgui|'s *Logs* tab.
+
+Besides the |webgui|, the logs are also accessible via the |rcvisard|'s
+:ref:`sect-rest-api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+using the :http:get:`/logs` and :http:get:`/logs/{log}` requests.

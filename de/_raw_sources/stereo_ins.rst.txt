@@ -1,0 +1,22 @@
+.. include:: global_rst.glb
+
+.. _sect-stereo-ins:
+
+Stereo INS
+==========
+
+The stereo-vision-aided Inertial Navigation System (:term:`INS`) component is part
+of the sensor dynamics component. It combines visual-odometry measurements
+with inertial measurement unit (:term:`IMU`) data and provides robust, low latency,
+real-time state estimates at a high rate. The IMU consists of three
+accelerometers and three gyroscopes, which measure accelerations and turn
+rates in all three dimensions. By fusing IMU and visual-odometry measurements,
+the state estimate has the same frequency as the IMU (|imu-rate|) and is
+very robust even under challenging lighting conditions and for fast motions.
+
+Parameters
+----------
+
+The stereo INS component's node name is ``rc_stereo_ins``.
+
+.. include:: _gen/nodes/params/rc_stereo_ins.txt

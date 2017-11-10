@@ -1,0 +1,94 @@
+Softwaremodule
+
+Der
+
+rc_visard
+
+ wird mit verschiedenen integrierten Softwaremodulen ausgeliefert, mit
+denen sich Kamerabilder, 3D-Informationen und Dynamik-
+Zustandsschätzungen bereitstellen und Kalibrierungen vornehmen lassen.
+Jedes Softwaremodul entspricht einem
+
+node
+
+ in der
+
+REST-API-Schnittstelle
+
+.
+
+Abb. 18
+
+ gibt einen Überblick über die Beziehungen zwischen den verschiedenen
+Softwaremodulen und den Daten, die sie über die verschiedenen
+
+Schnittstellen
+
+ des
+
+rc_visard
+
+ bereitstellen.
+
+
+Hinweis: Module, die mit
+
+  optional
+
+   gekennzeichnet sind, erweitern die Funktionalität des
+
+  rc_visard
+
+  . Kunden können ihre Lizenz erweitern, um zusätzliche Module zu
+  erwerben.
+
+Die integrierte Software des
+
+rc_visard
+
+ umfasst folgende Module:
+
+Stereokamera (rc_stereocamera, Abschnitt \ref{stereo_camera:sect-
+stereo-camera})  erfasst Stereo-Bildpaare und führt die planare
+Rektifizierung durch, wodurch die Stereokamera als Messinstrument
+verwendet werden kann. Bilder werden sowohl für die weitere interne
+Verarbeitung durch andere Module als auch als GenICam-Bildstrom für
+die externe Verwendung bereitgestellt.
+
+Stereo-Matching (rc_stereomatching, Abschnitt \ref{stereo_matching
+:sect-stereo-matching})  nutzt das rektifizierte Stereo-Bildpaar, um
+3D-Tiefeninformationen, z. B. für Disparitäts-, Fehler- und
+Konfidenzbilder, zu berechnen. Diese werden auch als GenICam-
+Bildströme bereitgestellt.
+
+Sensordynamik (rc_dynamics, Abschnitt \ref{dynamics:sect-dynamics}.)
+erstellt Schätzungen zum dynamischen Zustand des rc_visard, z. B. zu
+seiner Pose, Geschwindigkeit und Beschleunigung. Diese Zustände werden
+als kontinuierliche Datenströme über die rc_dynamics-Schnittstelle
+übertragen. Zu diesem Zweck verwaltet und verknüpft das Dynamik-Modul
+Daten aus den folgenden Submodulen:  Visuelle Odometrie
+(rc_stereovisodo, Abschnitt \ref{stereo_visodo:sect-visual-odometry})
+schätzt die Bewegung des rc_visard auf der Grundlage der Bewegungen
+charakteristischer Merkmale in den Bildern der linken Kamera.  Stereo-
+INS (rc_stereo_ins, Abschnitt \ref{stereo_ins:sect-stereo-ins})
+kombiniert die per visueller Odometrie ermittelten Werte mit den Daten
+der integrierten inertialen Messeinheit (IMU), um auf dieser Grundlage
+akkurate und hochfrequente Echtzeit-Zustandsschätzungen
+bereitzustellen.  SLAM (optional) (rc_slam, Abschnitt \ref{slam:sect-
+slam})  übernimmt die simultane Lokalisierung und Kartenerstellung, um
+akkumulierte Posendaten zu korrigieren. Die Trajektorie des rc_visard
+lässt sich über die REST-API-Schnittstelle\:(Abschnitt \ref{rest_api
+:sect-rest-api}) abfragen.
+
+Kamerakalibrierung (rc_cameracalib, Abschnitt \ref{camera_calibration
+:sect-camera-calibration})  überprüft automatisch die Kalibrierung der
+Stereokamera des rc_visard und führt die Selbstkalibrierung durch,
+sofern sich diese verstellt hat. Mit diesem Modul kann der Benutzer
+zudem eine manuelle Neukalibrierung über die Web GUI\:(Abschnitt
+\ref{installation:sect-web-gui}) vornehmen.
+
+Hand-Auge-Kalibrierung (rc_hand_eye_calibration, Abschnitt
+\ref{handeye_calibration:sect-handeye-calibration})  ermöglicht dem
+Benutzer, den rc_visard entweder über die Web GUI oder die REST-API zu
+einem Roboter zu kalibrieren.
+

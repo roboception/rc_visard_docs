@@ -1,0 +1,578 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="de" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Wartung &mdash; rc_visard 1.0.5
+ Dokumentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Suche" href="search.html"/>
+    <link rel="top" title="rc_visard 1.0.5
+ Dokumentation" href="index.html"/>
+        <link rel="next" title="Zubehör" href="accessories.html"/>
+        <link rel="prev" title="Die rc_dynamics-Schnittstelle" href="rc_dynamics.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Suche" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Einführung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Überblick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Garantie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Schnittstellen, Zulassungen und Normen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Zulassungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Normen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Sicherheit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">Allgemeine Sicherheitshinweise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Bestimmungsgemäße Verwendung</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware-Spezifikation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Lieferumfang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technische Spezifikation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Umwelt- und Betriebsbedingungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Spezifikationen für die Stromversorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Verkabelung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanische Schnittstelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Koordinatensysteme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-and-configuration">Installation und Konfiguration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Einschalten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Netzwerkkonfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatische Konfiguration (werkseitige Voreinstellung)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manuelle Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rcvisard-devices">Aufspüren von <em>rc_visard</em>-Geräten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Zurücksetzen der Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#web-gui">Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Der <em>rc_visard</em> auf einen Blick</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#stereo-vision">Stereovision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#sensor-dynamics">Sensordynamik</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#calibration-relative-to-a-robot">Kalibrierung zu einem Roboter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="components.html">Softwaremodule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stereo_camera.html">Stereokamera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#image-acquisition">Bilderfassung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#planar-rectification">Planare Rektifizierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_matching.html">Stereo-Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Berechnung von Disparitätsbildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Berechnung von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Konfidenz- und Fehlerbilder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dynamics.html">Sensordynamik</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#coordinate-frames-for-state-estimation">Koordinatensysteme für die Zustandsschätzung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#available-state-estimates">Verfügbare Zustandsschätzungen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#camera-pose-streams-pose-and-pose-ins">Kameraposen-Datenströme (<code class="docutils literal"><span class="pre">pose</span></code> und <code class="docutils literal"><span class="pre">pose_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-camera-pose-streams-pose-rt-and-pose-rt-ins">Echtzeit-Datenströme der Kamerapose (<code class="docutils literal"><span class="pre">pose_rt</span></code> und <code class="docutils literal"><span class="pre">pose_rt_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-dynamics-streams-dynamics-and-dynamics-ins">Echtzeit-Dynamik-Datenströme (<code class="docutils literal"><span class="pre">dynamics</span></code> und <code class="docutils literal"><span class="pre">dynamics_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#imu-data-stream-imu">IMU-Datenstrom (<code class="docutils literal"><span class="pre">imu</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_visodo.html">Visuelle Odometrie</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_ins.html">Stereo-INS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#parameters">Parameter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="slam.html">SLAM (optional)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="camera_calibration.html">Kamerakalibrierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#calibration-process">Kalibriervorgang</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-1-calibration-settings">Schritt&nbsp;1: Einstellung der Kalibrierparameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-2-verify-calibration">Schritt&nbsp;2: Kalibrierung überprüfen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-3-performing-calibration">Schritt&nbsp;3: Durchführung der Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-4-storing-the-calibration-result">Schritt&nbsp;4: Kalibrierergebnis speichern</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="handeye_calibration.html">Hand-Auge-Kalibrierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Kalibrierschnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#sensor-mounting">Sensormontage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Kalibrierroutine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-1-setting-parameters">Schritt&nbsp;1: Einstellung der Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-2-selecting-and-reporting-robot-calibration-positions">Schritt&nbsp;2: Auswahl und Übertragung der Kalibrierpositionen des Roboters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-3-calculating-and-saving-the-calibration-transformation">Schritt&nbsp;3: Berechnen und Speichern der Kalibriertransformation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Schnittstellen</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-visard">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard</em></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#general-api-structure">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#nodes-parameters-and-services">Module, Parameter und Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#datastreams">Datenströme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#system-and-logs">System und Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#data-type-definitions">Datentyp-Definitionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#swagger-ui">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rc_dynamics.html">Die rc_dynamics-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#starting-stopping-dynamic-state-estimation">Starten/Stoppen der Dynamik-Zustandsschätzungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#configuring-data-streams">Konfiguration von Datenströmen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#data-stream-protocol">Datenstromprotokoll</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#rc-dynamics-api">Die rc_dynamics-Programmierschnittstelle</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Wartung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#lens-cleaning">Reinigung der Kameralinsen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#camera-calibration">Kamerakalibrierung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-the-firmware">Aktualisierung der Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rebooting-the-rcvisard">Neustart des <em>rc_visard</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#downloading-log-files">Download der Logdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Anschlussset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Verkabelung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet-Anschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Stromanschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Netzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Ersatzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Fehlerbehebung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED-Farben</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Probleme mit der Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Probleme mit der Konnektivität</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Probleme mit den Kamerabildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Probleme mit Tiefen-/Disparitäts-, Fehler- oder Konfidenzbildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#dynamics-issues">Probleme mit der Zustandsschätzung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">Probleme mit GigE&nbsp;Vision/GenICam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Kontakt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Adresse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Anhang</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pose_formats.html">Formate für Posendaten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyzabc-format">XYZABC-Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyz-quaternion-format">XYZ+Quaternion-Format</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Dokumentation</a> &raquo;</li>
+        
+      <li>Wartung</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="maintenance">
+<span id="sect-maintenance"></span><h1>Wartung<a class="headerlink" href="#maintenance" title="Link zu dieser Überschrift">¶</a></h1>
+<div class="admonition warning">
+<p class="first admonition-title">Achtung</p>
+<p class="last">Das Gehäuse des <em>rc_visard</em> muss für Wartungsarbeiten nicht geöffnet werden. Das unbefugte Öffnen des Produkts führt zum Erlöschen der Garantie.</p>
+</div>
+<div class="section" id="lens-cleaning">
+<span id="sect-lens-cleaning"></span><h2>Reinigung der Kameralinsen<a class="headerlink" href="#lens-cleaning" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Glaslinsen sind mit einer Anti-Reflex-Beschichtung versehen, um Spiegelungen zu verringern. Bei der Reinigung der Linsen ist besonders vorsichtig vorzugehen. Mit einer weichen Linsenbürste lassen sich Staub und Schmutzpartikel entfernen. Anschließend kann die Linse mit einem Tuch in kreisenden Bewegungen abgewischt werden: Dabei ist ein Spezialreinigungstuch aus Mikrofaser zu verwenden, um Kratzer zu vermeiden, die die Leistung des Sensors beeinträchtigen können. Hartnäckiger Schmutz lässt sich mit hochreinem Isopropanol oder einer für beschichtete Linsen geeigneten Reinigungslösung (z.&nbsp;B. „Uvex Clear“-Produkte) entfernen.</p>
+</div>
+<div class="section" id="camera-calibration">
+<span id="sect-maintenance-camera-calibration"></span><h2>Kamerakalibrierung<a class="headerlink" href="#camera-calibration" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Die Kameras werden ab Werk kalibriert. Unter normalen Betriebsbedingungen bleibt die Kalibrierung für die Lebensdauer des Sensors erhalten. Wenn der <em>rc_visard</em> einer starken mechanischen Belastung ausgesetzt wird, wenn er beispielsweise fallen gelassen wird, können sich die Parameter der Kamera jedoch leicht verändern. In diesem Fall lässt sich die Kalibrierung über die Web GUI überprüfen und bei Bedarf neu durchführen (siehe <a class="reference internal" href="camera_calibration.html"><span class="doc">Kamerakalibrierung</span></a>).</p>
+</div>
+<div class="section" id="updating-the-firmware">
+<span id="sect-updating-the-firmware"></span><h2>Aktualisierung der Firmware<a class="headerlink" href="#updating-the-firmware" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-0">Angaben zur aktuellen Firmware-Version sind auf der Registerkarte <em>System</em> in der Zeile <em>Systeminformationen</em> in der <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> angegeben. Diese Informationen lassen sich mithilfe einer <a class="reference internal" href="rest_api.html#get--system" title="GET /system"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/system</span></code></a>-Anfrage über die die <a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API-Schnittstelle</span></a> des <em>rc_visard</em> abrufen. Die Aktualisierung der Firmware kann entweder über die Web GUI oder über die REST-API vorgenommen werden.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Achtung</p>
+<p>Nach einem Firmware-Update werden alle konfigurierten Parameter der Softwaremodule auf die Werkseinstellungen zurückgesetzt. Bevor das Update vorgenommen wird, sollten daher alle Einstellungen (über die <a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API-Schnittstelle</span></a>) abgefragt und in der Anwendung oder auf dem Client-PC gesichert werden.</p>
+<p>Folgende Einstellungen sind davon ausgeschlossen und bleiben auch nach einem Firmware-Update erhalten:</p>
+<ul class="last simple">
+<li>die Netzwerkkonfiguration des <em>rc_visard</em>, samt der ggf. vergebenen festen IP-Adresse und des benutzerdefinierten Gerätenamens;</li>
+<li>das letzte Ergebnis der <a class="reference internal" href="handeye_calibration.html"><span class="doc">Hand-Auge-Kalibrierung</span></a>, was bedeutet, dass der <em>rc_visard</em> nicht neu zum Roboter kalibriert werden muss, es sei denn, die Montage wurde verändert; und</li>
+<li>das letzte Ergebnis der <a class="reference internal" href="camera_calibration.html"><span class="doc">Kamerakalibrierung</span></a>, was bedeutet, dass die Stereokamera des <em>rc_visard</em> nicht neu kalibriert werden muss.</li>
+</ul>
+</div>
+<dl class="docutils">
+<dt>Schritt&nbsp;1: Download der neuesten Firmware</dt>
+<dd>Firmware-Updates werden in Form einer Mender-Artifact-Datei bereitgestellt, die an ihrem <code class="docutils literal"><span class="pre">.mender</span></code>-Suffix erkennbar ist. Ist ein neues Firmware-Update für den <em>rc_visard</em> erhältlich, kann die Datei von der Roboception-Homepage (<a class="reference external" href="http://www.roboception.com/download">http://www.roboception.com/download</a>) auf den lokalen Rechner heruntergeladen werden.</dd>
+<dt>Schritt&nbsp;2: Hochladen der Update-Datei</dt>
+<dd><p class="first">Soll das Update über die REST-API des <em>rc_visard</em> vorgenommen werden, kann der Benutzer auf die Anfrage <a class="reference internal" href="rest_api.html#post--system-update" title="POST /system/update"><code class="xref http http-post docutils literal"><span class="pre">POST</span> <span class="pre">/system/update</span></code></a> zurückgreifen.</p>
+<p>Um die Firmware über die Web GUI zu aktualisieren, muss die Zeile <em>Software-Update</em> auf der Registerkarte <em>System</em> ausgewählt und die Schaltfläche <em>Update hochladen</em> betätigt werden (siehe <a class="reference internal" href="#fig-update-system-tab"><span class="std std-numref">Abb. 44</span></a>). Nachdem die gewünschte Update-Image-Datei (Dateierweiterung. <code class="docutils literal"><span class="pre">.mender</span></code>) aus dem lokalen Dateisystem ausgewählt und geöffnet wurde, startet das Update.</p>
+<div class="figure align-center" id="id1">
+<span id="fig-update-system-tab"></span><a class="reference internal image-reference" href="_images/webgui_system_update_de.png"><img alt="_images/webgui_system_update_de.png" src="_images/webgui_system_update_de.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 44 </span><span class="caption-text">Web GUI-Registerkarte <em>System</em></span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Hinweis</p>
+<p class="last">Je nach Netzwerkarchitektur und Konfiguration kann das Hochladen mehrere Minuten in Anspruch nehmen. Während das Update über die Web GUI läuft, zeigt ein Statusbalken (siehe <a class="reference internal" href="#fig-update-progress-bar"><span class="std std-numref">Abb. 45</span></a>) an, wie weit das Update bereits vorangeschritten ist.</p>
+</div>
+<div class="figure align-center" id="id2">
+<span id="fig-update-progress-bar"></span><a class="reference internal image-reference" href="_images/webgui_update_progress_bar.png"><img alt="_images/webgui_update_progress_bar.png" src="_images/webgui_update_progress_bar.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 45 </span><span class="caption-text">Fortschrittsbalken für das Software-Update</span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Hinweis</p>
+<p class="last">Je nach Webbrowser kann es vorkommen, dass der in <a class="reference internal" href="#fig-update-progress-bar"><span class="std std-numref">Abb. 45</span></a> gezeigte Statusbalken den Abschluss des Updates zu früh angibt. Es empfiehlt sich, zu warten, bis sich das in <a class="reference internal" href="#fig-update-reboot"><span class="std std-numref">Abb. 46</span></a> gezeigte Kontextfenster öffnet. Insgesamt ist mit einer Update-Dauer von mindestens fünf Minuten zu rechnen.</p>
+</div>
+<div class="figure align-center" id="id3">
+<span id="fig-update-reboot"></span><a class="reference internal image-reference" href="_images/webgui_update_reboot.png"><img alt="_images/webgui_update_reboot.png" src="_images/webgui_update_reboot.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 46 </span><span class="caption-text">Kontextfenster zum Neustart des Software-Updates</span></p>
+</div>
+<div class="last admonition warning">
+<p class="first admonition-title">Achtung</p>
+<p class="last">Die Webbrowser-Registerkarte, die die Web GUI enthält, darf weder geschlossen noch aktualisiert werden, da der Update-Vorgang anderenfalls unterbrochen wird. Ist dies der Fall, muss der Update-Vorgang neu gestartet werden.</p>
+</div>
+</dd>
+<dt>Schritt&nbsp;3: Neustart des <em>rc_visard</em></dt>
+<dd><p class="first">Um ein Firmware-Update auf den <em>rc_visard</em> aufzuspielen, muss nach dem Upload der neuen Image-Datei ein Neustart vorgenommen werden.</p>
+<div class="admonition note" id="index-1">
+<p class="first admonition-title">Hinweis</p>
+<p class="last">Die neue Firmware-Version wird in die inaktive Partition des <em>rc_visard</em> hochgeladen. Erst nach dem Neustart wird die inaktive Partition aktiviert und die aktive Partition deaktiviert. Kann das aktualisierte Firmware-Image nicht geladen werden, bleibt diese Partition des <em>rc_visard</em> inaktiv und es wird automatisch die zuvor installierte Firmware-Version von der aktiven Partition verwendet.</p>
+</div>
+<p>Über die REST-API lässt sich der Neustart mittels der Anfrage <a class="reference internal" href="rest_api.html#put--system-reboot" title="PUT /system/reboot"><code class="xref http http-put docutils literal"><span class="pre">PUT</span> <span class="pre">/system/reboot</span></code></a> vornehmen.</p>
+<p class="last">Nachdem die neue Firmware über die Web GUI hochgeladen wurde, öffnet sich das in <a class="reference internal" href="#fig-update-reboot"><span class="std std-numref">Abb. 46</span></a> gezeigte Kontextfenster, in dem der Benutzer aufgefordert wird, das Gerät sofort neu zu starten oder aber den Neustart zu verschieben. Soll der <em>rc_visard</em> zu einem späteren Zeitpunkt neu gestartet werden, kann dies über die Schaltfläche <em>Neustart</em> auf der Web GUI-Registerkarte <em>System</em> vorgenommen werden.</p>
+</dd>
+<dt>Schritt&nbsp;4: Bestätigung des Firmware-Updates</dt>
+<dd><p class="first">Nach dem Neustart des <em>rc_visard</em> ist die Versionsnummer des derzeit aktiven Firmware-Images zu überprüfen, sodass sichergestellt ist, dass das aktualisierte Image erfolgreich geladen wurde. Dies kann entweder über die Web GUI auf der Registerkarte <em>System</em> oder über die REST-API mittels der Anfrage <a class="reference internal" href="rest_api.html#get--system-update" title="GET /system/update"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/system/update</span></code></a> vorgenommen werden.</p>
+<p class="last">Kann das Firmware-Update nicht erfolgreich aufgespielt werden, ist der Roboception-Support zu kontaktieren.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="restoring-the-previous-firmware-version">
+<span id="sect-restoring-the-previous-firmware-version"></span><h2>Wiederherstellung der vorherigen Firmware-Version<a class="headerlink" href="#restoring-the-previous-firmware-version" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-2">Nach einem erfolgreichen Firmware-Update wird das vorherige Firmware-Image auf der inaktiven Partition des <em>rc_visard</em> hinterlegt und kann von dort bei Bedarf wiederhergestellt werden. Dieses Verfahren wird auch als <em>Rollback</em> bezeichnet.</p>
+<div class="admonition note">
+<p class="first admonition-title">Hinweis</p>
+<p class="last">Es wird dringend empfohlen, die neueste Firmware-Version zu verwenden, die von Roboception zur Verfügung gestellt wurde. Auf das Rollback sollte nur dann zurückgegriffen werden, wenn es mit der aktualisierten Firmware-Version große Probleme gibt.</p>
+</div>
+<p>Die Rollback-Funktion kann lediglich über die <a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API-Schnittstelle</span></a> des <em>rc_visard</em> aufgerufen werden – mithilfe der Anfrage <a class="reference internal" href="rest_api.html#put--system-rollback" title="PUT /system/rollback"><code class="xref http http-put docutils literal"><span class="pre">PUT</span> <span class="pre">/system/rollback</span></code></a>. Die Anfrage kann entweder mit einem HTTP-kompatiblen Client oder, wie in <a class="reference internal" href="rest_api.html#sect-swagger-ui"><span class="std std-ref">Swagger UI</span></a> beschrieben, über einen Webbrowser ausgelöst werden. Wie beim Update-Prozess ist es auch beim Rollback nötig, das Gerät im Anschluss neu zu starten, um die wiederhergestellte Firmware-Version zu laden.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Achtung</p>
+<p class="last">Wie bei einem Firmware-Update werden alle Parameter der Softwaremodule auf die Werkseinstellungen zurückgesetzt. Bevor das Rollback ausgeführt wird, sollten daher alle Einstellungen (über die <a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API-Schnittstelle</span></a>) abgefragt und in der Anwendung oder auf dem Client-PC gesichert werden.</p>
+</div>
+</div>
+<div class="section" id="rebooting-the-rcvisard">
+<span id="sect-rebooting"></span><h2>Neustart des <em>rc_visard</em><a class="headerlink" href="#rebooting-the-rcvisard" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-3">Nach einem Firmware-Update oder einem Software-Rollback muss der <em>rc_visard</em> neu gestartet werden. Der Neustart lässt sich entweder programmgesteuert mithilfe der Anforderung <a class="reference internal" href="rest_api.html#put--system-reboot" title="PUT /system/reboot"><code class="xref http http-put docutils literal"><span class="pre">PUT</span> <span class="pre">/system/reboot</span></code></a> über die <a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API-Schnittstelle</span></a> des <em>rc_visard</em> oder manuell auf der Registerkarte <em>System</em> der <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> vornehmen. Der Neustart ist abgeschlossen, wenn die LED wieder grün leuchtet.</p>
+</div>
+<div class="section" id="updating-the-software-license">
+<span id="sect-updating-license"></span><h2>Aktualisierung der Softwarelizenz<a class="headerlink" href="#updating-the-software-license" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Lizenzen, die von Roboception zur Aktivierung zusätzlicher Funktionen erworben werden, können über die Registerkarte <em>System</em> der <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> installiert werden.</p>
+</div>
+<div class="section" id="downloading-log-files">
+<span id="sect-downloading-log-files"></span><h2>Download der Logdateien<a class="headerlink" href="#downloading-log-files" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-4">Während des Betriebs dokumentiert der <em>rc_visard</em> wichtige Informationen, Hinweise und Fehler in sogenannten Logdateien. Zeigt der <em>rc_visard</em> ein unerwartetes oder fehlerhaftes Verhalten, kann mithilfe der Logdateien nach der Fehlerursache geforscht werden. Logeinträge lassen sich über die Registerkarte <em>Logs</em> auf der <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>  ansehen und filtern. Wird der Support kontaktiert (<a class="reference internal" href="contact.html#sect-contact"><span class="std std-ref">Kontakt</span></a>), sind die Logdateien sehr hilfreich, um Probleme aufzuspüren. Um diese als tar.gz-Datei herunterzuladen, ist die Option <em>Alle Logs herunterladen</em> auf der Registerkarte <em>Logs</em> der Web GUI auszuwählen.</p>
+<p>Die Logs sind nicht nur über die Web GUI, sondern auch über die <a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API-Schnittstelle</span></a> des <em>rc_visard</em> zugänglich. Hierfür können die Anfragen des Typs <a class="reference internal" href="rest_api.html#get--logs" title="GET /logs"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/logs</span></code></a> und <a class="reference internal" href="rest_api.html#get--logs-log" title="GET /logs/{log}"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/logs/{log}</span></code></a> verwendet werden.</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="accessories.html" class="btn btn-neutral float-right" title="Zubehör" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rc_dynamics.html" class="btn btn-neutral" title="Die rc_dynamics-Schnittstelle" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Roboception GmbH.
+
+    </p>
+  </div>
+  Erzeugt mit <a href="http://sphinx-doc.org/">Sphinx</a>, basierend auf <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Optionen</span>
+      de
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Sprachen</dt>
+        
+          <dd><a href="../de/index.html">de</a></dd>
+        
+          <dd><a href="../en/index.html">en</a></dd>
+        
+      </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_manual_de.pdf">PDF (de)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_manual_en.pdf">PDF (en)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.5',
+            LANGUAGE:'de',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

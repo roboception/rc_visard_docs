@@ -1,0 +1,63 @@
+SLAM (optional)
+
+Das SLAM-Modul ist Teil des Dynamik-Moduls. Wenn sich der
+
+rc_visard
+
+ bewegt, summieren sich mit der Zeit die bei der Posenschätzung
+auftretenden Fehler. Das SLAM-Modul kann diese Fehler korrigieren,
+indem es bereits besuchte Orte wiedererkennt.
+
+Das Akronym SLAM steht für simultane Lokalisierung und
+Kartenerstellung (simultaneous localization and mapping). Das SLAM-
+Modul erstellt eine Karte aus den für die visuelle Odometrie genutzten
+Bildmerkmalen. Die Karte wird später verwendet, um kumulierte
+Posenfehler zu korrigieren. Am ehesten lässt sich dies in Anwendungen
+beobachten, bei denen der Roboter, nachdem er eine lange Strecke
+zurückgelegt hat, an einen besuchten Ort zurückkehrt (dies wird auch
+„Schleifenschluss“ oder „Loop Closure“ genannt). In diesem Fall kann
+der Roboter Bildmerkmale, die bereits in seiner Karte abgespeichert
+sind, wiedererkennen und seine Posenschätzung auf dieser Grundlage
+korrigieren. Kommt es zu einem Schleifenschluss, wird nicht nur die
+aktuelle, sondern auch die bisherige Posenschätzung (Trajektorie des
+
+rc_visard
+
+) korrigiert. Die kontinuierliche Korrektur der Trajektorie sorgt
+dafür, dass die Karte immer mehr an Genauigkeit gewinnt. Die
+Genauigkeit der Trajektorie ist auch wichtig, wenn diese zum Aufbau
+eines integrierten Weltmodells verwendet wird, indem beispielsweise
+die ermittelten 3D-Punktwolken in ein gemeinsames Koordinatensystem
+projiziert werden (siehe
+
+Berechnung von Tiefenbildern und Punktwolken
+
+). Zu diesem Zweck kann die gesamte Trajektorie des
+
+rc_visard
+
+ beim SLAM-Modul abgefragt werden.
+
+Das SLAM-Modul, das optional für den
+
+rc_visard
+
+ erhältlich sein wird, läuft intern auf dem Sensor. Sobald eine SLAM-
+Lizenz auf dem
+
+rc_visard
+
+ hinterlegt wird, erscheint das SLAM-Modul in der Registerkarte
+
+Überblick
+
+ der
+
+Web GUI
+
+ als
+
+Verfügbar
+
+. Auch die Aktivierung und Deaktivierung des Moduls erfolgt über diese
+Seite.

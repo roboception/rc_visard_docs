@@ -1,0 +1,30 @@
+Stereo INS
+
+The stereo-vision-aided Inertial Navigation System (
+
+INS
+
+) component is part of the sensor dynamics component. It combines
+visual-odometry measurements with inertial measurement unit (
+
+IMU
+
+) data and provides robust, low latency, real-time state estimates at
+a high rate. The IMU consists of three accelerometers and three
+gyroscopes, which measure accelerations and turn rates in all three
+dimensions. By fusing IMU and visual-odometry measurements, the state
+estimate has the same frequency as the IMU (200 Hz) and is very robust
+even under challenging lighting conditions and for fast motions.
+
+Parameters
+
+The stereo INS component’s node name is "rc_stereo_ins".
+
+This component does not have any run-time parameters.
+
+This component reports the following status values.
+
+The rc_stereo_ins component’s status values      Name  Description
+freq  Frequency of the stereo INS process in Hertz. This value is
+shown as Update Rate in the Web GUI Overview tab in the Dynamics area
+state  Internal state

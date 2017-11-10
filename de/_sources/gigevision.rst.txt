@@ -1,0 +1,480 @@
+GigE Vision 2.0/GenICam-Schnittstelle
+
+Gigabit Ethernet for Machine Vision (oder kurz „GigE Vision®“) ist
+eine industrieller Kameraschnittstellen-Standard basierend auf UDP/IP
+(siehe
+
+http://www.gigevision.com
+
+). Der
+
+rc_visard
+
+ nutzt den GigE Vision®-Standard der Version 2.0 und ist damit mit
+allen GigE Vision®-2.0-Standard-konformen Frameworks und Bibliotheken
+kompatibel.
+
+GigE Vision® verwendet GenICam (
+
+Generic Interface for Cameras
+
+), um die Eigenschaften der Kamera bzw. des Geräts zu beschreiben. Für
+nähere Informationen zu dieser generischen Programmierschnittstelle
+für Kameras siehe
+
+http://www.genicam.org/
+
+.
+
+Über diese Schnittstelle stellt der
+
+rc_visard
+
+ folgende Funktionen zur Verfügung:
+
+Discovery-Mechanismus,
+
+IP-Konfiguration,
+
+Konfiguration kamerabezogener Parameter,
+
+Bildaufnahme und
+
+Zeitsynchronisierung über das im Standard IEEE 1588-2008 definierte
+Precision Time Protocol (PTPv2).
+
+Hinweis: Der
+
+  rc_visard
+
+   unterstützt Jumbo-Frames mit einer Größe bis 9000 Byte. Für höchste
+  Leistung wird empfohlen, die maximale Übertragungseinheit (MTU) des
+  GigE-Vision-Clients auf 9000 zu stellen.
+
+Hinweis: Über seine Homepage stellt Roboception (
+
+  http://www.roboception.com/download
+
+  ) Tools und eine C++-Programmierschnittstelle mit Beispielen zum
+  Discovery-Mechanismus, zur Konfiguration und zum Bild-Streaming über
+  die GigE Vision/GenICam-Schnittstelle zur Verfügung.
+
+Wichtige Parameter der GenICam-Schnittstelle
+
+Die folgende Liste enthält einen Überblick über relevante GenICam-
+Parameter des
+
+rc_visard
+
+, die über die GenICam-Schnittstelle abgerufen und/oder geändert
+werden können. Neben den Standardparametern, die in der Standard
+Feature Naming Convention (SFNC, siehe
+
+http://www.emva.org/standards-technology/genicam/genicam-downloads/
+
+) definiert werden, bietet der
+
+rc_visard
+
+ zudem eigene Parameter, die sich auf spezielle Eigenschaften der
+Module
+
+Stereokamera
+
+ und
+
+Stereo-Matching
+
+ beziehen.
+
+Wichtige Standardparameter der GenICam-Schnittstelle
+
+"ComponentSelector"
+   Typ: Aufzählung, mögliche Werte: Intensity, IntensityCombined,
+   Disparity, Confidence oder Error
+
+   Voreinstellung: -
+
+   Beschreibung: Erlaubt dem Benutzer, einen der fünf Bild-Streams zur
+   Konfiguration auszuwählen (siehe Verfügbare Bild-Streams,
+   \:Abschnitt \ref{gigevision:sect-provided-image-streams}).
+
+"ComponentIDValue" (schreibgeschützt)
+   Typ: Integer
+
+   Beschreibung: ID des vom ComponentSelector ausgewählten Bild-
+   Streams.
+
+"ComponentEnable"
+   Typ: Boolean
+
+   Voreinstellung: -
+
+   Beschreibung: Ist der Parameter auf true gesetzt, aktiviert er den
+   im ComponentSelector ausgewählten Bild-Stream. Anderenfalls
+   deaktiviert er diesen Stream. Über ComponentSelector und
+   ComponentEnable lassen sich einzelne Bild-Streams ein- und
+   ausschalten.
+
+"Width", "WidthMax" (schreibgeschützt)
+   Typ: Integer
+
+   Beschreibung: Maximale Breite eines Bildes (beträgt immer 1280
+   Pixel).
+
+"Height", "HeightMax" (schreibgeschützt)
+   Typ: Integer
+
+   Beschreibung: Maximale Höhe eines Bildes im Stream. Der Wert
+   beträgt  aufgrund der gestapelten Bilder der linken und rechten
+   Kamera im IntensityCombined-Stream immer 1920 Pixel (siehe
+   Verfügbare Bild-Streams, Abschnitt \ref{gigevision:sect-provided-
+   image-streams}).
+
+"PixelFormat"
+   Typ: Aufzählung, mögliche Werte: Mono8 oder YCbCr411_8 (nur bei
+   Farbsensoren)
+
+   Beschreibung: Pixelformat der linken und rechten rektifizierten
+   Bilder die von den Komponenten Intensity und IntensityCombined
+   zurückgegeben werden. Das YCbCr411_8-Format ist nur für
+   Farbsensoren verfügbar.
+
+"AcquisitionFrameRate"
+   Typ: Float, Wertebereich: 1–25 Hz
+
+   Voreinstellung: 25 Hz
+
+   Beschreibung: Bildwiederholrate der Kamera (FPS, Abschnitt
+   \ref{stereo_camera:sect-cam-params}).
+
+"ExposureAuto"
+   Typ: Aufzählung, mögliche Werte: Continuous oder Off
+
+   Voreinstellung: Continuous
+
+   Beschreibung: Lässt sich für die manuelle Belichtung auf Off bzw.
+   für die automatische Belichtung auf Continuous setzen (Belichtung,
+   Abschnitt \ref{stereo_camera:sect-cam-params}).
+
+"ExposureTime"
+   Typ: Float, Wertebereich: 66–18000 µs
+
+   Voreinstellung: 5000 µs
+
+   Beschreibung: Belichtungszeit der Kamera für den manuellen
+   Belichtungsmodus, ausgedrückt in Mikrosekunden (Manual, Abschnitt
+   \ref{stereo_camera:sect-cam-params}).
+
+"GainSelector" (schreibgeschützt)
+   Typ: Aufzählung, Wert: ist immer All
+
+   Voreinstellung: All
+
+   Beschreibung: Der rc_visard unterstützt aktuell nur einen globalen
+   Verstärkungsfaktor.
+
+"Gain"
+   Typ: Float, Wertebereich: 0–18 dB
+
+   Voreinstellung: 0 dB
+
+   Beschreibung: Verstärkungsfaktor der Kamera für den manuellen
+   Belichtungsmodus, ausgedrückt in Dezibel (Gain, Abschnitt
+   \ref{stereo_camera:sect-cam-params}).
+
+"BalanceWhiteAuto" (nur für Farbsensoren)
+   Typ: Aufzählung, mögliche Werte: Continuous oder Off
+
+   Voreinstellung: Continuous
+
+   Beschreibung: Lässt sich für den manuellen Weißabgleich auf Off
+   bzw. für den automatischen Weißabgleich auf Continuous setzen.
+   Dieser Parameter ist nur für Farbsensoren verfügbar (wb_auto,
+   Abschnitt \ref{stereo_camera:sect-cam-params}).
+
+"BalanceRatioSelector" (nur für Farbsensoren)
+   Typ: Aufzählung, mögliche Werte: Red oder Blue
+
+   Voreinstellung: Red
+
+   Beschreibung: Auswahl des Verhältnisses welches mit BalanceRatio
+   einstellbar ist. Red bedeutet Verhältnis von Rot zu Grün und Blue
+   bedeutet Verhältnis von Blau zu Grün. Diese Einstellung ist nur für
+   Farbsensoren verfügbar.
+
+"BalanceRatio" (nur für Farbsensoren)
+   Typ: Float, Wertebereich: 0.125 – 8
+
+   Voreinstellung: 1.2 wenn Red und 2.4 wenn Blue im
+   BalanceRatioSelector eingestellt sind
+
+   Beschreibung: Gewichtung vom roten oder blauen zum grünen
+   Farbkanal. Dieses Merkmal ist nur für Farbkameras verfügbar
+   (wb_ratio, Abschnitt \ref{stereo_camera:sect-cam-params}).
+
+"GevIEEE1588"
+   Typ: Boolean
+
+   Voreinstellung: false
+
+   Beschreibung: Schaltet die PTP-Synchronisierung ein und aus.
+
+"Scan3dDistanceUnit" (schreibgeschützt)
+   Typ: Aufzählung, Wert: ist immer Pixel
+
+   Beschreibung: Einheit für die Disparitätsmessungen, ist immer
+   Pixel.
+
+"Scan3dOutputMode" (schreibgeschützt)
+   Typ: Aufzählung, Wert: ist immer DisparityC
+
+   Beschreibung: Modus für die Tiefenmessungen, ist immer DisparityC.
+
+"Scan3dCoordinateScale" (schreibgeschützt)
+   Typ: Float
+
+   Beschreibung: Der Skalierungsfaktor, der mit den Disparitätswerten
+   im Disparitätsbild-Stream zu multiplizieren ist, um die
+   tatsächlichen Disparitätswerte zu erhalten. Der Wert beträgt immer
+   0,0625.
+
+"Scan3dCoordinateOffset" (schreibgeschützt)
+   Typ: Float
+
+   Beschreibung: Der Versatz, der zu den Disparitätswerten im
+   Disparitätsbild-Stream addiert werden muss, um die tatsächlichen
+   Disparitätswerte zu erhalten. Der Wert beträgt jedoch immer 0 und
+   kann daher ignoriert werden.
+
+"Scan3dInvalidDataFlag" (schreibgeschützt)
+   Typ: Boolean
+
+   Beschreibung: Ist immer true, was bedeutet, dass ungültige Daten im
+   Disparitätsbild mit einem spezifischen Wert markiert werden, der
+   durch den Parameter Scan3dInvalidDataValue definiert wird.
+
+"Scan3dInvalidDataValue" (schreibgeschützt)
+   Typ: Float
+
+   Beschreibung: Ist der Wert, der für ungültige Disparität steht. Der
+   Wert ist immer 0, was bedeutet, dass Disparitätswerte von 0 immer
+   ungültigen Messungen entsprechen. Um zwischen ungültigen
+   Disparitätsmessungen und Messungen, bei denen die Disparität
+   aufgrund der unendlich weit entfernten Objekte 0 beträgt,
+   unterscheiden zu können, wird der Disparitätswert für den
+   letztgenannten Fall auf 0,0625 gesetzt. Dies entspricht noch immer
+   einer Objektentfernung von mehreren hundert Metern.
+
+Besondere Parameter der GenICam-Schnittstelle des rc_visard
+
+"ExposureTimeAutoMax"
+   Typ: Float, Wertebereich: 66–18000 µs
+
+   Voreinstellung: 7000 µs
+
+   Beschreibung: Maximale Belichtungszeit im automatischen
+   Belichtungsmodus (Auto, Abschnitt \ref{stereo_camera:sect-cam-
+   params}).
+
+"FocalLengthFactor" (schreibgeschützt)
+   Typ: Float
+
+   Beschreibung: Brennweite skaliert auf eine Bildbreite von einem
+   Pixel. Um die Brennweite für ein bestimmtes Bild in Pixeln zu
+   ermitteln, muss dieser Wert mit der Breite des empfangenen Bilds
+   multipliziert werden.
+
+"Baseline" (schreibgeschützt)
+   Typ: Float
+
+   Beschreibung: Abstand zwischen der linken und der rechten Kamera,
+   ausgedrückt in Metern.
+
+"DepthQuality"
+   Typ: Aufzählung, mögliche Werte: Low, Medium, High oder StaticHigh
+
+   Voreinstellung: High
+
+   Beschreibung: Qualität der Disparitätsbilder. Eine geringere
+   Tiefenqualität führt zu Disparitätsbildern mit einer geringeren
+   Auflösung (Qualität, Abschnitt \ref{stereo_matching:sect-disp-
+   image-parameters}).
+
+"DepthDispRange"
+   Typ: Integer, Wertebereich: 32–512 Pixel
+
+   Voreinstellung: 256 Pixel
+
+   Beschreibung: Maximaler Disparitätswert in Pixeln
+   (Disparitätsbereich, Abschnitt \ref{stereo_matching:sect-disp-
+   image-parameters}).
+
+"DepthFill"
+   Typ: Integer, Wertebereich: 0–4 Pixel
+
+   Voreinstellung: 3 Pixel
+
+   Beschreibung: Wert in Pixeln für Füllen\:(Abschnitt
+   \ref{stereo_matching:sect-disp-image-parameters}).
+
+"DepthSeg"
+   Typ: Integer, Wertebereich: 0–4000 Pixel
+
+   Voreinstellung: 200 Pixel
+
+   Beschreibung: Wert in Pixeln für Segmentierung\:(Abschnitt
+   \ref{stereo_matching:sect-disp-image-parameters}).
+
+"DepthMedian"
+   Typ: Integer, Wertebereich: 1–5 Pixel
+
+   Voreinstellung: 1 Pixel
+
+   Beschreibung: Wert in Pixeln für den Median-Filter\:(Abschnitt
+   \ref{stereo_matching:sect-disp-image-parameters}).
+
+"DepthMinConf"
+   Typ: Float, Wertebereich: 0.0–1.0
+
+   Voreinstellung: 0.0
+
+   Beschreibung: Wert für die Minimale Konfidenz-Filterung\:(Abschnitt
+   \ref{stereo_matching:sect-disp-image-parameters}).
+
+"DepthMinDepth"
+   Typ: Float, Wertebereich: 0.1–100.0 m
+
+   Voreinstellung: 0.1 m
+
+   Beschreibung: Wert in Metern für die Minimale Abstands-
+   Filterung\:(Abschnitt \ref{stereo_matching:sect-disp-image-
+   parameters}).
+
+"DepthMaxDepth"
+   Typ: Float, Wertebereich: 0.1–100.0 m
+
+   Voreinstellung: 100.0 m
+
+   Beschreibung: Wert in Metern für die Maximale Abstands-
+   Filterung\:(Abschnitt \ref{stereo_matching:sect-disp-image-
+   parameters}).
+
+"DepthMaxDepthErr"
+   Typ: Float, Wertebereich: 0.01–100.0 m
+
+   Voreinstellung: 100.0 m
+
+   Beschreibung: Wert in Metern für die Maximale Fehler-
+   Filterung\:(Abschnitt \ref{stereo_matching:sect-disp-image-
+   parameters}).
+
+Verfügbare Bild-Streams
+
+Der
+
+rc_visard
+
+ stellt über die GenICam-Schnittstelle die folgenden fünf Bild-Streams
+zur Verfügung:
+
+        Name der Komponente  PixelFormat  Breite × Höhe  Beschreibung
+Intensity  Mono8 (monochrome Sensoren)  YCbCr411_8 (Farbsensoren)
+1280 × 960  Rektifiziertes Bild der linken Kamera  IntensityCombined
+Mono8 (monochrome Sensoren)  YCbCr411_8 (Farbsensoren)  1280 × 1920
+Rektifiziertes Bild der linken Kamera, gestapelt auf das rektifizierte
+Bild der rechten Kamera  Disparity  Coord3D_C16  640 × 480  320 × 240
+214 × 160  Disparitätsbild in gewünschter Auflösung, d. h. High,
+Medium, oder Low  Confidence  Confidence8  wie Disparity
+Konfidenzbild  Error  Sonderformat: 0x81080001  wie Disparity
+Fehlerbild
+
+Jedes Bild wird mit einem Zeitstempel und dem in der oben angegeben
+Tabelle angegebenen
+
+PixelFormat
+
+ ausgegeben. Dieses PixelFormat sollte verwendet werden, um zwischen
+den verschiedenen Bildtypen zu unterscheiden. Bilder, die den gleichen
+Aufnahmezeitpunkt haben, können durch Vergleich der GenICam-
+Zeitstempel einander zugeordnet werden.
+
+Umwandlung von Bild-Streams
+
+Das Disparitätsbild enthält vorzeichenlose 16-Bit-Ganzzahlwerte. Diese
+Werte müssen mit dem im GenICam-Parameter
+
+Scan3dCoordinateScale
+
+ angegebenen Skalierungsfaktor multipliziert werden, um die
+Disparitätswerte d in Pixeln zu ermitteln. Um die 3D-Objektkoordinaten
+aus den Disparitätswerten berechnen zu können, werden die Brennweite
+und der Basisabstand benötigt. Diese Parameter werden als GenICam-
+Parameter
+
+FocalLengthFactor
+
+ und
+
+Baseline
+
+ übertragen. Um die Brennweite f für die angegebene
+Disparitätsbildauflösung zu ermitteln, muss der
+
+FocalLengthFactor
+
+ mit der Breite des Disparitätsbildes multipliziert werden. Sind diese
+Werte bekannt, können die Pixel-Koordinaten und die Disparitätswerte
+mithilfe der in
+
+Berechnung von Tiefenbildern und Punktwolken
+
+ angegebenen Gleichungen in 3D-Objektkoordination im Sensor-
+Koordinatensystems umgerechnet  werden (siehe
+
+Koordinatensysteme
+
+).
+
+Angenommen, dass es sich bei d_{ik} um den 16-Bit-Disparitätswert in
+der Spalte i und Zeile k eines Disparitätsbildes mit w Spalten und h
+Zeilen handelt, lässt sich die 3D-Rekonstruktion (in Metern) wie folgt
+mit den GenICam-Parametern durchführen:
+
+   P_x&=\left(i-\frac{w}{2}\right) \frac{\mathrm{Baseline}}{d_{ik}
+   \cdot \mathrm{Scan3dCoordinateScale}},\\
+   P_y&=\left(k-\frac{h}{2}\right) \frac{\mathrm{Baseline}}{d_{ik}
+   \cdot \mathrm{Scan3dCoordinateScale}},\\
+   P_z&=\left(\mathrm{FocalLengthFactor} \cdot w \right)
+   \frac{\mathrm{Baseline}}{d_{ik} \cdot
+   \mathrm{Scan3dCoordinateScale}}.
+
+Das Konfidenzbild umfasst vorzeichenlose 8-Bit-Ganzzahlwerte. Diese
+Werte müssen durch 255 geteilt werden, um die zwischen 0 und 1
+liegenden Konfidenzwerte zu berechnen.
+
+Das Fehlerbild umfasst vorzeichenlose 8-Bit-Ganzzahlwerte. Der Fehler
+e_{ik} muss mit dem im GenICam-Parameter
+
+Scan3dCoordinateScale
+
+ angegebenen Skalierungsfaktor multipliziert werden, um die
+Disparitätsfehlerwerte d_{eps} in Pixeln zu ermitteln. Der
+Beschreibung in
+
+Konfidenz- und Fehlerbilder
+
+ zufolge lässt sich der Tiefenfehler z_{eps} (in Metern) mit den
+GenICam-Parametern wie folgt berechnen:
+
+   z_{eps}=\frac{e_{ik} \cdot \mathrm{Scan3dCoordinateScale} \cdot
+   \mathrm{FocalLengthFactor}               \cdot w \cdot
+   \mathrm{Baseline}}              {(d_{ik} \cdot
+   \mathrm{Scan3dCoordinateScale})^2}.
+
+Für nähere Informationen zu Disparitäts-, Fehler- und Konfidenzbildern
+siehe
+
+Stereo-Matching
+
+.

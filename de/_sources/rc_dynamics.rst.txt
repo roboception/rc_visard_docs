@@ -1,0 +1,211 @@
+Die rc_dynamics-Schnittstelle
+
+Die rc_dynamics-Schnittstelle bietet über Echtzeit-Datenströme
+kontinuierlichen Zugang zu verschiedenen
+
+Dynamik-Zustandsschätzungen
+
+. Die Schnittstelle ermöglicht es, Zustandsschätzungen aller Art so zu
+konfigurieren, dass sie an einen beliebigen Host im Netzwerk gestreamt
+werden. Das dafür eingesetzte
+
+Datenstromprotokoll
+
+ unterstützt alle gängigen Betriebssysteme und Programmiersprachen.
+
+Starten/Stoppen der Dynamik-Zustandsschätzungen
+
+Die Dynamik-Zustandsschätzungen des
+
+rc_visard
+
+ sind nur verfügbar, wenn die zugehörige Komponente, z. B. das
+
+Dynamik-Modul
+
+, eingeschaltet ist. Dies lässt sich entweder über die Web GUI – eine
+entsprechende Schaltfläche ist sowohl auf der Registerkarte
+
+Überblick
+
+ als auch auf der Registerkarte
+
+Dynamik
+
+ vorgesehen – oder über die REST-API mittels eines Serviceaufrufs
+vornehmen. Eine Muster-Curl-Anfrage zum Starten der Dynamik-
+Zustandsschätzung würde wie folgt aussehen:
+
+   curl -X PUT --header 'Content-Type: application/json' -d '{}' 'http://<rcvisard>/api/v1/nodes/rc_dynamics/services/start'
+
+Hinweis: Um Rechenressourcen zu sparen, wird empfohlen, die Dynamik-
+  Zustandsschätzungen zu stoppen, wenn sie nicht länger benötigt
+  werden.
+
+Konfiguration von Datenströmen
+
+Verfügbare Datenströme, d. h. Dynamik-Zustandsschätzungen, lassen sich
+über die
+
+REST-API
+
+ des
+
+rc_visard
+
+ auflisten und konfigurieren. So lässt sich beispielsweise mit dem
+Befehl
+
+GET /datastreams
+
+ eine Liste aller verfügbaren Datenströme abrufen. Für eine
+detaillierte Beschreibung der im Folgenden benannten Datenströme siehe
+
+Verfügbare Zustandsschätzungen
+
+.
+
+Datenströme, die über die rc_dynamics-Schnittstelle verfügbar sind
+Name  Protokoll  ProtoBuf  Beschreibung  dynamics  UDP  Dynamics
+Dynamik des rc_visard (Pose, Geschwindigkeit, Beschleunigung), in
+Echtzeit (IMU-Frequenz) bereitgestellt vom INS- oder SLAM-Modul (Best-
+Effort-Prinzip)  dynamics_ins  UDP  Dynamics  Dynamik des rc_visard
+(Pose, Geschwindigkeit, Beschleunigung), in Echtzeit (IMU-Frequenz)
+bereitgestellt vom Stereo-INS  pose  UDP  Frame  Pose der linken
+Kamera, mit maximaler Kamerafrequenz bereitgestellt vom INS- oder
+SLAM-Modul (Best-Effort-Prinzip)  pose_rt  UDP  Frame  Pose der linken
+Kamera, in Echtzeit (IMU-Frequenz) bereitgestellt vom INS- oder SLAM-
+Modul (Best-Effort-Prinzip)  pose_ins  UDP  Frame  Pose der linken
+Kamera, mit maximaler Kamerafrequenz bereitgestellt vom INS-Modul
+pose_rt_ins  UDP  Frame  Pose der linken Kamera, in Echtzeit (IMU-
+Frequenz) bereitgestellt vom INS-Modul  imu  UDP  Imu  Rohdaten der
+inertialen Messeinheit (IMU), in Echtzeit (IMU-Frequenz)
+bereitgestellt
+
+Das allgemeine Verfahren für die Arbeit mit der rc_dynamics-
+Schnittstelle gestaltet sich wie folgt:
+
+Abfrage eines Datenstroms über die REST-API:  Der folgende Beispiel-
+curl-Befehl löst eine PUT /datastreams/{stream}-Anfrage aus, mit der
+die Übertragung eines Datenstroms des Typs pose_rt vom rc_visard an
+den Client-Host 10.0.1.14 an Port  30000 ausgelöst werden soll:  curl
+-X PUT --header 'Content-Type: application/x-www-form-urlencoded'
+--header 'Accept: application/json' -d 'destination=10.0.1.14:30000'
+'http://<rcvisard>/api/v1/datastreams/pose_rt'
+
+Empfang und Deserialisierung der Daten:  Wird die Anfrage erfolgreich
+verarbeitet, wird ein Datenstrom initialisiert und die Daten des
+angegebenen Datenstrom-Typs werden kontinuierlich an den Client-Host
+gesandt. Der Client muss die Daten dem Datenstromprotokoll\:(Abschnitt
+\ref{rc_dynamics:sect-datastream-protocol}) zufolge empfangen,
+deserialisieren und verarbeiten.
+
+Stoppen eines Datenstroms über die REST-API:  Der folgende Beispiel-
+curl-Befehl löst eine DELETE /datastreams/{stream}-Anfrage aus, mit
+der die zuvor beantragte Übertragung eines Datenstroms des Typs
+pose_rt mit dem Ziel 10.0.1.14:30000 gelöscht, d. h. gestoppt, wird:
+curl -X DELETE --header 'Accept: application/json' 'http://<rcvisard>
+/api/v1/datastreams/pose_rt?destination=10.0.1.14:30000'  Sollen alle
+Ziele für einen Datenstrom entfernt werden, ist lediglich der
+Zielparameter wegzulassen.
+
+Achtung: Datenströme werden nicht automatisch gelöscht. Dies
+  bedeutet, dass der
+
+  rc_visard
+
+   weiterhin Daten sendet, auch wenn der Client getrennt wird oder die
+  gesandten Daten nicht länger verwendet. Es wird daher dringend
+  empfohlen, Datenströme über die REST-API zu stoppen, wenn sie nicht
+  länger verwendet werden. Anderenfalls können die akkumulierten
+  Streaming-Prozesse einen beträchtlichen Anteil der Rechenressourcen
+  des
+
+  rc_visard
+
+   in Beschlag nehmen und so die Gesamtleistung des Systems
+  herabsetzen.
+
+Datenstromprotokoll
+
+Sobald ein Datenstrom eingerichtet ist, werden die Daten über das
+folgende Protokoll kontinuierlich an den angegebenen Client-Host und
+Port ("destination") gesandt:
+
+Netzwerkprotokoll:
+   Derzeit wird ausschließlich das Netzwerkprotokoll
+
+   UDP
+
+    unterstützt, was bedeutet, dass Daten als UDP-Datagramme versandt
+   werden.
+
+Datenserialisierung:
+   Die gesandten Daten werden über
+
+   Google protocol buffers
+
+    serialisiert. Dabei werden folgende Nachrichtentyp-Definitionen
+   verwendet.
+
+   Die Kameraposen-Datenströme und Echtzeit-Datenströme der
+   Kamerapose\:(Abschnitt \ref{dynamics:sect-datastream-pose-rt})
+   werden mithilfe des Nachrichtentyps Frame serialisiert:  message
+   Frame {   optional PoseStamped pose  = 1;   optional string parent
+   = 2; // Name of the parent frame   optional string name       = 3;
+   // Name of the frame }
+
+   Der Echtzeit-Dynamik-Datenstrom\:(Abschnitt \ref{dynamics:sect-
+   datastream-dynamics}) wird mithilfe des Nachrichtentyps Dynamics
+   serialisiert:  message Dynamics {   optional Time timestamp
+   = 1; // Time when the data was captured   optional Pose pose
+   = 2;   optional string pose_frame                  = 3; // Name of
+   the frame that the pose is given in   optional Vector3d
+   linear_velocity           = 4; // Linear velocity in m/s   optional
+   string linear_velocity_frame       = 5; // Name of the frame that
+   the linear_velocity is given in   optional Vector3d
+   angular_velocity          = 6; // Angular velocity in rad/s
+   optional string angular_velocity_frame      = 7; // Name of the
+   frame that the angular_velocity is given in   optional Vector3d
+   linear_acceleration       = 8; // Gravity compensated linear
+   acceleration in m/s²   optional string linear_acceleration_frame
+   = 9; // Name of the frame that the acceleration is given in
+   repeated double covariance                  = 10 [packed=true]; //
+   Row-major representation of the 15x15 covariance matrix   optional
+   Frame cam2imu_transform            = 11; // pose of the left camera
+   wrt. the IMU frame   optional bool possible_jump                 =
+   12; // True if there possibly was a jump in the pose estimation }
+
+   Der IMU-Datenstrom\:(Abschnitt \ref{dynamics:sect-datastream-imu})
+   wird mithilfe des Nachrichtentyps Imu serialisiert:  message Imu {
+   optional Time timestamp                     = 1; // Time when the
+   data was captured   optional Vector3d linear_acceleration       =
+   2; // Linear acceleration in m/s² measured by the IMU   optional
+   Vector3d angular_velocity          = 3; // Angular velocity in
+   rad/s measured by the IMU }
+
+   Die enthaltenen Nachrichtentypen PoseStamped, Pose, Time,
+   Quaternion und Vector3D werden wie folgt definiert:  message
+   PoseStamped {   optional Time timestamp  = 1; // Time when the data
+   was captured   optional Pose pose       = 2; }   message Pose {
+   optional Vector3d position      = 1; // Position in meters
+   optional Quaternion orientation = 2; // Orientation as unit
+   quaternion   repeated double covariance      = 3 [packed=true]; //
+   Row-major representation of the 6x6 covariance matrix (x, y, z,
+   rotation about X axis, rotation about Y axis, rotation about Z
+   axis) }   message Time {   /// \brief Seconds   optional int64 sec
+   = 1;    /// \brief Nanoseconds   optional int32 nsec = 2; }
+   message Quaternion {   optional double x = 2;   optional double y =
+   3;   optional double z = 4;   optional double w = 5; }   message
+   Vector3d {   optional double x = 1;   optional double y = 2;
+   optional double z = 3; }
+
+Die rc_dynamics-Programmierschnittstelle
+
+Das Open-Source-"rc_dynamics_api"-Paket bietet einen einfachen,
+benutzerfreundlichen C++-Wrapper, mit dem rc_dynamics-Datenströme
+angefragt und geparst werden können. Siehe
+
+http://www.roboception.com/download
+
+.

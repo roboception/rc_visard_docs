@@ -1,0 +1,44 @@
+.. include:: global_rst.glb
+
+.. _sect-slam:
+
+SLAM (optional)
+===============
+
+.. index:: ! SLAM
+  see: Simultaneous Localization and Mapping; SLAM
+  pair: SLAM; Web GUI
+  single: loop closure
+  pair: pose; error
+
+The SLAM module is part of the sensor dynamics component. When the |rc_visard|
+moves through the world, its pose estimate slowly accumulates errors over time.
+The SLAM module can correct these pose errors by recognizing previously visited
+places.
+
+The acronym SLAM stands for Simultaneous Localization and Mapping. The
+SLAM module creates a map consisting of the image features used in visual
+odometry. The map is later used to correct accumulated pose errors. This is
+most apparent in applications where the robot returns to a previously visited
+place after covering a large distance (this is called a "loop closure").
+In this case, the robot can redetect image features that are already stored
+in its map and can use this information to correct the pose estimate.  When
+closing a loop, not only the current pose, but also the past pose
+estimates (the trajectory of the |rc_visard|), are corrected.
+Continuous trajectory correction leads to a more
+accurate map. On the other hand, the accuracy of the full trajectory is
+important when it is used to build an integrated world model, e.g., by
+projecting the obtained 3D point clouds obtained
+(see :ref:`sect-point-clouds`:latex:`, Section \ref{stereo_matching:sect-point-clouds}`)
+into a common coordinate frame. The full trajectory can be
+requested from the SLAM module for this purpose.
+
+The SLAM module will be optionally available for the |rc_visard| and will run on board
+the sensor. If a SLAM license is stored on the |rc_visard|, then
+the SLAM module is shown as *Available* on the :ref:`sect-web-gui`'s *Overview* tab,
+and it can be switched on and off on the same page.
+
+..
+   |TODO| To be discussed: Does switching it on also reset the zero pose? Should we make the switch from VINS-only to SLAM and back impossible, (i.e. only enable transitions OFF<->VINS-only and OFF<->SLAM
+
+   |TODO| Finalize and describe what pose streams are available from the dynamics module or reference the respective section
