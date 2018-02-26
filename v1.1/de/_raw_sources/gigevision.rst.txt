@@ -1,0 +1,430 @@
+.. include:: global_rst.glb
+
+.. _sect-genicam:
+
+GigE Vision 2.0/GenICam image interface
+-----------------------------------------
+
+.. index::
+   see: GigE Vision; GenICam
+
+Gigabit Ethernet for Machine Vision ("GigE Vision\ |reg|" for short) is an industrial camera interface standard based on UDP/IP
+(see http://www.gigevision.com).
+The |rc_visard| is a GigE Vision\ |reg| version 2.0 device and is hence compatible with all GigE Vision\ |reg| 2.0 compliant frameworks and libraries.
+
+GigE Vision\ |reg| uses GenICam to describe the camera/device features. For more information about this *Generic Interface for Cameras* see http://www.genicam.org/.
+
+Via this interface the |rc_visard| provides features such as
+
+* discovery,
+* IP configuration,
+* configuration of camera related parameters,
+* image grabbing, and
+* time synchronization via IEEE 1588-2008 PrecisionTimeProtocol (PTPv2).
+
+.. note::   The |rc_visard| supports jumbo frames of up to 9000 bytes. Setting an MTU of 9000
+            on your GigE Vision client side is recommended for best performance.
+
+.. ifconfig:: not kuka
+
+   .. note:: Roboception provides tools and a C++ API with examples for discovery, configuration, and image
+             streaming via the GigE Vision/GenICam interface. See http://www.roboception.com/download.
+
+.. _sect-genicam-params:
+
+Important GenICam parameters
+............................
+
+The following list gives an overview of the relevant GenICam features of
+the |rc_visard| that can be read and/or changed
+via the GenICam interface. In addition to the standard parameters, which are defined in
+the Standard Feature Naming Convention (SFNC, see
+http://www.emva.org/standards-technology/genicam/genicam-downloads/),
+|rc_visard| devices also offer custom parameters that account for special
+features of the
+:ref:`sect-stereo-camera`:latex:`\:(Section \ref{stereo_camera:sect-stereo-camera})`
+and the
+:ref:`sect-stereo-matching`:latex:`\:(Section \ref{stereo_matching:sect-stereo-matching})`
+component.
+
+Important standard GenICam features
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+   pair: ComponentSelector; GenICam
+
+``ComponentSelector``
+  - type: Enumeration, one of ``Intensity``, ``IntensityCombined``, ``Disparity``, ``Confidence``, or ``Error``
+  - default: -
+  - description: Allows the user to select one of the five image streams for configuration (see :ref:`sect-provided-image-streams`:latex:`, \:Section \ref{gigevision:sect-provided-image-streams}`).
+
+.. index::
+   pair: ComponentIDValue; GenICam
+
+``ComponentIDValue`` (read-only)
+  - type: Integer
+  - description: The ID of the image stream selected by the ``ComponentSelector``.
+
+.. index::
+   pair: ComponentEnable; GenICam
+
+``ComponentEnable``
+  - type: Boolean
+  - default: -
+  - description: If set to ``true``, it enables the image stream selected by ``ComponentSelector``; otherwise, it disables the stream.
+    Using ``ComponentSelector`` and ``ComponentEnable``, individual image streams can be switched on and off.
+
+.. index::
+   pair: Width; GenICam
+   pair: WidthMax; GenICam
+
+``Width``, ``WidthMax`` (read-only)
+  - type: Integer
+  - description: Maximum width of an image, which is always 1280 pixels.
+
+.. index::
+   pair: Height; GenICam
+   pair: HeightMax; GenICam
+
+``Height``, ``HeightMax`` (read-only)
+  - type: Integer
+  - description: Maximum height of an image in the streams. This is always 1920 pixels due to the
+    stacked left and right images in the ``IntensityCombined`` stream (see :ref:`sect-provided-image-streams`:latex:`, Section \ref{gigevision:sect-provided-image-streams}`).
+
+.. index::
+   pair: PixelFormat; GenICam
+
+``PixelFormat``
+  - type: Enumeration, ``Mono8`` or ``YCbCr411_8`` (color sensors only)
+  - description: Pixel format of the left and right rectified images that are returned in the
+    components ``Intensity`` and ``IntensityCombined``. The ``YCbCr411_8`` format is only available
+    for color cameras.
+
+.. index::
+   pair: AcquisitionFrameRate; GenICam
+   pair: frame rate; GenICam
+
+``AcquisitionFrameRate``
+  - type: Float, ranges from 1 Hz to 25 Hz
+  - default: 25 Hz
+  - description: Frame rate of the camera
+    (:ref:`FPS <expl-fps>`:latex:`, Section \ref{stereo_camera:sect-cam-params}`).
+
+.. index::
+   pair: ExposureAuto; GenICam
+
+``ExposureAuto``
+  - type: Enumeration, one of ``Continuous`` or ``Off``
+  - default: ``Continuous``
+  - description: Can be set to ``Off`` for manual exposure mode or to ``Continuous`` for auto exposure mode
+    (:ref:`Exposure <expl-exp-auto>`:latex:`, Section \ref{stereo_camera:sect-cam-params}`).
+
+.. index::
+   pair: ExposureTime; GenICam
+
+``ExposureTime``
+  - type: Float, ranges from 66 µs to 18000 µs
+  - default: 5000 µs
+  - description: The cameras' exposure time in microseconds for the manual exposure mode
+    (:ref:`Manual <expl-exp-value>`:latex:`, Section \ref{stereo_camera:sect-cam-params}`).
+
+``GainSelector`` (read-only)
+  - type: Enumeration, is always ``All``
+  - default: ``All``
+  - description: The |rc_visard| currently supports only one overall gain setting.
+
+``Gain``
+  - type: Float, ranges from 0 dB to 18 dB
+  - default: 0 dB
+  - description: The cameras' gain value in decibel that is used in manual exposure mode
+    (:ref:`Gain <expl-gain-value>`:latex:`, Section \ref{stereo_camera:sect-cam-params}`).
+
+``BalanceWhiteAuto`` (color sensors only)
+  - type: Enumeration, one of ``Continuous`` or ``Off``
+  - default: ``Continuous``
+  - description: Can be set to ``Off`` for manual white balancing mode or to ``Continuous``
+    for auto white balancing. This feature is only available on color sensors
+    (:ref:`wb_auto  <expl-wb-auto>`:latex:`, Section \ref{stereo_camera:sect-cam-params}`).
+
+``BalanceRatioSelector`` (color sensors only)
+  - type: Enumeration, one of ``Red`` or ``Blue``
+  - default: ``Red``
+  - description: Selects ratio to be modified by ``BalanceRatio``. ``Red`` means red to green
+    ratio and ``Blue`` means blue to green ratio. This feature is only available on color sensors.
+
+``BalanceRatio`` (color sensors only)
+  - type: Float, ranges from 0.125 to 8
+  - default: 1.2 if ``Red`` and 2.4 if ``Blue`` is selected in ``BalanceRatioSelector``
+  - description: Weighting of red or blue to green color channel. This feature is only available
+    on color sensors
+    (:ref:`wb_ratio <expl-wb-ratio>`:latex:`, Section \ref{stereo_camera:sect-cam-params}`).
+
+.. index::
+   pair: GevIEEE1588; GenICam
+   single: PTP
+   single: synchronization
+
+``GevIEEE1588``
+  - type: Boolean
+  - default: ``false``
+  - description: Switches PTP synchronization on and off.
+
+.. index::
+   pair: Scan3dDistanceUnit; GenICam
+
+``Scan3dDistanceUnit`` (read-only)
+  - type: Enumeration, is always ``Pixel``
+  - description: Unit for the disparity measurements, which is always ``Pixel``.
+
+.. index::
+   pair: Scan3dOutputMode; GenICam
+
+``Scan3dOutputMode`` (read-only)
+  - type: Enumeration, is always ``DisparityC``
+  - description: Mode for the depth measurements, which is always ``DisparityC``.
+
+.. index::
+   pair: Scan3dCoordinateScale; GenICam
+
+``Scan3dCoordinateScale`` (read-only)
+  - type: Float
+  - description: The scale factor that has to be multiplied with the disparity values in the disparity
+    image stream to get the actual disparity measurements. This value is always 0.0625.
+
+.. index::
+   pair: Scan3dCoordinateOffset; GenICam
+
+``Scan3dCoordinateOffset`` (read-only)
+  - type: Float
+  - description: The offset that has to be added to the disparity values in the disparity
+    image stream to get the actual disparity measurements. However, this value
+    is always 0 and can therefore be disregarded.
+
+.. index::
+   pair: Scan3dInvalidDataFlag; GenICam
+
+``Scan3dInvalidDataFlag`` (read-only)
+  - type: Boolean
+  - description: Is always ``true``, which means that invalid data in the
+    disparity image is marked by a specific value defined by the
+    ``Scan3dInvalidDataValue`` parameter.
+
+.. index::
+   pair: Scan3dInvalidDataValue; GenICam
+
+``Scan3dInvalidDataValue`` (read-only)
+  - type: Float
+  - description: Is the value which stands for invalid disparity. This value is always 0, which means that
+    disparity values of 0 correspond to invalid measurements. To distinguish between invalid disparity measurements and
+    disparity measurements of 0 for objects which are infinitely far away, we set the disparity value for the latter
+    to the smallest possible disparity value of 0.0625. This still corresponds to an object distance of several hundred meters.
+
+.. _sect-custom-genicam-params:
+
+Custom GenICam features of the |rc_visard|
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+   pair: ExposureTimeAutoMax; GenICam
+
+``ExposureTimeAutoMax``
+  - type: Float, ranges from 66 µs to 18000 µs
+  - default: 7000 µs
+  - description: Maximal exposure time in auto exposure mode
+    (:ref:`Auto <expl-exp-max>`:latex:`, Section \ref{stereo_camera:sect-cam-params}`).
+
+.. index::
+   pair: focal length factor; GenICam
+   pair: FocalLengthFactor; GenICam
+
+``FocalLengthFactor`` (read-only)
+  - type: Float
+  - description: The focal length scaled to an image width of 1 pixel. To get the focal length in pixels for a
+    certain image, this value must be multiplied by the width of the received image.
+
+.. index::
+   pair: baseline; GenICam
+   pair: Baseline; GenICam
+
+``Baseline`` (read-only)
+  - type: Float
+  - description: The distance in meters between the left and the right camera.
+
+.. index::
+   pair: quality; GenICam
+   pair: DepthQuality; GenICam
+
+``DepthQuality``
+  - type: Enumeration, one of ``Low``, ``Medium``, ``High``, or ``StaticHigh``
+  - default: ``High``
+  - description: Quality of the disparity images. Lower quality results in disparity
+    images with lower resolution
+    (:ref:`Quality <expl-depth-quality>`:latex:`, Section \ref{stereo_matching:sect-disp-image-parameters}`).
+
+.. index::
+   pair: disparity range; GenICam
+   pair: DepthDispRange; GenICam
+
+``DepthDispRange``
+  - type: Integer, ranges from 32 pixels to 512 pixels
+  - default: 256 pixels
+  - description: Maximum disparity value in pixels (:ref:`Disparity Range <expl-depth-disp-range>`:latex:`, Section \ref{stereo_matching:sect-disp-image-parameters}`).
+
+.. index::
+   pair: fill-in; GenICam
+   pair: DepthFill; GenICam
+
+``DepthFill``
+  - type: Integer, ranges from 0 pixel to 4 pixels
+  - default: 3 pixels
+  - description: Value in pixels for
+    :ref:`Fill-In <expl-depth-fill>`:latex:`\:(Section \ref{stereo_matching:sect-disp-image-parameters})`.
+
+.. index::
+   pair: segmentation; GenICam
+   pair: DepthSeg; GenICam
+
+``DepthSeg``
+  - type: Integer, ranges from 0 pixel to 4000 pixels
+  - default: 200 pixels
+  - description: Value in pixels for
+    :ref:`Segmentation <expl-depth-seg>`:latex:`\:(Section \ref{stereo_matching:sect-disp-image-parameters})`.
+
+.. index::
+   pair: median; GenICam
+   pair: DepthMedian; GenICam
+
+``DepthMedian``
+  - type: Integer, ranges from 1 pixel to 5 pixels
+  - default: 1 pixel
+  - description: Value in pixels for :ref:`Median <expl-depth-median>` filter
+    smoothing\ :latex:`\:(Section \ref{stereo_matching:sect-disp-image-parameters})`.
+
+.. index::
+   pair: minimum confidence; GenICam
+   pair: DepthMinConf; GenICam
+
+``DepthMinConf``
+  - type: Float, ranges from 0.0 to 1.0
+  - default: 0.0
+  - description: Value for :ref:`Minimum Confidence <expl-depth-min-conf>`
+    filtering\ :latex:`\:(Section \ref{stereo_matching:sect-disp-image-parameters})`.
+
+.. index::
+   pair: minimum distance; GenICam
+   pair: DepthMinDepth; GenICam
+
+``DepthMinDepth``
+  - type: Float, ranges from 0.1 m to 100.0 m
+  - default: 0.1 m
+  - description: Value in meters for :ref:`Minimum Distance <expl-depth-min-depth>`
+    filtering\ :latex:`\:(Section \ref{stereo_matching:sect-disp-image-parameters})`.
+
+.. index::
+   pair: maximum distance; GenICam
+   pair: DepthMaxDepth; GenICam
+
+``DepthMaxDepth``
+  - type: Float, ranges from 0.1m to 100.0 m
+  - default: 100.0 m
+  - description: Value in meters for :ref:`Maximum Distance <expl-depth-max-depth>`
+    filtering\ :latex:`\:(Section \ref{stereo_matching:sect-disp-image-parameters})`.
+
+.. index::
+   pair: maximum depth error; GenICam
+   pair: DepthMaxDepthErr; GenICam
+
+``DepthMaxDepthErr``
+  - type: Float, ranges from 0.01 m to 100.0 m
+  - default: 100.0 m
+  - description: Value in meters for :ref:`Maximum Depth Error <expl-depth-max-depth-err>`
+    filtering\ :latex:`\:(Section \ref{stereo_matching:sect-disp-image-parameters})`.
+
+.. _sect-provided-image-streams:
+
+Provided image streams
+......................
+
+The |rc_visard| provides the following five different image streams via the GenICam interface:
+
+.. index::
+   pair: Intensity; GenICam image stream
+   pair: IntensityCombined; GenICam image stream
+   pair: Disparity; GenICam image stream
+   pair: Error; GenICam image stream
+   pair: Confidence; GenICam image stream
+   pair: PixelFormat; GenICam
+
+.. tabularcolumns:: |p{30mm}|p{40mm}|p{30mm}|p{40mm}|
+
++-----------------------+----------------------------------------+--------------------------+---------------------------------------------------------------------+
+| Component name        | PixelFormat                            | Width×Height             | Description                                                         |
++=======================+========================================+==========================+=====================================================================+
+| ``Intensity``         | | ``Mono8`` (monochrome sensors)       | 1280×960                 | Left rectified camera image                                         |
+|                       | | ``YCbCr411_8`` (color sensors)       |                          |                                                                     |
++-----------------------+----------------------------------------+--------------------------+---------------------------------------------------------------------+
+| ``IntensityCombined`` | | ``Mono8`` (monochrome sensors)       | 1280×1920                | Left rectified camera image stacked on right rectified camera image |
+|                       | | ``YCbCr411_8`` (color sensors)       |                          |                                                                     |
++-----------------------+----------------------------------------+--------------------------+---------------------------------------------------------------------+
+| ``Disparity``         | ``Coord3D_C16``                        | | 640×480                | Disparity image in desired resolution, i.e., ``High``, ``Medium``,  |
+|                       |                                        | | 320×240                | or ``Low``                                                          |
+|                       |                                        | | 214×160                |                                                                     |
++-----------------------+----------------------------------------+--------------------------+---------------------------------------------------------------------+
+| ``Confidence``        | ``Confidence8``                        | same as ``Disparity``    | Confidence image                                                    |
++-----------------------+----------------------------------------+--------------------------+---------------------------------------------------------------------+
+| ``Error``             | custom: ``0x81080001``                 | same as ``Disparity``    | Disparity error image                                               |
++-----------------------+----------------------------------------+--------------------------+---------------------------------------------------------------------+
+
+.. index::
+   pair: timestamp; image
+   pair: timestamp; GenICam
+
+Each image comes with a buffer timestamp and the *PixelFormat* given in the above table. This PixelFormat
+should be used to distinguish between the different image types. Images belonging to the same acquisition
+timestamp can be found by comparing the GenICam buffer timestamps.
+
+.. _sect-image-stream-conversions:
+
+Image stream conversions
+........................
+
+.. index::
+   pair: conversions; GenICam image stream
+
+The disparity image contains 16 bit unsigned integer values. These values must be multiplied by the scale value
+given in the GenICam feature *Scan3dCoordinateScale* to get the disparity values :math:`d` in pixels. To
+compute the 3D object coordinates from the disparity values, the focal length and the baseline are required.
+These parameters are transmitted as GenICam features *FocalLengthFactor* and *Baseline*. The *FocalLengthFactor*
+value has to be multiplied by the width of the disparity image to get the focal length :math:`f` in pixels
+for the given disparity image resolution.
+Knowing these values, the pixel coordinates and the disparities can be transformed into 3D
+object coordinates in the :ref:`sensor coordinate frame<sect-coordinate-frames>`:latex:`\:(Section \ref{hardware_spec:sect-coordinate-frames})`
+using the equations described in :ref:`sect-point-clouds`:latex:`\:(Section \ref{stereo_matching:sect-point-clouds})`.
+
+Assuming that :math:`d_{ik}` is the 16 bit disparity value at column :math:`i`
+and row :math:`k` of a disparity image with :math:`w` columns and :math:`h` rows, the 3D
+reconstruction in meters can be written with the GenICam parameters as
+
+.. math::
+
+  P_x&=\left(i-\frac{w}{2}\right) \frac{\mathrm{Baseline}}{d_{ik} \cdot \mathrm{Scan3dCoordinateScale}},\\
+  P_y&=\left(k-\frac{h}{2}\right) \frac{\mathrm{Baseline}}{d_{ik} \cdot \mathrm{Scan3dCoordinateScale}},\\
+  P_z&=\left(\mathrm{FocalLengthFactor} \cdot w \right) \frac{\mathrm{Baseline}}{d_{ik} \cdot \mathrm{Scan3dCoordinateScale}}.
+
+The confidence image contains 8 bit unsigned integer values. These values have to be divided by 255 to
+get the confidence as value between 0 an 1.
+
+The error image contains 8 bit unsigned integer values. The error :math:`e_{ik}` must be multiplied
+by the scale value given in the GenICam feature *Scan3dCoordinateScale* to get the disparity-error
+values :math:`d_{eps}` in pixels. According to the description in
+:ref:`sect-confidence-error`:latex:`\:(Section \ref{stereo_matching:sect-confidence-error})`, the
+depth error :math:`z_{eps}` in meters can be computed with GenICam parameters as
+
+.. math::
+
+  z_{eps}=\frac{e_{ik} \cdot \mathrm{Scan3dCoordinateScale} \cdot \mathrm{FocalLengthFactor}
+                \cdot w \cdot \mathrm{Baseline}}
+               {(d_{ik} \cdot \mathrm{Scan3dCoordinateScale})^2}.
+
+For more information about disparity, error, and confidence images, please refer to
+:ref:`sect-stereo-matching`:latex:`\:(Section \ref{stereo_matching:sect-stereo-matching})`.

@@ -1,0 +1,364 @@
+.. include:: global_rst.glb
+
+.. _sect-dynamics:
+
+Sensor dynamics
+===============
+
+The dynamics component provides estimates of the sensor state. These include pose, linear velocity, linear acceleration,
+and rotational rates. The component handles starting and stopping, and streaming of the estimates for individual subcomponents:
+
+- :doc:`stereo_visodo` (``rc_stereovisodo``)
+   estimates the camera's motion from the motion of characteristic image points in the left camera images\ :latex:`\:(Section \ref{stereo_visodo:sect-visual-odometry})`.
+
+- :doc:`stereo_ins` (``rc_stereo_ins``)
+   combines visual odometry measurements with readings from an inertial measurement unit (:term:`IMU`) to provide
+   accurate, high-frequency state estimates in real time\ :latex:`\:(Section \ref{stereo_ins:sect-stereo-ins})`.
+
+- :doc:`slam` (``rc_slam``)
+   performs simultaneous localization and mapping (:term:`SLAM`) for correcting accumulated
+   poses\ :latex:`\:(Section \ref{slam:sect-slam})`.
+
+.. _sect-coordinate-frames-state-estimation:
+
+Coordinate frames for state estimation
+--------------------------------------
+
+.. index::
+   pair: coordinate frames; state estimation
+
+The world coordinate frame for state estimation is defined as follows: The
+coordinate frame's z-axis points upward and is aligned with the gravity vector. The x-axis
+is orthogonal to the z-axis and points in the |rc_visard|'s viewing direction at the
+time when the pose estimation starts. The world
+frame's origin is located at the origin of the |rc_visard|'s IMU coordinate frame at the instant
+when state estimation is switched on.
+
+If pose estimation is switched on when the |rc_visard|'s viewing direction parallels
+the gravity vector (with a tolerance range of 10 degrees), then the world coordinate frame's y-axis
+is aligned either with the IMU's positive or negative x-axis. In this orientation, the
+initial alignment of the world coordinate frame is no longer continuous. Thus, special care has to
+be taken when pose estimation has to be started at such an orientation.
+
+
+.. figure:: images/pose_frames.*
+   :width: 70 %
+   :align: center
+
+   Coordinate frames for state estimation. The IMU coordinate frame is inside the |rc_visard|'s housing.
+   The :ref:`camera coordinate frame<sect-coordinate-frames>`:latex:`\:(Section \ref{hardware_spec:sect-coordinate-frames})`
+   is in the focal point of the left camera.
+
+The transformation between the IMU coordinate frame and the camera/sensor frame is also
+estimated and provided in the *real-time dynamics stream* over the rc_dynamics interface
+(see :ref:`sect-interfaces`:latex:`, Section \ref{interfaces:sect-interfaces}`).
+
+
+.. warning:: The stereo INS component self-calibrates the IMU during its initialization.
+    It is therefore required that the |rc_visard| is not moving and sufficient
+    texture is visible during startup of the stereo INS component.
+
+..
+  |TODO| Insert equation to transform pose from IMU frame to camera frame
+
+  |TODO| Explain how to work with the poses mathematically
+
+.. _sect-dynamics-streams:
+
+Available state estimates
+-------------------------
+
+.. index::
+   pair: timestamp; pose
+   single: state estimate
+
+The |rc_visard| provides seven different kinds of timestamped state-estimate data streams via the rc_dynamics interface (see
+:ref:`sect-rc-dynamics-interface`:latex:`, Section \ref{rc_dynamics:sect-rc-dynamics-interface}`):
+
+.. |pose-stream| replace:: :ref:`pose<sect-datastream-pose>`
+.. |pose_ins-stream| replace:: :ref:`pose_ins<sect-datastream-pose>`
+.. |pose_rt-stream| replace:: :ref:`pose_rt<sect-datastream-pose-rt>`
+.. |pose_rt_ins-stream| replace:: :ref:`pose_rt_ins<sect-datastream-pose-rt>`
+.. |dynamics-stream| replace:: :ref:`dynamics<sect-datastream-dynamics>`
+.. |dynamics_ins-stream| replace:: :ref:`dynamics_ins<sect-datastream-dynamics>`
+.. |imu-stream| replace:: :ref:`imu<sect-datastream-imu>`
+
+====================== ========== ================== ============
+Name                   Frequency  Source             Description
+====================== ========== ================== ============
+|pose-stream|          |cam-rate| best effort        Pose of camera frame, slightly delayed but most accurate
+|pose_ins-stream|      |cam-rate| :doc:`stereo_ins`  Pose of camera frame, slightly delayed but most accurate
+|pose_rt-stream|       |imu-rate| best effort        Pose of camera frame
+|pose_rt_ins-stream|   |imu-rate| :doc:`stereo_ins`  Pose of camera frame
+|dynamics-stream|      |imu-rate| best effort        Pose, velocity and acceleration in IMU frame
+|dynamics_ins-stream|  |imu-rate| :doc:`stereo_ins`  Pose, velocity and acceleration in IMU frame
+|imu-stream|           |imu-rate| :doc:`stereo_ins`  Raw IMU data
+====================== ========== ================== ============
+
+*Best effort* here means that if :doc:`SLAM<slam>` is running, then it contains the
+loop-closure corrected estimates and is equivalent to the stream from :doc:`stereo_ins`
+when SLAM is not running.
+
+
+.. index::
+   single: real-time pose
+   single: dynamics stream
+   pair: frame rate; pose
+   pair: data stream; dynamics
+
+.. _sect-datastream-pose:
+
+Camera-pose streams (``pose`` and ``pose_ins``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+    pair: camera; pose stream
+    single: 3D modeling
+    pair: frame rate; pose
+    pair: data stream; pose
+
+The *camera-pose streams*  called ``pose`` and ``pose_ins`` are provided at |cam-rate| with
+timestamps that correspond to image timestamps. The
+former stream is the best-effort estimate, combining ``rc_slam`` and ``rc_stereo_ins`` if the :doc:`SLAM<slam>` component is
+running. If SLAM is not running, then both data streams are equivalent. Pose
+values are given in world coordinates, and also refer to the |rc_visard|'s camera
+frame origin
+(see :ref:`sect-coordinate-frames-state-estimation`:latex:`, Section \ref{dynamics:sect-coordinate-frames-state-estimation}`).
+They are the
+most accurate estimates, taking all available |rc_visard| information into consideration.
+They can be used in modeling applications, where camera images, depth images,
+or point clouds have to be aligned highly accurately with each other. To ensure
+the greatest possible accuracy, these pose values are delayed until a corresponding
+visual odometry measurement is available.
+
+.. _sect-datastream-pose-rt:
+
+Real-time camera-pose streams (``pose_rt`` and ``pose_rt_ins``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+   single: pose stream
+   pair: frame rate; pose
+   pair: data stream; pose_rt
+
+Two *real-time pose streams* called ``pose_rt`` and ``pose_rt_ins`` are provided at the IMU rate of |imu-rate|. The
+former stream is the best-effort estimate, combining ``rc_slam`` and ``rc_stereo_ins`` when the SLAM component is
+running. If SLAM is not running, then both data streams are equivalent. They consist of the
+pose estimates of the |rc_visard|'s camera frame origin (see :ref:`sect-coordinate-frames-state-estimation`:latex:`, Section \ref{dynamics:sect-coordinate-frames-state-estimation}`)
+in world coordinates. The
+values given in these streams correspond to the values in the *real-time dynamics streams*,
+but give the pose of the sensor/camera coordinate frame instead of that of the IMU coordinate frame.
+
+
+.. _sect-datastream-dynamics:
+
+Real-time dynamics streams (``dynamics`` and ``dynamics_ins``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+   single: real-time pose
+   single: dynamics stream
+   pair: frame rate; pose
+   pair: data stream; dynamics
+
+Two *real-time dynamics streams* called ``dynamics`` and ``dynamics_ins`` are provided at the IMU rate of |imu-rate|. The
+former stream is the best-effort estimate, combining ``rc_slam`` and ``rc_stereo_ins`` when the SLAM component is
+running. If SLAM is not running, then both data streams are equivalent. The
+estimates can be used for real-time control of a robot. Since the values are provided
+in real time and visual odometry computation requires some processing time,
+the latest visual odometry estimate may not be included.
+Therefore, these estimates are in general slightly less accurate than those in the
+non-real-time *camera-pose streams* (see above), but are the best estimates
+available at this instant. The provided dynamics streams contain the |rc_visard|'s
+
+.. index::
+  single: translation
+
+- translation :math:`\mathbf{p} = (x, y, z)^T` in :math:`m`,
+
+.. index::
+  pair: rotation; quaternion
+
+- rotation :math:`\mathbf{q} = (q_x, q_y, q_z, q_w)^T` as unit quaternion,
+
+.. index::
+  pair: linear; velocity
+
+- linear velocities :math:`\mathbf{v} = (v_x, v_y, v_z)^T` in :math:`\frac{m}{s}`,
+
+.. index::
+  pair: angular; velocity
+
+- angular velocities :math:`\mathbf{\omega} = (\omega_x, \omega_y, \omega_z)^T` in :math:`\frac{rad}{s}`,
+
+.. index::
+  single: acceleration
+
+- gravity-compensated linear accelerations :math:`\mathbf{a} = (a_x, a_y, a_z)^T` in :math:`\frac{m}{s^2}`, and
+
+.. index::
+  pair: calibration; camera to IMU
+  pair: transformation; camera to IMU
+
+- transformation from camera to IMU coordinate frame as pose with frame name and parent frame name.
+
+.. index::
+  pair: coordinate frames; dynamics
+
+For each component, the stream also provides the name of the coordinate
+frame in which the values are given. Translation, rotation, and linear velocities
+are given in the world frame; angular velocities and accelerations are
+given in the IMU frame (see :ref:`sect-coordinate-frames-state-estimation`:latex:`,
+Section \ref{dynamics:sect-coordinate-frames-state-estimation}`).
+All values refer to the IMU frame's origin. That
+means, for example, that linear velocity is the velocity of the IMU frame's origin in the world frame.
+
+..
+	Additionally, the stream contains the full 21 x 21 covariance matrix of the states.
+	The covariance matrix is filled with the covariances of the state values in the same
+	order as listed above. The covariance of the rotation is given in Euler angles, which
+	are equal to an angle-axis representation assuming a small angle approximation.
+
+..
+	|TODO| Which Euler angles. Definition?
+
+.. index::
+  pair: SLAM; jump flag
+  pair: dynamics; jump flag
+
+Lastly, the stream contains a ``possible_jump`` flag, which is set to *true* whenever
+the optional SLAM component (see :doc:`slam`:latex:`, Section \ref{slam:sect-slam}`)
+corrects the state estimation after finding a loop
+closure. The state estimate can jump in this case, which should be considered when
+the values are used in a control loop. If SLAM is not running, the jump flag can be
+ignored and will stay *false*.
+
+.. index::
+  single: pose stream
+  pair: frame rate; pose
+  pair: data stream; pose_rt
+
+
+
+.. _sect-datastream-imu:
+
+IMU data stream (``imu``)
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  .. index::
+     pair: IMU; data
+     pair: inertial measurement unit; data
+     single: acceleration
+     pair: angular; velocity
+     pair: data stream; imu
+
+
+The *IMU data stream* called ``imu`` is provided at the IMU rate of |imu-rate|. It consists of the
+acceleration in x, y, z directions plus the angular velocities around these three axis.
+The values are calibrated but not bias- and gravity-compensated, and are given in the IMU frame. The transformation
+between IMU and sensor frame is provided in the *real-time dynamics stream*.
+
+
+.. _sect-dynamics-services:
+
+Services
+--------
+
+  .. index::
+     pair: dynamics; services
+
+The sensor dynamics component offers the following services for starting
+dynamics/motion estimation. All services return a numerical code of the entered state.
+The meaning of the returned state codes and names are given in :numref:`tab-rc-dynamics-states`.
+
+..
+  This data depends on the values defined in
+  https://gitlab.roboception.de/ros/rc_dynamics/blob/d7ce7d0b5fb632d793f9b6a6a460ee163fa3e54f/include/rc_dynamics/dynamicsRos.h#L85-92
+  and
+  https://gitlab.roboception.de/rc/rcstatemachine/blob/cd7f3e52ce4d577235e8a311269a6bad9e950327/rcstatemachine/rcstatemachine.h#L52-59
+.. tabularcolumns:: |l|l|
+.. _tab-rc-dynamics-states:
+.. csv-table:: Possible states of the sensor dynamics component
+	:header:  State Name, Description
+
+	"IDLE", "The component is ready, but idle"
+	"WAITING_FOR_INS", "Waiting for stereo INS to start up"
+	"WAITING_FOR_INS_AND_SLAM", "Waiting for stereo INS and SLAM to start up"
+	"RUNNING", "The stereo INS component is running (SLAM is not running)"
+	"WAITING_FOR_SLAM", "Waiting for SLAM to start up (stereo INS is running)"
+	"RUNNING_WITH_SLAM", "Both stereo INS and SLAM are running"
+	"FATAL", "A fatal error has occured (either in stereo INS or SLAM)"
+
+
+``start``
+   Starts the stereo INS component.
+   Transitions from state ``IDLE`` through ``WAITING_FOR_INS`` to ``RUNNING``.
+
+   .. include:: _gen/nodes/services/rc_dynamics_start.txt
+
+``start_slam``
+   Starts the SLAM and -- if not yet started -- the stereo INS component.
+   From state ``IDLE``: Transitions through ``WAITING_FOR_INS_AND_SLAM`` and ``WAITING_FOR_SLAM`` to ``RUNNING_WITH_SLAM``.
+   From state ``RUNNING``: Transitions through ``WAITING_FOR_SLAM`` to ``RUNNING_WITH_SLAM``.
+
+   .. include:: _gen/nodes/services/rc_dynamics_start.txt
+
+
+``stop``
+   Stops the stereo INS and -- if running -- the SLAM components.
+   The trajectory estimate of the SLAM component will still be available.
+   Transitions from state ``RUNNING`` or ``RUNNING_WITH_SLAM`` to ``IDLE``.
+
+   .. include:: _gen/nodes/services/rc_dynamics_stop.txt
+
+``stop_slam``
+   Stops the SLAM component. Stereo INS will continue to run.
+   The trajectory estimate of the SLAM component will still be available.
+   Transitions from state ``RUNNING_WITH_SLAM`` to ``RUNNING``.
+
+   .. include:: _gen/nodes/services/rc_dynamics_stop.txt
+
+
+``restart``
+   Restarts to stereo INS. Equivalent to successive ``stop`` and ``start``.
+
+   From state ``RUNNING`` or ``RUNNING_WITH_SLAM``: Transitions through states ``IDLE`` and ``WAITING_FOR_INS`` to ``RUNNING``.
+
+
+   .. include:: _gen/nodes/services/rc_dynamics_restart.txt
+
+
+``restart_slam``
+   Restarts to SLAM mode. Equivalent to successive ``stop`` and ``start_slam``.
+
+   From state ``RUNNING`` or ``RUNNING_WITH_SLAM``: Transitions through states ``IDLE``, ``WAITING_FOR_INS_AND_SLAM``, ``WAITING_FOR_SLAM`` to ``RUNNING_WITH_SLAM``.
+
+   .. include:: _gen/nodes/services/rc_dynamics_restart_slam.txt
+
+The following diagram shows the main states and transitions. Intermediate states
+and the fatal error state are omitted for conceptual clarity.
+
+.. figure:: images/rc_dynamics_state_machine_simplified.png
+   :width: 50 %
+   :align: center
+
+   Simplified state and transition diagram
+
+These services shall respond quickly. Therefore, for services that cause a state transition
+the value of the returned ``current_state`` in general is the first new (intermediate) state that was
+transitioned to, not the final state.
+E.g., for the ``start`` command the returned ``current_state`` will be WAITING_FOR_INS, not state
+RUNNING. If the transition does not take place within 0.1 seconds, the
+current state is returned. See :numref:`tab-rc-dynamics-states` for the meaning of the returned state codes.
+
+.. NOTE:: The state ``FATAL`` can only be left by calling ``stop``, which performs
+          a transition to the state ``IDLE``. The services ``restart`` and
+          ``restart_slam`` internally use ``stop`` and will also work as
+          expected. ``start`` and ``start_slam`` only work if the state is
+          ``IDLE``, and do nothing if the state is ``FATAL``.
+
+.. NOTE:: The dynamics components can also be started and stopped on the
+          *Dynamics* page of the :ref:`Web GUI<sect-web-gui>`.
+
+..
+  |TODO| How to document the states?

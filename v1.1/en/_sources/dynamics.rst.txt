@@ -1,0 +1,385 @@
+Sensor dynamics
+
+The dynamics component provides estimates of the sensor state. These
+include pose, linear velocity, linear acceleration, and rotational
+rates. The component handles starting and stopping, and streaming of
+the estimates for individual subcomponents:
+
+Visual odometry (rc_stereovisodo)  estimates the camera’s motion from
+the motion of characteristic image points in the left camera
+images\:(Section \ref{stereo_visodo:sect-visual-odometry}).
+
+Stereo INS (rc_stereo_ins)  combines visual odometry measurements with
+readings from an inertial measurement unit (IMU) to provide accurate,
+high-frequency state estimates in real time\:(Section \ref{stereo_ins
+:sect-stereo-ins}).
+
+SLAM (optional) (rc_slam)  performs simultaneous localization and
+mapping (SLAM) for correcting accumulated poses\:(Section \ref{slam
+:sect-slam}).
+
+Coordinate frames for state estimation
+
+The world coordinate frame for state estimation is defined as follows:
+The coordinate frame’s z-axis points upward and is aligned with the
+gravity vector. The x-axis is orthogonal to the z-axis and points in
+the
+
+rc_visard
+
+’s viewing direction at the time when the pose estimation starts. The
+world frame’s origin is located at the origin of the
+
+rc_visard
+
+’s IMU coordinate frame at the instant when state estimation is
+switched on.
+
+If pose estimation is switched on when the
+
+rc_visard
+
+’s viewing direction parallels the gravity vector (with a tolerance
+range of 10 degrees), then the world coordinate frame’s y-axis is
+aligned either with the IMU’s positive or negative x-axis. In this
+orientation, the initial alignment of the world coordinate frame is no
+longer continuous. Thus, special care has to be taken when pose
+estimation has to be started at such an orientation.
+
+
+The transformation between the IMU coordinate frame and the
+camera/sensor frame is also estimated and provided in the
+
+real-time dynamics stream
+
+ over the rc_dynamics interface (see
+
+Interfaces
+
+).
+
+Warning: The stereo INS component self-calibrates the IMU during its
+  initialization. It is therefore required that the
+
+  rc_visard
+
+   is not moving and sufficient texture is visible during startup of
+  the stereo INS component.
+
+Available state estimates
+
+The
+
+rc_visard
+
+ provides seven different kinds of timestamped state-estimate data
+streams via the rc_dynamics interface (see
+
+The rc_dynamics interface
+
+):
+
+        Name  Frequency  Source  Description  pose  25 Hz  best effort
+Pose of camera frame, slightly delayed but most accurate  pose_ins  25
+Hz  Stereo INS  Pose of camera frame, slightly delayed but most
+accurate  pose_rt  200 Hz  best effort  Pose of camera frame
+pose_rt_ins  200 Hz  Stereo INS  Pose of camera frame  dynamics  200
+Hz  best effort  Pose, velocity and acceleration in IMU frame
+dynamics_ins  200 Hz  Stereo INS  Pose, velocity and acceleration in
+IMU frame  imu  200 Hz  Stereo INS  Raw IMU data
+
+Best effort
+
+ here means that if
+
+SLAM
+
+ is running, then it contains the loop-closure corrected estimates and
+is equivalent to the stream from
+
+Stereo INS
+
+ when SLAM is not running.
+
+Camera-pose streams (pose and pose_ins)
+
+The
+
+camera-pose streams
+
+  called "pose" and "pose_ins" are provided at 25 Hz with timestamps
+that correspond to image timestamps. The former stream is the best-
+effort estimate, combining "rc_slam" and "rc_stereo_ins" if the
+
+SLAM
+
+ component is running. If SLAM is not running, then both data streams
+are equivalent. Pose values are given in world coordinates, and also
+refer to the
+
+rc_visard
+
+’s camera frame origin (see
+
+Coordinate frames for state estimation
+
+). They are the most accurate estimates, taking all available
+
+rc_visard
+
+ information into consideration. They can be used in modeling
+applications, where camera images, depth images, or point clouds have
+to be aligned highly accurately with each other. To ensure the
+greatest possible accuracy, these pose values are delayed until a
+corresponding visual odometry measurement is available.
+
+Real-time camera-pose streams (pose_rt and pose_rt_ins)
+
+Two
+
+real-time pose streams
+
+ called "pose_rt" and "pose_rt_ins" are provided at the IMU rate of
+200 Hz. The former stream is the best-effort estimate, combining
+"rc_slam" and "rc_stereo_ins" when the SLAM component is running. If
+SLAM is not running, then both data streams are equivalent. They
+consist of the pose estimates of the
+
+rc_visard
+
+’s camera frame origin (see
+
+Coordinate frames for state estimation
+
+) in world coordinates. The values given in these streams correspond
+to the values in the
+
+real-time dynamics streams
+
+, but give the pose of the sensor/camera coordinate frame instead of
+that of the IMU coordinate frame.
+
+Real-time dynamics streams (dynamics and dynamics_ins)
+
+Two
+
+real-time dynamics streams
+
+ called "dynamics" and "dynamics_ins" are provided at the IMU rate of
+200 Hz. The former stream is the best-effort estimate, combining
+"rc_slam" and "rc_stereo_ins" when the SLAM component is running. If
+SLAM is not running, then both data streams are equivalent. The
+estimates can be used for real-time control of a robot. Since the
+values are provided in real time and visual odometry computation
+requires some processing time, the latest visual odometry estimate may
+not be included. Therefore, these estimates are in general slightly
+less accurate than those in the non-real-time
+
+camera-pose streams
+
+ (see above), but are the best estimates available at this instant.
+The provided dynamics streams contain the
+
+rc_visard
+
+’s
+
+translation  in ,
+
+rotation  as unit quaternion,
+
+linear velocities  in ,
+
+angular velocities  in ,
+
+gravity-compensated linear accelerations  in , and
+
+transformation from camera to IMU coordinate frame as pose with frame
+name and parent frame name.
+
+For each component, the stream also provides the name of the
+coordinate frame in which the values are given. Translation, rotation,
+and linear velocities are given in the world frame; angular velocities
+and accelerations are given in the IMU frame (see
+
+Coordinate frames for state estimation
+
+). All values refer to the IMU frame’s origin. That means, for
+example, that linear velocity is the velocity of the IMU frame’s
+origin in the world frame.
+
+Lastly, the stream contains a "possible_jump" flag, which is set to
+
+true
+
+ whenever the optional SLAM component (see
+
+SLAM (optional)
+
+) corrects the state estimation after finding a loop closure. The
+state estimate can jump in this case, which should be considered when
+the values are used in a control loop. If SLAM is not running, the
+jump flag can be ignored and will stay
+
+false
+
+.
+
+IMU data stream (imu)
+
+The
+
+IMU data stream
+
+ called "imu" is provided at the IMU rate of 200 Hz. It consists of
+the acceleration in x, y, z directions plus the angular velocities
+around these three axis. The values are calibrated but not bias- and
+gravity-compensated, and are given in the IMU frame. The
+transformation between IMU and sensor frame is provided in the
+
+real-time dynamics stream
+
+.
+
+Services
+
+The sensor dynamics component offers the following services for
+starting dynamics/motion estimation. All services return a numerical
+code of the entered state. The meaning of the returned state codes and
+names are given in
+
+Table 10
+
+.
+
+Possible states of the sensor dynamics component      State Name
+Description  IDLE  The component is ready, but idle  WAITING_FOR_INS
+Waiting for stereo INS to start up  WAITING_FOR_INS_AND_SLAM  Waiting
+for stereo INS and SLAM to start up  RUNNING  The stereo INS component
+is running (SLAM is not running)  WAITING_FOR_SLAM  Waiting for SLAM
+to start up (stereo INS is running)  RUNNING_WITH_SLAM  Both stereo
+INS and SLAM are running  FATAL  A fatal error has occured (either in
+stereo INS or SLAM)
+
+"start"
+   Starts the stereo INS component. Transitions from state "IDLE"
+   through "WAITING_FOR_INS" to "RUNNING".
+
+   This service requires no arguments.
+
+   This service returns the following response:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+"start_slam"
+   Starts the SLAM and – if not yet started – the stereo INS
+   component. From state "IDLE": Transitions through
+   "WAITING_FOR_INS_AND_SLAM" and "WAITING_FOR_SLAM" to
+   "RUNNING_WITH_SLAM". From state "RUNNING": Transitions through
+   "WAITING_FOR_SLAM" to "RUNNING_WITH_SLAM".
+
+   This service requires no arguments.
+
+   This service returns the following response:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+"stop"
+   Stops the stereo INS and – if running – the SLAM components. The
+   trajectory estimate of the SLAM component will still be available.
+   Transitions from state "RUNNING" or "RUNNING_WITH_SLAM" to "IDLE".
+
+   This service requires no arguments.
+
+   This service returns the following response:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+"stop_slam"
+   Stops the SLAM component. Stereo INS will continue to run. The
+   trajectory estimate of the SLAM component will still be available.
+   Transitions from state "RUNNING_WITH_SLAM" to "RUNNING".
+
+   This service requires no arguments.
+
+   This service returns the following response:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+"restart"
+   Restarts to stereo INS. Equivalent to successive "stop" and
+   "start".
+
+   From state "RUNNING" or "RUNNING_WITH_SLAM": Transitions through
+   states "IDLE" and "WAITING_FOR_INS" to "RUNNING".
+
+   This service requires no arguments.
+
+   This service returns the following response:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+"restart_slam"
+   Restarts to SLAM mode. Equivalent to successive "stop" and
+   "start_slam".
+
+   From state "RUNNING" or "RUNNING_WITH_SLAM": Transitions through
+   states "IDLE", "WAITING_FOR_INS_AND_SLAM", "WAITING_FOR_SLAM" to
+   "RUNNING_WITH_SLAM".
+
+   This service requires no arguments.
+
+   This service returns the following response:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+The following diagram shows the main states and transitions.
+Intermediate states and the fatal error state are omitted for
+conceptual clarity.
+
+
+These services shall respond quickly. Therefore, for services that
+cause a state transition the value of the returned "current_state" in
+general is the first new (intermediate) state that was transitioned
+to, not the final state. E.g., for the "start" command the returned
+"current_state" will be WAITING_FOR_INS, not state RUNNING. If the
+transition does not take place within 0.1 seconds, the current state
+is returned. See
+
+Table 10
+
+ for the meaning of the returned state codes.
+
+Note: The state "FATAL" can only be left by calling "stop", which
+  performs a transition to the state "IDLE". The services "restart"
+  and "restart_slam" internally use "stop" and will also work as
+  expected. "start" and "start_slam" only work if the state is "IDLE",
+  and do nothing if the state is "FATAL".
+
+Note: The dynamics components can also be started and stopped on the
+
+  Dynamics
+
+   page of the
+
+  Web GUI
+
+  .

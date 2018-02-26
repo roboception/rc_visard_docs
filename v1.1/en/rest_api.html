@@ -1,0 +1,2926 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>REST-API interface &mdash; rc_visard 1.1.1
+ documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="rc_visard 1.1.1
+ documentation" href="index.html"/>
+        <link rel="up" title="Interfaces" href="interfaces.html"/>
+        <link rel="next" title="The rc_dynamics interface" href="rc_dynamics.html"/>
+        <link rel="prev" title="GigE Vision 2.0/GenICam image interface" href="gigevision.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Warranty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Applicable standards</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Approvals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Safety</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">General warnings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Intended use</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Scope of delivery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technical specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Environmental and operating conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Power-supply specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Wiring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanical interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-and-configuration">Installation and configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Power up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Network configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatic configuration (factory default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manual configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rcvisard-devices">Discovery of <em>rc_visard</em> devices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Resetting configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#web-gui">Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">The <em>rc_visard</em> in a nutshell</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#stereo-vision">Stereo vision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#sensor-dynamics">Sensor dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#calibration-relative-to-a-robot">Calibration relative to a robot</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="components.html">Software components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stereo_camera.html">Stereo camera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#image-acquisition">Image acquisition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#planar-rectification">Planar rectification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_matching.html">Stereo matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Computing disparity images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Computing depth images and point clouds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Confidence and error images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dynamics.html">Sensor dynamics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#coordinate-frames-for-state-estimation">Coordinate frames for state estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#available-state-estimates">Available state estimates</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#camera-pose-streams-pose-and-pose-ins">Camera-pose streams (<code class="docutils literal"><span class="pre">pose</span></code> and <code class="docutils literal"><span class="pre">pose_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-camera-pose-streams-pose-rt-and-pose-rt-ins">Real-time camera-pose streams (<code class="docutils literal"><span class="pre">pose_rt</span></code> and <code class="docutils literal"><span class="pre">pose_rt_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-dynamics-streams-dynamics-and-dynamics-ins">Real-time dynamics streams (<code class="docutils literal"><span class="pre">dynamics</span></code> and <code class="docutils literal"><span class="pre">dynamics_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#imu-data-stream-imu">IMU data stream (<code class="docutils literal"><span class="pre">imu</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_visodo.html">Visual odometry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_ins.html">Stereo INS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#self-calibration">Self-Calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#parameters">Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="slam.html">SLAM (optional)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#memory-limitations">Memory limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#parameter-overview">Parameter overview</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="camera_calibration.html">Camera calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#self-calibration">Self-calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#calibration-process">Calibration process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-1-calibration-settings">Step 1: Calibration settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-2-verify-calibration">Step 2: Verify calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-3-performing-calibration">Step 3: Performing calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-4-storing-the-calibration-result">Step 4: Storing the calibration result</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="handeye_calibration.html">Hand-eye calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Calibration interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#sensor-mounting">Sensor mounting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Calibration routine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-1-setting-parameters">Step 1: Setting parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-2-selecting-and-reporting-robot-calibration-positions">Step 2:  Selecting and reporting robot calibration positions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-3-calculating-and-saving-the-calibration-transformation">Step 3: Calculating and saving the calibration transformation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="interfaces.html">Interfaces</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-visard">Custom GenICam features of the <em>rc_visard</em></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">REST-API interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general-api-structure">General API structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#available-resources-and-requests">Available resources and requests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nodes-parameters-and-services">Nodes, parameters, and services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#datastreams">Datastreams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#system-and-logs">System and logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#data-type-definitions">Data type definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#swagger-ui">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rc_dynamics.html">The rc_dynamics interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#starting-stopping-dynamic-state-estimation">Starting/stopping dynamic-state estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#configuring-data-streams">Configuring data streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#data-stream-protocol">Data-stream protocol</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Maintenance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Updating the firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcvisard">Rebooting the <em>rc_visard</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Connectivity kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Wiring</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Power connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Power supplies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Spare parts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED colors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Hardware issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Connectivity issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Camera-image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Depth/Disparity, error, and confidence image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#dynamics-issues">Dynamics issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">GigE Vision/GenICam issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Address</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pose_formats.html">Pose formats</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyzabc-format">XYZABC format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyz-quaternion-format">XYZ+quaternion format</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="interfaces.html">Interfaces</a> &raquo;</li>
+        
+      <li>REST-API interface</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rest-api-interface">
+<span id="sect-rest-api"></span><h1>REST-API interface<a class="headerlink" href="#rest-api-interface" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">Besides the <a class="reference internal" href="gigevision.html#sect-genicam"><span class="std std-ref">GenICam interface</span></a>, the <em>rc_visard</em> offers a comprehensive RESTful web
+interface (REST-API) which any HTTP client or library can access.
+Whereas most of the provided parameters, services, and functionalities can also
+be accessed via the user-friendly <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>, the REST-API serves rather as a
+machine-to-machine interface to programmatically</p>
+<ul class="simple">
+<li>set and get run-time parameters of computation nodes, e.g., of cameras,
+disparity calculation, and visual odometry;</li>
+<li>do service calls, e.g., to start and stop individual computational nodes,
+or to use offered services such as the hand-eye calibration;</li>
+<li>configure data streams that provide <em>rc_visard</em>’s <a class="reference internal" href="dynamics.html#sect-dynamics-streams"><span class="std std-ref">dynamic state
+estimates</span></a>
+as described in <a class="reference internal" href="rc_dynamics.html#sect-rc-dynamics-interface"><span class="std std-ref">The rc_dynamics interface</span></a>;</li>
+<li>read the current state of the system and individual computational nodes; and</li>
+<li>update the <em>rc_visard</em>’s firmware or license.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In the <em>rc_visard</em>’s REST-API, a <em>node</em> is a computational component
+that bundles certain algorithmic functionality and offers a
+holistic interface (parameters, services, current status). Examples
+for such nodes are the stereo matching node or the visual odometry node.</p>
+</div>
+<div class="section" id="general-api-structure">
+<h2>General API structure<a class="headerlink" href="#general-api-structure" title="Permalink to this headline">¶</a></h2>
+<p id="index-1">The general <strong>entry point</strong> to the <em>rc_visard</em>’s API is <code class="docutils literal"><span class="pre">http://&lt;rcvisard&gt;/api/</span></code>,
+where <code class="docutils literal"><span class="pre">&lt;rcvisard&gt;</span></code> is either the device’s IP address or its host name as known
+by the respective DHCP server, as explained in
+<a class="reference internal" href="installation.html#sect-network-configuration"><span class="std std-ref">network configuration</span></a>.
+Accessing this entry point with a web browser lets the user explore and test
+the full API during run-time using the <a class="reference internal" href="#sect-swagger-ui"><span class="std std-ref">Swagger UI</span></a>
+.</p>
+<p>For actual HTTP requests, the <strong>current API version is appended</strong> to the entry point
+of the API, i.e., <code class="docutils literal"><span class="pre">http://&lt;rcvisard&gt;/api/v1</span></code>. All data sent to and
+received by the REST-API follows the JavaScript Object Notation (JSON).
+The API is designed to let the user <strong>create, retrieve, modify, and delete</strong>
+so-called <strong>resources</strong> as listed in <a class="reference internal" href="#sect-rest-resources-and-methods"><span class="std std-ref">Available resources and requests</span></a> using the HTTP requests below.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Request type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>GET</td>
+<td>Access one or more resources and return the result as JSON.</td>
+</tr>
+<tr class="row-odd"><td>PUT</td>
+<td>Modify a resource and return the modified resource as JSON.</td>
+</tr>
+<tr class="row-even"><td>DELETE</td>
+<td>Delete a resource.</td>
+</tr>
+<tr class="row-odd"><td>POST</td>
+<td>Upload file (e.g., license or firmware image).</td>
+</tr>
+</tbody>
+</table>
+<p>Depending on the type and the specific request itself, <strong>arguments</strong> to HTTP
+requests can be transmitted as part of the <strong>path</strong> (<a class="reference internal" href="glossary.html#term-uri"><span class="xref std std-term">URI</span></a>) to the
+resource, as
+<strong>query</strong> string, as <strong>form data</strong>, or in the <strong>body</strong> of the request. The following
+examples use the command line tool <em>curl</em>, which is available for various operating
+systems. See <a class="reference external" href="https://curl.haxx.se">https://curl.haxx.se</a>.</p>
+<ul>
+<li><p class="first">Get a node’s current status; its name is encoded in the path (URI)</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET <span class="s1">&#39;http://&lt;rcvisard&gt;/api/v1/nodes/rc_stereomatching&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Get values of some of a node’s parameters using a query string</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET <span class="s1">&#39;http://&lt;rcvisard&gt;/api/v1/nodes/rc_stereomatching/parameters?name=minconf&amp;name=maxdepth&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Configure a new datastream; the destination parameter is transmitted as form data</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X PUT --header <span class="s1">&#39;Content-Type: application/x-www-form-urlencoded&#39;</span> -d <span class="s1">&#39;destination=10.0.1.14%3A30000&#39;</span> <span class="s1">&#39;http://&lt;rcvisard&gt;/api/v1/datastreams/pose&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set a node’s parameter as JSON-encoded text in the body of the request</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X PUT --header <span class="s1">&#39;Content-Type: application/json&#39;</span> -d <span class="s1">&#39;[{&quot;name&quot;: &quot;mindepth&quot;, &quot;value&quot;: 0.1}]&#39;</span> <span class="s1">&#39;http://&lt;rcvisard&gt;/api/v1/nodes/rc_stereomatching/parameters&#39;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>As for the responses to such requests, some common return codes for the
+<em>rc_visard</em>’s API are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Status Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code></td>
+<td>The request was successful; the resource is returned as JSON.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">400</span> <span class="pre">Bad</span> <span class="pre">Request</span></code></td>
+<td>A required attribute or argument of the API request is
+missing or invalid.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">404</span> <span class="pre">Not</span> <span class="pre">Found</span></code></td>
+<td>A resource could not be accessed; e.g., an ID for a resource
+could not be found.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">403</span> <span class="pre">Forbidden</span></code></td>
+<td>Access is (temporarily) forbidden; e.g., some parameters are
+locked while a GigE Vision application is connected.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">429</span> <span class="pre">Too</span> <span class="pre">many</span> <span class="pre">requests</span></code></td>
+<td>Rate limited due to excessive request frequency.</td>
+</tr>
+</tbody>
+</table>
+<p>The following listing shows a sample response to a successful request that accesses
+information about the <code class="docutils literal"><span class="pre">rc_stereomatching</span></code> node’s <code class="docutils literal"><span class="pre">minconf</span></code> parameter:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">157</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;minconf&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;min&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;max&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Minimum confidence&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The actual behavior, allowed requests, and specific return codes
+depend heavily on the specific resource, context, and action.
+Please refer to the <em>rc_visard</em>’s
+<a class="reference internal" href="#sect-rest-resources-and-methods"><span class="std std-ref">available resources</span></a> and to
+each <a class="reference internal" href="components.html#sect-software-components"><span class="std std-ref">software component’s</span></a>
+parameters and services.</p>
+</div>
+</div>
+<div class="section" id="available-resources-and-requests">
+<span id="sect-rest-resources-and-methods"></span><h2>Available resources and requests<a class="headerlink" href="#available-resources-and-requests" title="Permalink to this headline">¶</a></h2>
+<p>The available REST-API resources are structured into the following parts:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">/nodes</span></code>: Access the <em>rc_visard</em>’s
+<a class="reference internal" href="components.html#sect-software-components"><span class="std std-ref">software components</span></a>
+ with their
+run-time status, parameters, and offered services.</li>
+<li><code class="docutils literal"><span class="pre">/datastreams</span></code>: Access and manage data streams of the <em>rc_visard</em>’s
+<a class="reference internal" href="rc_dynamics.html#sect-rc-dynamics-interface"><span class="std std-ref">The rc_dynamics interface</span></a>
+.</li>
+<li><code class="docutils literal"><span class="pre">/logs</span></code>: Access the log files on the <em>rc_visard</em>.</li>
+<li><code class="docutils literal"><span class="pre">/system</span></code>: Access the system state and manage licenses as well as
+firmware updates.</li>
+</ul>
+<div class="section" id="nodes-parameters-and-services">
+<h3>Nodes, parameters, and services<a class="headerlink" href="#nodes-parameters-and-services" title="Permalink to this headline">¶</a></h3>
+<p id="index-2">Nodes represent the <em>rc_visard</em>’s
+<a class="reference internal" href="components.html#sect-software-components"><span class="std std-ref">software components</span></a>
+, each
+bundling a certain algorithmic functionality. All available REST-API nodes
+can be listed with their service calls and parameters using</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://&lt;rcvisard&gt;/api/v1/nodes
+</pre></div>
+</div>
+<p>Information about a specific node (e.g., <code class="docutils literal"><span class="pre">rc_stereocamera</span></code>) can be retrieved using</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://&lt;rcvisard&gt;/api/v1/nodes/rc_stereocamera
+</pre></div>
+</div>
+<dl class="docutils" id="index-3">
+<dt>Status:</dt>
+<dd><p class="first">During run-time, each node offers information about its current status.
+This includes not only the current <strong>processing status</strong> of the component
+(e.g., <code class="docutils literal"><span class="pre">running</span></code> or <code class="docutils literal"><span class="pre">stale</span></code>), but
+most nodes also offer run-time statistics or read-only parameters,
+so-called <strong>status values</strong>. As an example, the <code class="docutils literal"><span class="pre">rc_stereocamera</span></code> values
+can be retrieved using</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://&lt;rcvisard&gt;/api/v1/nodes/rc_stereocamera/status
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The returned <strong>status values</strong> are specific to individual nodes and
+are documented in the respective
+<a class="reference internal" href="components.html#sect-software-components"><span class="std std-ref">software component</span></a>
+.</p>
+</div>
+<div class="last admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <strong>status values</strong> are only reported when the respective
+node is in the <code class="docutils literal"><span class="pre">running</span></code> state.</p>
+</div>
+</dd>
+</dl>
+<dl class="docutils" id="index-4">
+<dt>Parameters:</dt>
+<dd><p class="first">Most nodes expose parameters via the <em>rc_visard</em>’s REST-API to allow
+their run-time behaviors to be changed according to application context or requirements.
+The REST-API permits to read and write a parameter’s value, but also
+provides further information such as minimum, maximum, and default
+values.</p>
+<p>As an example, the <code class="docutils literal"><span class="pre">rc_stereomatching</span></code> parameters can be
+retrieved using</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://&lt;rcvisard&gt;/api/v1/nodes/rc_stereomatching/parameters
+</pre></div>
+</div>
+<p>Its <code class="docutils literal"><span class="pre">median</span></code> parameter could be set to 3 using</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X PUT --header <span class="s1">&#39;Content-Type: application/json&#39;</span> -d <span class="s1">&#39;{ &quot;value&quot;: 3 }&#39;</span> http://&lt;rcvisard&gt;/api/v1/nodes/rc_stereomatching/parameters/median
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Run-time parameters are specific to individual nodes and
+are documented in the respective
+<a class="reference internal" href="components.html#sect-software-components"><span class="std std-ref">software component</span></a>
+.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Most of the parameters that nodes offer via the REST-API can be
+explored and tested via the <em>rc_visard</em>’s user-friendly <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>
+.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Some parameters exposed via the <em>rc_visard</em>’s REST-API are also
+available from the
+<a class="reference internal" href="gigevision.html#sect-genicam"><span class="std std-ref">GigE Vision 2.0/GenICam image interface</span></a> .
+Please note that setting those parameters via the REST-API is
+prohibited if a GenICam client is connected.</p>
+</div>
+<p class="last">In addition, each node that offers run-time parameters also features
+services to save, i.e., persist, the current parameter setting, or to
+restore the default values for all of its parameters.</p>
+</dd>
+</dl>
+<dl class="docutils" id="index-5">
+<dt>Services:</dt>
+<dd><p class="first">Some nodes also offer services that can be called via REST-API, e.g., to
+save and restore parameters as discussed above, or to start and stop nodes.
+As an example, the services of pose estimation
+(see <a class="reference internal" href="stereo_ins.html#sect-stereo-ins"><span class="std std-ref">Stereo INS</span></a>),
+could be listed using</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://&lt;rcvisard&gt;/api/v1/nodes/rc_stereo_ins/services
+</pre></div>
+</div>
+<p>A node’s service is called by issuing a <code class="docutils literal"><span class="pre">PUT</span></code> request for the
+respective resource and providing the service-specific arguments
+(see the <code class="docutils literal"><span class="pre">&quot;args&quot;</span></code> field of the
+<a class="reference internal" href="#sect-rest-datamodel-service"><span class="std std-ref">Service data model</span></a>).
+As an example, egomotion estimation can be switched on by:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X PUT --header <span class="s1">&#39;Content-Type: application/json&#39;</span> -d <span class="s1">&#39;{ &quot;args&quot;: {}  }&#39;</span> http://&lt;rcvisard&gt;/api/v1/nodes/rc_dynamics/services/start
+</pre></div>
+</div>
+<div class="last admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The services and corresponding argument data models are
+specific to individual nodes and are documented in the respective
+<a class="reference internal" href="components.html#sect-software-components"><span class="std std-ref">software component</span></a>
+.</p>
+</div>
+</dd>
+</dl>
+<p>The following list includes all REST-API requests regarding the node’s status,
+parameters, and services calls:</p>
+<dl class="get">
+<dt id="get--nodes">
+<code class="descname">GET </code><code class="descname">/nodes</code><a class="headerlink" href="#get--nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of all available nodes.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/nodes</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereocalib&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;grid_width&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;grid_height&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;snap&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;services&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;save_parameters&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;reset_defaults&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;change_state&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;stale&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereocamera&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;fps&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;exp_auto&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;exp_value&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;exp_max&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;services&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;save_parameters&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;reset_defaults&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;running&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_hand_eye_calibration&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;grid_width&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;grid_height&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;robot_mounted&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;services&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;save_parameters&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;reset_defaults&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;set_pose&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;reset&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;save&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;calibrate&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;get_calibration&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;stale&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereo_ins&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="nt">&quot;services&quot;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;stale&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereomatching&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;force_on&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;quality&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;disprange&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;seg&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;median&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;fill&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;minconf&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;mindepth&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;maxdepth&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;maxdeptherr&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;services&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;save_parameters&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;reset_defaults&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;running&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereovisodo&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;disprange&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;nkey&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;ncorner&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;nfeature&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;services&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;save_parameters&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;reset_defaults&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;stale&quot;</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns array of NodeInfo)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-nodeinfo"><span class="std std-ref">NodeInfo</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--nodes-node">
+<code class="descname">GET </code><code class="descname">/nodes/{node}</code><a class="headerlink" href="#get--nodes-node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get info on a single node.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/nodes/&lt;node&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereocamera&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;fps&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;exp_auto&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;exp_value&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;exp_max&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;services&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;save_parameters&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;reset_defaults&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;running&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> (<em>string</em>) – name of the node <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns NodeInfo)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – node not found</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-nodeinfo"><span class="std std-ref">NodeInfo</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--nodes-node-parameters">
+<code class="descname">GET </code><code class="descname">/nodes/{node}/parameters</code><a class="headerlink" href="#get--nodes-node-parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parameters of a node.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/nodes/&lt;node&gt;/parameters?name=&lt;name&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Frames per second in Hz&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;max&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="nt">&quot;min&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fps&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">25</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Switching between auto and manual exposure&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;max&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;min&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;exp_auto&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="mf">0.007</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Maximum exposure time in s if exp_auto is true&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;max&quot;</span><span class="p">:</span> <span class="mf">0.018</span><span class="p">,</span>
+    <span class="nt">&quot;min&quot;</span><span class="p">:</span> <span class="mf">6.6e-05</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;exp_max&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.007</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> (<em>string</em>) – name of the node <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>string</em>) – limit result to parameters with name <em>(optional)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns array of Parameter)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – node not found</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-parameter"><span class="std std-ref">Parameter</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="put">
+<dt id="put--nodes-node-parameters">
+<code class="descname">PUT </code><code class="descname">/nodes/{node}/parameters</code><a class="headerlink" href="#put--nodes-node-parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update multiple parameters.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/api/v1/nodes/&lt;node&gt;/parameters</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+
+[
+  {
+    &quot;name&quot;: &quot;string&quot;,
+    &quot;value&quot;: {}
+  }
+]
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Frames per second in Hz&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;max&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="nt">&quot;min&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fps&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">10</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Switching between auto and manual exposure&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;max&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;min&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;exp_auto&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="kc">false</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Manual exposure time in s if exp_auto is false&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;max&quot;</span><span class="p">:</span> <span class="mf">0.018</span><span class="p">,</span>
+    <span class="nt">&quot;min&quot;</span><span class="p">:</span> <span class="mf">6.6e-05</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;exp_value&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.005</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> (<em>string</em>) – name of the node <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Request JSON Array of Objects:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>parameters</strong> (<em>Parameter</em>) – array of parameters <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns array of Parameter)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – node not found</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4">403 Forbidden</a> – Parameter update forbidden, e.g. because they are locked by a running GigE Vision application or there is no valid license for this component.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-parameter"><span class="std std-ref">Parameter</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--nodes-node-parameters-param">
+<code class="descname">GET </code><code class="descname">/nodes/{node}/parameters/{param}</code><a class="headerlink" href="#get--nodes-node-parameters-param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a specific parameter of a node.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/nodes/&lt;node&gt;/parameters/&lt;param&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;H&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Quality, i.e. H, M or L&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;max&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;min&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;quality&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;H&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> (<em>string</em>) – name of the node <em>(required)</em></li>
+<li><strong>param</strong> (<em>string</em>) – name of the parameter <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns Parameter)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – node or parameter not found</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-parameter"><span class="std std-ref">Parameter</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="put">
+<dt id="put--nodes-node-parameters-param">
+<code class="descname">PUT </code><code class="descname">/nodes/{node}/parameters/{param}</code><a class="headerlink" href="#put--nodes-node-parameters-param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a specific parameter of a node.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/api/v1/nodes/&lt;node&gt;/parameters/&lt;param&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+
+{
+  &quot;name&quot;: &quot;string&quot;,
+  &quot;value&quot;: {}
+}
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;H&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Quality, i.e. H, M or L&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;max&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;min&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;quality&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;M&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> (<em>string</em>) – name of the node <em>(required)</em></li>
+<li><strong>param</strong> (<em>string</em>) – name of the parameter <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>parameter</strong> (<em>Parameter</em>) – parameter to be updated as JSON object <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns Parameter)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – node or parameter not found</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4">403 Forbidden</a> – Parameter update forbidden, e.g. because they are locked by a running GigE Vision application or there is no valid license for this component.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-parameter"><span class="std std-ref">Parameter</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--nodes-node-services">
+<code class="descname">GET </code><code class="descname">/nodes/{node}/services</code><a class="headerlink" href="#get--nodes-node-services" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get descriptions of all services a node offers.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/nodes/&lt;node&gt;/services</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Restarts the component.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;restart&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Starts the component.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;start&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Stops the component.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stop&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> (<em>string</em>) – name of the node <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns array of Service)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – node not found</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-service"><span class="std std-ref">Service</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--nodes-node-services-service">
+<code class="descname">GET </code><code class="descname">/nodes/{node}/services/{service}</code><a class="headerlink" href="#get--nodes-node-services-service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get description of a node’s specific service.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/nodes/&lt;node&gt;/services/&lt;service&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;slot&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Save a pose (grid or gripper) for later calibration.&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;set_pose&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;success&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> (<em>string</em>) – name of the node <em>(required)</em></li>
+<li><strong>service</strong> (<em>string</em>) – name of the service <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns Service)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – node or service not found</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-service"><span class="std std-ref">Service</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="put">
+<dt id="put--nodes-node-services-service">
+<code class="descname">PUT </code><code class="descname">/nodes/{node}/services/{service}</code><a class="headerlink" href="#put--nodes-node-services-service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call a service of a node. The required args and resulting response depend on the specific node and service.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/api/v1/nodes/&lt;node&gt;/services/&lt;service&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+
+{
+  &quot;args&quot;: {}
+}
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;set_pose&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Grid detected, pose stored.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">&quot;success&quot;</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> (<em>string</em>) – name of the node <em>(required)</em></li>
+<li><strong>service</strong> (<em>string</em>) – name of the service <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>service args</strong> (<em>Service</em>) – example args <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns Service)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – node or service not found</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4">403 Forbidden</a> – Service call forbidden, e.g. because there is no valid license for this component.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-service"><span class="std std-ref">Service</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--nodes-node-status">
+<code class="descname">GET </code><code class="descname">/nodes/{node}/status</code><a class="headerlink" href="#get--nodes-node-status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get status of a node.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/nodes/&lt;node&gt;/status</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;running&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1503075030.2335997</span><span class="p">,</span>
+  <span class="nt">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;baseline&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0650542&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;exp&quot;</span><span class="p">:</span> <span class="s2">&quot;0.00426667&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;focal&quot;</span><span class="p">:</span> <span class="s2">&quot;0.844893&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;fps&quot;</span><span class="p">:</span> <span class="s2">&quot;25.1352&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;gain&quot;</span><span class="p">:</span> <span class="s2">&quot;12.0412&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;height&quot;</span><span class="p">:</span> <span class="s2">&quot;960&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;temp_left&quot;</span><span class="p">:</span> <span class="s2">&quot;39.6&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;temp_right&quot;</span><span class="p">:</span> <span class="s2">&quot;38.2&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;time&quot;</span><span class="p">:</span> <span class="s2">&quot;0.00406513&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;width&quot;</span><span class="p">:</span> <span class="s2">&quot;1280&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> (<em>string</em>) – name of the node <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns NodeStatus)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – node not found</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-nodestatus"><span class="std std-ref">NodeStatus</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="datastreams">
+<span id="sect-rest-datastreams"></span><h3>Datastreams<a class="headerlink" href="#datastreams" title="Permalink to this headline">¶</a></h3>
+<p id="index-6">The following resources and requests allow access to and configuration of the
+<a class="reference internal" href="rc_dynamics.html#sect-rc-dynamics-interface"><span class="std std-ref">The rc_dynamics interface</span></a> data streams. These
+REST-API requests offer</p>
+<blockquote>
+<div><ul>
+<li><p class="first">showing available and currently running data streams, e.g.,</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X GET http://&lt;rcvisard&gt;/api/v1/datastreams
+</pre></div>
+</div>
+</li>
+<li><p class="first">starting a data stream to a destination, e.g.,</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X PUT --header <span class="s1">&#39;Content-Type: application/x-www-form-urlencoded&#39;</span> -d <span class="s1">&#39;destination=&lt;target-ip&gt;:&lt;target-port&gt;&#39;</span> http://&lt;rcvisard&gt;/api/v1/datastreams/pose
+</pre></div>
+</div>
+</li>
+<li><p class="first">and stopping data streams, e.g.,</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl -X DELETE http://&lt;rcvisard&gt;/api/v1/datastreams/pose?destination<span class="o">=</span>&lt;target-ip&gt;:&lt;target-port&gt;
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<p>The following list includes all REST-API requests associated with data streams:</p>
+<dl class="get">
+<dt id="get--datastreams">
+<code class="descname">GET </code><code class="descname">/datastreams</code><a class="headerlink" href="#get--datastreams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of available data streams.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/datastreams</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Pose of left camera at VisualOdometry rate (~10Hz)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;destinations&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;192.168.1.13:30000&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;pose&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;protobuf&quot;</span><span class="p">:</span> <span class="s2">&quot;Frame&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;UDP&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Pose of left camera (RealTime 200Hz)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;destinations&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;192.168.1.100:20000&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;192.168.1.42:45000&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;pose_rt&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;protobuf&quot;</span><span class="p">:</span> <span class="s2">&quot;Frame&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;UDP&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Raw IMU (InertialMeasurementUnit) values (RealTime 200Hz)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;destinations&quot;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;imu&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;protobuf&quot;</span><span class="p">:</span> <span class="s2">&quot;Imu&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;UDP&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Dynamics of sensor (pose, velocity, acceleration) (RealTime 200Hz)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;destinations&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;192.168.1.100:20001&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;dynamics&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;protobuf&quot;</span><span class="p">:</span> <span class="s2">&quot;Dynamics&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;UDP&quot;</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns array of Stream)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-stream"><span class="std std-ref">Stream</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--datastreams-stream">
+<code class="descname">GET </code><code class="descname">/datastreams/{stream}</code><a class="headerlink" href="#get--datastreams-stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get datastream configuration.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/datastreams/&lt;stream&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Pose of left camera at VisualOdometry rate (~10Hz)&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;destinations&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;192.168.1.13:30000&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;pose&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;protobuf&quot;</span><span class="p">:</span> <span class="s2">&quot;Frame&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;UDP&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>stream</strong> (<em>string</em>) – name of the stream <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns Stream)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – datastream not found</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-stream"><span class="std std-ref">Stream</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="put">
+<dt id="put--datastreams-stream">
+<code class="descname">PUT </code><code class="descname">/datastreams/{stream}</code><a class="headerlink" href="#put--datastreams-stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a datastream configuration.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/api/v1/datastreams/&lt;stream&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Pose of left camera at VisualOdometry rate (~10Hz)&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;destinations&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;192.168.1.13:30000&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;192.168.1.25:40000&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;pose&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;protobuf&quot;</span><span class="p">:</span> <span class="s2">&quot;Frame&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;UDP&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>stream</strong> (<em>string</em>) – name of the stream <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Form Parameters:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>destination</strong> – destination (“IP:port”) to add <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – application/x-www-form-urlencoded</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns Stream)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – datastream not found</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-stream"><span class="std std-ref">Stream</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="delete">
+<dt id="delete--datastreams-stream">
+<code class="descname">DELETE </code><code class="descname">/datastreams/{stream}</code><a class="headerlink" href="#delete--datastreams-stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a destination from the datastream configuration.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">DELETE</span> <span class="nn">/api/v1/datastreams/&lt;stream&gt;?destination=&lt;destination&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Pose of left camera at VisualOdometry rate (~10Hz)&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;destinations&quot;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;pose&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;protobuf&quot;</span><span class="p">:</span> <span class="s2">&quot;Frame&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;UDP&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>stream</strong> (<em>string</em>) – name of the stream <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>destination</strong> (<em>string</em>) – destination IP:port to delete, if not specified all destinations are deleted <em>(optional)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns Stream)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – datastream not found</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-stream"><span class="std std-ref">Stream</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="system-and-logs">
+<h3>System and logs<a class="headerlink" href="#system-and-logs" title="Permalink to this headline">¶</a></h3>
+<p id="index-7">The following resources and requests expose the <em>rc_visard</em>’s system-level API. They
+enable</p>
+<blockquote>
+<div><ul class="simple">
+<li>access to log files (system-wide or component-specific)</li>
+<li>access to information about the device and run-time statistics such as
+date, MAC address, clock-time synchronization status, and available
+resources;</li>
+<li>management of installed software licenses; and</li>
+<li>the <em>rc_visard</em> to be updated with a new firmware image.</li>
+</ul>
+</div></blockquote>
+<dl class="get">
+<dt id="get--logs">
+<code class="descname">GET </code><code class="descname">/logs</code><a class="headerlink" href="#get--logs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of available log files.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/logs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="mf">1503060035.0625782</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rcsense-api.log&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">730</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="mf">1503060035.741574</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stereo.log&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">39024</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="mf">1503060044.0475223</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;camera.log&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">1091</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="mf">1503060035.2115774</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;dynamics.log&quot;</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns array of LogInfo)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-loginfo"><span class="std std-ref">LogInfo</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--logs-log">
+<code class="descname">GET </code><code class="descname">/logs/{log}</code><a class="headerlink" href="#get--logs-log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a log file. Content type of response depends on parameter ‘format’.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/logs/&lt;log&gt;?format=&lt;format&gt;&amp;limit=&lt;limit&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="mf">1503060035.2115774</span><span class="p">,</span>
+  <span class="nt">&quot;log&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereo_ins&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Running rc_stereo_ins version 2.4.0&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1503060034.083</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereo_ins&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Starting up communication interfaces&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1503060034.085</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereo_ins&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Autostart disabled&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1503060034.098</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereo_ins&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Initializing realtime communication&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1503060034.209</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereo_ins&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Startet state machine in state IDLE&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1503060034.383</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereovisodo&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Init stereovisodo ...&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1503060034.814</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereovisodo&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereovisodo: Using standard VO&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1503060034.913</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereovisodo&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereovisodo: Playback mode: false&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1503060035.132</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereovisodo&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereovisodo: Ready&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1503060035.212</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;dynamics.log&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">695</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> (<em>string</em>) – name of the log file <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>format</strong> (<em>string</em>) – return log as JSON or raw (one of <code class="docutils literal"><span class="pre">json</span></code>, <code class="docutils literal"><span class="pre">raw</span></code>; default: <code class="docutils literal"><span class="pre">json</span></code>) <em>(optional)</em></li>
+<li><strong>limit</strong> (<em>integer</em>) – limit to last x lines in JSON format (default: <code class="docutils literal"><span class="pre">100</span></code>) <em>(optional)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – text/plain application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns Log)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – log not found</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-log"><span class="std std-ref">Log</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--system">
+<code class="descname">GET </code><code class="descname">/system</code><a class="headerlink" href="#get--system" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get system information on sensor.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/system</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;firmware&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;active_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_visard_v1.1.0&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;fallback_booted&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;inactive_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_visard_v1.0.0&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;next_boot_image&quot;</span><span class="p">:</span> <span class="s2">&quot;active_image&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;hostname&quot;</span><span class="p">:</span> <span class="s2">&quot;rc-visard-02873515&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;link_speed&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+  <span class="nt">&quot;mac&quot;</span><span class="p">:</span> <span class="s2">&quot;00:14:2D:2B:D8:AB&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;ntp_status&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;accuracy&quot;</span><span class="p">:</span> <span class="s2">&quot;48 ms&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;synchronized&quot;</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;ptp_status&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;master_ip&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;offset_dev&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;offset_mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;off&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;ready&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;serial&quot;</span><span class="p">:</span> <span class="s2">&quot;02873515&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;time&quot;</span><span class="p">:</span> <span class="mf">1504080462.641875</span><span class="p">,</span>
+  <span class="nt">&quot;uptime&quot;</span><span class="p">:</span> <span class="mf">65457.42</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns SysInfo)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-sysinfo"><span class="std std-ref">SysInfo</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--system-license">
+<code class="descname">GET </code><code class="descname">/system/license</code><a class="headerlink" href="#get--system-license" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information about licenses installed on sensor.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/system/license</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;components&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;calibration&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;fusion&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;hand_eye_calibration&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;rectification&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;self_calibration&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;slam&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;stereo&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;svo&quot;</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;valid&quot;</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns LicenseInfo)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-licenseinfo"><span class="std std-ref">LicenseInfo</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="post">
+<dt id="post--system-license">
+<code class="descname">POST </code><code class="descname">/system/license</code><a class="headerlink" href="#post--system-license" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update license on sensor with a license file.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/api/v1/system/license</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">multipart/form-data</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Form Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>file</strong> – license file <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – multipart/form-data</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – not a valid license</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="put">
+<dt id="put--system-reboot">
+<code class="descname">PUT </code><code class="descname">/system/reboot</code><a class="headerlink" href="#put--system-reboot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reboot the sensor.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/api/v1/system/reboot</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--system-rollback">
+<code class="descname">GET </code><code class="descname">/system/rollback</code><a class="headerlink" href="#get--system-rollback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information about currently active and inactive firmware/system images on sensor.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/system/rollback</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;active_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_visard_v1.1.0&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;fallback_booted&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;inactive_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_visard_v1.0.0&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;next_boot_image&quot;</span><span class="p">:</span> <span class="s2">&quot;active_image&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns FirmwareInfo)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-firmwareinfo"><span class="std std-ref">FirmwareInfo</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="put">
+<dt id="put--system-rollback">
+<code class="descname">PUT </code><code class="descname">/system/rollback</code><a class="headerlink" href="#put--system-rollback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rollback to previous firmware version (inactive system image).</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/api/v1/system/rollback</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.5.1">500 Internal Server Error</a> – internal error</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – already set to use inactive partition on next boot</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--system-update">
+<code class="descname">GET </code><code class="descname">/system/update</code><a class="headerlink" href="#get--system-update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information about currently active and inactive firmware/system images on sensor.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/system/update</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+</pre></div>
+</div>
+<p><strong>Sample response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;active_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_visard_v1.1.0&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;fallback_booted&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;inactive_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_visard_v1.0.0&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;next_boot_image&quot;</span><span class="p">:</span> <span class="s2">&quot;active_image&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation <em>(returns FirmwareInfo)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenced Data Models:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="#sect-rest-datamodel-firmwareinfo"><span class="std std-ref">FirmwareInfo</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="post">
+<dt id="post--system-update">
+<code class="descname">POST </code><code class="descname">/system/update</code><a class="headerlink" href="#post--system-update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update firmware/system image with a mender artifact. Reboot is required afterwards in order to activate updated firmware version.</p>
+<p><strong>Template request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/api/v1/system/update</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">&lt;rcvisard&gt;</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">multipart/form-data</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Form Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>file</strong> – mender artifact file <em>(required)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – multipart/form-data</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – successful operation</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – client error, e.g. no valid mender artifact</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="data-type-definitions">
+<span id="sect-rest-datamodel"></span><h2>Data type definitions<a class="headerlink" href="#data-type-definitions" title="Permalink to this headline">¶</a></h2>
+<p id="index-8">The REST-API defines the following data models, which are used to access
+or modify <a class="reference internal" href="#sect-rest-resources-and-methods"><span class="std std-ref">the available resources</span></a>
+ either as
+required attributes/parameters of the requests or as return types.</p>
+<dl class="docutils" id="sect-rest-datamodel-firmwareinfo">
+<dt>FirmwareInfo:</dt>
+<dd><p class="first">Information about currently active and inactive firmware images, and what image is/will be booted.</p>
+<p>An object of type FirmwareInfo has the following properties:</p>
+<ul class="simple">
+<li><strong>active_image</strong> (<a class="reference internal" href="#sect-rest-datamodel-imageinfo"><span class="std std-ref">ImageInfo</span></a>) - see description of <a class="reference internal" href="#sect-rest-datamodel-imageinfo"><span class="std std-ref">ImageInfo</span></a></li>
+<li><strong>fallback_booted</strong> (boolean) - true if desired image could not be booted and fallback boot to the previous image occured</li>
+<li><strong>inactive_image</strong> (<a class="reference internal" href="#sect-rest-datamodel-imageinfo"><span class="std std-ref">ImageInfo</span></a>) - see description of <a class="reference internal" href="#sect-rest-datamodel-imageinfo"><span class="std std-ref">ImageInfo</span></a></li>
+<li><strong>next_boot_image</strong> (string) - firmware image that will be booted next time (one of <code class="docutils literal"><span class="pre">active_image</span></code>, <code class="docutils literal"><span class="pre">inactive_image</span></code>)</li>
+</ul>
+<p><strong>Template object</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;active_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;fallback_booted&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;inactive_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;next_boot_image&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>FirmwareInfo objects are nested in <a class="reference internal" href="#sect-rest-datamodel-sysinfo"><span class="std std-ref">SysInfo</span></a>, and are used in the following requests:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="#get--system-rollback" title="GET /system/rollback"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/system/rollback</span></code></a></li>
+<li><a class="reference internal" href="#get--system-update" title="GET /system/update"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/system/update</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-imageinfo">
+<dt>ImageInfo:</dt>
+<dd><p class="first">Information about specific firmware image.</p>
+<p>An object of type ImageInfo has the following properties:</p>
+<ul class="simple">
+<li><strong>image_version</strong> (string) - image version</li>
+</ul>
+<p><strong>Template object</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">ImageInfo objects are nested in <a class="reference internal" href="#sect-rest-datamodel-firmwareinfo"><span class="std std-ref">FirmwareInfo</span></a>.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-licensecomponents">
+<dt>LicenseComponents:</dt>
+<dd><p class="first">List of the licensing status of the individual software components. The respective flag is true if the component is unlocked with the currently applied software license.</p>
+<p>An object of type LicenseComponents has the following properties:</p>
+<ul class="simple">
+<li><strong>calibration</strong> (boolean) - camera calibration component</li>
+<li><strong>fusion</strong> (boolean) - stereo ins/fusion components</li>
+<li><strong>hand_eye_calibration</strong> (boolean) - hand-eye calibration component</li>
+<li><strong>rectification</strong> (boolean) - image rectification component</li>
+<li><strong>self_calibration</strong> (boolean) - camera self-calibration component</li>
+<li><strong>slam</strong> (boolean) - SLAM component</li>
+<li><strong>stereo</strong> (boolean) - stereo matching component</li>
+<li><strong>svo</strong> (boolean) - visual odometry component</li>
+</ul>
+<p><strong>Template object</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;calibration&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;fusion&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;hand_eye_calibration&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;rectification&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;self_calibration&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;slam&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;stereo&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;svo&quot;</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">LicenseComponents objects are nested in <a class="reference internal" href="#sect-rest-datamodel-licenseinfo"><span class="std std-ref">LicenseInfo</span></a>.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-licenseinfo">
+<dt>LicenseInfo:</dt>
+<dd><p class="first">Information about the currently applied software license on the sensor.</p>
+<p>An object of type LicenseInfo has the following properties:</p>
+<ul class="simple">
+<li><strong>components</strong> (<a class="reference internal" href="#sect-rest-datamodel-licensecomponents"><span class="std std-ref">LicenseComponents</span></a>) - see description of <a class="reference internal" href="#sect-rest-datamodel-licensecomponents"><span class="std std-ref">LicenseComponents</span></a></li>
+<li><strong>valid</strong> (boolean) - indicates whether the license is valid or not</li>
+</ul>
+<p><strong>Template object</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;components&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;calibration&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;fusion&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;hand_eye_calibration&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;rectification&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;self_calibration&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;slam&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;stereo&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;svo&quot;</span><span class="p">:</span> <span class="kc">false</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;valid&quot;</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>LicenseInfo objects are used in the following requests:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="#get--system-license" title="GET /system/license"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/system/license</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-log">
+<dt>Log:</dt>
+<dd><p class="first">Content of a specific log file represented in JSON format.</p>
+<p>An object of type Log has the following properties:</p>
+<ul class="simple">
+<li><strong>date</strong> (float) - UNIX time when log was last modified</li>
+<li><strong>log</strong> (array of <a class="reference internal" href="#sect-rest-datamodel-logentry"><span class="std std-ref">LogEntry</span></a>) - the actual log entries</li>
+<li><strong>name</strong> (string) - mame of log file</li>
+<li><strong>size</strong> (integer) - size of log file in bytes</li>
+</ul>
+<p><strong>Template object</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;log&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mi">0</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mi">0</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Log objects are used in the following requests:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="#get--logs-log" title="GET /logs/{log}"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/logs/{log}</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-logentry">
+<dt>LogEntry:</dt>
+<dd><p class="first">Representation of a single log entry in a log file.</p>
+<p>An object of type LogEntry has the following properties:</p>
+<ul class="simple">
+<li><strong>component</strong> (string) - component name that created this entry</li>
+<li><strong>level</strong> (string) - log level (one of <code class="docutils literal"><span class="pre">DEBUG</span></code>, <code class="docutils literal"><span class="pre">INFO</span></code>, <code class="docutils literal"><span class="pre">WARN</span></code>, <code class="docutils literal"><span class="pre">ERROR</span></code>, <code class="docutils literal"><span class="pre">FATAL</span></code>)</li>
+<li><strong>message</strong> (string) - actual log message</li>
+<li><strong>timestamp</strong> (float) - Unix time of log entry</li>
+</ul>
+<p><strong>Template object</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">LogEntry objects are nested in <a class="reference internal" href="#sect-rest-datamodel-log"><span class="std std-ref">Log</span></a>.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-loginfo">
+<dt>LogInfo:</dt>
+<dd><p class="first">Information about a specific log file.</p>
+<p>An object of type LogInfo has the following properties:</p>
+<ul class="simple">
+<li><strong>date</strong> (float) - UNIX time when log was last modified</li>
+<li><strong>name</strong> (string) - name of log file</li>
+<li><strong>size</strong> (integer) - size of log file in bytes</li>
+</ul>
+<p><strong>Template object</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>LogInfo objects are used in the following requests:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="#get--logs" title="GET /logs"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/logs</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-nodeinfo">
+<dt>NodeInfo:</dt>
+<dd><p class="first">Description of a computational node running on sensor.</p>
+<p>An object of type NodeInfo has the following properties:</p>
+<ul class="simple">
+<li><strong>name</strong> (string) - name of the node</li>
+<li><strong>parameters</strong> (array of string) - list of the node’s run-time parameters</li>
+<li><strong>services</strong> (array of string) - list of the services this node offers</li>
+<li><strong>status</strong> (string) - status of the node (one of <code class="docutils literal"><span class="pre">unknown</span></code>, <code class="docutils literal"><span class="pre">down</span></code>, <code class="docutils literal"><span class="pre">stale</span></code>, <code class="docutils literal"><span class="pre">running</span></code>)</li>
+</ul>
+<p><strong>Template object</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;services&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>NodeInfo objects are used in the following requests:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="#get--nodes" title="GET /nodes"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/nodes</span></code></a></li>
+<li><a class="reference internal" href="#get--nodes-node" title="GET /nodes/{node}"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/nodes/{node}</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-nodestatus">
+<dt>NodeStatus:</dt>
+<dd><p class="first">Detailed current status of the node including run-time statistics.</p>
+<p>An object of type NodeStatus has the following properties:</p>
+<ul class="simple">
+<li><strong>status</strong> (string) - status of the node (one of <code class="docutils literal"><span class="pre">unknown</span></code>, <code class="docutils literal"><span class="pre">down</span></code>, <code class="docutils literal"><span class="pre">stale</span></code>, <code class="docutils literal"><span class="pre">running</span></code>)</li>
+<li><strong>timestamp</strong> (float) - Unix time when values were last updated</li>
+<li><strong>values</strong> (object) - dictionary with current status/statistics of the node</li>
+</ul>
+<p><strong>Template object</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;values&quot;</span><span class="p">:</span> <span class="p">{}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>NodeStatus objects are used in the following requests:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="#get--nodes-node-status" title="GET /nodes/{node}/status"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/nodes/{node}/status</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-ntpstatus">
+<dt>NtpStatus:</dt>
+<dd><p class="first">Status of the NTP time sync.</p>
+<p>An object of type NtpStatus has the following properties:</p>
+<ul class="simple">
+<li><strong>accuracy</strong> (string) - time sync accuracy reported by NTP</li>
+<li><strong>synchronized</strong> (boolean) - synchronized with NTP server</li>
+</ul>
+<p><strong>Template object</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;accuracy&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;synchronized&quot;</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">NtpStatus objects are nested in <a class="reference internal" href="#sect-rest-datamodel-sysinfo"><span class="std std-ref">SysInfo</span></a>.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-parameter">
+<dt>Parameter:</dt>
+<dd><p class="first">Representation of a node’s run-time parameter. The parameter’s ‘value’ type (and hence the types of the ‘min’, ‘max’ and ‘default’ fields) can be inferred from the ‘type’ field and might be one of the built-in primitive data types.</p>
+<p>An object of type Parameter has the following properties:</p>
+<ul class="simple">
+<li><strong>default</strong> (type not defined) - the parameter’s default value</li>
+<li><strong>description</strong> (string) - description of the parameter</li>
+<li><strong>max</strong> (type not defined) - maximum value this parameter can be assigned to</li>
+<li><strong>min</strong> (type not defined) - minimum value this parameter can be assigned to</li>
+<li><strong>name</strong> (string) - name of the parameter</li>
+<li><strong>type</strong> (string) - the parameter’s primitive type represented as string (one of <code class="docutils literal"><span class="pre">bool</span></code>, <code class="docutils literal"><span class="pre">int8</span></code>, <code class="docutils literal"><span class="pre">uint8</span></code>, <code class="docutils literal"><span class="pre">int16</span></code>, <code class="docutils literal"><span class="pre">uint16</span></code>, <code class="docutils literal"><span class="pre">int32</span></code>, <code class="docutils literal"><span class="pre">uint32</span></code>, <code class="docutils literal"><span class="pre">int64</span></code>, <code class="docutils literal"><span class="pre">uint64</span></code>, <code class="docutils literal"><span class="pre">float32</span></code>, <code class="docutils literal"><span class="pre">float64</span></code>, <code class="docutils literal"><span class="pre">string</span></code>)</li>
+<li><strong>value</strong> (type not defined) - the parameter’s current value</li>
+</ul>
+<p><strong>Template object</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="p">{},</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;max&quot;</span><span class="p">:</span> <span class="p">{},</span>
+  <span class="nt">&quot;min&quot;</span><span class="p">:</span> <span class="p">{},</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="p">{}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Parameter objects are used in the following requests:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="#get--nodes-node-parameters" title="GET /nodes/{node}/parameters"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/nodes/{node}/parameters</span></code></a></li>
+<li><a class="reference internal" href="#put--nodes-node-parameters" title="PUT /nodes/{node}/parameters"><code class="xref http http-put docutils literal"><span class="pre">PUT</span> <span class="pre">/nodes/{node}/parameters</span></code></a></li>
+<li><a class="reference internal" href="#get--nodes-node-parameters-param" title="GET /nodes/{node}/parameters/{param}"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/nodes/{node}/parameters/{param}</span></code></a></li>
+<li><a class="reference internal" href="#put--nodes-node-parameters-param" title="PUT /nodes/{node}/parameters/{param}"><code class="xref http http-put docutils literal"><span class="pre">PUT</span> <span class="pre">/nodes/{node}/parameters/{param}</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-ptpstatus">
+<dt>PtpStatus:</dt>
+<dd><p class="first">Status of the IEEE1588 (PTP) time sync.</p>
+<p>An object of type PtpStatus has the following properties:</p>
+<ul class="simple">
+<li><strong>master_ip</strong> (string) - IP of the master clock</li>
+<li><strong>offset</strong> (float) - time offset in seconds to the master</li>
+<li><strong>offset_dev</strong> (float) - standard deviation of time offset in seconds to the master</li>
+<li><strong>offset_mean</strong> (float) - mean time offset in seconds to the master</li>
+<li><strong>state</strong> (string) - state of PTP (one of <code class="docutils literal"><span class="pre">off</span></code>, <code class="docutils literal"><span class="pre">unknown</span></code>, <code class="docutils literal"><span class="pre">INITIALIZING</span></code>, <code class="docutils literal"><span class="pre">FAULTY</span></code>, <code class="docutils literal"><span class="pre">DISABLED</span></code>, <code class="docutils literal"><span class="pre">LISTENING</span></code>, <code class="docutils literal"><span class="pre">PASSIVE</span></code>, <code class="docutils literal"><span class="pre">UNCALIBRATED</span></code>, <code class="docutils literal"><span class="pre">SLAVE</span></code>)</li>
+</ul>
+<p><strong>Template object</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;master_ip&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;offset_dev&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;offset_mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">PtpStatus objects are nested in <a class="reference internal" href="#sect-rest-datamodel-sysinfo"><span class="std std-ref">SysInfo</span></a>.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-service">
+<dt>Service:</dt>
+<dd><p class="first">Representation of a service that a node offers.</p>
+<p>An object of type Service has the following properties:</p>
+<ul class="simple">
+<li><strong>args</strong> (<a class="reference internal" href="#sect-rest-datamodel-serviceargs"><span class="std std-ref">ServiceArgs</span></a>) - see description of <a class="reference internal" href="#sect-rest-datamodel-serviceargs"><span class="std std-ref">ServiceArgs</span></a></li>
+<li><strong>description</strong> (string) - short description of this service</li>
+<li><strong>name</strong> (string) - name of the service</li>
+<li><strong>response</strong> (<a class="reference internal" href="#sect-rest-datamodel-serviceresponse"><span class="std std-ref">ServiceResponse</span></a>) - see description of <a class="reference internal" href="#sect-rest-datamodel-serviceresponse"><span class="std std-ref">ServiceResponse</span></a></li>
+</ul>
+<p><strong>Template object</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{},</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Service objects are used in the following requests:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="#get--nodes-node-services" title="GET /nodes/{node}/services"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/nodes/{node}/services</span></code></a></li>
+<li><a class="reference internal" href="#get--nodes-node-services-service" title="GET /nodes/{node}/services/{service}"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/nodes/{node}/services/{service}</span></code></a></li>
+<li><a class="reference internal" href="#put--nodes-node-services-service" title="PUT /nodes/{node}/services/{service}"><code class="xref http http-put docutils literal"><span class="pre">PUT</span> <span class="pre">/nodes/{node}/services/{service}</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-serviceargs">
+<dt>ServiceArgs:</dt>
+<dd><p class="first">Arguments required to call a service with. The general representation of these arguments is a (nested) dictionary. The specific content of this dictionary depends on the respective node and service call.</p>
+<p class="last">ServiceArgs objects are nested in <a class="reference internal" href="#sect-rest-datamodel-service"><span class="std std-ref">Service</span></a>.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-serviceresponse">
+<dt>ServiceResponse:</dt>
+<dd><p class="first">The response returned by the service call. The general representation of this response is a (nested) dictionary. The specific content of this dictionary depends on the respective node and service call.</p>
+<p class="last">ServiceResponse objects are nested in <a class="reference internal" href="#sect-rest-datamodel-service"><span class="std std-ref">Service</span></a>.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-stream">
+<dt>Stream:</dt>
+<dd><p class="first">Represention of a data stream offered by the rc_dynamics interface.</p>
+<p>An object of type Stream has the following properties:</p>
+<ul class="simple">
+<li><strong>destinations</strong> (array of <a class="reference internal" href="#sect-rest-datamodel-streamdestination"><span class="std std-ref">StreamDestination</span></a>) - list of destinations this data is currently streamed to</li>
+<li><strong>name</strong> (string) - the data stream’s name specifying which rc_dynamics data is streamed</li>
+<li><strong>type</strong> (<a class="reference internal" href="#sect-rest-datamodel-streamtype"><span class="std std-ref">StreamType</span></a>) - see description of <a class="reference internal" href="#sect-rest-datamodel-streamtype"><span class="std std-ref">StreamType</span></a></li>
+</ul>
+<p><strong>Template object</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;destinations&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;protobuf&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Stream objects are used in the following requests:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="#get--datastreams" title="GET /datastreams"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/datastreams</span></code></a></li>
+<li><a class="reference internal" href="#get--datastreams-stream" title="GET /datastreams/{stream}"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/datastreams/{stream}</span></code></a></li>
+<li><a class="reference internal" href="#put--datastreams-stream" title="PUT /datastreams/{stream}"><code class="xref http http-put docutils literal"><span class="pre">PUT</span> <span class="pre">/datastreams/{stream}</span></code></a></li>
+<li><a class="reference internal" href="#delete--datastreams-stream" title="DELETE /datastreams/{stream}"><code class="xref http http-delete docutils literal"><span class="pre">DELETE</span> <span class="pre">/datastreams/{stream}</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-streamdestination">
+<dt>StreamDestination:</dt>
+<dd><p class="first">A destination of an rc_dynamics data stream represented as string such as ‘IP:port’</p>
+<p>An object of type StreamDestination is of primitive type string.</p>
+<p class="last">StreamDestination objects are nested in <a class="reference internal" href="#sect-rest-datamodel-stream"><span class="std std-ref">Stream</span></a>.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-streamtype">
+<dt>StreamType:</dt>
+<dd><p class="first">Description of a data stream’s protocol.</p>
+<p>An object of type StreamType has the following properties:</p>
+<ul class="simple">
+<li><strong>protobuf</strong> (string) - type of data-serialization, i.e. name of protobuf message definition</li>
+<li><strong>protocol</strong> (string) - network protocol of the stream [UDP]</li>
+</ul>
+<p><strong>Template object</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;protobuf&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">StreamType objects are nested in <a class="reference internal" href="#sect-rest-datamodel-stream"><span class="std std-ref">Stream</span></a>.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-sysinfo">
+<dt>SysInfo:</dt>
+<dd><p class="first">System information about the sensor.</p>
+<p>An object of type SysInfo has the following properties:</p>
+<ul class="simple">
+<li><strong>firmware</strong> (<a class="reference internal" href="#sect-rest-datamodel-firmwareinfo"><span class="std std-ref">FirmwareInfo</span></a>) - see description of <a class="reference internal" href="#sect-rest-datamodel-firmwareinfo"><span class="std std-ref">FirmwareInfo</span></a></li>
+<li><strong>hostname</strong> (string) - Hostname</li>
+<li><strong>link_speed</strong> (integer) - Ethernet link speed in Mbps</li>
+<li><strong>mac</strong> (string) - MAC address</li>
+<li><strong>ntp_status</strong> (<a class="reference internal" href="#sect-rest-datamodel-ntpstatus"><span class="std std-ref">NtpStatus</span></a>) - see description of <a class="reference internal" href="#sect-rest-datamodel-ntpstatus"><span class="std std-ref">NtpStatus</span></a></li>
+<li><strong>ptp_status</strong> (<a class="reference internal" href="#sect-rest-datamodel-ptpstatus"><span class="std std-ref">PtpStatus</span></a>) - see description of <a class="reference internal" href="#sect-rest-datamodel-ptpstatus"><span class="std std-ref">PtpStatus</span></a></li>
+<li><strong>ready</strong> (boolean) - system is fully booted and ready</li>
+<li><strong>serial</strong> (string) - sensor serial number</li>
+<li><strong>time</strong> (float) - system time as Unix timestamp</li>
+<li><strong>uptime</strong> (float) - system uptime in seconds</li>
+</ul>
+<p><strong>Template object</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;firmware&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;active_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;fallback_booted&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;inactive_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;next_boot_image&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;hostname&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;link_speed&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;mac&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;ntp_status&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;accuracy&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;synchronized&quot;</span><span class="p">:</span> <span class="kc">false</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;ptp_status&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;master_ip&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;offset_dev&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;offset_mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;ready&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;serial&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;time&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;uptime&quot;</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>SysInfo objects are used in the following requests:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="#get--system" title="GET /system"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/system</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+</div>
+<div class="section" id="swagger-ui">
+<span id="sect-swagger-ui"></span><h2>Swagger UI<a class="headerlink" href="#swagger-ui" title="Permalink to this headline">¶</a></h2>
+<p>The <em>rc_visard</em>’s <a class="reference external" href="https://swagger.io/">Swagger UI</a> allows developers to easily
+visualize and interact with the REST-API, e.g., for development and testing. Accessing
+<code class="docutils literal"><span class="pre">http://&lt;rcvisard&gt;/api/</span></code> or <code class="docutils literal"><span class="pre">http://&lt;rcvisard&gt;/api/swagger</span></code>
+(the former will automatically be redirected to the latter) opens a visualization
+of the <em>rc_visard</em>’s general API structure including all
+<a class="reference internal" href="#sect-rest-resources-and-methods"><span class="std std-ref">available resources and requests</span></a>
+
+and offers a simple user interface for exploring all of its features.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Users must be aware that, although the <em>rc_visard</em>’s Swagger UI is
+designed to explore and test the REST-API, it is a fully
+functional interface.
+That is, any issued requests are actually
+processed and particularly <code class="docutils literal"><span class="pre">PUT</span></code>, <code class="docutils literal"><span class="pre">POST</span></code>, and <code class="docutils literal"><span class="pre">DELETE</span></code>
+requests might change the overall status and/or behavior of the
+device.</p>
+</div>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="_images/swagger_ui_overview.png"><img alt="_images/swagger_ui_overview.png" src="_images/swagger_ui_overview.png" style="width: 160mm;" /></a>
+<p class="caption"><span class="caption-number">Fig. 42 </span><span class="caption-text">Initial view of the <em>rc_visard</em>’s Swagger UI with its resources and requests
+grouped into <code class="docutils literal"><span class="pre">nodes</span></code>, <code class="docutils literal"><span class="pre">datastreams</span></code>, <code class="docutils literal"><span class="pre">logs</span></code>, and <code class="docutils literal"><span class="pre">system</span></code></span></p>
+</div>
+<p>Using this interface, available resources and requests can be explored by
+clicking on them to uncollapse or recollapse them.
+The following figure shows an example of how to get a node’s current status
+by filling in the necessary parameter (<code class="docutils literal"><span class="pre">node</span></code> name) and clicking the
+<em>Try it out!</em> button. This action results in the Swagger UI showing,
+amongst others, the actual <code class="docutils literal"><span class="pre">curl</span></code> command that was executed when
+issuing the request as well as the response body showing the current status
+of the requested node in a JSON-formatted string.</p>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="_images/swagger_ui_example_simple_get.png"><img alt="_images/swagger_ui_example_simple_get.png" src="_images/swagger_ui_example_simple_get.png" style="width: 160mm;" /></a>
+<p class="caption"><span class="caption-number">Fig. 43 </span><span class="caption-text">Result of requesting the <code class="docutils literal"><span class="pre">rc_stereomatching</span></code> node’s status</span></p>
+</div>
+<p>Some actions, such as setting parameters or calling services, require more
+complex parameters to an HTTP request. The Swagger UI allows developers to
+explore the attributes required for these actions during run-time, as shown in
+the next example. In the figure below, the attributes required for the
+the <code class="docutils literal"><span class="pre">rc_hand_eye_calibration</span></code> node’s <code class="docutils literal"><span class="pre">set_pose</span></code> service are explored by
+performing a <code class="docutils literal"><span class="pre">GET</span></code> request on this resource. The response features a full
+description of the service offered, including all required arguments with
+their names and types as a JSON-formatted string.</p>
+<div class="figure align-center" id="id4">
+<a class="reference internal image-reference" href="_images/swagger_ui_example_get_service_args.png"><img alt="_images/swagger_ui_example_get_service_args.png" src="_images/swagger_ui_example_get_service_args.png" style="width: 160mm;" /></a>
+<p class="caption"><span class="caption-number">Fig. 44 </span><span class="caption-text">The result of the <code class="docutils literal"><span class="pre">GET</span></code> request on the <code class="docutils literal"><span class="pre">set_pose</span></code> service shows the
+required arguments for this service call.</span></p>
+</div>
+<p>Users can easily use this preformatted JSON string as a template for the service
+arguments to actually call the service:</p>
+<div class="figure align-center" id="id5">
+<a class="reference internal image-reference" href="_images/swagger_ui_example_fill_service_args.png"><img alt="_images/swagger_ui_example_fill_service_args.png" src="_images/swagger_ui_example_fill_service_args.png" style="width: 160mm;" /></a>
+<p class="caption"><span class="caption-number">Fig. 45 </span><span class="caption-text">Filling in the arguments of the <code class="docutils literal"><span class="pre">set_pose</span></code> service request</span></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="rc_dynamics.html" class="btn btn-neutral float-right" title="The rc_dynamics interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gigevision.html" class="btn btn-neutral" title="GigE Vision 2.0/GenICam image interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Options</span>
+      en
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Languages</dt>
+        
+          <dd><a href="../de/index.html">de</a></dd>
+        
+          <dd><a href="../en/index.html">en</a></dd>
+        
+      </dl>
+      
+        <dl>
+          <dt>Versions</dt>
+          
+            <dd><a href="../../v1.1/index.html">v1.1</a></dd>
+          
+            <dd><a href="../../v1.0/index.html">v1.0</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_manual_de.pdf">PDF (de)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_manual_en.pdf">PDF (en)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1.1',
+            LANGUAGE:'en',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
