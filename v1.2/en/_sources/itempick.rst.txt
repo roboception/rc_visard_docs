@@ -1,0 +1,33 @@
+ItemPick
+
+The ItemPick component is an optional component that runs on board the
+
+rc_visard
+
+. It provides an out-of-the-box perception solution for robotic pick-
+and-place applications with suction grippers. ItemPick computes
+possible grasp poses for the suction device. Each suggested grasp
+includes a quality value related to the surface available for
+grasping. Visualization streams are available for parameter
+configuration and application tuning.
+
+ItemPick is also ready to be used for bin-picking applications. It
+offers a load carrier detection solution to provide grasps for items
+inside the load carrier.
+
+The ItemPick component works with both static and robot-mounted
+
+rc_visard
+
+ devices and can optionally be combined with the on-board
+
+Hand-eye calibration
+
+  component to provide grasp poses in the user-configured external
+reference frame.
+
+Note: The ItemPick component is optional and requires a separate
+
+  license
+
+    to be purchased.

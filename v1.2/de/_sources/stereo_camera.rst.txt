@@ -1,0 +1,333 @@
+Stereokamera
+
+Das Stereokamera-Modul umfasst Funktionen zur Erfassung von Stereo-
+Bildpaaren und zur planaren Rektifizierung, die nötig ist, um die
+Stereokamera als Messinstrument nutzen zu können.
+
+Bilderfassung
+
+Die Erfassung von Stereo-Bildpaaren ist der erste Schritt zur
+Stereovision. Da beide Kameras über Global Shutter verfügen und die
+Kamerachips per Hardware synchronisiert sind, werden alle Pixel beider
+Kameras immer zum exakt gleichen Zeitpunkt belichtet.
+
+GPIO-Ausgang 1
+
+ meldet dabei den jeweiligen Belichtungszeitpunkt. Zudem wird die Zeit
+in der Mitte der Bildbelichtung den Bildern als Zeitstempel
+angeheftet. Dieser Zeitstempel ist für dynamische Anwendungen wichtig,
+bei denen sich der
+
+rc_visard
+
+ oder die Szene bewegt.
+
+Die Belichtungszeit lässt sich manuell auf einen festen Wert
+einstellen. Dies ist hilfreich in Umgebungen, in denen die Beleuchtung
+gesteuert wird, da die Lichtintensität so in allen Bildern gleich ist.
+Die Kamera ist standardmäßig auf automatische Belichtung eingestellt.
+In diesem Modus wählt der
+
+rc_visard
+
+ die Belichtungszeit automatisch, bis zu einem benutzerdefinierten
+Höchstwert. Mit dem zulässigen Höchstwert soll eine mögliche
+Bewegungsunschärfe begrenzt werden: Hierzu kommt es, wenn Aufnahmen
+gemacht werden, während sich der
+
+rc_visard
+
+ oder die Szene bewegt. Die maximale Belichtungszeit hängt also von
+der Anwendung ab. Ist die maximale Belichtungszeit erreicht, nutzt der
+Algorithmus eine Verstärkung (Gain), um die Bildhelligkeit zu erhöhen.
+Höhere Gain-Faktoren verstärken jedoch auch das Bildrauschen. Es gilt
+daher, die maximale Belichtungszeit bei schwacher Beleuchtung so zu
+wählen, dass ein guter Kompromiss zwischen Bewegungsunschärfe und
+Bildrauschen erzielt wird.
+
+Planare Rektifizierung
+
+Kameraparameter, wie die Brennweite, die Objektivverzeichnung und die
+Stellung der Kameras zueinander, müssen genau bekannt sein, soll die
+Stereokamera als Messinstrument eingesetzt werden. Die Parameter
+werden per Kalibrierung bestimmt (siehe
+
+Kamerakalibrierung
+
+). Der
+
+rc_visard
+
+ wird bereits ab Werk kalibriert und benötigt in der Regel keine
+Neukalibrierung. Die Kameraparameter beschreiben mit großer Präzision
+alle geometrischen Eigenschaften des Stereokamera-Systems, aber das
+daraus resultierende Modell ist komplex und kompliziert zu benutzen.
+
+Rektifizierung bezeichnet den Prozess, Bilder auf Grundlage eines
+idealen Stereokamera-Modells zu reprojizieren. Dabei wird die
+Objektivverzeichnung korrigiert und die Bilder werden so ausgerichtet,
+dass ein Objektpunkt in beiden Aufnahmen immer auf die gleiche
+Bildzeile projiziert wird. Die Sichtachsen der Kameras liegen genau
+parallel zueinander. Dies bedeutet, dass Objektpunkte in unendlicher
+Distanz in beiden Aufnahmen auf die gleiche Bildspalte projiziert
+werden. Je näher ein Objektpunkt liegt, desto größer ist der
+Unterschied zwischen den Bildspalten im rechten und linken Bild.
+Dieser Unterschied wird Disparität genannt.
+
+Mathematisch lässt sich die Projektion des Objektpunkts P=(P_x, P_y,
+P_z) auf den Bildpunkt p_l=(p_{lx}, p_{ly}, 1) im linken
+rektifizierten Bild und auf den Bildpunkt p_r=(p_{rx}, p_{ry}, 1) im
+rechten rektifizierten Bild wie folgt darstellen:
+
+   A &= \left(\begin{array}{ccc} f & 0 & \frac{w}{2}\\
+   0 & f & \frac{h}{2}\\                         0 & 0 & 1
+   \end{array}\right), \qquad T_s = \left(\begin{array}{c}t\\
+   0\\                         0 \end{array}\right),  s_1 p_l &= AP,
+   \\ s_2 p_r &= A(P-T_s).
+
+Die Brennweite f ist der Abstand zwischen der gemeinsamen Bildebene
+und den optischen Zentren der linken und rechten Kamera. Sie wird in
+Pixeln gemessen. Als Basisabstand t wird der Abstand zwischen den
+optischen Zentren beider Kameras bezeichnet. Auch die Bildbreite w und
+Bildhöhe h werden in Pixeln gemessen. s_1 und s_2 sind
+Skalierungsfaktoren, die sicherzustellen, dass die dritten Koordinaten
+der Bildpunkte p_l und p_r 1 entsprechen.
+
+Der
+
+rc_visard
+
+ bietet über die GenICam-Schnittstelle zeitgestempelte rektifizierte
+Bilder der linken und rechten Kamera (siehe
+
+Verfügbare Bild-Streams
+
+). Live-Streams in geringerer Qualität werden in der
+
+Web GUI
+
+ bereitgestellt.
+
+Hinweis: Der
+
+  rc_visard
+
+   stellt über seine verschiedenen Schnittstellen einen
+  Brennweitenfaktor bereit. Er bezieht sich auf die Bildbreite, um
+  verschiedene Bildauflösungen zu unterstützen. Die Brennweite f in
+  Pixeln lässt sich leicht bestimmen, indem der Brennweitenfaktor mit
+  der Bildbreite (in Pixeln) multipliziert wird.
+
+Parameter
+
+Das Stereokamera-Modul wird als "rc_stereocamera" bezeichnet und in
+der
+
+Web GUI
+
+ auf der Registerkarte
+
+Kamera
+
+ dargestellt. Der Benutzer kann die Kamera-Parameter entweder dort
+oder direkt über die REST-API (
+
+REST-API-Schnittstelle
+
+) oder GigE Vision (
+
+GigE Vision 2.0/GenICam-Schnittstelle
+
+) ändern.
+
+Hinweis: Wird der
+
+  rc_visard
+
+   über GigE Vision genutzt, können die Kamera-Parameter nicht über
+  die Web GUI oder REST-API geändert werden.
+
+Übersicht über die Parameter
+
+Dieses Softwaremodul bietet folgende Laufzeitparameter.
+
+Laufzeitparameter des rc_stereocamera-Moduls              Name  Typ
+Min.  Max.  Default  Beschreibung  exp_auto  bool  False  True  True
+Umschalten zwischen automatischer und manueller Belichtung  exp_height
+int32  0  959  0  Höhe der Region für automatische Belichtung. 0 für
+das ganze Bild.  exp_max  float64  6.6e-05  0.018  0.007  Maximale
+Belichtungszeit in Sekunden, wenn exp_auto auf TRUE gesetzt ist
+exp_offset_x  int32  0  1279  0  Erste Spalte der Region für
+automatische Belichtung  exp_offset_y  int32  0  959  0  Erste Zeile
+der Region für automatische Belichtung  exp_value  float64  6.6e-05
+0.018  0.005  Maximale Belichtungszeit in Sekunden, wenn exp_auto auf
+FALSE gesetzt ist  exp_width  int32  0  1279  0  Breite der Region für
+automatische Belichtung. 0 für das ganze Bild.  fps  float64  1.0
+25.0  25.0  Bildwiederholrate in Hertz  gain_value  float64  0.0  18.0
+0.0  Manuelle Verstärkung in Dezibel, wenn exp_auto auf FALSE gesetzt
+ist  wb_auto  bool  False  True  True  Ein- und Ausschalten des
+manuellen Weißabgleichs (nur für Farbkameras)  wb_ratio_blue  float64
+0.125  8.0  2.4  Blau zu Grün Verhältnis falls wb_auto auf False
+gesetzt ist (nur für Farbkameras)  wb_ratio_red  float64  0.125  8.0
+1.2  Rot zu Grün Verhältnis falls wb_auto auf False gesetzt ist (nur
+für Farbkameras)
+
+Dieses Modul meldet folgende Statuswerte:
+
+Statuswerte des rc_stereocamera-Moduls      Name  Beschreibung
+baseline  Basisabstand  der Stereokamera in Metern  color  0 für
+Monochrom-Kameras, 1 für Farbkameras  exp  Tatsächliche
+Belichtungszeit in Sekunden. Dieser Wert wird unter der Bildvorschau
+in der Web GUI als Belichtungszeit (ms) angezeigt.  focal
+Brennweitenfaktor, normalisiert auf eine Bildbreite von 1  fps
+Tatsächliche Bildwiederholrate der Kamerabilder in Hertz. Dieser Wert
+wird unter der Bildvorschau in der Web GUI als Bildwiederholrate (Hz)
+angezeigt.  gain  Tatsächlicher Verstärkungsfaktor in Dezibel. Dieser
+Wert wird unter der Bildvorschau in der Web GUI als Verstärkung (dB)
+angezeigt.  height  Höhe des Kamerabildes in Pixeln  temp_left
+Temperatur des linken Kamerasensors in Grad Celsius  temp_right
+Temperatur des rechten Kamerasensors in Grad Celsius  time
+Verarbeitungszeit für die Bilderfassung in Sekunden  width  Breite des
+Kamerabildes in Pixeln
+
+Beschreibung der Laufzeitparameter
+
+
+"fps" (
+Bildwiederholrate
+
+)
+   Dieser Wert bezeichnet die Bildwiederholrate der Kamera in Bildern
+   pro Sekunde. Er gibt die obere Frequenz an, mit der Tiefenbilder
+   berechnet werden können. Dies entspricht auch der Frequenz, mit der
+   der
+
+   rc_visard
+
+    Bilder über GigE Vision bereitstellt. Wird diese Frequenz
+   verringert, reduziert sich auch die zur Übertragung der Bilder
+   benötigte Bandbreite des Netzwerkes.
+
+"exp_auto" (
+Belichtungszeit
+
+)
+   Dieser Wert lässt sich auf 1 – für den automatischen
+   Belichtungsmodus – und auf 0 – für den manuellen Belichtungsmodus –
+   stellen. Bei der manuellen Belichtung wird die gewählte
+   Belichtungszeit konstant gehalten und die Verstärkung bleibt bei
+   0,0 dB, auch wenn die Bilder über- oder unterbelichtet sind. Im
+   automatischen Belichtungsmodus werden die Belichtungszeit und der
+   Verstärkungsfaktor automatisch angepasst, sodass das Bild korrekt
+   belichtet wird. "exp_value" und "gain_value" werden auf die letzten
+   von der Automatik ermittelten Werte für Belichtungszeit und
+   Verstärkung gesetzt, wenn die Automatik abgeschaltet wird.
+
+"exp_offset_x", "exp_offset_y", "exp_width", "exp_height"
+   Diese Werte definieren eine rechteckige Region im linken
+   rektifizierten Bild, um den von der automatischen Belichtung
+   überwachten Bereich zu limitieren. Die Belichtungszeit und der
+   Verstärkungsfaktor werden so gewählt, dass die definierte Region
+   optimal belichtet wird. Dies kann zu Über- oder Unterbelichtung in
+   anderen Bildbereichen führen. Die Region wird in der Web GUI mit
+   einem Rechteck im linken rektifizierten Bild visualisiert. Falls
+   die Breite oder Höhe auf 0 gesetzt werden, dann wird das gesamte
+   linke und rechte Bild von der automatischen Belichtungsfunktion
+   berücksichtigt. Dies ist die Standardeinstellung.
+
+"exp_value" (
+Manuell
+
+)
+   Dieser Wert gibt die Belichtungszeit im manuellen Modus in Sekunden
+   an. Diese Belichtungszeit wird konstant gehalten, auch wenn die
+   Bilder unterbelichtet sind. In der Web GUI lässt sich die
+   Belichtungszeit der Einfachheit halber in Millisekunden angeben.
+
+"gain_value"
+   Dieser Wert gibt den Verstärkungsfaktor im manuellen Modus in
+   Dezibel an. Höhere Verstärkungswerte reduzieren die
+   Belichtungszeit, führen aber zu Rauschen. Dieser Wert kann nur in
+   der REST-API oder GenICam, aber nicht in the Web GUI gesetzt
+   werden.
+
+"exp_max" (
+Auto
+
+)
+   Dieser Wert gibt die maximale Belichtungszeit im automatischen
+   Modus in Sekunden an. In der Web GUI lässt sich diese
+   Belichtungszeit der Einfachheit halber in Millisekunden angeben.
+   Die tatsächliche Belichtungszeit wird automatisch angepasst, sodass
+   das Bild korrekt belichtet wird. Sind die Bilder trotz maximaler
+   Belichtungszeit noch immer unterbelichtet, erhöht der
+
+   rc_visard
+
+    schrittweise die Verstärkung, um die Bildhelligkeit der Bilder zu
+   erhöhen. Es ist sinnvoll, die Belichtungszeit zu begrenzen, um die
+   bei schnellen Bewegungen auftretende Bildunschärfe zu vermeiden
+   oder zu verringern. Jedoch führt eine höhere Verstärkung auch zu
+   mehr Bildrauschen. Welcher Kompromiss der beste ist, hängt immer
+   auch von der Anwendung ab.
+
+"wb_auto"
+   Dieser Wert kann auf 1 gesetzt werden um den automatischen
+   Weißabgleich anzuschalten. Bei 0 kann das Verhältnis der Farben
+   manuell mit "wb_ratio_red" und "wb_ratio_blue" gesetzt werden.
+   "wb_ratio_red" und "wb_ratio_blue" werden auf die letzten von der
+   Automatik ermittelten Werte gesetzt, wenn diese abgeschaltet wird.
+   Der Weißabgleich ist bei monochromen Kameras ohne Funktion. Dieser
+   Wert kann nur in der REST-API oder GenICam, aber nicht in der Web
+   GUI gesetzt werden.
+
+"wb_ratio_red" und "wb_ratio_blue"
+   Mit diesen Werten kann das Verhältnis von Rot zu Grün bzw. Blau zu
+   Grün für einen manuellen Weißabgleich gesetzt werden. Der
+   Weißabgleich ist bei monochromen Kameras ohne Funktion. Dieser Wert
+   kann nur in der REST-API oder GenICam, aber nicht in the Web GUI
+   gesetzt werden.
+
+Die gleichen Parameter sind – mit leicht abweichenden Namen und
+teilweise mit anderen Einheiten oder Datentypen – auch über die
+GenICam-Schnittstelle verfügbar (siehe
+
+GigE Vision 2.0/GenICam-Schnittstelle
+
+).
+
+Services
+
+Das Stereokamera-Modul bietet folgende Services, um
+Parametereinstellungen zu speichern bzw. wiederherzustellen.
+
+"save_parameters" (
+Speichern
+
+)
+   Bei Aufruf dieses Services werden die aktuellen
+   Parametereinstellungen des Stereokamera-Moduls auf dem
+
+   rc_visard
+
+    gespeichert. Das bedeutet, dass diese Werte selbst nach einem
+   Neustart angewandt werden.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert keine Rückgabewerte.
+
+"reset_defaults" (
+Zurücksetzen
+
+)
+   Hiermit werden die Werkseinstellungen der Parameter dieses Moduls
+   wiederhergestellt und angewandt („factory reset“).
+
+   Achtung: Der Benutzer muss bedenken, dass bei Aufruf dieses
+     Services die aktuellen Parametereinstellungen für das
+     Stereokamera-Modul unwiderruflich verloren gehen.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert keine Rückgabewerte.

@@ -1,0 +1,294 @@
+SLAM
+
+The SLAM component is part of the sensor dynamics component. It
+provides additional accuracy for the pose estimate of the stereo INS.
+When the
+
+rc_visard
+
+ moves through the world, the pose estimate slowly accumulates errors
+over time. The SLAM component can correct these pose errors by
+recognizing previously visited places.
+
+The acronym SLAM stands for Simultaneous Localization and Mapping. The
+SLAM component creates a map consisting of the image features as used
+in the visual odometry component. The map is later used to correct
+accumulated pose errors. This is most apparent in applications where,
+e.g., a robot returns to a previously visited place after covering a
+large distance (this is called a
+
+loop closure
+
+). In this case, the robot can re-detect image features that are
+already stored in its map and can use this information to correct the
+drift in the pose estimate that accumulated since the last visit.
+
+When closing a loop, not only the current pose, but also the past pose
+estimates (the trajectory of the
+
+rc_visard
+
+), are corrected.  Continuous trajectory correction leads to a more
+accurate map. On the other hand, the accuracy of the full trajectory
+is important when it is used to build an integrated world model, e.g.,
+by projecting the 3D point clouds obtained (see
+
+Computing depth images and point clouds
+
+) into a common coordinate frame. The full trajectory can be requested
+from the SLAM component for this purpose.
+
+Note: The SLAM component is optionally available for the
+
+  rc_visard
+
+   and will run on board the sensor. If a SLAM license is stored on
+  the
+
+  rc_visard
+
+  , then the SLAM component is shown as
+
+  Available
+
+   on the
+
+  Web GUI
+
+  ’s
+
+  Overview
+
+   page and in the
+
+  License
+
+   section of the
+
+  System
+
+   page.
+
+Usage
+
+The SLAM component can be activated at any time, either via the
+rc_dynamics interface (see the documentation of the respective
+
+Services
+
+) or from the
+
+Dynamics
+
+ page of the
+
+Web GUI
+
+.
+
+The pose estimate of the SLAM component will be initialized with the
+current estimate of the stereo INS - and thus the origin will be where
+the stereo INS was started.
+
+Since the SLAM component builds on the motion estimates of the stereo
+INS component, the latter will automatically be started up if it is
+not yet running when SLAM is started.
+
+When the SLAM component is running, the corrected pose estimates will
+be available via the datastreams
+
+pose
+
+,
+
+pose_rt
+
+, and
+
+dynamics
+
+ of the rc_dynamics component.
+
+The full trajectory is available through the service "get_trajectory",
+see
+
+Services
+
+ below for details.
+
+Memory limitations
+
+In contrast to the other software components running on the
+
+rc_visard
+
+, the SLAM component needs to accumulate data over time, e.g., motion
+measurements and image features.  Further, the optimization of the
+trajectory requires substantial amounts of memory, particularly when
+closing large loops. Therefore the memory requirements of the SLAM
+component increase over time.
+
+Given the memory limitations of the hardware, the SLAM component needs
+to reduce its own memory footprint when running continuously. When the
+available memory runs low, the SLAM component will fix parts of the
+trajectory, i.e. no further optimization will be done on these parts.
+A minimum of 10 minutes of the trajectory will be kept unfixed at all
+times.
+
+When the available memory runs low despite the above measures, two
+options are available. The first option is that the SLAM component
+automatically goes to the HALTED state, where it stops processing, but
+the trajectory (up to the stopping time) is still available. This is
+the default behavior.
+
+The second option is to keep running until the memory is exhausted. In
+that case, the SLAM component will be restarted. If the "autorecovery"
+parameter is set to true, the SLAM component will recover its previous
+position and resume mapping. Otherwise it will go to FATAL state,
+requiring to be restarted via the rc_dynamics interface (see
+
+Services
+
+).
+
+The operation time until the memory limit is reached is strongly
+dependent on the trajectory of the sensor.
+
+Parameters
+
+The SLAM component is called "rc_slam"  in the REST-API. The user can
+change the SLAM parameters using the
+
+REST-API interface
+
+.
+
+Parameter overview
+
+This component offers the following run-time parameters.
+
+The rc_slam component’s run-time parameters              Name  Type
+Min  Max  Default  Description  autorecovery  bool  False  True  True
+In case of fatal errors recover corrected position and restart mapping
+halt_on_low_memory  bool  False  True  True  When the memory runs low,
+go to halted state
+
+This component reports the following status values.
+
+The rc_slam component’s status values      Name  Description  state
+The current state of the rc_slam node  trajectory_poses  Number of
+poses in the estimated trajectory
+
+The reported "state" can take one of the following values.
+
+Possible states of the rc_slam component      State name  Description
+IDLE  The component is ready, but idle. No trajectory data is
+available.  WAITING_FOR_DATA  The component was started but is waiting
+for data from stereo INS or VO.  RUNNING  The component is running.
+HALTED  The component is stopped. The trajectory data is still
+available.  No new information is processed.  RESETTING  The component
+is being stopped and the internal data is being cleared.  RESTARTING
+The component is being restarted.  FATAL  A fatal error has occured.
+
+Services
+
+The SLAM component offers the following services.
+
+Note: Activation and deactivation of the SLAM component is done via
+  the service interface of rc_dynamics (see
+
+  Services
+
+  ).
+
+"reset"
+   clears the internal state of the SLAM component. This service is to
+   be used after stopping the SLAM component using the rc_dynamics
+   interface (see the respective
+
+   Services
+
+   ). The SLAM component maintains the estimate of the full trajectory
+   even when stopped. This service clears this estimate and frees the
+   respective memory. The returned status is RESETTING.
+
+   This service requires no arguments.
+
+   This service returns the following response:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+"get_trajectory"
+      With this service call the trajectory can be retrieved. The
+      service arguments allow to select a subsection of the trajectory
+      by defining a "start_time" and an "end_time".  Both are
+      optional, i.e., they could be left empty or filled with zero
+      values, which results in the subsection to include the
+      trajectory from the very beginning, or to the very end,
+      respectively, or both. If not empty or zero, they can be defined
+      either as absolute timestamps or to be relative to the
+      trajectory ("start_time_relative"  and "end_time_relative"
+      flags). If defined to be relative, the values’ signs indicate to
+      which point in time they relate to: Positive values define an
+      offset to the trajectory start time; negative values are
+      interpreted as an offset from the trajectory end time. The below
+      diagram illustrates three examples for the relative
+      parameterization.
+
+
+   Note: A relative "start_time" of zero will select everything from
+     the start of the trajectory, whereas a relative "end_time" of
+     zero will select everything to the end of the trajectory.
+
+   This service requires the following arguments:
+
+      {
+        "end_time": {
+          "nsec": "int32",
+          "sec": "int32"
+        },
+        "end_time_relative": "bool",
+        "start_time": {
+          "nsec": "int32",
+          "sec": "int32"
+        },
+        "start_time_relative": "bool"
+      }
+
+   This service returns the following response:
+
+      {
+        "trajectory": {
+          "name": "string",
+          "parent": "string",
+          "poses": [
+            {
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "timestamp": {
+                "nsec": "int32",
+                "sec": "int32"
+              }
+            }
+          ],
+          "producer": "string",
+          "timestamp": {
+            "nsec": "int32",
+            "sec": "int32"
+          }
+        }
+      }

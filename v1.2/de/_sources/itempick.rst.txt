@@ -1,0 +1,37 @@
+ItemPick
+
+Das ItemPick-Modul  ist ein optionales Modul welches intern auf dem
+
+rc_visard
+
+ läuft. Es liefert eine Standardlösung für robotische Pick-and-Place
+Anwendungen für Vakuum-Greifsysteme. ItemPick berechnet mögliche
+Greifposen für den Vakuumgreifer, und jeder vorgeschlagene Griff
+beinhaltet einen Qualitätswert bezogen auf die für das Greifen
+verfügbare Oberfläche. Weiterhin werden Bild-Streams für die
+Konfiguration der Parameter und die Feinjustierung des Moduls
+angeboten.
+
+ItemPick bietet auch eine Fertiglösung für Bin Picking Anwendungen
+(„Griff in die Kiste“). Es beinhaltet eine Behältererkennung, damit
+Greifposen für Objekte innerhalb des Behälters geliefert werden
+können.
+
+Das ItemPick-Modul funktioniert sowohl mit einem statischen als auch
+mit einem robotergeführten
+
+rc_visard
+
+. Optional kann es mit der
+
+Hand-Auge-Kalibrierung
+
+  kombiniert werden, um Greifposen im benutzerdefinierten externen
+Koordinatensystem zu liefern.
+
+Hinweis: Das ItemPick-Modul ist optional und benötigt eine
+  gesonderte
+
+  Lizenz
+
+   .

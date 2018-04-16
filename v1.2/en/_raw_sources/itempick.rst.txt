@@ -1,0 +1,230 @@
+
+.. include:: global_rst.glb
+
+.. _sect-itempick:
+
+ItemPick
+========
+
+The ItemPick component is an optional component that runs on board the |rc_visard|.
+It provides an out-of-the-box perception solution for robotic pick-and-place
+applications with suction grippers.
+ItemPick computes possible grasp poses for the suction device.
+Each suggested grasp includes a quality value related to the surface available for grasping.
+Visualization streams are available for parameter configuration and application tuning.
+
+ItemPick is also ready to be used for bin-picking applications.
+It offers a load carrier detection solution to provide grasps for items
+inside the load carrier.
+
+The ItemPick component works with both static and robot-mounted |rc_visard| devices and
+can optionally be combined with the on-board :doc:`handeye_calibration`
+:latex:`(Section \ref{handeye_calibration:sect-handeye-calibration})` component
+to provide grasp poses in the user-configured external reference frame.
+
+.. Note::
+
+   The ItemPick component is optional and requires a separate :ref:`license<sect-updating-license>`
+   :latex:`(Section \ref{maintenance:sect-updating-license})` to be purchased.
+
+.. Integration with Hand-eye calibration
+.. -------------------------------------
+..
+.. The Item Pick component can be configured to work with two different ``pose_frame`` s:
+..
+.. 1. **Camera frame** (``camera``).
+..    All poses provided to and from the component are in the camera frame.
+..    The component has no clue about the sensor mounting.
+..    This means that the configured regions of interest and load carriers move with the camera.
+..    It is the user responsibility to update the configured poses
+..    if the camera frame moves (e.g., with a robot-mounted sensor).
+..
+.. 2. **External frame** (``external``).
+..    All poses provided to and from the component are in the external (*static*) frame,
+..    configured by the user during the hand-eye calibration process.
+..    The component relies on the on-board :doc:`Hand-eye calibration component<handeye_calibration>`
+..    to retrieve the sensor mounting (static or on-robot) and
+..    the hand-eye transformation.
+..    If the sensor mounting is static, no further information needed.
+..    If the sensor is robot-mounted, the ``robot_pose`` is required
+..    to transform poses to and from the ``external`` frame.
+..
+.. All pose frames values that are not ``camera`` and ``external``
+.. are rejected by the component.
+..
+.. If the arguments of a service includes different ``pose_frame`` s
+.. (e.g., a region of interest in the ``camera`` frame and a load carrier
+.. in the ``external`` frame), the service fails with an error.
+..
+.. If a ``robot_pose`` is provided as argument to a service when not needed,
+.. the service will issue a warning in the response.
+
+
+.. Region of Interest
+.. ------------------
+
+.. Load Carrier
+.. ------------
+..
+.. A Load Carrier is defined by its ``id``, its geometry (``outer_dimensions``,
+.. ``inner_dimensions``, ``rim_thickness``) and its pose in space (``pose_frame`` and ``pose``).
+..
+.. The ``outer_dimensions`` and ``inner_dimensions`` values are always required
+.. and should be set to the values provided by the load carrier manufacturer.
+.. The following ranges are currently valid:
+..
+ .. .. math::
+..   {\rm outer\_dimensions.x} &\in [0.100; 1.300] m \\
+..   {\rm outer\_dimensions.y} &\in [0.100; 0.900] m \\
+..   {\rm outer\_dimensions.z} &\in [0.050; 1.000] m \\
+..   {\rm inner\_dimensions.x} &> 0.05 m \\
+..   {\rm inner\_dimensions.y} &> 0.05 m \\
+..   {\rm inner\_dimensions.z} &> 0.02 m
+..
+.. The ``rim_thickness`` value is optional; if not set, its value is computed
+.. from the outer_dimensions and the inner_dimensions values:
+..
+  .. .. math::
+..   {\rm rim\_thickness.x} &= ({\rm outer\_dimensions.x} - {\rm inner\_dimensions.x})/2; \\
+..   {\rm rim\_thickness.y} &= ({\rm outer\_dimensions.y} - {\rm inner\_dimensions.y})/2;
+..
+.. Since the load carrier is detected by detecting its rim,
+.. the rim thickness values must be as precise as possible.
+..
+.. The ``pose_frame`` and ``pose`` values are optional.
+.. The load carrier pose is computed by the load carrier detection algorithm.
+.. The load carrier reference frame is centered at the center of the load carrier outer box.
+..
+.. The current implementation of the load carrier detection algorithm
+.. requires as a prior the *approximate* orientation (normal)
+.. of the planar surface on which the load carrier lies.
+.. The default behavior of the algorithm is to use the gravity vector
+.. estimated from the onboard IMU as prior.
+.. If this assumption is valid, the ``pose_frame`` and ``pose`` values are not required.
+..
+.. In case of slanted planar surfaces, the pose orientation value can be used to provide
+.. the prior (only the z axis is relevant for detection).
+.. In this case the ``pose_frame`` value argument must be value
+.. (i.e., either ``camera`` or ``external``).
+
+
+.. Parameters and Status Values
+.. ----------------------------
+..
+.. The Item Pick component is called ``rc_itempick`` in the |rest-api|.
+..
+.. .. include:: _gen/nodes/params/rc_itempick.txt
+
+.. Services
+.. --------
+..
+.. The Item Pick component offers the following services.
+.. Each service offered by the Item Pick component provides a ``return_code``.
+..
+.. Please refer to :ref:`sect-itempick-return-codes`:latex:`Section \ref{returncodes:sect-itempick-return-codes}`
+.. for a list of common return codes.
+..
+.. ``start``
+..    Starts the component. If the command is accepted, the component moves to state ``RUNNING``
+..    and all required subscriptions are setup. The ``current_state`` value in the service response may
+..    differ from ``RUNNING`` if the state transition is still in process when the service returns.
+..
+..    .. include:: _gen/nodes/services/rc_itempick_start.txt
+..
+.. ``stop``
+..    Stops the component. If the command is accepted, the component moves to state ``IDLE``
+..    and all required subscriptions are shutdown. The ``current_state`` value in the service response
+..    may differ from ``IDLE`` if the state transition is still in process when the service returns.
+..
+..    .. include:: _gen/nodes/services/rc_itempick_stop.txt
+..
+.. ``set_region_of_interest``
+..    Persistently sets a region of interest. All configured regions of interest are persistent over
+..    software updates and rollbacks.
+..
+..    .. include:: _gen/nodes/services/rc_itempick_set_region_of_interest.txt
+..
+.. ``get_regions_of_interest``
+..    Provides the configured regions of interest with the requested ``region_of_interest_ids``.
+..    If no ``region_of_interest_ids`` are provided, all configured regions of interest are returned.
+..
+..    .. include:: _gen/nodes/services/rc_itempick_get_regions_of_interest.txt
+..
+.. ``delete_regions_of_interest``
+..    Deletes the configured regions of interest with the requested ``region_of_interest_ids``.
+..    If no ``region_of_interest_ids`` are provided, all configured regions of interest are deleted.
+..
+..    .. include:: _gen/nodes/services/rc_itempick_delete_regions_of_interest.txt
+..
+.. ``set_load_carrier``
+..    Persistently sets a load carrier. All configured load carriers are persistent over
+..    software updates and rollbacks.
+..
+..    .. include:: _gen/nodes/services/rc_itempick_set_load_carrier.txt
+..
+.. ``get_load_carriers``
+..    Provides the configured load carriers with the requested ``load_carrier_ids``.
+..    If no ``load_carrier_ids`` are provided, all configured load carriers are returned.
+..
+..    .. include:: _gen/nodes/services/rc_itempick_get_load_carriers.txt
+..
+.. ``delete_load_carriers``
+..    Deletes the configured load carriers with the requested ``load_carrier_ids``.
+..    If no ``load_carrier_ids`` are provided, all configured load carriers are deleted.
+..
+..    .. include:: _gen/nodes/services/rc_itempick_delete_load_carriers.txt
+..
+.. ``detect_load_carriers``
+..    Triggers a load carrier detection.
+..
+..    .. include:: _gen/nodes/services/rc_itempick_detect_load_carriers.txt
+..
+.. ``compute_grasps``
+..    Triggers the computation of suction grasps.
+..
+..    .. include:: _gen/nodes/services/rc_itempick_compute_grasps.txt
+..
+.. ``save_parameters``
+..    This service saves the parameters currently set persistently.
+..    Thereby, the same parameters will still apply after a reboot of
+..    the sensor.
+..
+.. ``reset_to_defaults``
+..    This service resets all parameters of the component to its default values,
+..    as listed in above table.
+
+.. .. _sect-itempick-return-codes:
+..
+.. Return Codes
+.. ------------
+..
+.. Each service offered by the Item Pick component provides a ``return_code``,
+.. which consists of a value plus an optional message.
+..
+.. A successful service returns with a ``return_code`` value of ``0``.
+.. Negative ``return_code`` values indicate that the service failed.
+.. Positive ``return_code`` values indicate that the service succeeded with warnings.
+..
+.. In case a service has multiple ``return_code`` values, only the lower value is returned,
+.. but all messages are appended in the ``return_code`` message.
+..
+.. The following table contains a list of common codes:
+..
+.. ==== ===========
+.. Code Description
+.. ==== ===========
+.. 0    Success
+.. -1   An invalid argument was provided
+.. -4   Data acquisition took longer than the maximum allowed time of 1.5 seconds
+.. -9   The license is not valid
+.. -301 More than one item model provided to the ``compute_grasps`` service, but only one is supported
+.. -302 More than one load carrier provided to the ``detect_load_carriers`` service, but only one is supported
+.. 100  The requested load carriers were not detected in the scene
+.. 101  No valid surfaces or grasps were found in the scene
+.. 102  The detected load carrier is empty
+.. 200  The component was not in state ``RUNNING``
+.. 300  A valid ``robot_pose`` was provided as argument but it is not required
+.. 400  No ``item_models`` were provided to the ``compute_grasps`` service request.
+.. 500  The region of interest visualization images could not be generated during the call to ``set_region_of_interest``
+.. 600  An existent persistent mode was overwritten by the call to ``set_load_carrier`` or ``set_region_of_interest``
+.. ==== ===========

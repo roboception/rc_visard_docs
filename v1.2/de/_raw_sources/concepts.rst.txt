@@ -1,0 +1,134 @@
+.. include:: global_rst.glb
+
+.. _sect-concepts:
+
+The |rc_visard| in a nutshell
+=============================
+
+The |rc_visard| is a self-registering 3D camera. It provides rectified camera,
+disparity, confidence, and error images, which enable the viewed scene's depth values along
+with their uncertainties to be computed. Furthermore, the motion of visual features in the
+images is combined with acceleration and turn-rate measurements at a high rate, which
+enables the sensor to provide real-time estimates of its current pose, velocity, and acceleration.
+
+Stereo vision
+-------------
+
+.. index::
+   single: stereo matching
+   single: SGM
+   single: disparity
+   single: disparity image
+
+The |rc_visard| is based on *stereo vision* using the |sgm| method.
+In stereo vision, 3D information about a scene can be extracted by comparing two images taken from different
+viewpoints. The main idea behind using a camera pair for measuring depth is the fact that object points appear at different
+positions in the two camera images depending on their distance from the camera pair. Very distant object points
+appear at approximately the same position in both images, whereas very close object points occupy different positions
+in the left and right camera image. The object points' displacement in the two images is called *disparity*. The
+larger the disparity, the closer the object is to the camera. The principle is illustrated in :numref:`fig-stereo_vision`.
+
+.. _fig-stereo_vision:
+.. figure:: images/stereo_sketch_v2.*
+   :width: 70 %
+   :align: center
+
+   Sketch of the stereo-vision principle: The more distant object (black) exhibits a smaller disparity :math:`d_2`
+   than that of the close object (gray), :math:`d_1`.
+
+Stereo vision is a form of passive sensing, meaning that it emits neither light nor other signals to measure distances, but
+uses only light that the environment emits or reflects. The |rc_visard| can thus work indoors and outdoors and
+multiple |rc_visard| devices can work together without interferences.
+
+To compute the 3D information, the
+stereo matching algorithm must be able to find corresponding object points in the left and right camera images.
+For this, the algorithm requires texture, meaning changes in image intensity values due to
+patterns or the objects' surface structure, in the images. Stereo matching is not possible for completely untextured regions,
+such as a flat white wall without any visible surface structure. The |sgm-short|
+stereo matching method used provides the best trade-off between runtime and accuracy, even for fine structures.
+
+For stereo matching, the position and orientation of the left and right cameras relative to each other has to be known with
+very high accuracy. This is achieved by calibration. The |rc_visard|'s cameras are pre-calibrated during production.
+However, if the |rc_visard| has been decalibrated, during transport for example, then the user has
+to recalibrate the stereo camera.
+
+The following |rc_visard| software components are required to compute 3D information:
+
+- :ref:`sect-stereo-camera`: This component is responsible for capturing synchronized stereo image pairs and transforming them
+  into images approaching those taken by an ideal stereo camera (rectification)\ :latex:`\:(Section \ref{stereo_camera:sect-stereo-camera})`.
+- :ref:`sect-stereo-matching`: This component computes disparities for the rectified stereo camera pair
+  using |sgm-short|\ :latex:`\:(Section \ref{stereo_matching:sect-stereo-matching})`.
+-  :ref:`sect-camera-calibration`: This component enables the user to recalibrate the |rc_visard|'s stereo camera\ :latex:`\:(Section \ref{camera_calibration:sect-camera-calibration})`.
+
+Sensor dynamics
+---------------
+
+.. index::
+   pair: dynamics; pose
+   pair: dynamics; velocity
+   pair: dynamics; acceleration
+   single: dynamic state
+   single: visual odometry
+   single: egomotion
+   single: IMU
+   single: INS
+
+
+In addition to providing 3D information about the scene, the |rc_visard| can also estimate
+its *egomotion* or *dynamic state* in real time. This comprises its current pose,
+i.e., its position and orientation relative to a reference coordinate system or reference frame,
+as well as its velocity and acceleration. Measurements from stereo visual
+odometry (SVO) and the integrated Inertial Measurement Unit (:term:`IMU`) are fused to compute this information. This combination is called a Visual Inertial
+Navigation System (V\ :term:`INS`).
+
+Visual odometry observes the motion of characteristic
+points in the camera images to estimate the camera motion.
+Object points are projected on different pixels in the camera image depending on the camera's
+viewing position. Each point's 3D coordinates can also be computed using stereo matching between
+the point positions in the left and right camera images.
+Thus, for two different viewing positions A and B, two sets of corresponding 3D points are computed.
+Assuming a static environment, the motion that transforms one set of points into the other is
+the camera's motion. The principle is illustrated for a simplified 2D case in :numref:`fig-stereo_vo`.
+
+.. _fig-stereo_vo:
+.. figure:: images/vo_sketch_v2.*
+   :width: 90 %
+   :align: center
+
+   Simplified sketch of the stereo visual odometry principle for 2D motions: Camera motion is computed from
+   the observed motion of characteristic image points.
+
+Since visual odometry relies on image-data quality, motion estimates deteriorate when the images are blurred or are poorly illuminated.
+Furthermore, visual odometry's frame rate is too low for control applications. That's why the |rc_visard|
+has an integrated Inertial Measurement Unit (IMU), which measures the accelerations and angular velocities that occur
+when the |rc_visard| moves. It also measures acceleration due to gravity, which gives global orientation in the
+vertical direction. Further, IMU measurements have a high rate of |imu-rate|.
+The |rc_visard|'s linear velocity, position, and orientation can be computed by integrating the IMU
+measurements. However, the integration results suffer from increasing drift over time. The |rc_visard| thus fuses accurate, but
+low-frequency and sometimes volatile visual odometry measurements with reliable high-rate  IMU measurements to
+provide an accurate, robust, high-frequency estimate of the |rc_visard|'s current position, orientation, velocity, and
+acceleration, which can be used in a control loop.
+
+In addition to the stereo camera component and the calibration component, pose-estimate computations require the following |rc_visard| software components:
+
+- :ref:`sect-dynamics`: This component handles starting, stopping, and streaming of the estimates for the individual components\ :latex:`\:(Section \ref{dynamics:sect-dynamics})`.
+
+  - :ref:`sect-visual-odometry`: This component computes a motion estimate from the camera images\ :latex:`\:(Section \ref{stereo_visodo:sect-visual-odometry})`.
+  - :ref:`sect-stereo-ins`: This component fuses the motion estimates from visual odometry with the
+    measurements from the integrated IMU to provide real-time pose estimates at a high frequency\ :latex:`\:(Section \ref{stereo_ins:sect-stereo-ins})`.
+  - :ref:`sect-slam`: This component is optionally available for the |rc_visard| and creates an internal
+    map of the environment, which is used to correct pose errors\ :latex:`\:(Section \ref{slam:sect-slam})`.
+
+
+Calibration relative to a robot
+-------------------------------
+
+.. index::
+   pair: calibration; hand-eye calibration
+
+The |rc_visard| is designed for industrial environments including those featuring robotic applications
+in which the |rc_visard| is either mounted on a robot or statically in a robot work cell. To use the |rc_visard|'s output, the robot must know where the sensor is located in the
+robot coordinate frame. To compute the |rc_visard|'s location in the robot coordinate frame,
+the sensor offers the so-called :doc:`Hand-eye calibration software component<handeye_calibration>`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})`.
+The calibration routine can be executed either programmatically via the :doc:`rest_api`
+or manually via the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{installation:sect-web-gui})`.

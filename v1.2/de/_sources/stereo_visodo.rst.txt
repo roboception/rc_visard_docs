@@ -1,0 +1,264 @@
+Visuelle Odometrie
+
+Die visuelle Odometrie ist Teil des Sensordynamik-Moduls. Sie dient
+dazu, die Bewegung der Kamera aus der Bewegung charakteristischer
+Bildpunkte (sogenannter Bildmerkmale) im linken Kamerabild zu
+schätzen. Bildmerkmale werden auf Basis von Eckpunkten, Bildbereichen
+mit hohen Intensitätsgradienten, errechnet. Mithilfe von Bildmerkmalen
+lassen sich Übereinstimmungen zwischen aufeinanderfolgenden Bildern
+finden. Deren 3D-Koordinaten werden mithilfe eines Stereo-Matching-
+Verfahrens (unabhängig vom Disparitätsbild) berechnet. Aus den
+übereinstimmenden 3D-Punkten zweier Kamerabilder wird die Bewegung der
+Kamera berechnet. Um die Robustheit der visuellen Odometrie zu
+erhöhen, werden Übereinstimmungen nicht nur zum letzten Kamerabild,
+sondern zu mehreren vorherigen Kamerabildern, sogenannten
+
+Keyframes
+
+, berechnet. Dann wird das beste Resultat ausgewählt.
+
+Die Bildwiederholrate der visuellen Odometrie ist unabhängig von der
+Benutzereinstellung im Stereokamera-Modul. Sie ist intern auf 12 Hz
+begrenzt, kann aber je nach Anzahl der Bildmerkmale oder Keyframes
+auch niedriger sein. Um die Posenschätzung in einer guten Qualität
+berechnen zu können, sollte die Bildwiederholrate nicht signifikant
+unter 10 Hz fallen.
+
+Die Messungen aus der visuellen Odometrie lassen sich nicht direkt vom
+
+rc_visard
+
+ aufrufen. Stattdessen werden sie intern mit den Daten der
+integrierten inertialen Messeinheit (IMU) kombiniert, um so die
+Robustheit und Bildwiederholrate zu erhöhen und die Latenz zu
+verringern. Das Ergebnis der Sensordatenfusion wird in Form
+verschiedener Datenströme bereitgestellt (siehe
+
+Stereo-INS
+
+).
+
+Parameter
+
+Das Odometrie-Modul heißt "rc_stereovisodo" und wird in der
+
+Web GUI
+
+ auf der Registerkarte
+
+Dynamik
+
+ dargestellt. Der Benutzer kann die Parameter der visuellen Odometrie
+entweder dort oder über die REST-API (
+
+REST-API-Schnittstelle
+
+) ändern.
+
+Übersicht über die Parameter
+
+Dieses Softwaremodul bietet folgende Laufzeitparameter.
+
+Laufzeitparameter des rc_stereovisodo-Moduls              Name  Typ
+Min.  Max.  Default  Beschreibung  disprange  int32  32  512  256
+Disparitätsbereich in Pixeln  ncorner  int32  50  4000  500  Anzahl
+der Eckpunkte  nfeature  int32  50  4000  300  Anzahl der Bildmerkmale
+nkey  int32  1  4  4  Anzahl der Keyframes
+
+Dieses Modul meldet folgende Statuswerte:
+
+Statuswerte des rc_stereovisodo-Moduls      Name  Beschreibung  corner
+Anzahl der erkannten Eckpunkte. Dieser Wert wird unter der
+Bildvorschau in der Web GUI als Ecken angezeigt.  correspondences
+Anzahl der Übereinstimmungen. Dieser Wert wird unter der Bildvorschau
+in der Web GUI als Korrespondenzen angezeigt.  feature  Anzahl der
+Bildmerkmale. Dieser Wert wird unter der Bildvorschau in der Web GUI
+als Merkmale angezeigt.  fps  Bildwiederholrate für die visuelle
+Odometrie in Hertz. Dieser Wert wird unter der Bildvorschau in der Web
+GUI als Rate visuelle Odometrie (Hz) angezeigt.  time_frame
+Verarbeitungszeit in Sekunden, die zur Berechnung von Eckpunkten und
+Bildmerkmalen pro Frame benötigt wird  time_vo  Verarbeitungszeit in
+Sekunden, die zur Berechnung der Bewegung benötigt wird
+
+Beschreibung der Laufzeitparameter
+
+Laufzeitparameter beeinflussen die Anzahl an Bildmerkmalen, auf deren
+Grundlage die Berechnungen für die visuelle Odometrie vorgenommen
+werden. Ein Mehr an Bildmerkmalen erhöht die Robustheit der visuellen
+Odometrie, geht jedoch zu Lasten einer längeren Laufzeit, was wiederum
+die Frequenz der visuellen Odometrie verringern kann. Doch auch wenn
+die resultierende Zustandsschätzung aufgrund der Kombination mit den
+IMU-Messdaten immer mit einer hohen Frequenz bereitgestellt wird, sind
+hohe Odometrie-Raten dennoch wünschenswert, da diese Messungen viel
+akkurater sind als IMU-Messungen allein. Daher sollte für die visuelle
+Odometrie eine Frequenz von 10 Hz angestrebt werden. Die Rate der
+visuellen Odometrie wird als Statusparameter bereitgestellt und unter
+der Bildvorschau in der
+
+Web GUI
+
+ auf der Seite
+
+Dynamik
+
+ angegeben.
+
+
+Auf dem auf dieser Seite gezeigten Kamerabild werden Bildmerkmale als
+kleine grüne Punkte dargestellt. Die dicken grünen Punkte sind
+diejenigen Merkmale, für die Übereinstimmungen zu einem vorherigen
+Keyframe gefunden werden konnten. Grüne Linien stellen dar, wie sich
+diese Bildmerkmale in Bezug auf den vorherigen Keyframe bewegt haben.
+Diese Darstellung soll beim Finden eines guten Parametersatzes für die
+visuelle Odometrie helfen. Die Anzahl an übereinstimmenden
+Bildmerkmalen (Korrespondenzen) wird als Statusparameter
+bereitgestellt und unter der Bildvorschau in der
+
+Web GUI
+
+ auf der Seite
+
+Dynamik
+
+ angegeben. Für robuste Odometrie-Messungen sollten die Parameter
+derart angepasst werden, dass die resultierende Anzahl an
+Korrespondenzen in der Zielumgebung bei mindestens 50 liegt, wenn sich
+der Sensor bewegt. Die Anzahl an Korrespondenzen ist höher, wenn der
+
+rc_visard
+
+ in Ruhe ist, und sie wird sich verändern, wenn sich der
+
+rc_visard
+
+ durch die Umgebung bewegt. Aufgrund der Kombination mit den IMU-
+Messungen kann ein kurzer Ausfall der visuellen Odometrie toleriert
+werden. Längere Ausfälle sollten vermieden werden, da sie zu größeren
+Posenunsicherheiten und zu Fehlern in der Zustandsschätzung führen
+können.
+
+Jeder Laufzeitparameter ist durch eine eigene Zeile auf der
+Registerkarte
+
+Dynamik
+
+ der Web GUI repräsentiert. Der Name der Zeile ist in Klammern hinter
+dem Namen des Parameters angegeben und die Parameter werden in der
+Reihenfolge, in der sie in der Web GUI erscheinen, aufgelistet:
+
+"start" (
+Dynamik
+
+)
+   Dieser Parameter startet die Module für die Schätzungen zur
+   Sensordynamik (siehe
+
+   Services
+
+   ).
+
+"disprange" (
+Disparitätsbereich
+
+)
+   Der Disparitätsbereich gibt den maximalen Disparitätswert an, den
+   jedes Bildmerkmal im hochaufgelösten Disparitätsbild (640 x 480
+   Pixel) annehmen kann. Der Disparitätsbereich bestimmt den
+   Mindestabstand für die visuelle Odometrie. Ist der
+   Disparitätsbereich klein, werden nur entferntere Merkmale für die
+   Odometrie-Schätzungen berücksichtigt. Bei einem größeren
+   Disparitätsbereich können auch nahe liegende Merkmale einbezogen
+   werden. Ein größerer Disparitätsbereich erhöht die Rechenzeit, was
+   die Frequenz der visuellen Odometrie verringern kann.
+
+"nkey" (
+Anzahl der Keyframes
+
+)
+   Ein Mehr an Keyframes kann die Robustheit und Genauigkeit der
+   visuellen Odometrie erhöhen, was jedoch mit einer längeren
+   Rechenzeit und möglicherweise mit einer geringeren
+   Odometriefrequenz einhergehen kann.
+
+"ncorner" (
+Anzahl der Ecken
+
+)
+   Dieser Parameter gibt die ungefähre Anzahl an Eckpunkten an, die im
+   linken Bild detektiert werden. Ein größerer Wert macht die visuelle
+   Odometrie robuster und genauer, kann aber zu einer geringeren
+   Odometriefrequenzführen.
+
+"nfeature" (
+Anzahl der Merkmale
+
+)
+   Dieser Parameter beschreibt die maximale Anzahl an Bildmerkmalen,
+   die von den Eckpunkten abgeleitet werden. Es ist hilfreich, mehr
+   Eckpunkte zu erkennen, sodass die beste Teilmenge als Merkmale
+   ausgewählt werden kann. Ein größerer Wert macht die visuelle
+   Odometrie robuster und genauer, kann aber zu einer geringeren
+   Odometrierate führen. Je nach Szene und Bewegung werden
+   möglicherweise weniger Merkmale berechnet. Die tatsächliche Anzahl
+   an Merkmalen wird unter der Bildvorschau in der
+
+   Web GUI
+
+    auf der Seite
+
+   Dynamik
+
+    angegeben.
+
+Hinweis: Die Erhöhung der Anzahl an Keyframes, Ecken oder Merkmalen
+  wird zwar die Robustheit erhöhen, erfordert aber mehr Rechenzeit und
+  kann, je nachdem, welche anderen Module auf dem
+
+  rc_visard
+
+   aktiv sind, die Rate der visuellen Odometrie verringern. Die
+  Odometriefrequenz sollte mindestens 10 Hz betragen.
+
+Services
+
+Das Visuelle-Odometrie-Modul bietet folgende Services, um
+Parametereinstellungen zu speichern bzw. wiederherzustellen. Die Namen
+der zugehörigen Web GUI-Schaltflächen sind in Klammern hinzugefügt.
+
+"save_parameters" (
+Speichern
+
+)
+   Beim Aufruf dieses Services werden die aktuellen
+   Parametereinstellungen zur visuellen Odometrie auf dem
+
+   rc_visard
+
+    gespeichert. Das bedeutet, dass diese Werte selbst nach einem
+   Neustart angewandt werden.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert keine Rückgabewerte.
+
+"reset_defaults" (
+Zurücksetzen
+
+)
+   Hiermit werden die Werkseinstellungen der Parameter dieses Moduls
+   wiederhergestellt und angewandt („factory reset“).
+
+   Achtung: Der Benutzer muss bedenken, dass beim Aufruf dieses
+     Services die aktuellen Parametereinstellungen für die visuelle
+     Odometrie unwiderruflich verloren gehen.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert keine Rückgabewerte.
+
+Das Modul bietet keine eigenen Funktionen zum Starten bzw. Stoppen, da
+es über das
+
+Dynamik-Modul
+
+ gestartet bzw. gestoppt wird.

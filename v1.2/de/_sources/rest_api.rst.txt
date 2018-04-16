@@ -1,0 +1,2259 @@
+REST-API-Schnittstelle
+
+Neben der
+
+GenICam-Schnittstelle
+
+ bietet der
+
+rc_visard
+
+ eine umfassende RESTful-Web-Schnittstelle (REST-API), auf die jeder
+HTTP-Client und jede HTTP-Bibliothek zugreifen kann. Während die
+meisten Parameter, Services und Funktionen auch über die
+benutzerfreundliche
+
+Web GUI
+
+ zugänglich sind, dient die REST-API eher als Maschine-Maschine-
+Schnittstelle für folgende programmgesteuerte Aufgaben:
+
+Setzen und Abrufen der Laufzeitparameter der Softwaremodule, z. B. der
+Stereokamera, der Disparitätsberechnung und der visuellen Odometrie;
+
+Aufrufen von Services, z. B. zum Starten und Stoppen einzelner
+Softwaremodule, oder zum Nutzen spezieller Funktionen, wie der Hand-
+Auge-Kalibrierung;
+
+Konfiguration von Datenströmen, die, wie in der rc_dynamics
+Schnittstelle\:(Abschnitt \ref{rc_dynamics:sect-rc-dynamics-
+interface}) beschrieben, die dynamischen
+Zustandsschätzungen\:(Abschnitt \ref{dynamics:sect-dynamics-streams})
+des rc_visard bereitstellen;
+
+Abruf des aktuellen Systemstatus und des Status einzelner
+Softwaremodule; sowie
+
+Aktualisierung der Firmware des rc_visard oder seiner Lizenz.
+
+Hinweis: In der REST-API des
+
+  rc_visard
+
+   bezeichnet der Begriff
+
+  node
+
+   ein Softwaremodul, das gewisse algorithmische Funktionen bündelt
+  und eine ganzheitliche Benutzeroberfläche (Parameter, Services,
+  aktueller Status) besitzt. Beispiele für solche Module sind das
+  Stereo-Matching-Modul oder das Modul der visuellen Odometrie.
+
+Allgemeine Struktur der Programmierschnittstelle (API)
+
+Der allgemeine
+
+Einstiegspunkt
+
+ zur Programmierschnittstelle (API) des
+
+rc_visard
+
+ ist "http://<rcvisard>/api/" wobei "<rcvisard>" entweder die IP-
+Adresse des Geräts ist oder sein dem jeweiligen DHCP-Server bekannter
+Host-Name (siehe
+
+Netzwerkkonfiguration
+
+). Greift der Benutzer über einen Webbrowser auf diese Adresse zu,
+kann er die Programmierschnittstelle während der Laufzeit mithilfe der
+
+Swagger UI
+
+  erkunden und testen.
+
+Für die eigentlichen HTTP-Anfragen wird dem Einstiegspunkt der
+Programmierschnittstelle die
+
+aktuelle Version der Schnittstelle als Postfix angehangen
+
+, d. h. "http://<rcvisard>/api/v1". Alle Daten, die an die REST-API
+gesandt und von ihr empfangen werden, entsprechen dem JSON-Datenformat
+(JavaScript Object Notation). Die Programmierschnittstelle ist so
+gestaltet, dass der Benutzer die in
+
+Verfügbare Ressourcen und Anfragen
+
+ aufgelisteten sogenannten
+
+Ressourcen
+
+ über die folgenden HTTP-Anforderungen
+
+anlegen, abrufen, ändern und löschen
+
+ kann.
+
+    Anfragetyp  Beschreibung  GET  Zugriff auf eine oder mehrere
+Ressourcen und Rückgabe des Ergebnisses im JSON-Format  PUT  Änderung
+einer Ressource und Rückgabe der modifizierten Ressource im JSON-
+Format  DELETE  Löschen einer Ressource  POST  Upload einer Datei (z.
+B. einer Lizenz oder eines Firmware-Images)
+
+Je nach der Art der Anfrage und Datentyp können die
+
+Argumente
+
+ für HTTP-Anfragen als Teil des
+
+Pfads
+
+ (
+
+URI
+
+) zur Ressource, als
+
+Abfrage
+
+-Zeichenfolge, als
+
+Formulardaten
+
+ oder im
+
+Body
+
+ der Anfrage übertragen werden. Die folgenden Beispiele nutzen das
+Kommandozeilenprogramm
+
+curl
+
+, das für verschiedene Betriebssysteme verfügbar ist. Siehe
+
+https://curl.haxx.se
+
+.
+
+Abruf des aktuellen Status eines Moduls, wobei sein Name im Pfad (URI)
+verschlüsselt ist  curl -X GET
+'http://<rcvisard>/api/v1/nodes/rc_stereomatching'
+
+Abruf einiger Parameterwerte eines Moduls über eine
+Abfragezeichenfolge  curl -X GET 'http://<rcvisard>/api/v1/nodes/rc_s
+tereomatching/parameters?name=minconf&name=maxdepth'
+
+Konfiguration eines neuen Datenstroms, wobei die Zielparameter als
+Formulardaten übertragen werden  curl -X PUT --header 'Content-Type:
+application/x-www-form-urlencoded' -d 'destination=10.0.1.14%3A30000'
+'http://<rcvisard>/api/v1/datastreams/pose'
+
+Setzen eines Modulparameters als JSON-formatierter Text im Body der
+Anfrage  curl -X PUT --header 'Content-Type: application/json' -d
+'[{"name": "mindepth", "value": 0.1}]'
+'http://<rcvisard>/api/v1/nodes/rc_stereomatching/parameters'
+
+Zur Beantwortung solcher Anfragen greift die Programmierschnittstelle
+des
+
+rc_visard
+
+ auf übliche Rückgabecodes zurück:
+
+    Statuscode  Beschreibung  200 OK  Die Anfrage war erfolgreich. Die
+Ressource wird im JSON-Format zurückgegeben.  400 Bad Request  Ein für
+die API-Anfrage benötigtes Attribut oder Argument fehlt oder ist
+ungültig.  404 Not Found  Auf eine Ressource konnte nicht zugegriffen
+werden. Möglicherweise kann die ID einer Ressource nicht gefunden
+werden.  403 Forbidden  Der Zugriff ist (vorübergehend) verboten.
+Möglicherweise sind einige Parameter gesperrt, während eine GigE
+Vision-Anwendung verbunden ist.  429 Too many requests  Die
+Übertragungsrate ist aufgrund einer zu hohen Anfragefrequenz begrenzt.
+
+Der folgende Eintrag zeigt eine Musterantwort auf eine erfolgreiche
+Anfrage, mit der Informationen zum "minconf"-Parameter des
+"rc_stereomatching"-Moduls angefordert werden:
+
+   HTTP/1.1 200 OK
+   Content-Type: application/json
+   Content-Length: 157
+
+   {
+       "name": "minconf",
+       "min": 0,
+       "default": 0,
+       "max": 1,
+       "value": 0,
+       "type": "float64",
+       "description": "Minimum confidence"
+   }
+
+Hinweis: Das tatsächliche Verhalten, die zulässigen Anfragen und die
+  speziellen Rückgabecodes hängen in hohem Maße von der gewählten
+  Ressource, vom Kontext und von der Aktion ab. Siehe die
+
+  verfügbaren Ressourcen
+
+   des
+
+  rc_visard
+
+   und einzelnen Parameter und Services jedes
+
+  Softwaremoduls
+
+  .
+
+Verfügbare Ressourcen und Anfragen
+
+Die für die REST-API verfügbaren Ressourcen lassen sich in folgende
+Teilbereiche gliedern:
+
+/nodes: Zugriff auf die Softwaremodule \:(Abschnitt \ref{components
+:sect-software-components}) des rc_visard mit ihren jeweiligen
+Laufzeitzuständen, Parametern und verfügbaren Services.
+
+/datastreams: Zugriff auf die und Verwaltung der Datenströme der
+rc_dynamics-Schnittstelle (siehe Die rc_dynamics-Schnittstelle,
+Abschnitt \ref{rc_dynamics:sect-rc-dynamics-interface}) des rc_visard.
+
+/logs: Zugriff auf die im rc_visard hinterlegten Logdateien.
+
+/system: Zugriff auf den Systemzustand und Verwaltung der Lizenzen
+sowie der Firmware-Updates.
+
+Module, Parameter und Services
+
+Die
+
+Softwaremodule
+
+  des
+
+rc_visard
+
+ heißen in der REST-API
+
+nodes
+
+ und vereinen jeweils bestimmte algorithmische Funktionen. Über
+folgenden Befehl lassen sich alle Softwaremodule der REST-API mit
+ihren jeweiligen Services und Parametern auflisten:
+
+   curl -X GET http://<rcvisard>/api/v1/nodes
+
+Informationen zu einem bestimmten Modul (z. B. "rc_stereocamera")
+lassen sich mit folgendem Befehl abrufen:
+
+   curl -X GET http://<rcvisard>/api/v1/nodes/rc_stereocamera
+
+Status:
+   Während der Laufzeit stellt jedes Modul Informationen zu seinem
+   aktuellen Status bereit. Dies umfasst nicht nur den aktuellen
+
+   Verarbeitungsstatus
+
+    des Moduls (z. B. "running" oder "stale"), sondern die meisten
+   Module melden auch Laufzeitstatistiken oder schreibgeschützte
+   Parameter, sogenannte
+
+   Statuswerte
+
+   . Die Statuswerte des "rc_stereocamera"-Moduls lassen sich
+   beispielsweise wie folgt abrufen:
+
+      curl -X GET http://<rcvisard>/api/v1/nodes/rc_stereocamera/status
+
+   Hinweis: Die zurückgegebenen
+
+     Statuswerte
+
+      sind modulspezifisch und werden im jeweiligen
+
+     Softwaremodul
+
+       dokumentiert.
+
+   Hinweis: Statuswerte
+
+      werden nur gemeldet, wenn sich das jeweilige Modul im Zustand
+     "running" befindet.
+
+Parameter:
+   Die meisten Module stellen Parameter über die REST-API des
+
+   rc_visard
+
+    zur Verfügung, damit ihr Laufzeitverhalten an den
+   Anwendungskontext oder die Anforderungen angepasst werden kann. Die
+   REST-API ermöglicht es, den Wert eines Parameters zu setzen und
+   abzufragen. Darüber hinaus stellt sie weitere Angaben, wie z. B.
+   den jeweiligen Standardwert und zulässige Minimal- bzw.
+   Maximalwerte von Parametern, zur Verfügung.
+
+   Die "rc_stereomatching"-Parameter lassen sich beispielsweise wie
+   folgt abrufen:
+
+      curl -X GET http://<rcvisard>/api/v1/nodes/rc_stereomatching/parameters
+
+   Der "median"-Parameter dieses Moduls könnte wie folgt auf den Wert
+   3 gesetzt werden:
+
+      curl -X PUT --header 'Content-Type: application/json' -d '{ "value": 3 }' http://<rcvisard>/api/v1/nodes/rc_stereomatching/parameters/median
+
+   Hinweis: Laufzeitparameter sind modulspezifisch und werden in dem
+     jeweiligen
+
+     Softwaremodul
+
+       dokumentiert.
+
+   Hinweis: Die meisten Parameter, die die Module über die REST-API
+     anbieten, lassen sich auch über die benutzerfreundliche
+
+     Web GUI
+
+      des
+
+     rc_visard
+
+      erkunden und austesten.
+
+   Hinweis: Einige der Parameter, die über die REST-API des
+
+     rc_visard
+
+      bereitgestellt werden, sind auch über die
+
+     GigE Vision 2.0/GenICam-Schnittstelle
+
+       zugänglich. Die Einstellung dieser Parameter über die REST-API
+     ist verboten, solange ein GenICam-Client verbunden ist.
+
+   Zudem bietet jedes Modul, das Laufzeitparameter bereitstellt, auch
+   Services, um die aktuellen Parametereinstellungen zu speichern oder
+   um die Werkseinstellungen aller Parameter wiederherzustellen.
+
+Services:
+   Einige Module bieten auch Services, die sich über die REST-API
+   aufrufen lassen. Hierzu gehört beispielsweise das oben bereits
+   genannte Speichern und Wiederherstellen von Parametern oder auch
+   das Starten und Stoppen von Modulen. Die Services der
+   Zustandsschätzung (siehe
+
+   Stereo-INS
+
+   ) lassen sich beispielsweise wie folgt aufrufen:
+
+      curl -X GET http://<rcvisard>/api/v1/nodes/rc_stereo_ins/services
+
+   Um einen Service eines Moduls aufzurufen, wird eine "PUT"-Anfrage
+   mit servicespezifischen Argumenten für die jeweilige Ressource
+   gestellt (siehe das ""args""-Feld der
+
+   Service-Datenmodell
+
+   ). Das Dynamik-Modul lässt sich beispielsweise wie folgt
+   einschalten:
+
+      curl -X PUT --header 'Content-Type: application/json' -d '{ "args": {}  }' http://<rcvisard>/api/v1/nodes/rc_dynamics/services/start
+
+   Hinweis: Die Services und zugehörigen Argumente sind
+     modulspezifisch und werden im jeweiligen
+
+     Softwaremodul
+
+       dokumentiert.
+
+Die folgende Liste enthält alle REST-API-Anfragen zum Status des
+Moduls und seinen Parametern und Services:
+
+GET /nodes
+
+   Abruf einer Liste aller verfügbaren Module.
+
+   Musteranfrage
+
+      GET /api/v1/nodes HTTP/1.1
+      Host: <rcvisard>
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "name": "rc_stereocalib",
+          "parameters": [
+            "grid_width",
+            "grid_height",
+            "snap"
+          ],
+          "services": [
+            "save_parameters",
+            "reset_defaults",
+            "change_state"
+          ],
+          "status": "stale"
+        },
+        {
+          "name": "rc_stereocamera",
+          "parameters": [
+            "fps",
+            "exp_auto",
+            "exp_value",
+            "exp_max"
+          ],
+          "services": [
+            "save_parameters",
+            "reset_defaults"
+          ],
+          "status": "running"
+        },
+        {
+          "name": "rc_hand_eye_calibration",
+          "parameters": [
+            "grid_width",
+            "grid_height",
+            "robot_mounted"
+          ],
+          "services": [
+            "save_parameters",
+            "reset_defaults",
+            "set_pose",
+            "reset",
+            "save",
+            "calibrate",
+            "get_calibration"
+          ],
+          "status": "stale"
+        },
+        {
+          "name": "rc_stereo_ins",
+          "parameters": [],
+          "services": [],
+          "status": "stale"
+        },
+        {
+          "name": "rc_stereomatching",
+          "parameters": [
+            "force_on",
+            "quality",
+            "disprange",
+            "seg",
+            "median",
+            "fill",
+            "minconf",
+            "mindepth",
+            "maxdepth",
+            "maxdeptherr"
+          ],
+          "services": [
+            "save_parameters",
+            "reset_defaults"
+          ],
+          "status": "running"
+        },
+        {
+          "name": "rc_stereovisodo",
+          "parameters": [
+            "disprange",
+            "nkey",
+            "ncorner",
+            "nfeature"
+          ],
+          "services": [
+            "save_parameters",
+            "reset_defaults"
+          ],
+          "status": "stale"
+        }
+      ]
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: NodeInfo-Array)
+
+   Referenzierte Datenmodelle:
+      NodeInfo\:(Abschnitt \ref{rest_api:sect-rest-datamodel-
+      nodeinfo})
+
+GET /nodes/{node}
+
+   Abruf von Informationen zu einem einzelnen Modul.
+
+   Musteranfrage
+
+      GET /api/v1/nodes/<node> HTTP/1.1
+      Host: <rcvisard>
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "name": "rc_stereocamera",
+        "parameters": [
+          "fps",
+          "exp_auto",
+          "exp_value",
+          "exp_max"
+        ],
+        "services": [
+          "save_parameters",
+          "reset_defaults"
+        ],
+        "status": "running"
+      }
+
+   Parameter:
+      node (string) – Modulname (obligatorisch)
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: NodeInfo)
+
+      404 Not Found – Modul nicht gefunden
+
+   Referenzierte Datenmodelle:
+      NodeInfo\:(Abschnitt \ref{rest_api:sect-rest-datamodel-
+      nodeinfo})
+
+GET /nodes/{node}/parameters
+
+   Abruf von Parametern eines Moduls.
+
+   Musteranfrage
+
+      GET /api/v1/nodes/<node>/parameters?name=<name> HTTP/1.1
+      Host: <rcvisard>
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "default": 25,
+          "description": "Frames per second in Hz",
+          "max": 25,
+          "min": 1,
+          "name": "fps",
+          "type": "float64",
+          "value": 25
+        },
+        {
+          "default": true,
+          "description": "Switching between auto and manual exposure",
+          "max": true,
+          "min": false,
+          "name": "exp_auto",
+          "type": "bool",
+          "value": true
+        },
+        {
+          "default": 0.007,
+          "description": "Maximum exposure time in s if exp_auto is true",
+          "max": 0.018,
+          "min": 6.6e-05,
+          "name": "exp_max",
+          "type": "float64",
+          "value": 0.007
+        }
+      ]
+
+   Parameter:
+      node (string) – Modulname (obligatorisch)
+
+   Anfrageparameter:
+      name (string) – Schränkt Ergebnisse auf Parameter mit diesem
+      Namen ein (optional).
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: Parameter-Array)
+
+      404 Not Found – Modul nicht gefunden
+
+   Referenzierte Datenmodelle:
+      Parameter\:(Abschnitt \ref{rest_api:sect-rest-datamodel-
+      parameter})
+
+PUT /nodes/{node}/parameters
+
+   Aktualisierung mehrerer Parameter.
+
+   Musteranfrage
+
+      PUT /api/v1/nodes/<node>/parameters HTTP/1.1
+      Host: <rcvisard>
+      Accept: application/json
+
+      [
+        {
+          "name": "string",
+          "value": {}
+        }
+      ]
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "default": 25,
+          "description": "Frames per second in Hz",
+          "max": 25,
+          "min": 1,
+          "name": "fps",
+          "type": "float64",
+          "value": 10
+        },
+        {
+          "default": true,
+          "description": "Switching between auto and manual exposure",
+          "max": true,
+          "min": false,
+          "name": "exp_auto",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "default": 0.005,
+          "description": "Manual exposure time in s if exp_auto is false",
+          "max": 0.018,
+          "min": 6.6e-05,
+          "name": "exp_value",
+          "type": "float64",
+          "value": 0.005
+        }
+      ]
+
+   Parameter:
+      node (string) – Modulname (obligatorisch)
+
+   JSON-Objekt-Array zur Anfrage:
+      parameters (Parameter) – Liste von Parametern (obligatorisch)
+
+   Anfrage-Header:
+      Accept – application/json
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: Parameter-Array)
+
+      404 Not Found – Modul nicht gefunden
+
+      403 Forbidden – Aktualisierung des Parameters verboten, z. B.
+      weil er aufgrund einer laufenden GigE Vision-Anwendung gesperrt
+      ist oder keine valide Lizenz für diese Komponente vorliegt.
+
+   Referenzierte Datenmodelle:
+      Parameter\:(Abschnitt \ref{rest_api:sect-rest-datamodel-
+      parameter})
+
+GET /nodes/{node}/parameters/{param}
+
+   Abruf eines bestimmten Parameters eines Moduls.
+
+   Musteranfrage
+
+      GET /api/v1/nodes/<node>/parameters/<param> HTTP/1.1
+      Host: <rcvisard>
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "default": "H",
+        "description": "Quality, i.e. H, M or L",
+        "max": "",
+        "min": "",
+        "name": "quality",
+        "type": "string",
+        "value": "H"
+      }
+
+   Parameter:
+      node (string) – Modulname (obligatorisch)
+
+      param (string) – Name des Parameters (obligatorisch)
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: Parameter)
+
+      404 Not Found – Modul oder Parameter nicht gefunden
+
+   Referenzierte Datenmodelle:
+      Parameter\:(Abschnitt \ref{rest_api:sect-rest-datamodel-
+      parameter})
+
+PUT /nodes/{node}/parameters/{param}
+
+   Aktualisierung eines bestimmten Parameters eines Moduls.
+
+   Musteranfrage
+
+      PUT /api/v1/nodes/<node>/parameters/<param> HTTP/1.1
+      Host: <rcvisard>
+      Accept: application/json
+
+      {
+        "name": "string",
+        "value": {}
+      }
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "default": "H",
+        "description": "Quality, i.e. H, M or L",
+        "max": "",
+        "min": "",
+        "name": "quality",
+        "type": "string",
+        "value": "M"
+      }
+
+   Parameter:
+      node (string) – Modulname (obligatorisch)
+
+      param (string) – Name des Parameters (obligatorisch)
+
+   JSON-Objekt zur Anfrage:
+      parameter (Parameter) – zu aktualisierender Parameter als JSON-
+      Objekt (obligatorisch)
+
+   Anfrage-Header:
+      Accept – application/json
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: Parameter)
+
+      404 Not Found – Modul oder Parameter nicht gefunden
+
+      403 Forbidden – Aktualisierung des Parameters verboten, z. B.
+      weil er aufgrund einer laufenden GigE Vision-Anwendung gesperrt
+      ist oder keine valide Lizenz für diese Komponente vorliegt.
+
+   Referenzierte Datenmodelle:
+      Parameter\:(Abschnitt \ref{rest_api:sect-rest-datamodel-
+      parameter})
+
+GET /nodes/{node}/services
+
+   Abruf von Beschreibungen aller von einem Modul angebotenen
+   Services.
+
+   Musteranfrage
+
+      GET /api/v1/nodes/<node>/services HTTP/1.1
+      Host: <rcvisard>
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "args": {},
+          "description": "Restarts the component.",
+          "name": "restart",
+          "response": {
+            "accepted": "bool",
+            "current_state": "string"
+          }
+        },
+        {
+          "args": {},
+          "description": "Starts the component.",
+          "name": "start",
+          "response": {
+            "accepted": "bool",
+            "current_state": "string"
+          }
+        },
+        {
+          "args": {},
+          "description": "Stops the component.",
+          "name": "stop",
+          "response": {
+            "accepted": "bool",
+            "current_state": "string"
+          }
+        }
+      ]
+
+   Parameter:
+      node (string) – Modulname (obligatorisch)
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: Service-Array)
+
+      404 Not Found – Modul nicht gefunden
+
+   Referenzierte Datenmodelle:
+      Service\:(Abschnitt \ref{rest_api:sect-rest-datamodel-service})
+
+GET /nodes/{node}/services/{service}
+
+   Abruf der Beschreibung eines modulspezifischen Services.
+
+   Musteranfrage
+
+      GET /api/v1/nodes/<node>/services/<service> HTTP/1.1
+      Host: <rcvisard>
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "args": {
+          "pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "slot": "int32"
+        },
+        "description": "Save a pose (grid or gripper) for later calibration.",
+        "name": "set_pose",
+        "response": {
+          "message": "string",
+          "status": "int32",
+          "success": "bool"
+        }
+      }
+
+   Parameter:
+      node (string) – Modulname (obligatorisch)
+
+      service (string) – Name des Service (obligatorisch)
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: Funktion)
+
+      404 Not Found – Modul oder Service nicht gefunden
+
+   Referenzierte Datenmodelle:
+      Service\:(Abschnitt \ref{rest_api:sect-rest-datamodel-service})
+
+PUT /nodes/{node}/services/{service}
+
+   Aufruf des Services eines Moduls: Die benötigten Argumente und die
+   zugehörige Antwort hängt vom Modul und vom Service ab.
+
+   Musteranfrage
+
+      PUT /api/v1/nodes/<node>/services/<service> HTTP/1.1
+      Host: <rcvisard>
+      Accept: application/json
+
+      {
+        "args": {}
+      }
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "name": "set_pose",
+        "response": {
+          "message": "Grid detected, pose stored.",
+          "status": 1,
+          "success": true
+        }
+      }
+
+   Parameter:
+      node (string) – Modulname (obligatorisch)
+
+      service (string) – Name des Service (obligatorisch)
+
+   JSON-Objekt zur Anfrage:
+      service args (Service) – Beispielargumente (obligatorisch)
+
+   Anfrage-Header:
+      Accept – application/json
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: Funktion)
+
+      404 Not Found – Modul oder Service nicht gefunden
+
+      403 Forbidden – Service-Aufruf verboten, z. B. weil keine valide
+      Lizenz für diese Komponente vorliegt.
+
+   Referenzierte Datenmodelle:
+      Service\:(Abschnitt \ref{rest_api:sect-rest-datamodel-service})
+
+GET /nodes/{node}/status
+
+   Abruf des Status eines Moduls.
+
+   Musteranfrage
+
+      GET /api/v1/nodes/<node>/status HTTP/1.1
+      Host: <rcvisard>
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "status": "running",
+        "timestamp": 1503075030.2335997,
+        "values": {
+          "baseline": "0.0650542",
+          "color": "0",
+          "exp": "0.00426667",
+          "focal": "0.844893",
+          "fps": "25.1352",
+          "gain": "12.0412",
+          "height": "960",
+          "temp_left": "39.6",
+          "temp_right": "38.2",
+          "time": "0.00406513",
+          "width": "1280"
+        }
+      }
+
+   Parameter:
+      node (string) – Modulname (obligatorisch)
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: NodeStatus)
+
+      404 Not Found – Modul nicht gefunden
+
+   Referenzierte Datenmodelle:
+      NodeStatus\:(Abschnitt \ref{rest_api:sect-rest-datamodel-
+      nodestatus})
+
+Datenströme
+
+Über die folgenden Ressourcen und Anfragen ist es möglich, auf die
+Streams der
+
+Die rc_dynamics-Schnittstelle
+
+ zuzugreifen und diese zu konfigurieren. Mit diesen REST-API-Anfragen
+ist es möglich,
+
+   die verfügbaren und laufenden Datenströme anzuzeigen, z. B.  curl
+   -X GET http://<rcvisard>/api/v1/datastreams
+
+   einen Datenstrom in Richtung eines Ziels zu starten, z. B.  curl -X
+   PUT --header 'Content-Type: application/x-www-form-urlencoded' -d
+   'destination=<target-ip>:<target-port>'
+   http://<rcvisard>/api/v1/datastreams/pose
+
+   Datenströme zu stoppen, z. B.  curl -X DELETE
+   http://<rcvisard>/api/v1/datastreams/pose?destination=<target-ip
+   >:<target-port>
+
+Die folgende Liste enthält alle REST-API-Anfragen zu Datenströmen:
+
+GET /datastreams
+
+   Abruf einer Liste aller verfügbaren Datenströme.
+
+   Musteranfrage
+
+      GET /api/v1/datastreams HTTP/1.1
+      Host: <rcvisard>
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "description": "Pose of left camera at VisualOdometry rate (~10Hz)",
+          "destinations": [
+            "192.168.1.13:30000"
+          ],
+          "name": "pose",
+          "protobuf": "Frame",
+          "protocol": "UDP"
+        },
+        {
+          "description": "Pose of left camera (RealTime 200Hz)",
+          "destinations": [
+            "192.168.1.100:20000",
+            "192.168.1.42:45000"
+          ],
+          "name": "pose_rt",
+          "protobuf": "Frame",
+          "protocol": "UDP"
+        },
+        {
+          "description": "Raw IMU (InertialMeasurementUnit) values (RealTime 200Hz)",
+          "destinations": [],
+          "name": "imu",
+          "protobuf": "Imu",
+          "protocol": "UDP"
+        },
+        {
+          "description": "Dynamics of sensor (pose, velocity, acceleration) (RealTime 200Hz)",
+          "destinations": [
+            "192.168.1.100:20001"
+          ],
+          "name": "dynamics",
+          "protobuf": "Dynamics",
+          "protocol": "UDP"
+        }
+      ]
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: Stream-Array)
+
+   Referenzierte Datenmodelle:
+      Stream\:(Abschnitt \ref{rest_api:sect-rest-datamodel-stream})
+
+GET /datastreams/{stream}
+
+   Abruf der Datenstrom-Konfiguration.
+
+   Musteranfrage
+
+      GET /api/v1/datastreams/<stream> HTTP/1.1
+      Host: <rcvisard>
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "description": "Pose of left camera at VisualOdometry rate (~10Hz)",
+        "destinations": [
+          "192.168.1.13:30000"
+        ],
+        "name": "pose",
+        "protobuf": "Frame",
+        "protocol": "UDP"
+      }
+
+   Parameter:
+      stream (string) – Name des Streams (obligatorisch)
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: Stream)
+
+      404 Not Found – Datenstrom nicht gefunden
+
+   Referenzierte Datenmodelle:
+      Stream\:(Abschnitt \ref{rest_api:sect-rest-datamodel-stream})
+
+PUT /datastreams/{stream}
+
+   Aktualisierung einer Datenstrom-Konfiguration.
+
+   Musteranfrage
+
+      PUT /api/v1/datastreams/<stream> HTTP/1.1
+      Host: <rcvisard>
+      Accept: application/x-www-form-urlencoded
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "description": "Pose of left camera at VisualOdometry rate (~10Hz)",
+        "destinations": [
+          "192.168.1.13:30000",
+          "192.168.1.25:40000"
+        ],
+        "name": "pose",
+        "protobuf": "Frame",
+        "protocol": "UDP"
+      }
+
+   Parameter:
+      stream (string) – Name des Streams (obligatorisch)
+
+   Formularparameter:
+      destination – Hinzuzufügendes Ziel („IP:port“) (obligatorisch)
+
+   Anfrage-Header:
+      Accept – application/x-www-form-urlencoded
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: Stream)
+
+      404 Not Found – Datenstrom nicht gefunden
+
+   Referenzierte Datenmodelle:
+      Stream\:(Abschnitt \ref{rest_api:sect-rest-datamodel-stream})
+
+DELETE /datastreams/{stream}
+
+   Löschen eines Ziels aus der Datenstrom-Konfiguration.
+
+   Musteranfrage
+
+      DELETE /api/v1/datastreams/<stream>?destination=<destination> HTTP/1.1
+      Host: <rcvisard>
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "description": "Pose of left camera at VisualOdometry rate (~10Hz)",
+        "destinations": [],
+        "name": "pose",
+        "protobuf": "Frame",
+        "protocol": "UDP"
+      }
+
+   Parameter:
+      stream (string) – Name des Streams (obligatorisch)
+
+   Anfrageparameter:
+      destination (string) – Zu löschendes Ziel („IP:port“): Fehlt die
+      Angabe, werden alle Ziele gelöscht (optional).
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: Stream)
+
+      404 Not Found – Datenstrom nicht gefunden
+
+   Referenzierte Datenmodelle:
+      Stream\:(Abschnitt \ref{rest_api:sect-rest-datamodel-stream})
+
+System und Logs
+
+Die folgenden Ressourcen und Anfragen sind für die System-Level-API
+des
+
+rc_visard
+
+ verfügbar. Sie ermöglichen Folgendes:
+
+   Zugriff auf Logdateien (systemweit oder modulspezifisch);
+
+   Abruf von Informationen zum Gerät und zur Laufzeitstatistik, wie
+   Datum, MAC-Adresse, Uhrzeitsynchronisierungsstatus und verfügbare
+   Ressourcen;
+
+   Verwaltung installierter Softwarelizenzen; und
+
+   Aktualisierung des Firmware-Images des rc_visard.
+
+GET /logs
+
+   Abruf einer Liste aller verfügbaren Logdateien.
+
+   Musteranfrage
+
+      GET /api/v1/logs HTTP/1.1
+      Host: <rcvisard>
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "date": 1503060035.0625782,
+          "name": "rcsense-api.log",
+          "size": 730
+        },
+        {
+          "date": 1503060035.741574,
+          "name": "stereo.log",
+          "size": 39024
+        },
+        {
+          "date": 1503060044.0475223,
+          "name": "camera.log",
+          "size": 1091
+        },
+        {
+          "date": 1503060035.2115774,
+          "name": "dynamics.log"
+        }
+      ]
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: LogInfo-Array)
+
+   Referenzierte Datenmodelle:
+      LogInfo\:(Abschnitt \ref{rest_api:sect-rest-datamodel-loginfo})
+
+GET /logs/{log}
+
+   Abruf einer Logdatei: Die Art des Inhalts der Antwort richtet sich
+   nach dem „format“-Parameter.
+
+   Musteranfrage
+
+      GET /api/v1/logs/<log>?format=<format>&limit=<limit> HTTP/1.1
+      Host: <rcvisard>
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "date": 1503060035.2115774,
+        "log": [
+          {
+            "component": "rc_stereo_ins",
+            "level": "INFO",
+            "message": "Running rc_stereo_ins version 2.4.0",
+            "timestamp": 1503060034.083
+          },
+          {
+            "component": "rc_stereo_ins",
+            "level": "INFO",
+            "message": "Starting up communication interfaces",
+            "timestamp": 1503060034.085
+          },
+          {
+            "component": "rc_stereo_ins",
+            "level": "INFO",
+            "message": "Autostart disabled",
+            "timestamp": 1503060034.098
+          },
+          {
+            "component": "rc_stereo_ins",
+            "level": "INFO",
+            "message": "Initializing realtime communication",
+            "timestamp": 1503060034.209
+          },
+          {
+            "component": "rc_stereo_ins",
+            "level": "INFO",
+            "message": "Startet state machine in state IDLE",
+            "timestamp": 1503060034.383
+          },
+          {
+            "component": "rc_stereovisodo",
+            "level": "INFO",
+            "message": "Init stereovisodo ...",
+            "timestamp": 1503060034.814
+          },
+          {
+            "component": "rc_stereovisodo",
+            "level": "INFO",
+            "message": "rc_stereovisodo: Using standard VO",
+            "timestamp": 1503060034.913
+          },
+          {
+            "component": "rc_stereovisodo",
+            "level": "INFO",
+            "message": "rc_stereovisodo: Playback mode: false",
+            "timestamp": 1503060035.132
+          },
+          {
+            "component": "rc_stereovisodo",
+            "level": "INFO",
+            "message": "rc_stereovisodo: Ready",
+            "timestamp": 1503060035.212
+          }
+        ],
+        "name": "dynamics.log",
+        "size": 695
+      }
+
+   Parameter:
+      log (string) – Name der Logdatei (obligatorisch)
+
+   Anfrageparameter:
+      format (string) – Rückgabe des Logs im JSON- oder Rohdatenformat
+      (mögliche Werte: json oder raw; Voreinstellung: json) (optional)
+
+      limit (integer) – Beschränkung auf die letzten x Zeilen im JSON-
+      Format (Voreinstellung: 100) (optional)
+
+   Antwort-Headers:
+      Content-Type – text/plain application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: Log)
+
+      404 Not Found – Log nicht gefunden
+
+   Referenzierte Datenmodelle:
+      Log\:(Abschnitt \ref{rest_api:sect-rest-datamodel-log})
+
+GET /system
+
+   Abruf von Systeminformationen zum Sensor.
+
+   Musteranfrage
+
+      GET /api/v1/system HTTP/1.1
+      Host: <rcvisard>
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "firmware": {
+          "active_image": {
+            "image_version": "rc_visard_v1.1.0"
+          },
+          "fallback_booted": true,
+          "inactive_image": {
+            "image_version": "rc_visard_v1.0.0"
+          },
+          "next_boot_image": "active_image"
+        },
+        "hostname": "rc-visard-02873515",
+        "link_speed": 1000,
+        "mac": "00:14:2D:2B:D8:AB",
+        "ntp_status": {
+          "accuracy": "48 ms",
+          "synchronized": true
+        },
+        "ptp_status": {
+          "master_ip": "",
+          "offset": 0,
+          "offset_dev": 0,
+          "offset_mean": 0,
+          "state": "off"
+        },
+        "ready": true,
+        "serial": "02873515",
+        "time": 1504080462.641875,
+        "uptime": 65457.42
+      }
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: SysInfo)
+
+   Referenzierte Datenmodelle:
+      SysInfo\:(Abschnitt \ref{rest_api:sect-rest-datamodel-sysinfo})
+
+GET /system/license
+
+   Abruf von Informationen zu den auf dem Sensor installierten
+   Lizenzen.
+
+   Musteranfrage
+
+      GET /api/v1/system/license HTTP/1.1
+      Host: <rcvisard>
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "components": {
+          "calibration": true,
+          "fusion": true,
+          "hand_eye_calibration": true,
+          "rectification": true,
+          "self_calibration": true,
+          "slam": false,
+          "stereo": true,
+          "svo": true
+        },
+        "valid": true
+      }
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: LicenseInfo)
+
+   Referenzierte Datenmodelle:
+      LicenseInfo\:(Abschnitt \ref{rest_api:sect-rest-datamodel-
+      licenseinfo})
+
+POST /system/license
+
+   Aktualisierung der auf dem Sensor installierten Lizenz mithilfe
+   einer Lizenzdatei.
+
+   Musteranfrage
+
+      POST /api/v1/system/license HTTP/1.1
+      Host: <rcvisard>
+      Accept: multipart/form-data
+
+   Formularparameter:
+      file – Lizenzdatei (obligatorisch)
+
+   Anfrage-Header:
+      Accept – Multipart/Formulardaten
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung
+
+      400 Bad Request – Keine gültige Lizenz
+
+PUT /system/reboot
+
+   Neustart des Sensors.
+
+   Musteranfrage
+
+      PUT /api/v1/system/reboot HTTP/1.1
+      Host: <rcvisard>
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung
+
+GET /system/rollback
+
+   Abruf von Informationen zu Firmware/System-Images, die aktuell auf
+   dem Sensor aktiv oder inaktiv sind.
+
+   Musteranfrage
+
+      GET /api/v1/system/rollback HTTP/1.1
+      Host: <rcvisard>
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "active_image": {
+          "image_version": "rc_visard_v1.1.0"
+        },
+        "fallback_booted": false,
+        "inactive_image": {
+          "image_version": "rc_visard_v1.0.0"
+        },
+        "next_boot_image": "active_image"
+      }
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: FirmwareInfo)
+
+   Referenzierte Datenmodelle:
+      FirmwareInfo\:(Abschnitt \ref{rest_api:sect-rest-datamodel-
+      firmwareinfo})
+
+PUT /system/rollback
+
+   Rollback auf vorherige Firmware-Version (inaktives System-Image).
+
+   Musteranfrage
+
+      PUT /api/v1/system/rollback HTTP/1.1
+      Host: <rcvisard>
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung
+
+      500 Internal Server Error – Interner Fehler
+
+      400 Bad Request – Bereits auf die Verwendung der inaktiven
+      Partition beim nächsten Boot-Vorgang gesetzt.
+
+GET /system/update
+
+   Abruf von Informationen zu Firmware/System-Images, die aktuell auf
+   dem Sensor aktiv oder inaktiv sind.
+
+   Musteranfrage
+
+      GET /api/v1/system/update HTTP/1.1
+      Host: <rcvisard>
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "active_image": {
+          "image_version": "rc_visard_v1.1.0"
+        },
+        "fallback_booted": false,
+        "inactive_image": {
+          "image_version": "rc_visard_v1.0.0"
+        },
+        "next_boot_image": "active_image"
+      }
+
+   Antwort-Headers:
+      Content-Type – application/json
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung (Rückgabe: FirmwareInfo)
+
+   Referenzierte Datenmodelle:
+      FirmwareInfo\:(Abschnitt \ref{rest_api:sect-rest-datamodel-
+      firmwareinfo})
+
+POST /system/update
+
+   Aktualisierung des Firmware/System-Images mit einer Mender-
+   Artefakt-Datei: Um die aktualisierte Firmware zu aktivieren, ist
+   anschließend ein Neustart erforderlich.
+
+   Musteranfrage
+
+      POST /api/v1/system/update HTTP/1.1
+      Host: <rcvisard>
+      Accept: multipart/form-data
+
+   Formularparameter:
+      file – Mender-Artefakt-Datei (obligatorisch)
+
+   Anfrage-Header:
+      Accept – Multipart/Formulardaten
+
+   Statuscodes:
+      200 OK – Erfolgreiche Verarbeitung
+
+      400 Bad Request – Client-Fehler, z. B. kein gültiges Mender-
+      Artefakt
+
+Datentyp-Definitionen
+
+Die REST-API definiert folgende Datenmodelle, die verwendet werden, um
+auf die
+
+verfügbaren Ressourcen
+
+  zuzugreifen oder diese zu ändern, entweder als benötigte
+Attribute/Parameter oder als Rückgabewerte.
+
+FirmwareInfo:
+   Informationen zu aktuell aktiven und inaktiven Firmware-Images und
+   dazu, welches Image für den Boot-Vorgang verwendet wird.
+
+   Ein Objekt des Typs FirmwareInfo besitzt folgende Eigenschaften:
+
+   active_image (ImageInfo): siehe Beschreibung von ImageInfo.
+
+   fallback_booted (boolean): TRUE, wenn das gewünschte Image nicht
+   hochgefahren werden konnte und ein Fallback auf das zuvor genutzte
+   Image vorgenommen wurde.
+
+   inactive_image (ImageInfo): siehe Beschreibung von ImageInfo.
+
+   next_boot_image (string): Firmware-Image, das beim nächsten
+   Neustart geladen wird (entweder active_image oder inactive_image).
+
+   Musterobjekt
+
+      {
+        "active_image": {
+          "image_version": "string"
+        },
+        "fallback_booted": false,
+        "inactive_image": {
+          "image_version": "string"
+        },
+        "next_boot_image": "string"
+      }
+
+   FirmwareInfo-Objekte sind in
+
+   SysInfo
+
+    enthalten und werden für folgende Anfragen verwendet:
+
+      GET /system/rollback
+
+      GET /system/update
+
+ImageInfo:
+   Informationen zu einem bestimmten Firmware-Image.
+
+   Ein Objekt des Typs ImageInfo besitzt folgende Eigenschaften:
+
+   image_version (string): Image-Version.
+
+   Musterobjekt
+
+      {
+        "image_version": "string"
+      }
+
+   ImageInfo-Objekte sind in
+
+   FirmwareInfo
+
+    enthalten.
+
+LicenseComponents:
+   Liste der Lizenzstatus-Angaben der einzelnen Software Komponenten:
+   Der zugehörige Statusindikator ist auf TRUE gesetzt, wenn die
+   entsprechende Komponente mit einer installierten Softwarelizenz
+   entsperrt ist.
+
+   Ein Objekt des Typs LicenseComponents besitzt folgende
+   Eigenschaften:
+
+   calibration (boolean): Komponente zur Kamerakalibrierung.
+
+   fusion (boolean): Komponente zur Stereo-INS/Datenfusion.
+
+   hand_eye_calibration (boolean): Komponente zur Hand-Auge-
+   Kalibrierung.
+
+   rectification (boolean): Komponente zur Bildrektifizierung.
+
+   self_calibration (boolean):  Komponente zur Selbstkalibrierung der
+   Kamera.
+
+   slam (boolean): SLAM-Komponente.
+
+   stereo (boolean): Stereo-Matching-Komponente.
+
+   svo (boolean): visuelle Odometrie-Komponente.
+
+   Musterobjekt
+
+      {
+        "calibration": false,
+        "fusion": false,
+        "hand_eye_calibration": false,
+        "rectification": false,
+        "self_calibration": false,
+        "slam": false,
+        "stereo": false,
+        "svo": false
+      }
+
+   LicenseComponents-Objekte sind in
+
+   LicenseInfo
+
+    enthalten.
+
+LicenseInfo:
+   Informationen zur aktuell auf dem Sensor angewandten
+   Softwarelizenz.
+
+   Ein Objekt des Typs LicenseInfo besitzt folgende Eigenschaften:
+
+   components (LicenseComponents): siehe Beschreibung von
+   LicenseComponents.
+
+   valid (boolean): Angabe, ob eine Lizenz gültig ist oder nicht.
+
+   Musterobjekt
+
+      {
+        "components": {
+          "calibration": false,
+          "fusion": false,
+          "hand_eye_calibration": false,
+          "rectification": false,
+          "self_calibration": false,
+          "slam": false,
+          "stereo": false,
+          "svo": false
+        },
+        "valid": false
+      }
+
+   LicenseInfo-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /system/license
+
+Log:
+   Inhalt einer bestimmten Logdatei im JSON-Format.
+
+   Ein Objekt des Typs Log besitzt folgende Eigenschaften:
+
+   date (Float): UNIX-Uhrzeit, zu der das Log zuletzt geändert wurde.
+
+   log (LogEntry-Array): die eigentlichen Logeinträge.
+
+   name (string): Name der Logdatei.
+
+   size (integer): Größe der Logdatei in Bytes.
+
+   Musterobjekt
+
+      {
+        "date": 0,
+        "log": [
+          {
+            "component": "string",
+            "level": "string",
+            "message": "string",
+            "timestamp": 0
+          },
+          {
+            "component": "string",
+            "level": "string",
+            "message": "string",
+            "timestamp": 0
+          }
+        ],
+        "name": "string",
+        "size": 0
+      }
+
+   Log-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /logs/{log}
+
+LogEntry:
+   Darstellung eines einzelnen Logeintrags in einer Logdatei.
+
+   Ein Objekt des Typs LogEntry besitzt folgende Eigenschaften:
+
+   component (string): Name der Komponente, die diesen Eintrag
+   angelegt hat.
+
+   level (string): Logstufe (mögliche Werte: DEBUG, INFO, WARN, ERROR
+   oder FATAL)
+
+   message (string): eigentliche Lognachricht.
+
+   timestamp (Float): UNIX-Uhrzeit des Logeintrags.
+
+   Musterobjekt
+
+      {
+        "component": "string",
+        "level": "string",
+        "message": "string",
+        "timestamp": 0
+      }
+
+   LogEntry-Objekte sind in
+
+   Log
+
+    enthalten.
+
+LogInfo:
+   Informationen zu einer bestimmten Logdatei.
+
+   Ein Objekt des Typs LogInfo besitzt folgende Eigenschaften:
+
+   date (Float): UNIX-Uhrzeit, zu der das Log zuletzt geändert wurde.
+
+   name (string): Name der Logdatei.
+
+   size (integer): Größe der Logdatei in Bytes.
+
+   Musterobjekt
+
+      {
+        "date": 0,
+        "name": "string",
+        "size": 0
+      }
+
+   LogInfo-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /logs
+
+NodeInfo:
+   Beschreibung eines auf dem Sensor laufenden Softwaremoduls.
+
+   Ein Objekt des Typs NodeInfo besitzt folgende Eigenschaften:
+
+   name (string): Name des Moduls.
+
+   parameters (String-Array): Liste der Laufzeitparameter des Moduls.
+
+   services (String-Array): Liste der von diesem Modul angebotenen
+   Services.
+
+   status (string): Status des Moduls (mögliche Werte: unknown, down,
+   stale oder running).
+
+   Musterobjekt
+
+      {
+        "name": "string",
+        "parameters": [
+          "string",
+          "string"
+        ],
+        "services": [
+          "string",
+          "string"
+        ],
+        "status": "string"
+      }
+
+   NodeInfo-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /nodes
+
+      GET /nodes/{node}
+
+NodeStatus:
+   Detaillierter aktueller Status des Moduls, einschließlich
+   Laufzeitstatistik.
+
+   Ein Objekt des Typs NodeStatus besitzt folgende Eigenschaften:
+
+   status (string): Status des Moduls (mögliche Werte: unknown, down,
+   stale oder running).
+
+   timestamp (Float): UNIX-Uhrzeit, zu der die Werte zuletzt
+   aktualisiert wurden.
+
+   values (object): Dictionary (Schlüssel-Werte-Auflistung) mit den
+   aktuellen Statuswerten/Statistiken des Moduls.
+
+   Musterobjekt
+
+      {
+        "status": "string",
+        "timestamp": 0,
+        "values": {}
+      }
+
+   NodeStatus-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /nodes/{node}/status
+
+NtpStatus:
+   Status der NTP-Zeitsynchronisierung.
+
+   Ein Objekt des Typs NtpStatus besitzt folgende Eigenschaften:
+
+   accuracy (string): vom Network Time Protocol (NTP) gemeldete
+   Genauigkeit der Zeitsynchronisierung.
+
+   synchronized (boolean): synchronisiert mit dem NTP-Server.
+
+   Musterobjekt
+
+      {
+        "accuracy": "string",
+        "synchronized": false
+      }
+
+   NtpStatus-Objekte sind in
+
+   SysInfo
+
+    enthalten.
+
+Parameter:
+   Darstellung der Laufzeitparameter eines Moduls: Der Datentyp des
+   Werts („value“) eines Parameters (und damit der Datentyp der Felder
+   „min“, „max“ und „default“) lässt sich vom Feld „type“ ableiten und
+   kann ein primitiver Datentyp sein.
+
+   Ein Objekt des Typs Parameter besitzt folgende Eigenschaften:
+
+   default (Typ nicht definiert): ab Werk voreingestellter Wert des
+   Parameters.
+
+   description (string): Beschreibung des Parameters.
+
+   max (Typ nicht definiert): Höchstwert, der diesem Parameter
+   zugewiesen werden kann.
+
+   min (Typ nicht definiert): Mindestwert, der diesem Parameter
+   zugewiesen werden kann.
+
+   name (string): Name des Parameters.
+
+   type (string): als Zeichenfolge dargestellter primitiver Datentyp
+   des Parameters (mögliche Werte: bool, int8, uint8, int16, uint16,
+   int32, uint32, int64, uint64, float32, float64 oder string).
+
+   value (Typ nicht definiert): aktueller Wert des Parameters.
+
+   Musterobjekt
+
+      {
+        "default": {},
+        "description": "string",
+        "max": {},
+        "min": {},
+        "name": "string",
+        "type": "string",
+        "value": {}
+      }
+
+   Parameter-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /nodes/{node}/parameters
+
+      PUT /nodes/{node}/parameters
+
+      GET /nodes/{node}/parameters/{param}
+
+      PUT /nodes/{node}/parameters/{param}
+
+PtpStatus:
+   Status der PTP-Zeitsynchronisierung gemäß IEEE 1588.
+
+   Ein Objekt des Typs PtpStatus besitzt folgende Eigenschaften:
+
+   master_ip (string): IP-Adresse des Haupttaktgebers.
+
+   offset (Float): zeitlicher Versatz zum Haupttaktgeber in Sekunden.
+
+   offset_dev (Float): Standardabweichung des zeitlichen Versatzes zum
+   Haupttaktgeber in Sekunden.
+
+   offset_mean (Float): mittlere Zeitverschiebung in Sekunden zum
+   Haupttaktgeber.
+
+   state (string): PTP-Zustand (mögliche Werte: off, unknown,
+   INITIALIZING, FAULTY, DISABLED, LISTENING, PASSIVE, UNCALIBRATED
+   oder SLAVE).
+
+   Musterobjekt
+
+      {
+        "master_ip": "string",
+        "offset": 0,
+        "offset_dev": 0,
+        "offset_mean": 0,
+        "state": "string"
+      }
+
+   PtpStatus-Objekte sind in
+
+   SysInfo
+
+    enthalten.
+
+Service:
+   Darstellung eines von einem Modul angebotenen Services.
+
+   Ein Objekt des Typs Service besitzt folgende Eigenschaften:
+
+   args (ServiceArgs): siehe Beschreibung von ServiceArgs.
+
+   description (string): Kurzbeschreibung des Services.
+
+   name (string): Name des Services.
+
+   response (ServiceResponse): siehe Beschreibung von ServiceResponse.
+
+   Musterobjekt
+
+      {
+        "args": {},
+        "description": "string",
+        "name": "string",
+        "response": {}
+      }
+
+   Service-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /nodes/{node}/services
+
+      GET /nodes/{node}/services/{service}
+
+      PUT /nodes/{node}/services/{service}
+
+ServiceArgs:
+   Argumente, die für den Aufruf eines Services benötigt werden: Diese
+   Argumente werden in der Regel in einem (verschachtelten) Dictionary
+   (Schlüssel-Werte-Auflistung) dargestellt. Der genaue Inhalt dieses
+   Dictionarys hängt vom jeweiligen Modul und vom Serviceaufruf ab.
+
+   ServiceArg-Objekte sind in
+
+   Service
+
+    enthalten.
+
+ServiceResponse:
+   Die von dem Serviceaufruf zurückgegebene Antwort: Die Antwort wird
+   in der Regel in einem (verschachtelten) Dictionary (Schlüssel-
+   Werte-Auflistung) dargestellt. Der genaue Inhalt dieses Dictionarys
+   hängt vom jeweiligen Modul und von dem Serviceaufruf ab.
+
+   ServiceResponse-Objekte sind in
+
+   Service
+
+    enthalten.
+
+Stream:
+   Darstellung eines von der rc_dynamics-Schnittstelle
+   bereitgestellten Datenstroms.
+
+   Ein Objekt des Typs Stream besitzt folgende Eigenschaften:
+
+   destinations (StreamDestination-Array): Liste der Ziele, an welche
+   diese Daten aktuell gestreamt werden.
+
+   name (string): Name des Datenstroms, der angibt, welche
+   rc_dynamics-Daten gestreamt werden.
+
+   type (StreamType): siehe Beschreibung von StreamType.
+
+   Musterobjekt
+
+      {
+        "destinations": [
+          "string",
+          "string"
+        ],
+        "name": "string",
+        "type": {
+          "protobuf": "string",
+          "protocol": "string"
+        }
+      }
+
+   Stream-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /datastreams
+
+      GET /datastreams/{stream}
+
+      PUT /datastreams/{stream}
+
+      DELETE /datastreams/{stream}
+
+StreamDestination:
+   Ein Ziel eines rc_dynamics-Datenstroms, dargestellt als
+   Zeichenfolge wie z. B. ‚IP:port‘.
+
+   Ein Objekt des Typs StreamDestination ist eine Zeichenfolge.
+
+   StreamDestination-Objekte sind in
+
+   Stream
+
+    enthalten.
+
+StreamType:
+   Beschreibung eines Datenstromprotokolls.
+
+   Ein Objekt des Typs StreamType besitzt folgende Eigenschaften:
+
+   protobuf (string): Datenformat zur Serialisierung, d. h. Name der
+   ProtoBuf-Nachrichtendefinition.
+
+   protocol (string): Netzwerkprotokoll des Streams (UDP).
+
+   Musterobjekt
+
+      {
+        "protobuf": "string",
+        "protocol": "string"
+      }
+
+   StreamType-Objekte sind in
+
+   Stream
+
+    enthalten.
+
+SysInfo:
+   Systeminformation zum Sensor.
+
+   Ein Objekt des Typs SysInfo besitzt folgende Eigenschaften:
+
+   firmware (FirmwareInfo): siehe Beschreibung von FirmwareInfo.
+
+   hostname (string): Host-Name.
+
+   link_speed (integer): Ethernet-Verbindungsgeschwindigkeit in
+   Mb/Sekunde.
+
+   mac (string): MAC-Adresse.
+
+   ntp_status (NtpStatus): siehe Beschreibung von NtpStatus.
+
+   ptp_status (PtpStatus): siehe Beschreibung von PtpStatus.
+
+   ready (boolean): Das System ist vollständig hochgefahren und
+   betriebsbereit.
+
+   serial (string): Seriennummer des Sensors.
+
+   time (Float): Systemzeit als UNIX-Zeitstempel.
+
+   uptime (Float):  Betriebszeit in Sekunden.
+
+   Musterobjekt
+
+      {
+        "firmware": {
+          "active_image": {
+            "image_version": "string"
+          },
+          "fallback_booted": false,
+          "inactive_image": {
+            "image_version": "string"
+          },
+          "next_boot_image": "string"
+        },
+        "hostname": "string",
+        "link_speed": 0,
+        "mac": "string",
+        "ntp_status": {
+          "accuracy": "string",
+          "synchronized": false
+        },
+        "ptp_status": {
+          "master_ip": "string",
+          "offset": 0,
+          "offset_dev": 0,
+          "offset_mean": 0,
+          "state": "string"
+        },
+        "ready": false,
+        "serial": "string",
+        "time": 0,
+        "uptime": 0
+      }
+
+   SysInfo-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /system
+
+Swagger UI
+
+Die
+
+Swagger UI
+
+ des
+
+rc_visard
+
+ ermöglicht es Entwicklern, die REST-API – beispielsweise zu
+Entwicklungs- und Testzwecken –  leicht darzustellen und zu verwenden.
+Der Zugriff auf "http://<rcvisard>/api/" oder auf
+"http://<rcvisard>/api/swagger" (der erste Link leitet automatisch auf
+den zweiten Link weiter) öffnet eine Vorschau der allgemeinen API-
+Struktur des
+
+rc_visard
+
+, einschließlich aller
+
+verfügbaren Ressourcen und Anfragen
+
+ . Auf dieser vereinfachten Benutzeroberfläche lassen sich alle
+Funktionen erkunden und austesten.
+
+Hinweis: Der Benutzer muss bedenken, dass die Swagger UI des
+
+  rc_visard
+
+  , auch wenn sie zur Erprobung der REST-API bestimmt ist, ein voll
+  funktionstüchtige Schnittstelle ist. Das bedeutet, dass alle
+  ausgelösten Anfragen tatsächlich bearbeitet werden und den Zustand
+  und/oder das Verhalten des Geräts beeinflussen. Dies gilt
+  insbesondere für Anfrage des Typs "PUT", "POST" und "DELETE".
+
+
+Mithilfe dieser Schnittstelle können alle verfügbaren Ressourcen und
+Anfragen erprobt werden, indem diese durch Klick auf- und zugeklappt
+werden. Die folgende Abbildung zeigt ein Beispiel dafür, wie sich der
+aktuelle Zustand eines Moduls abrufen lässt, indem der erforderliche
+Parameter ("node"-Name) ausgefüllt und anschließend die Schaltfläche
+
+Try it out!
+
+ betätigt wird. Daraufhin zeigt die Swagger UI unter anderem den
+"curl"-Befehl an, der bei Auslösung der Anfrage ausgeführt wurde,
+sowie den Antworttext, in dem der aktuelle Status des angefragten
+Moduls in einer Zeichenfolge im JSON-Format enthalten ist.
+
+
+Einige Aktionen, wie das Setzen von Parametern oder der Aufruf von
+Services, bedürfen komplexerer Parameter als eine HTTP-Anfrage. Die
+Swagger UI erlaubt es Entwicklern, die für diese Aktionen benötigten
+Attribute, wie im nächsten Beispiel gezeigt, während der Laufzeit zu
+erkunden. In der folgenden Abbildung werden die Attribute, die für den
+"set_pose"-Service des "rc_hand_eye_calibration"-Moduls benötigt
+werden, erkundet, indem eine "GET"-Anfrage zu dieser Ressource
+durchgeführt wird. Die Antwort enthält eine vollständige Beschreibung
+des angebotenen Services, einschließlich aller erforderlichen
+Argumente mit ihren Namen und Typen in einer Zeichenfolge im JSON-
+Format.
+
+
+Der Benutzer kann diesen vorformatierten JSON als Muster für die
+Argumente nutzen, um damit den Service tatsächlich aufzurufen:
+
