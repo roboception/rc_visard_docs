@@ -1,0 +1,291 @@
+
+.. include:: global_rst.glb
+
+.. _sect-stereo-camera:
+
+Stereo camera
+=============
+
+The stereo camera component contains functionality for acquiring stereo
+image pairs and performing planar rectification needed to use the stereo
+camera as a measurement device.
+
+Image acquisition
+-----------------
+
+.. index::
+   single: exposure
+   single: gain
+   single: timestamp
+
+Acquiring stereo image pairs is the first step toward stereo vision. Since
+both cameras are equipped with global shutters and their chips are
+hardware-synchronized, all pixels of both camera images are always exposed at
+the exactly same time. :ref:`GPIO out 1<sect-wiring>`:latex:`\:(Section \ref{hardware_spec:sect-wiring})`
+signals the respective exposure time.
+Additionally, the time in the middle of the image exposure is attached to the images as a timestamp.
+This timestamp becomes important for dynamic applications in which the |rc_visard| or the scene moves.
+
+Exposure time can be set manually to a fixed value. This is useful in an environment
+where lighting is controlled so that it is always at the same intensity. The
+camera is set to auto exposure by default. In this mode, the |rc_visard|
+chooses the exposure time automatically, up to a user
+defined maximum. The permitted maximum is meant to limit the motion blur that occurs when taking images
+while the |rc_visard| or the scene is moving. The maximum exposure time thus depends on the
+application. If the maximum exposure time is reached, the auto-exposure algorithm uses the gain to
+increase image brightness. However, larger gain factors also amplify image noise. Thus, the
+maximum exposure time trades motion blur off against image noise under weak-light conditions.
+
+.. _sect-stereo-camera-rectification:
+
+Planar rectification
+--------------------
+
+.. index::
+   single: rectification
+   single: camera model
+   single: stereo camera
+   single: calibration; rectification
+   single: focal length
+   single: baseline
+   single: disparity
+
+Camera parameters such as focal length,
+lens distortion, and the relationship of the cameras to each other must be exactly known
+to use the stereo camera as a measuring instrument. The parameters
+are determined by calibration (see :ref:`sect-camera-calibration`:latex:`,
+Section \ref{camera_calibration:sect-camera-calibration}`). The |rc_visard| is already calibrated at
+production time and normally requires no recalibration. The camera parameters describe with great precision all
+of the stereo-camera system's geometric properties, but the resulting model is
+complex and difficult to use.
+
+Rectification is the process of remapping the images according to an ideal stereo-camera model.
+Lens distortion is removed and the images are aligned so that an object point is always projected
+onto the same image row in both images. The cameras' optical axes become exactly parallel.
+This means that points at infinite distance are projected
+onto the same image column in both images. The
+closer an object point is, the larger is the difference between its image columns in the right and
+left images. This difference is called disparity.
+
+Mathematically, the object point :math:`P=(P_x, P_y, P_z)` is projected onto image point
+:math:`p_l=(p_{lx}, p_{ly}, 1)` in the left rectified image and onto :math:`p_r=(p_{rx}, p_{ry}, 1)`
+in the right rectified image by
+
+.. math::
+   A &= \left(\begin{array}{ccc} f & 0 & \frac{w}{2}\\
+                           0 & f & \frac{h}{2}\\
+                           0 & 0 & 1
+   \end{array}\right), \qquad
+   T_s = \left(\begin{array}{c}t\\
+                           0\\
+                           0
+   \end{array}\right),
+
+   s_1 p_l &= AP, \\
+   s_2 p_r &= A(P-T_s).
+
+The focal length :math:`f` is the distance between the common image plane and
+the optical centers of the left and right cameras. It is measured in pixels. The
+baseline :math:`t` is the distance between the optical centers of the two cameras.
+The image width :math:`w` and height :math:`h` are measured in pixels, too. :math:`s_1`
+and :math:`s_2` are scale factors ensuring that the third coordinates of the image points
+:math:`p_l` and :math:`p_r` are equal to 1.
+
+The |rc_visard| provides the time-stamped, rectified left and right images
+over the GenICam interface (see :ref:`sect-provided-image-streams`:latex:`,
+Section \ref{gigevision:sect-provided-image-streams}`). Live streams of the images are provided
+with reduced quality in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{installation:sect-web-gui})`.
+
+.. note::  The |rc_visard| reports a focal length factor via its various
+      interfaces. It relates to the image width
+      for supporting different image resolutions. The focal length :math:`f`
+      in pixels can be easily obtained by multiplying the focal length factor
+      by the image width in pixels.
+
+.. _sect-cam-params:
+
+Parameters
+----------
+
+.. index::
+   pair: parameters; camera
+   single: gain factor
+   single: exposure time
+   pair: camera; Web GUI
+
+The stereo-camera software component is called ``rc_stereocamera`` and is represented by the
+*Camera* tab in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{installation:sect-web-gui})`.
+The user can change the camera parameters there, or directly via the |rest-api|
+(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`) or GigE Vision
+(:ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
+
+.. Note:: Camera parameters cannot be changed via the |webgui| or |rest-api| if |rc_visard|
+   is used via GigE Vision.
+
+Parameter overview
+..................
+
+.. include:: _gen/nodes/params/rc_stereocamera.txt
+
+Description of run-time parameters
+..................................
+
+.. figure:: images/webgui_camera.png
+   :width: 100 %
+   :align: center
+
+   The |webgui|'s *Camera* tab
+
+.. _expl-fps:
+
+.. index::
+   pair: parameters; camera
+   pair: camera; frame rate
+   see: fps; frame rate
+
+``fps`` (*FPS*)
+   This value is the cameras' frame rate (fps, frames per second),
+   which determines the upper frequency at which depth images
+   can be computed. This is also the frequency at which the |rc_visard|
+   delivers images via GigE Vision. Reducing this frequency also
+   reduces the network bandwidth required to transmit the images.
+
+   The camera always runs with |cam-rate| to ensure proper working of
+   internal modules such as visual odometry that need a constant frame rate.
+   The user frame rate setting is implemented by excluding frames
+   for stereo matching and transmission via GigE Vision to reduce
+   bandwidth as shown in figure :numref:`fig-fps`.
+
+   .. _fig-fps:
+   .. figure:: images/fps.*
+      :width: 100 %
+      :align: center
+
+      Images are internally always captured with |cam-rate|. The ``fps`` parameter
+      determines how many of them are sent as camera images via GigE Vision.
+
+   .. _expl-exp-auto:
+
+   .. index::
+      single: exposure; auto
+      single: exposure; manual
+      single: manual exposure
+      single: auto exposure
+
+``exp_auto`` (*Exposure*)
+   This value can be set to 1 for auto-exposure mode,
+   or to 0 for manual exposure mode. In manual exposure mode, the
+   chosen exposure time is kept, even if the images are overexposed or
+   underexposed. In auto-exposure mode, the exposure time and gain factor
+   is chosen automatically to correctly expose the image. The last
+   automatically determined exposure and gain values are set into
+   ``exp_value`` and ``gain_value`` when switching auto-exposure off.
+
+   .. _expl-exp-region:
+
+   .. index::
+      single: exposure region
+
+``exp_offset_x``, ``exp_offset_y``, ``exp_width``, ``exp_height``
+   These values define a rectangular region in the left rectified image for
+   limiting the area used by auto exposure. The exposure time and gain factor
+   of both images are chosen to optimally expose the defined region. This can
+   lead to over- or underexposure of image parts outside the defined region.
+   The region is visualized in the |webgui| by a rectangle in the left
+   rectified image. If either the width or height is 0, then the whole left
+   and right images are considered by the auto exposure function. This is the
+   default.
+
+   .. _expl-exp-value:
+
+   .. index::
+      single: exposure time
+      single: manual exposure
+
+``exp_value`` (*Manual*)
+   This value is the exposure time in manual exposure mode in seconds. This exposure time is kept constant
+   even if the images are underexposed. In the |webgui|, this exposure time can be entered in milliseconds
+   for convenience.
+
+   .. _expl-gain-value:
+
+   .. index::
+      single: gain factor
+
+``gain_value``
+   This value is the gain factor in decibel that can be set in manual exposure mode. Higher gain factors
+   reduce the required exposure time but introduce noise. The value can only be set through the |restapi|
+   and GenICam, but not in the |webgui|.
+
+   .. _expl-exp-max:
+
+   .. index::
+      single: auto exposure
+      pair: maximum; exposure time
+      single: gain factor
+      single: motion blur
+      single: image noise
+
+``exp_max`` (*Auto*)
+   This value is the maximal exposure time in auto-exposure
+   mode in seconds. In the |webgui|, this exposure time
+   can be conveniently entered in milliseconds. The actual
+   exposure time is adjusted automatically so that the images are exposed
+   correctly. If the maximum exposure time is reached, but the images are still
+   underexposed, the |rc_visard| stepwise increases the gain to increase the
+   images' brightness. Limiting the exposure time is useful for avoiding
+   or reducing motion blur during fast movements. However, higher gain
+   introduces noise into the image. The best trade-off depends on the application.
+
+   .. _expl-wb-auto:
+
+   .. index::
+      single: white balance
+
+``wb_auto``
+   This value can be set to 1 for automatic white balancing or 0 for manually
+   setting the ratio between the colors using ``wb_ratio_red`` and
+   ``wb_ratio_blue``. The last automatically determined ratios are set into
+   ``wb_ratio_red`` and ``wb_ratio_blue`` when switching automatic white balancing off.
+   White balancing is without function for monochrome
+   cameras. The value can only be set through the |restapi| and GenICam,
+   but not in the |webgui|.
+
+   .. _expl-wb-ratio:
+
+   .. index::
+      single: white balance
+
+``wb_ratio_red`` and ``wb_ratio_blue``
+   These values are used to set red to green and blue to green ratios
+   for manual white balance. White balancing is without function for monochrome
+   cameras. The values can only be set through the |restapi| and GenICam,
+   but not in the |webgui|.
+
+These parameters are also available over the GenICam interface with slightly different names and partly with different units
+or data types (see :ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
+
+Services
+--------
+
+.. index::
+   pair: parameters; services
+
+The stereo camera component offers the following services for persisting and
+restoring parameter settings.
+
+``save_parameters``  (*Save*)
+   With this service call, the stereo camera component's current parameter
+   settings will be made persistent to the |rcvisard|. That is,
+   these values are applied even after reboot.
+
+   .. include:: _gen/nodes/services/rc_stereocamera_save_parameters.txt
+
+``reset_defaults``  (*Reset*)
+   Restores and applies the default values for this component's parameters
+   ("factory reset").
+
+   .. WARNING:: The user must be aware that by calling this service, the
+      current parameter settings for the camera component are irrecoverably lost.
+
+   .. include:: _gen/nodes/services/rc_stereocamera_reset_defaults.txt

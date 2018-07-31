@@ -1,0 +1,387 @@
+SLAM
+
+Das SLAM-Modul ist Teil des Dynamik-Moduls und stellt genauere
+Posenschätzungen als das Stereo-INS-Modul bereit. Wenn sich der
+
+rc_visard
+
+ bewegt, summieren sich mit der Zeit die bei der Posenschätzung
+auftretenden Fehler. Das SLAM-Modul kann diese Fehler korrigieren,
+indem es bereits besuchte Orte wiedererkennt.
+
+Das Akronym SLAM steht für simultane Lokalisierung und
+Kartenerstellung (simultaneous localization and mapping). Das SLAM-
+Modul erstellt eine Karte aus den für die visuelle Odometrie genutzten
+Bildmerkmalen. Die Karte wird später verwendet, um kumulierte
+Posenfehler zu korrigieren. Am ehesten lässt sich dies in Anwendungen
+beobachten, bei denen der Roboter, nachdem er eine lange Strecke
+zurückgelegt hat, an einen besuchten Ort zurückkehrt (dies wird auch
+„Schleifenschluss“ oder „Loop Closure“ genannt). In diesem Fall kann
+der Roboter Bildmerkmale, die bereits in seiner Karte abgespeichert
+sind, wiedererkennen und seine Posenschätzung auf dieser Grundlage
+korrigieren.
+
+Kommt es zu einem Schleifenschluss, wird nicht nur die aktuelle,
+sondern auch die bisherige Posenschätzung (Trajektorie des
+
+rc_visard
+
+) korrigiert. Die kontinuierliche Korrektur der Trajektorie sorgt
+dafür, dass die Karte immer mehr an Genauigkeit gewinnt. Die
+Genauigkeit der Trajektorie ist auch wichtig, wenn diese zum Aufbau
+eines integrierten Weltmodells verwendet wird, indem beispielsweise
+die ermittelten 3D-Punktwolken in ein gemeinsames Koordinatensystem
+projiziert werden (siehe
+
+Berechnung von Tiefenbildern und Punktwolken
+
+). Zu diesem Zweck kann die gesamte Trajektorie des
+
+rc_visard
+
+ beim SLAM-Modul abgefragt werden.
+
+Hinweis: Das SLAM-Modul ist optional für den
+
+  rc_visard
+
+   erhältlich und läuft intern auf dem Sensor. Sobald eine SLAM-Lizenz
+  auf dem
+
+  rc_visard
+
+   hinterlegt wird, erscheint das SLAM-Modul in der Registerkarte
+
+  Überblick
+
+   der
+
+  Web GUI
+
+   als
+
+  Verfügbar
+
+   und SLAM ist auf der Registerkarte
+
+  System
+
+   im Bereich
+
+  Lizenz
+
+   aktiviert.
+
+Verwendung
+
+Das SLAM-Modul kann jederzeit entweder über das rc_dynamics Interface
+(siehe Dokumentation der zugehörigen
+
+Services
+
+) oder über die
+
+Dynamik
+
+ Registerkarte der
+
+Web GUI
+
+ eingeschaltet werden.
+
+Die Posenschätzung des SLAM-Moduls wird durch die aktuelle Schätzung
+des Stereo-INS-Moduls initialisiert. Der Ursprung der Posenschätzung
+befindet sich also an dem Punkt, an dem das Stereo-INS-Modul gestartet
+wurde.
+
+Da das SLAM-Modul auf den Bewegungsschätzungen der Stereo-INS aufbaut,
+wird das Stereo-INS-Modul automatisch gestartet, sobald SLAM gestartet
+wird, sollte es nicht bereits laufen.
+
+Wenn das SLAM-Modul läuft sind die korrigierten Posenschätzungen über
+die Datenströme
+
+pose
+
+,
+
+pose_rt
+
+, und
+
+dynamics
+
+ des Sensordynamik-Moduls verfügbar.
+
+Die komplette Trajektorie kann durch den "get_trajectory" Service
+abgefragt werden, siehe
+
+Services
+
+ für weitere Details.
+
+Um die Karte mit den Bildmerkmalen auf dem
+
+rc_visard
+
+ zu speichern, bietet das SLAM Modul den "save_map" Service an. Dieser
+kann nur während der Laufzeit (state „RUNNING“) oder nach dem Stoppen
+(state „HALTED“) verwendet werden. Eine gespeicherte Karte kann vor
+dem Starten (state „IDLE“) mit dem Service "load_map" geladen werden.
+Um vom state „HALTED“ zurück zu state „IDLE“ zu gelangen kann der
+"reset" Service verwendet werden.
+
+Es ist zu bedenken dass eine falsche Lokalisierung an (visuell)
+ähnlichen Orten bei der initialen Lokalisierung in der bereits
+geladenen Karte leichter passieren kann als während des weiteren
+Betriebs. Das Auswählen eines Startpunkts mit eindeutiger visueller
+Erscheinung vermeidet dieses Problem.
+
+Das SLAM Modul nimmt daher an dass der
+
+rc_visard
+
+ in der ungefähren Umgebung (ein paar Meter) des Ursprungs der Karte
+gestartet wird. Der Ursprung der Karte befindet sich dort wo das
+Stereo INS Modul gestarted wurde als die Karte aufgezeichnet wurde.
+
+Speicherbeschränkungen
+
+Das SLAM-Modul muss, im Gegensatz zu anderen Softwarekomponenten auf
+dem
+
+rc_visard
+
+, Daten über die Zeit akkumulieren, z.B. Bewegungsmessungen und
+Bildmerkmale. Weiterhin benötigt die Optimierung der Trajektorie
+beträchtliche Speichermengen, besonders wenn große Schleifen
+geschlossen werden müssen. Deswegen steigen die Speicheranforderungen
+des SLAM-Moduls mit der Zeit.
+
+Durch die Speicherbeschränkungen der Hardware muss das SLAM-Modul
+seinen Speicherbedarf reduzieren, wenn es kontinuierlich läuft. Wenn
+der verfügbare Speicher knapp wird, fixiert das SLAM-Modul Teile
+seiner Trajektorie. Das heißt, diese Teile werden nicht weiter
+optimiert. Die letzten 10 Minuten der aktuellen Trajektorie sind von
+der Fixierung jedoch immer ausgenommen.
+
+Wenn trotz der oben genannten Maßnahmen der Speicher knapp wird,
+stehen zwei Optionen zur Verfügung. Als erste Option kann das SLAM-
+Modul in den HALTED-Zustand gehen, in dem es keine weiteren
+Verarbeitungsschritte durchführt, aber die Trajektorie weiterhin
+verfügbar ist (bis zu dem Zeitpunkt, in dem das Modul in den HALTED-
+Zustand gewechselt ist). Dies ist das Standardverhalten.
+
+Die zweite Option ist, dass das SLAM-Modul weiterläuft, bis der
+Speicher aufgebraucht ist. In diesem Fall wird das SLAM-Modul neu
+gestartet. Wenn der "autorecovery" Parameter auf "true" gesetzt ist,
+wird das SLAM-Modul seine letzte Position wieder herstellen und die
+Kartierung fortsetzen. Andernfalls wird das Modul in den FATAL-Zustand
+wechseln und muss über das rc_dynamics Interface neugestartet werden
+(siehe
+
+Services
+
+).
+
+Die Laufzeit bis zum Erreichen des Speicherlimits hängt stark von der
+Trajektorie des Sensors ab.
+
+Parameter
+
+Das SLAM-Modul wird in der REST-API als "rc_slam" bezeichnet. Der
+Benutzer kann die SLAM-Parameter über die
+
+REST-API-Schnittstelle
+
+ setzen.
+
+Übersicht über die Parameter
+
+Dieses Softwaremodul bietet folgende Laufzeitparameter.
+
+Laufzeitparameter des rc_slam-Moduls              Name  Typ  Min.
+Max.  Default  Beschreibung  autorecovery  bool  False  True  True
+Stellt korrigierte Position im Fall von fatalen Fehlern wieder her und
+startet die Kartierung neu.  halt_on_low_memory  bool  False  True
+True  Gehe in den HALTED-Zustand, wenn der Speicher knapp wird.
+
+Dieses Modul meldet folgende Statuswerte:
+
+Statuswerte des rc_slam-Moduls      Name  Beschreibung  state  Der
+aktuelle Zustand des SLAM-Moduls  trajectory_poses  Anzahl der Posen
+in der geschätzten Trajektorie
+
+Der Parameter "state" kann folgende Werte annehmen:
+
+Mögliche Zustände des SLAM-Moduls      Zustandsname  Beschreibung
+IDLE  Das Modul ist bereit, aber inaktiv. Keine Trajektorie ist
+verfügbar.  WAITING_FOR_DATA  Das Modul wurde gestartet, aber wartet
+auf Daten vom Stereo-INS-Modul oder von der VO.  RUNNING  Das Modul
+läuft.  HALTED  Das Modul wurde gestoppt. Die Trajektorie ist noch
+verfügbar. Es werden keine neuen Informationen verarbeitet.  RESETTING
+Das Modul wird gestoppt und die internen Daten werden gelöscht.
+RESTARTING  Das Modul wird neu gestartet.  FATAL  Ein fataler Fehler
+ist aufgetreten.
+
+Services
+
+Das SLAM Softwaremodul bietet folgende Services.
+
+Hinweis: Die Aktivierung und Deaktivierung der SLAM Komponente wird
+  über das Service Interface von rc_dynamics gesteuert (siehe
+
+  Services
+
+  ).
+
+"reset"
+   löscht den internen Zustand des SLAM-Moduls. Dieser Service sollte
+   genutzt werden, wenn das SLAM-Modul über das rc_dynamics Interface
+   (siehe
+
+   Services
+
+   ) gestoppt wurde. Das SLAM-Modul behält die Schätzung der
+   kompletten Trajektorie, auch wenn es gestoppt ist. Dieser Service
+   löscht diese Trajektorie und gibt den zugehörigen Speicher frei.
+   Der zurückgegebene Zustand ist RESETTING.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service gibt folgende Rückgabe:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+"get_trajectory"
+      Mit diesem Service kann die Trajektorie abgefragt werden. Die
+      Service-Argumente "start_time" und "end_time" ermöglichen die
+      Auswahl eines Trajektorienabschnitts. Sie sind optional und
+      können weggelassen oder mit Null-Werten gefüllt sein. In diesem
+      Fall beginnt der Ausschnitt am Trajektorienanfang bzw. schließt
+      mit dem Trajektorienende. Im anderen Fall stellen sie entweder
+      einen absoluten Zeitstempel dar oder sind relativ zur
+      Trajektorie zu interpretieren ( "start_time_relative"  und
+      "end_time_relative" Flags).  Ist eine relative Zeitangabe
+      angegeben, entscheidet das Vorzeichen der entsprechenden Werte,
+      auf welchen Zeitpunkt der Trajektorie sie sich bezieht: Positive
+      Werte werden als Offset auf den Zeitpunkt des Trajektorienstarts
+      interpretiert, negative Werte auf den Zeitpunkt des
+      Trajektorienendes. Das folgende Diagramm zeigt drei
+      Beispielparametrisierungen des Services mit relativen
+      Zeitangaben.
+
+
+   Hinweis: Bei relativen Zeitangaben wird eine "start_time" von
+     Null als der Anfang der Trajektorie interpretiert, eine
+     "end_time" von Null wird hingegen als das Ende der Trajektorie
+     gewertet.
+
+   Dieser Service benötigt folgende Argumente:
+
+      {
+        "end_time": {
+          "nsec": "int32",
+          "sec": "int32"
+        },
+        "end_time_relative": "bool",
+        "start_time": {
+          "nsec": "int32",
+          "sec": "int32"
+        },
+        "start_time_relative": "bool"
+      }
+
+   Dieser Service gibt folgende Rückgabe:
+
+      {
+        "trajectory": {
+          "name": "string",
+          "parent": "string",
+          "poses": [
+            {
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "timestamp": {
+                "nsec": "int32",
+                "sec": "int32"
+              }
+            }
+          ],
+          "producer": "string",
+          "timestamp": {
+            "nsec": "int32",
+            "sec": "int32"
+          }
+        }
+      }
+
+"save_map"
+      Speichert die aktuelle Karte in persistentem Speicher. Die Karte
+      besteht aus einem Set von unveränderlichen Kartenabschnitten.
+      Die Trajektorie ist nicht Teil der Karte.
+
+      Hinweis: Nur abstrakte  Beschreibungen von Bildmerkmalen und
+        deren Positionen werden in der Karte gespeichert. Weder werden
+        Kameraaufnahmen in der Karte gespeichert, noch ist es möglich
+        Bilder oder Bildteile aus den gespeicherten Informationen zu
+        rekonstruieren.
+
+   Achtung: Die Karte wird nicht über Software Aktualisierungen oder
+     rollbacks hinweg behalten.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service gibt folgende Rückgabe:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+"load_map"
+      Lädt eine voher gespeicherte Karte. Dies ist nur möglich wenn
+      das SLAM Modul sich in IDLE befindet, d.h. es ist nicht möglich
+      eine Karte in ein laufendes System zu laden. Eine geladene Karte
+      kann mit dem "reset" Serviceaufruf zurückgesetzt werden.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service gibt folgende Rückgabe:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+"remove_map"
+      Entfernt die gespeicherte Karte aus dem persistenten Speicher.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service gibt folgende Rückgabe:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }

@@ -1,0 +1,22 @@
+Schnittstellen
+
+Es stehen drei Schnittstellen zur Konfiguration und Datenübertragung
+des
+
+rc_visard
+
+ zur Verfügung:
+
+GigE Vision 2.0/GenICam\:(Abschnitt \ref{gigevision:sect-genicam})
+Konfiguration bild- und kamerabezogener Einstellungen.
+
+REST API\:(Abschnitt \ref{rest_api:sect-rest-api})
+Programmierschnittstelle zur Konfiguration des rc_visard, zur Abfrage
+von Statusinformationen, zum Anfordern von Datenströmen, usw.
+
+rc_dynamics streams\:(Abschnitt \ref{rc_dynamics:sect-rc-dynamics-
+interface})  Echtzeit-Datenströme, die Zustandsschätzungen samt
+Posen-, Geschwindigkeits- und anderen Daten enthalten, werden über die
+rc_dynamics-Schnittstelle bereitgestellt. Sie sendet ProtoBuf-kodierte
+Nachrichten über UDP.
+

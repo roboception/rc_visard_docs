@@ -1,0 +1,172 @@
+IO and Projector Control
+
+The IOControl component allows reading the status of the general
+purpose digital inputs and controlling the digital general purpose
+outputs (
+
+Wiring
+
+). The outputs can be set to low or high, or configured to be high for
+the exposure time of every image. Additionally, the outputs can be
+configured to be high for the exposure time of every second image.
+
+Note: The IOControl component is optional and requires the purchase
+  of a separate
+
+  license
+
+  .
+
+Parameters
+
+The IOControl component is called "rc_iocontrol" in the REST-API. The
+user can change the parameters via REST-API (
+
+REST-API interface
+
+) or GigE Vision using the DigitalIOControl parameters "LineSelector"
+and "LineSource" (
+
+Category: DigitalIOControl
+
+).
+
+Parameter overview
+
+This component offers the following run-time parameters.
+
+The rc_iocontrol component’s run-time parameters              Name
+Type  Min  Max  Default  Description  out1_mode  string  -  -
+ExposureActive  Low, High, ExposureActive, ExposureAlternateActive
+out2_mode  string  -  -  Low  Low, High, ExposureActive,
+ExposureAlternateActive
+
+This component reports no status values.
+
+Description of run-time parameters
+
+"out1_mode" and "out2_mode"
+   The output modes for GPIO Out 1 and Out 2 can be set individually:
+
+   "Low" sets the ouput permanently to low. This is the factory
+   default of Out 2.
+
+   "High" sets the output permanently to high.
+
+   "ExposureActive" sets the output to high for the exposure time of
+   every image. This is the factory default of Out 1.
+
+   "ExposureAlternateActive" sets the output to high for the exposure
+   time of every second image.
+
+Figure
+
+Fig. 43
+
+ shows which images are used for stereo matching and transmission via
+GigE Vision in "ExposureActive" mode with a user defined frame rate of
+8 Hz.
+
+
+The mode "ExposureAlternateActive" is meant to be used when an
+external random dot projector is connected to the GPIO Out 1 or Out 2
+of the
+
+rc_visard
+
+. A side effect of setting any output to "ExposureAlternateActive" is
+that the
+
+stereo matching
+
+ component only uses images where the output that was configured
+"ExposureAlternateActive" is high, i.e. projector is on. The maximum
+framerate that is used for stereo matching is therefore halve of the
+frame rate configured by the user (see
+
+FPS
+
+). All other components like
+
+visual odometry
+
+,
+
+TagDetect
+
+ and
+
+ItemPick
+
+ use images where the output is low, i.e. projector is off. Figure
+
+Fig. 44
+
+ shows an example.
+
+
+Note: In "ExposureAlternateActive" mode, an image with output high
+  (i.e. with projection) is always 40 ms away from an image with
+  output low (i.e. without projection), regardless of the user
+  configured frame rate. This needs to be considered when
+  synchronizing disparity and camera images without projection in this
+  special mode.
+
+The functionality can also be controlled by the digital IO control
+parameters of the GenICam interface (
+
+Category: DigitalIOControl
+
+).
+
+Services
+
+The IOControl component offers the following services.
+
+"get_io_values"
+   This service call retrieves the current state of the general
+   purpose inputs and outputs. The returned time stamp is the time of
+   measurement.
+
+   This service requires no arguments.
+
+   This service returns the following response:
+
+      {
+        "in1": "bool",
+        "in2": "bool",
+        "out1": "bool",
+        "out2": "bool",
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        },
+        "timestamp": {
+          "nsec": "int32",
+          "sec": "int32"
+        }
+      }
+
+"save_parameters"
+   With this service call, the component’s current parameter settings
+   are persisted to the
+
+   rc_visard
+
+   . That is, these values are applied even after reboot.
+
+   This service requires no arguments.
+
+   This service returns no response.
+
+"reset_defaults"
+   Restores and applies the default values for this component’s
+   parameters (“factory reset”).
+
+   This service requires no arguments.
+
+   This service returns no response.
+
+   Warning: The user must be aware that calling this service causes
+     the current parameter settings for the IOControl component to be
+     irrecoverably lost.

@@ -1,0 +1,924 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Hardware specification &mdash; rc_visard 1.3.0
+ documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="rc_visard 1.3.0
+ documentation" href="index.html"/>
+        <link rel="next" title="Installation" href="installation.html"/>
+        <link rel="prev" title="Safety" href="safety.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Warranty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Applicable standards</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Approvals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Safety</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">General warnings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Intended use</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Hardware specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#scope-of-delivery">Scope of delivery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#technical-specification">Technical specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#environmental-and-operating-conditions">Environmental and operating conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#power-supply-specifications">Power-supply specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wiring">Wiring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mechanical-interface">Mechanical interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-and-configuration">Installation and configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Power up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Network configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatic configuration (factory default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manual configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rcvisard-devices">Discovery of <em>rc_visard</em> devices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Resetting configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#web-gui">Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">The <em>rc_visard</em> in a nutshell</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#stereo-vision">Stereo vision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#sensor-dynamics">Sensor dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#calibration-relative-to-a-robot">Calibration relative to a robot</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="components.html">Software components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stereo_camera.html">Stereo camera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#image-acquisition">Image acquisition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#planar-rectification">Planar rectification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_matching.html">Stereo matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Computing disparity images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Computing depth images and point clouds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Confidence and error images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dynamics.html">Sensor dynamics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#coordinate-frames-for-state-estimation">Coordinate frames for state estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#available-state-estimates">Available state estimates</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#camera-pose-streams-pose-and-pose-ins">Camera-pose streams (<code class="docutils literal"><span class="pre">pose</span></code> and <code class="docutils literal"><span class="pre">pose_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-camera-pose-streams-pose-rt-and-pose-rt-ins">Real-time camera-pose streams (<code class="docutils literal"><span class="pre">pose_rt</span></code> and <code class="docutils literal"><span class="pre">pose_rt_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-dynamics-streams-dynamics-and-dynamics-ins">Real-time dynamics streams (<code class="docutils literal"><span class="pre">dynamics</span></code> and <code class="docutils literal"><span class="pre">dynamics_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#imu-data-stream-imu">IMU data stream (<code class="docutils literal"><span class="pre">imu</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_visodo.html">Visual odometry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_ins.html">Stereo INS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#self-calibration">Self-Calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#parameters">Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="camera_calibration.html">Camera calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#self-calibration">Self-calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#calibration-process">Calibration process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-1-calibration-settings">Step 1: Calibration settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-2-verify-calibration">Step 2: Verify calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-3-performing-calibration">Step 3: Performing calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-4-storing-the-calibration-result">Step 4: Storing the calibration result</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="handeye_calibration.html">Hand-eye calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Calibration interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#sensor-mounting">Sensor mounting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Calibration routine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-1-setting-parameters">Step 1: Setting parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-2-selecting-and-reporting-robot-calibration-positions">Step 2:  Selecting and reporting robot calibration positions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-3-calculating-and-saving-the-calibration-transformation">Step 3: Calculating and saving the calibration transformation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="optional.html">Optional software components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="slam.html">SLAM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#memory-limitations">Memory limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#parameter-overview">Parameter overview</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iocontrol.html">IO and Projector Control</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#qr-code">QR code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#apriltag">AprilTag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#comparison">Comparison</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-reading">Tag reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#pose-estimation">Pose estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag re-identification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#interfaces">Interfaces</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters-and-status-values">Parameters and status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="itempick.html">ItemPick</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Interfaces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-visard">Custom GenICam features of the <em>rc_visard</em></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#general-api-structure">General API structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#available-resources-and-requests">Available resources and requests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#nodes-parameters-and-services">Nodes, parameters, and services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#datastreams">Datastreams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#system-and-logs">System and logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#data-type-definitions">Data type definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#swagger-ui">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rc_dynamics.html">The rc_dynamics interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#starting-stopping-dynamic-state-estimation">Starting/stopping dynamic-state estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#configuring-data-streams">Configuring data streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#data-stream-protocol">Data-stream protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Maintenance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Updating the firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcvisard">Rebooting the <em>rc_visard</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Connectivity kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Wiring</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Power connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Power supplies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Spare parts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED colors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Hardware issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Connectivity issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Camera-image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Depth/Disparity, error, and confidence image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#dynamics-issues">Dynamics issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">GigE Vision/GenICam issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Address</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pose_formats.html">Pose formats</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyzabc-format">XYZABC format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyz-quaternion-format">XYZ+quaternion format</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Hardware specification</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hardware-specification">
+<span id="sect-hardware-specification"></span><h1>Hardware specification<a class="headerlink" href="#hardware-specification" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The following hardware specifications are provided here as a general reference; differences with the product might exist.</p>
+</div>
+<div class="section" id="scope-of-delivery">
+<h2>Scope of delivery<a class="headerlink" href="#scope-of-delivery" title="Permalink to this headline">¶</a></h2>
+<p>Standard delivery for an <em>rc_visard</em> includes the <em>rc_visard</em> sensor and a quickstart guide only. The full
+manual is available in digital form and is always installed on the sensor, accessible through the
+<a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>, and available at
+<a class="reference external" href="http://www.roboception.com/documentation">http://www.roboception.com/documentation</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The following items are not included in the delivery unless otherwise specified:</p>
+<ul class="simple">
+<li>Couplings, adapters, mounts</li>
+<li>Power supply unit, cabling, and fuses</li>
+<li>Network cabling</li>
+</ul>
+<p class="last">Please refer to <a class="reference internal" href="accessories.html#sect-accessories"><span class="std std-ref">Accessories</span></a> for suggested third-party cable vendors.</p>
+</div>
+<p>A connectivity kit can be purchased for the <em>rc_visard</em>. It contains an M12 to RJ45 network cable,
+24 V power supply, and a DC plug to M12 power adapter. Please refer to <a class="reference internal" href="accessories.html#sect-accessories"><span class="std std-ref">Accessories</span></a> for details.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The connectivity kit is intended only for initial setup, not for permanent installation
+in industrial environment.</p>
+</div>
+<p>The following picture shows the important parts of the <em>rc_visard</em> which are referenced later in the documentation.</p>
+<div class="figure align-center" id="id1">
+<span id="index-0"></span><a class="reference internal image-reference" href="_images/rc_visard_65_parts.png"><img alt="_images/rc_visard_65_parts.png" src="_images/rc_visard_65_parts.png" style="width: 160mm;" /></a>
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Parts description</span></p>
+</div>
+</div>
+<div class="section" id="technical-specification">
+<h2>Technical specification<a class="headerlink" href="#technical-specification" title="Permalink to this headline">¶</a></h2>
+<p>The common technical specifications for both <em>rc_visard</em> variants are given in <a class="reference internal" href="#tab-common-hardware-specifications"><span class="std std-numref">Table 1</span></a>.</p>
+<span id="tab-common-hardware-specifications"></span><table border="1" class="docutils" id="id2">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Common technical specifications for both <em>rc_visard</em> models</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head"><em>rc_visard</em> 65 / <em>rc_visard</em> 160</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Image resolution</td>
+<td>1280 x 960 pixel, color or monochrome</td>
+</tr>
+<tr class="row-odd"><td>Field of view</td>
+<td>Horizontal: 61°, Vertical: 48°</td>
+</tr>
+<tr class="row-even"><td>IR Cutoff</td>
+<td>650 nm</td>
+</tr>
+<tr class="row-odd"><td>Depth image</td>
+<td><div class="first last line-block">
+<div class="line">640 x 480 pixel (high) &#64; 3 Hz</div>
+<div class="line">320 x 240 pixel (medium) &#64; 15 Hz</div>
+<div class="line">214 x 160 pixel (low) &#64; 25 Hz</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td>Egomotion</td>
+<td>200 Hz, low latency</td>
+</tr>
+<tr class="row-odd"><td>Computing unit</td>
+<td>Nvidia Tegra K1</td>
+</tr>
+<tr class="row-even"><td>Power supply</td>
+<td>18 V to 30 V</td>
+</tr>
+<tr class="row-odd"><td>Cooling</td>
+<td>Passive</td>
+</tr>
+</tbody>
+</table>
+<p>The <em>rc_visard</em> 65 and <em>rc_visard</em> 160 differ in their baselines, which affects depth range and resolution as well as the sensors’ size and weight.</p>
+<span id="tab-hardware-differences"></span><table border="1" class="docutils" id="id3">
+<caption><span class="caption-number">Table 2 </span><span class="caption-text">Differing technical specifications for the <em>rc_visard</em> variants</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="28%" />
+<col width="36%" />
+<col width="36%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head"><em>rc_visard</em> 65</th>
+<th class="head"><em>rc_visard</em> 160</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Baseline</td>
+<td>65 mm</td>
+<td>160 mm</td>
+</tr>
+<tr class="row-odd"><td>Depth range</td>
+<td>0.2 m to infinity</td>
+<td>0.5 m to infinity</td>
+</tr>
+<tr class="row-even"><td>Depth resolution</td>
+<td><div class="first last line-block">
+<div class="line">0.5 mm &#64; 0.2 m</div>
+<div class="line">15 mm &#64; 1.0 m</div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line">1.5 mm &#64; 0.5 m</div>
+<div class="line">6 mm &#64; 1.0 m</div>
+<div class="line">23 mm &#64; 2.0 m</div>
+<div class="line">50 mm &#64; 3.0 m</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td>Size (W x H x L)</td>
+<td>135 mm x 75 mm x 96 mm</td>
+<td>230 mm x 75 mm x 84 mm</td>
+</tr>
+<tr class="row-even"><td>Mass</td>
+<td>0.68 kg</td>
+<td>0.84 kg</td>
+</tr>
+</tbody>
+</table>
+<p>The <em>rc_visard</em> can be equipped with on-board software modules such as SLAM for additional
+features. These software modules can be ordered and require a license update.</p>
+<div class="figure align-center" id="id4">
+<span id="index-2"></span><a class="reference internal image-reference" href="_images/rc_visard_65_general.png"><img alt="_images/rc_visard_65_general.png" src="_images/rc_visard_65_general.png" style="width: 160mm;" /></a>
+<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Overall dimensions of the <em>rc_visard</em> 65</span></p>
+</div>
+<div class="figure align-center" id="id5">
+<a class="reference internal image-reference" href="_images/rc_visard_160_general.png"><img alt="_images/rc_visard_160_general.png" src="_images/rc_visard_160_general.png" style="width: 160mm;" /></a>
+<p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Overall dimensions of the <em>rc_visard</em> 160</span></p>
+</div>
+<p id="index-3">CAD models of the <em>rc_visard</em> can be downloaded from <a class="reference external" href="http://www.roboception.com/download">http://www.roboception.com/download</a>. The CAD models are provided as-is,
+with no guarantee of correctness. When a material property of aluminium is assigned (density of <span class="math">\(2.76\mathrm{g\over{cm}^3}\)</span>),
+the mass properties of the CAD model are within 5% of the product with respect to weight and center of mass,
+and within 10% with respect to moment of inertia.</p>
+</div>
+<div class="section" id="environmental-and-operating-conditions">
+<h2>Environmental and operating conditions<a class="headerlink" href="#environmental-and-operating-conditions" title="Permalink to this headline">¶</a></h2>
+<p id="index-4">The <em>rc_visard</em> is designed for industrial applications. Always respect the storage, transport, and operating environmental
+conditions outlined in <a class="reference internal" href="#tab-hardware-environment"><span class="std std-numref">Table 3</span></a>.</p>
+<span id="tab-hardware-environment"></span><table border="1" class="docutils" id="id6">
+<caption><span class="caption-number">Table 3 </span><span class="caption-text">Environmental conditions</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head"><em>rc_visard</em> 65 / <em>rc_visard</em> 160</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Storage/Transport temperature</td>
+<td>-25 °C to 70 °C</td>
+</tr>
+<tr class="row-odd"><td>Operating temperature</td>
+<td>0 °C to 50 °C</td>
+</tr>
+<tr class="row-even"><td>Relative humidity (non condensing)</td>
+<td>20 % to 80 %</td>
+</tr>
+<tr class="row-odd"><td>Vibration</td>
+<td>5 g</td>
+</tr>
+<tr class="row-even"><td>Shock</td>
+<td>50 g</td>
+</tr>
+<tr class="row-odd"><td>Protection class</td>
+<td>IP54</td>
+</tr>
+<tr class="row-even"><td>Others</td>
+<td><ul class="first last simple">
+<li>Free from corrosive liquids or gases</li>
+<li>Free from explosive liquids or gases</li>
+<li>Free from powerful electromagnetic interference</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p id="index-5">The <em>rc_visard</em> is designed for an operating (surrounding environment) temperature of 0 °C to 50 °C and
+relies on convective (passive) cooling. Unobstructed airflow, especially around the cooling fins,
+needs to be ensured during use. The <em>rc_visard</em> should only be mounted using the provided
+mechanical mounting interface, and each part of the housing must remain uncovered. A free space of at least 10 cm extending in
+all directions from the housing, and sufficient air exchange with the environment is
+required to ensure adequate cooling. Cooling fins must be free of dirt and other contamination.</p>
+<p id="index-6">The housing temperature depends on the processing load, sensor orientation, and surrounding
+environmental temperatures. When the sensor’s exposed housing surfaces exceed 60°C, the LED at the front will turn from green to red.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">For hand-guided applications, a heat-insulated handle should be attached to the
+sensor to reduce the risk of burn injuries due to skin exposure to surface temperatures exceeding 60°C.</p>
+</div>
+</div>
+<div class="section" id="power-supply-specifications">
+<h2>Power-supply specifications<a class="headerlink" href="#power-supply-specifications" title="Permalink to this headline">¶</a></h2>
+<p id="index-7">The <em>rc_visard</em> needs to be supplied by a DC voltage source. The <em>rc_visard</em>’s standard package doesn’t include a  DC power supply.
+The power supply contained in the connectivity kit may be used for initial setup.
+For permanent installation, it is the customer’s responsibility to provide suitable
+DC power. The sensor is qualified as industrial equipment Class A under EN55011.
+As such, each <em>rc_visard</em> must be connected to a separate power supply. Connection to domestic
+grid power is only allowed through a power supply certified as EN55011 Class B.</p>
+<span id="tab-hardware-power"></span><table border="1" class="docutils" id="id7">
+<caption><span class="caption-number">Table 4 </span><span class="caption-text">Absolute maximum ratings for power supply</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="41%" />
+<col width="18%" />
+<col width="18%" />
+<col width="24%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head"><em>Min</em></th>
+<th class="head"><em>Nominal</em></th>
+<th class="head"><em>Max</em></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Supply voltage</td>
+<td>18.0 V</td>
+<td>24 V</td>
+<td>30.0 V</td>
+</tr>
+<tr class="row-odd"><td>Max power consumption</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>25 W</td>
+</tr>
+<tr class="row-even"><td>Overcurrent protection</td>
+<td colspan="3">Supply must be fuse-protected to a maximum of 2 A</td>
+</tr>
+<tr class="row-odd"><td>EMC compliance</td>
+<td colspan="3">Industrial equipment under EN55011 Class A</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Exceeding maximum power rating values may lead to damage of the <em>rc_visard</em>, power
+supply, and connected equipment.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">A separate power supply must power each <em>rc_visard</em>.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Connection to domestic grid power is allowed through a power supply certified
+as EN55011 Class B only.</p>
+</div>
+</div>
+<div class="section" id="wiring">
+<span id="sect-wiring"></span><h2>Wiring<a class="headerlink" href="#wiring" title="Permalink to this headline">¶</a></h2>
+<p id="index-8">Cables are not provided with the <em>rc_visard</em> standard package. It is the customer’s responsibility
+to obtain the proper cabling. <a class="reference internal" href="accessories.html#sect-accessories"><span class="std std-ref">Accessories</span></a> provides an overview of suggested components.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Proper cable management is mandatory. Cabling must always be secured to the <em>rc_visard</em>
+mount with a strain-relief clamp so that no forces due to cable movements are exerted on the <em>rc_visard</em>’s
+M12 connectors. Enough slack needs to be provided to allow for full range of movement of the <em>rc_visard</em>
+without straining the cable. The cable’s minimum bend radius needs to be observed.</p>
+</div>
+<p>The <em>rc_visard</em> provides an industrial 8-pin A-coded M12 socket connector for Ethernet
+connectivity and an 8-pin A-coded M12 plug connector for power and GPIO connectivity.
+Both connectors are located at the back. Their locations (distance from centerlines) are
+identical for the <em>rc_visard</em> 65 and <em>rc_visard</em> 160. The location of both connectors on the
+<em>rc_visard</em> 65 is shown as an example in <a class="reference internal" href="#fig-electrical-connections"><span class="std std-numref">Fig. 5</span></a>.</p>
+<div class="figure align-center" id="id8">
+<span id="fig-electrical-connections"></span><a class="reference internal image-reference" href="_images/rc_visard_connect.png"><img alt="_images/rc_visard_connect.png" src="_images/rc_visard_connect.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Locations of the electrical connections for the <em>rc_visard</em> 65, with Ethernet on top and power on the bottom</span></p>
+</div>
+<p>Connectors are rotated so that standard 90° angled connectors will exit horizontally, away from the camera (away from the cooling fins).</p>
+<div class="figure align-center" id="id9">
+<span id="fig-pin-assignments"></span><span id="index-9"></span><a class="reference internal image-reference" href="_images/rc_visard_pinout.png"><img alt="_images/rc_visard_pinout.png" src="_images/rc_visard_pinout.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Pin positions for power and Ethernet connector</span></p>
+</div>
+<p>Pin assignments for the Ethernet connector are given in <a class="reference internal" href="#fig-ethernet-pin-assignments"><span class="std std-numref">Fig. 7</span></a>.</p>
+<div class="figure align-center" id="id10">
+<span id="fig-ethernet-pin-assignments"></span><a class="reference internal image-reference" href="_images/ethernet_cable.png"><img alt="_images/ethernet_cable.png" src="_images/ethernet_cable.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Pin assignments for M12 to Ethernet cabling</span></p>
+</div>
+<p id="index-10">Pin assignments for the power connector are given in <a class="reference internal" href="#tab-power-pin-assignments"><span class="std std-numref">Table 5</span></a>.</p>
+<span id="tab-power-pin-assignments"></span><table border="1" class="docutils" id="id11">
+<caption><span class="caption-number">Table 5 </span><span class="caption-text">Pin assignments for the power connector</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Pin</strong></th>
+<th class="head"><em>Assignment</em></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>GPIO In 2</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Power</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>GPIO In 1</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>GPIO Gnd</td>
+</tr>
+<tr class="row-even"><td>5</td>
+<td>GPIO Vcc</td>
+</tr>
+<tr class="row-odd"><td>6</td>
+<td>GPIO Out 1 (image exposure)</td>
+</tr>
+<tr class="row-even"><td>7</td>
+<td>Gnd</td>
+</tr>
+<tr class="row-odd"><td>8</td>
+<td>GPIO Out 2</td>
+</tr>
+</tbody>
+</table>
+<p>GPIOs are decoupled by photocoupler. <em>GPIO Out 1</em> by default provides an exposure sync signal with
+a logic high level for the duration of the image exposure. All GPIOs can be controlled via the
+optional IOControl component (<a class="reference internal" href="iocontrol.html#sect-iocontrol"><span class="std std-ref">IO and Projector Control</span></a>).
+Pins of unsused GPIOs should be left floating.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">It is especially important that during the boot phase <em>GPIO In 1</em>
+is left floating or remains low. The <em>rc_visard</em> will not boot if the pin is high during boot time.</p>
+</div>
+<p>GPIO circuitry and specifications are shown in <a class="reference internal" href="#fig-gpio"><span class="std std-numref">Fig. 8</span></a>. The maximum rated voltage for
+<em>GPIO In</em> and <em>GPIO Vcc</em> is 30 V.</p>
+<div class="figure align-center" id="id12">
+<span id="fig-gpio"></span><a class="reference internal image-reference" href="_images/rc_visard_gpio.png"><img alt="_images/rc_visard_gpio.png" src="_images/rc_visard_gpio.png" style="width: 160mm;" /></a>
+<p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">GPIO circuitry and specifications – do not connect signals higher than 30 V</span></p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Do not connect signals with voltages higher than 30 V to the <em>rc_visard</em>.</p>
+</div>
+</div>
+<div class="section" id="mechanical-interface">
+<span id="sect-mechanical"></span><h2>Mechanical interface<a class="headerlink" href="#mechanical-interface" title="Permalink to this headline">¶</a></h2>
+<p id="index-11">The <em>rc_visard</em> 65 and <em>rc_visard</em> 160 offer identical mounting-point setups at the bottom.</p>
+<div class="figure align-center" id="id13">
+<a class="reference internal image-reference" href="_images/rc_visard_mounting.png"><img alt="_images/rc_visard_mounting.png" src="_images/rc_visard_mounting.png" style="width: 160mm;" /></a>
+<p class="caption"><span class="caption-number">Fig. 9 </span><span class="caption-text">Mounting-point for connecting the <em>rc_visard</em> to robots or other mountings</span></p>
+</div>
+<p>For troubleshooting and static applications, the sensor may be mounted using the standardized tripod
+thread (UNC 1/4”-20) indicated at the coordinate-frame origin. For dynamic applications such
+as mounting on a robotic arm, the sensor must be mounted with three M4 (metric standard) 8.8 machine
+screws tightened to 2.5 Nm and secured with a medium-strength threadlocking adhesive such
+as Loctite 243. Maximum thread depth is 6 mm. The two 4 mm diameter holes may be used for positioning
+pins (ISO 2338 4 m6) to ensure precise repositioning of the sensor.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">For dynamic applications, the <em>rc_visard</em> must be mounted with three M4 8.8 machine screws
+tightened to 2.5 Nm torque and secured with threadlocking adhesive. Do not use high-strength bolts.
+The engaged thread depth must be at least 5 mm.</p>
+</div>
+</div>
+<div class="section" id="coordinate-frames">
+<span id="sect-coordinate-frames"></span><h2>Coordinate frames<a class="headerlink" href="#coordinate-frames" title="Permalink to this headline">¶</a></h2>
+<p id="index-12">The <em>rc_visard</em>’s coordinate-frame origin is defined as the exit pupil of the left camera lens. This frame is called sensor coordinate frame or camera coordinate frame. An approximate location for the <em>rc_visard</em> 65 is shown in the next image.</p>
+<p>The mounting-point frame for both <em>rc_visard</em> devices is defined to be at the bottom, centered in the tripod thread, with orientation identical to that of the sensor’s coordinate frame. <a class="reference internal" href="#fig-rc-visard-65"><span class="std std-numref">Fig. 10</span></a> shows approximate offsets.</p>
+<div class="figure align-center" id="id14">
+<span id="fig-rc-visard-65"></span><a class="reference internal image-reference" href="_images/rc_visard_frames.png"><img alt="_images/rc_visard_frames.png" src="_images/rc_visard_frames.png" style="width: 160mm;" /></a>
+<p class="caption"><span class="caption-number">Fig. 10 </span><span class="caption-text">Approximate location of sensor/camera coordinate frame (inside left lens) and mounting-point frame (at tripod thread) for the <em>rc_visard</em> 65</span></p>
+</div>
+<p>Approximate locations of sensor/camera coordinate frame and mounting-point frame for the <em>rc_visard</em> 160 are shown in <a class="reference internal" href="#fig-rc-visard-160"><span class="std std-numref">Fig. 11</span></a>.</p>
+<div class="figure align-center" id="id15">
+<span id="fig-rc-visard-160"></span><a class="reference internal image-reference" href="_images/rc_visard160_frames.png"><img alt="_images/rc_visard160_frames.png" src="_images/rc_visard160_frames.png" style="width: 160mm;" /></a>
+<p class="caption"><span class="caption-number">Fig. 11 </span><span class="caption-text">Approximate locations of sensor/camera coordinate frame (inside left lens) and mounting-point frame (at tripod thread) for the <em>rc_visard</em> 160</span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The correct offset between the sensor/camera frame and a robot
+coordinate frame can be calibrated through the <a class="reference internal" href="handeye_calibration.html"><span class="doc">hand-eye-calibration
+procedure</span></a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="safety.html" class="btn btn-neutral" title="Safety" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Options</span>
+      en
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Languages</dt>
+        
+          
+          <dd><a href="../de/hardware_spec.html">de</a></dd>
+          
+        
+          
+          <dd><a href="../en/hardware_spec.html">en</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versions</dt>
+          
+            <dd><a href="../../v1.1/index.html">v1.1</a></dd>
+          
+            <dd><a href="../../v1.0/index.html">v1.0</a></dd>
+          
+            <dd><a href="../../v1.3/index.html">v1.3</a></dd>
+          
+            <dd><a href="../../v1.2/index.html">v1.2</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_manual_de.pdf">PDF (de)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_manual_en.pdf">PDF (en)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.3.0',
+            LANGUAGE:'en',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
