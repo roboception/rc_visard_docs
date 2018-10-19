@@ -1,0 +1,140 @@
+
+.. include:: global_rst.glb
+
+.. _sect-iocontrol:
+
+IO and Projector Control
+========================
+
+The IOControl component allows reading the status of the general purpose
+digital inputs and controlling the digital general purpose outputs (:ref:`sect-wiring`:latex:`,
+Section \ref{hardware_spec:sect-wiring}`). The outputs can be set to low or high,
+or configured to be high for the exposure time of every image. Additionally, the
+outputs can be configured to be high for the exposure time of every second image.
+
+.. Note::
+
+   The IOControl component is optional and requires the purchase of a separate
+   :ref:`license<sect-updating-license>`:latex:`\:(Section \ref{maintenance:sect-updating-license})`.
+
+.. _sect-iocontrol-parameters:
+
+Parameters
+----------
+
+The IOControl component is called ``rc_iocontrol`` in the |rest-api|.
+The user can change the parameters via |rest-api|
+(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`) or GigE Vision
+using the DigitalIOControl parameters ``LineSelector`` and ``LineSource``
+(:ref:`sect-genicam-iocontrol`:latex:`, Section \ref{gigevision:sect-genicam-iocontrol}`).
+
+Parameter overview
+..................
+
+.. include:: _gen/nodes/params/rc_iocontrol.txt
+
+.. _sect-iocontrol-params:
+
+Description of run-time parameters
+..................................
+
+``out1_mode`` and ``out2_mode`` (*Out1* and *Out2*)
+    The output modes for GPIO Out 1 and Out 2 can be set individually:
+
+    ``Low`` sets the ouput permanently to low. This is the factory default of Out 2.
+
+    ``High`` sets the output permanently to high.
+
+    ``ExposureActive`` sets the output to high for the exposure time of every
+    image. This is the factory default of Out 1.
+
+    ``ExposureAlternateActive`` sets the output to high for the exposure time
+    of every second image.
+
+.. Note::
+
+   The parameters can only be changed if the IOControl license is available on
+   the |rc_visard|. Otherwise, the parameters will stay at their factory
+   defaults, i.e. ``out1_mode`` = ``ExposureActive`` and ``out2_mode`` = ``Low``.
+
+Figure :numref:`fig-fps-exposure` shows which images are used for stereo
+matching and transmission via GigE Vision in ``ExposureActive`` mode with a
+user defined frame rate of 8 Hz.
+
+.. _fig-fps-exposure:
+.. figure:: images/fps_exposure.*
+   :width: 100 %
+   :align: center
+
+   Example of using the ``ExposureActive`` mode for GPIO Out 1 with a user defined
+   frame rate setting of 8 Hz. The internal image acquisition is always |cam-rate|.
+   GPIO Out 1 is high for the exposure time of every image. A disparity
+   image is computed for camera images that are send out via GigE Vision according
+   to the user defined frame rate.
+
+The mode ``ExposureAlternateActive`` is meant to be used when an external random
+dot projector is connected to the GPIO Out 1 of the |rc_visard|.
+A side effect of setting output 1 to ``ExposureAlternateActive`` is that the
+:ref:`stereo matching<sect-stereo-matching>`:latex:`\:(Section \ref{stereo_matching:sect-stereo-matching})`
+component only uses images if output 1 is high, i.e. projector is on. The maximum
+framerate that is used for stereo matching is therefore halve of the frame rate
+configured by the user
+(see :ref:`FPS<expl-fps>`:latex:`, Section \ref{stereo_camera:sect-cam-params}`). All other
+components like
+:ref:`visual odometry<sect-visual-odometry>`:latex:`\:(Section \ref{stereo_visodo:sect-visual-odometry})`,
+:ref:`TagDetect<sect-tag-detection>`:latex:`\:(Section \ref{tagdetect:sect-tag-detection})` and
+:ref:`ItemPick<sect-itempick>`:latex:`\:(Section \ref{itempick:sect-itempick})`
+use images where the output is low, i.e. projector is off. Figure
+:numref:`fig-fps-alternate` shows an example.
+
+.. _fig-fps-alternate:
+.. figure:: images/fps_alternate.*
+   :width: 100 %
+   :align: center
+
+   Example of using the ``ExposureAlternateActive`` mode for GPIO Out 1 with a user
+   defined frame rate setting of 8 Hz. The internal image acquisition is always |cam-rate|.
+   GPIO Out 1 is high for the exposure time of every second image. A disparity
+   image is computed for images where Out 1 is high and that are send out via GigE
+   Vision according to the user defined frame rate. In ``ExposureAlternateActive``
+   mode, images are always transmitted pairwise. One with Out 1 high for which a
+   disparity image might be available and one with Out 1 low.
+
+.. Note:: In ``ExposureAlternateActive`` mode, an image with output high (i.e. with
+   projection) is always 40 ms away from an image with output low (i.e. without
+   projection), regardless of the user configured frame rate. This needs to be
+   considered when synchronizing disparity and camera images without projection
+   in this special mode.
+
+The functionality can also be controlled by the digital IO control parameters
+of the GenICam interface (:ref:`sect-genicam-iocontrol`:latex:`, Section \ref{gigevision:sect-genicam-iocontrol}`).
+
+Services
+--------
+
+The IOControl component offers the following services.
+
+``get_io_values``
+   This service call retrieves the current state of the general purpose inputs
+   and outputs. The returned time stamp is the time of measurement. The call
+   returns an error if the |rc_visard| does not have an IOControl license.
+
+   .. include:: _gen/nodes/services/rc_iocontrol_get_io_values.txt
+
+``save_parameters``
+   With this service call, the component's current parameter settings are
+   persisted to the |rcvisard|. That is, these values are applied even after
+   reboot.
+
+   .. include:: _gen/nodes/services/rc_iocontrol_save_parameters.txt
+
+``reset_defaults``
+   Restores and applies the default values for this component's parameters
+   ("factory reset").
+
+   .. include:: _gen/nodes/services/rc_iocontrol_reset_defaults.txt
+
+   .. WARNING:: The user must be aware that calling this service causes the
+      current parameter settings for the IOControl component to be
+      irrecoverably lost.
+

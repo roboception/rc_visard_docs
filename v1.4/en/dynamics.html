@@ -1,0 +1,928 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Sensor dynamics &mdash; rc_visard 1.4.1-1-g6af52fd
+ documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="rc_visard 1.4.1-1-g6af52fd
+ documentation" href="index.html"/>
+        <link rel="up" title="Software components" href="components.html"/>
+        <link rel="next" title="Visual odometry" href="stereo_visodo.html"/>
+        <link rel="prev" title="Stereo matching" href="stereo_matching.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Warranty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Applicable standards</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Approvals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Safety</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">General warnings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Intended use</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Scope of delivery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technical specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Environmental and operating conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Power-supply specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Wiring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanical interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-and-configuration">Installation and configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Power up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Network configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatic configuration (factory default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manual configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rcvisard-devices">Discovery of <em>rc_visard</em> devices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Resetting configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#web-gui">Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">The <em>rc_visard</em> in a nutshell</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#stereo-vision">Stereo vision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#sensor-dynamics">Sensor dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#calibration-relative-to-a-robot">Calibration relative to a robot</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="components.html">Software components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="stereo_camera.html">Stereo camera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#image-acquisition">Image acquisition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#planar-rectification">Planar rectification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_matching.html">Stereo matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Computing disparity images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Computing depth images and point clouds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Confidence and error images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Sensor dynamics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#coordinate-frames-for-state-estimation">Coordinate frames for state estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#available-state-estimates">Available state estimates</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#camera-pose-streams-pose-and-pose-ins">Camera-pose streams (<code class="docutils literal"><span class="pre">pose</span></code> and <code class="docutils literal"><span class="pre">pose_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#real-time-camera-pose-streams-pose-rt-and-pose-rt-ins">Real-time camera-pose streams (<code class="docutils literal"><span class="pre">pose_rt</span></code> and <code class="docutils literal"><span class="pre">pose_rt_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#real-time-dynamics-streams-dynamics-and-dynamics-ins">Real-time dynamics streams (<code class="docutils literal"><span class="pre">dynamics</span></code> and <code class="docutils literal"><span class="pre">dynamics_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#imu-data-stream-imu">IMU data stream (<code class="docutils literal"><span class="pre">imu</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_visodo.html">Visual odometry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_ins.html">Stereo INS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#self-calibration">Self-Calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#parameters">Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="camera_calibration.html">Camera calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#self-calibration">Self-calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#calibration-process">Calibration process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-1-calibration-settings">Step 1: Calibration settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-2-verify-calibration">Step 2: Verify calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-3-performing-calibration">Step 3: Performing calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-4-storing-the-calibration-result">Step 4: Storing the calibration result</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="handeye_calibration.html">Hand-eye calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Calibration interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#sensor-mounting">Sensor mounting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Calibration routine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-1-setting-parameters">Step 1: Setting parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-2-selecting-and-reporting-robot-calibration-positions">Step 2:  Selecting and reporting robot calibration positions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-3-calculating-and-saving-the-calibration-transformation">Step 3: Calculating and saving the calibration transformation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="optional.html">Optional software components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="slam.html">SLAM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#memory-limitations">Memory limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#parameter-overview">Parameter overview</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iocontrol.html">IO and Projector Control</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#qr-code">QR code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#apriltag">AprilTag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#comparison">Comparison</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-reading">Tag reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#pose-estimation">Pose estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag re-identification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#interfaces">Interfaces</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters-and-status-values">Parameters and status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="itempick.html">ItemPick</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#data-types">Data types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#load-carrier">Load Carrier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#suction-grasp">Suction Grasp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#item-model">Item model</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#interaction-with-other-components">Interaction with other components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#stereo-camera-and-stereo-matching">Stereo camera and Stereo matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#sensor-dynamics">Sensor dynamics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#io-and-projector-control">IO and Projector Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#hand-eye-calibration">Hand-eye calibration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#parameters-and-status-values">Parameters and Status Values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Interfaces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-visard">Custom GenICam features of the <em>rc_visard</em></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#general-api-structure">General API structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#available-resources-and-requests">Available resources and requests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#nodes-parameters-and-services">Nodes, parameters, and services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#datastreams">Datastreams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#system-and-logs">System and logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#data-type-definitions">Data type definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#swagger-ui">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rc_dynamics.html">The rc_dynamics interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#starting-stopping-dynamic-state-estimation">Starting/stopping dynamic-state estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#configuring-data-streams">Configuring data streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#data-stream-protocol">Data-stream protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Maintenance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Updating the firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcvisard">Rebooting the <em>rc_visard</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Connectivity kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Wiring</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Power connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Power supplies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Spare parts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED colors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Hardware issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Connectivity issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Camera-image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Depth/Disparity, error, and confidence image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#dynamics-issues">Dynamics issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">GigE Vision/GenICam issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Address</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pose_formats.html">Pose formats</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyzabc-format">XYZABC format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyz-quaternion-format">XYZ+quaternion format</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="components.html">Software components</a> &raquo;</li>
+        
+      <li>Sensor dynamics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sensor-dynamics">
+<span id="sect-dynamics"></span><h1>Sensor dynamics<a class="headerlink" href="#sensor-dynamics" title="Permalink to this headline">¶</a></h1>
+<p>The dynamics component provides estimates of the sensor state. These include pose, linear velocity, linear acceleration,
+and rotational rates. The component handles starting and stopping, and streaming of the estimates for individual subcomponents:</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="stereo_visodo.html"><span class="doc">Visual odometry</span></a> (<code class="docutils literal"><span class="pre">rc_stereovisodo</span></code>)</dt>
+<dd>estimates the camera’s motion from the motion of characteristic image points in the left camera images.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="stereo_ins.html"><span class="doc">Stereo INS</span></a> (<code class="docutils literal"><span class="pre">rc_stereo_ins</span></code>)</dt>
+<dd>combines visual odometry measurements with readings from an inertial measurement unit (<a class="reference internal" href="glossary.html#term-imu"><span class="xref std std-term">IMU</span></a>) to provide
+accurate, high-frequency state estimates in real time.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="slam.html"><span class="doc">SLAM</span></a> (<code class="docutils literal"><span class="pre">rc_slam</span></code>)</dt>
+<dd>performs simultaneous localization and mapping (<a class="reference internal" href="glossary.html#term-slam"><span class="xref std std-term">SLAM</span></a>) for correcting accumulated
+poses.</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="coordinate-frames-for-state-estimation">
+<span id="sect-coordinate-frames-state-estimation"></span><h2>Coordinate frames for state estimation<a class="headerlink" href="#coordinate-frames-for-state-estimation" title="Permalink to this headline">¶</a></h2>
+<p id="index-0">The world coordinate frame for state estimation is defined as follows: The
+coordinate frame’s z-axis points upward and is aligned with the gravity vector. The x-axis
+is orthogonal to the z-axis and points in the <em>rc_visard</em>’s viewing direction at the
+time when the pose estimation starts. The world
+frame’s origin is located at the origin of the <em>rc_visard</em>’s IMU coordinate frame at the instant
+when state estimation is switched on.</p>
+<p>If pose estimation is switched on when the <em>rc_visard</em>’s viewing direction parallels
+the gravity vector (with a tolerance range of 10 degrees), then the world coordinate frame’s y-axis
+is aligned either with the IMU’s positive or negative x-axis. In this orientation, the
+initial alignment of the world coordinate frame is no longer continuous. Thus, special care has to
+be taken when pose estimation has to be started at such an orientation.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/pose_frames.svg"><img alt="_images/pose_frames.svg" src="_images/pose_frames.svg" width="70%" /></a>
+<p class="caption"><span class="caption-number">Fig. 23 </span><span class="caption-text">Coordinate frames for state estimation. The IMU coordinate frame is inside the <em>rc_visard</em>’s housing.
+The <a class="reference internal" href="hardware_spec.html#sect-coordinate-frames"><span class="std std-ref">camera coordinate frame</span></a>
+is in the focal point of the left camera.</span></p>
+</div>
+<p>The transformation between the IMU coordinate frame and the camera/sensor frame is also
+estimated and provided in the <em>real-time dynamics stream</em> over the rc_dynamics interface
+(see <a class="reference internal" href="interfaces.html#sect-interfaces"><span class="std std-ref">Interfaces</span></a>).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The stereo INS component self-calibrates the IMU during its initialization.
+It is therefore required that the <em>rc_visard</em> is not moving and sufficient
+texture is visible during startup of the stereo INS component.</p>
+</div>
+</div>
+<div class="section" id="available-state-estimates">
+<span id="sect-dynamics-streams"></span><h2>Available state estimates<a class="headerlink" href="#available-state-estimates" title="Permalink to this headline">¶</a></h2>
+<p id="index-1">The <em>rc_visard</em> provides seven different kinds of timestamped state-estimate data streams via the rc_dynamics interface (see
+<a class="reference internal" href="rc_dynamics.html#sect-rc-dynamics-interface"><span class="std std-ref">The rc_dynamics interface</span></a>):</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="9%" />
+<col width="17%" />
+<col width="53%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Frequency</th>
+<th class="head">Source</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#sect-datastream-pose"><span class="std std-ref">pose</span></a></td>
+<td>25 Hz</td>
+<td>best effort</td>
+<td>Pose of camera frame, slightly delayed but most accurate</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#sect-datastream-pose"><span class="std std-ref">pose_ins</span></a></td>
+<td>25 Hz</td>
+<td><a class="reference internal" href="stereo_ins.html"><span class="doc">Stereo INS</span></a></td>
+<td>Pose of camera frame, slightly delayed but most accurate</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#sect-datastream-pose-rt"><span class="std std-ref">pose_rt</span></a></td>
+<td>200 Hz</td>
+<td>best effort</td>
+<td>Pose of camera frame</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#sect-datastream-pose-rt"><span class="std std-ref">pose_rt_ins</span></a></td>
+<td>200 Hz</td>
+<td><a class="reference internal" href="stereo_ins.html"><span class="doc">Stereo INS</span></a></td>
+<td>Pose of camera frame</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#sect-datastream-dynamics"><span class="std std-ref">dynamics</span></a></td>
+<td>200 Hz</td>
+<td>best effort</td>
+<td>Pose, velocity and acceleration in IMU frame</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#sect-datastream-dynamics"><span class="std std-ref">dynamics_ins</span></a></td>
+<td>200 Hz</td>
+<td><a class="reference internal" href="stereo_ins.html"><span class="doc">Stereo INS</span></a></td>
+<td>Pose, velocity and acceleration in IMU frame</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#sect-datastream-imu"><span class="std std-ref">imu</span></a></td>
+<td>200 Hz</td>
+<td><a class="reference internal" href="stereo_ins.html"><span class="doc">Stereo INS</span></a></td>
+<td>Raw IMU data</td>
+</tr>
+</tbody>
+</table>
+<p><em>Best effort</em> here means that if <a class="reference internal" href="slam.html"><span class="doc">SLAM</span></a> is running, then it contains the
+loop-closure corrected estimates and is equivalent to the stream from <a class="reference internal" href="stereo_ins.html"><span class="doc">Stereo INS</span></a>
+when SLAM is not running.</p>
+<div class="section" id="camera-pose-streams-pose-and-pose-ins">
+<span id="sect-datastream-pose"></span><span id="index-2"></span><h3>Camera-pose streams (<code class="docutils literal"><span class="pre">pose</span></code> and <code class="docutils literal"><span class="pre">pose_ins</span></code>)<a class="headerlink" href="#camera-pose-streams-pose-and-pose-ins" title="Permalink to this headline">¶</a></h3>
+<p id="index-3">The <em>camera-pose streams</em>  called <code class="docutils literal"><span class="pre">pose</span></code> and <code class="docutils literal"><span class="pre">pose_ins</span></code> are provided at 25 Hz with
+timestamps that correspond to image timestamps. The
+former stream is the best-effort estimate, combining <code class="docutils literal"><span class="pre">rc_slam</span></code> and <code class="docutils literal"><span class="pre">rc_stereo_ins</span></code> if the <a class="reference internal" href="slam.html"><span class="doc">SLAM</span></a> component is
+running. If SLAM is not running, then both data streams are equivalent. Pose
+values are given in world coordinates, and also refer to the <em>rc_visard</em>’s camera
+frame origin
+(see <a class="reference internal" href="#sect-coordinate-frames-state-estimation"><span class="std std-ref">Coordinate frames for state estimation</span></a>).
+They are the
+most accurate estimates, taking all available <em>rc_visard</em> information into consideration.
+They can be used in modeling applications, where camera images, depth images,
+or point clouds have to be aligned highly accurately with each other. To ensure
+the greatest possible accuracy, these pose values are delayed until a corresponding
+visual odometry measurement is available.</p>
+</div>
+<div class="section" id="real-time-camera-pose-streams-pose-rt-and-pose-rt-ins">
+<span id="sect-datastream-pose-rt"></span><h3>Real-time camera-pose streams (<code class="docutils literal"><span class="pre">pose_rt</span></code> and <code class="docutils literal"><span class="pre">pose_rt_ins</span></code>)<a class="headerlink" href="#real-time-camera-pose-streams-pose-rt-and-pose-rt-ins" title="Permalink to this headline">¶</a></h3>
+<p id="index-4">Two <em>real-time pose streams</em> called <code class="docutils literal"><span class="pre">pose_rt</span></code> and <code class="docutils literal"><span class="pre">pose_rt_ins</span></code> are provided at the IMU rate of 200 Hz. The
+former stream is the best-effort estimate, combining <code class="docutils literal"><span class="pre">rc_slam</span></code> and <code class="docutils literal"><span class="pre">rc_stereo_ins</span></code> when the SLAM component is
+running. If SLAM is not running, then both data streams are equivalent. They consist of the
+pose estimates of the <em>rc_visard</em>’s camera frame origin (see <a class="reference internal" href="#sect-coordinate-frames-state-estimation"><span class="std std-ref">Coordinate frames for state estimation</span></a>)
+in world coordinates. The
+values given in these streams correspond to the values in the <em>real-time dynamics streams</em>,
+but give the pose of the sensor/camera coordinate frame instead of that of the IMU coordinate frame.</p>
+</div>
+<div class="section" id="real-time-dynamics-streams-dynamics-and-dynamics-ins">
+<span id="sect-datastream-dynamics"></span><h3>Real-time dynamics streams (<code class="docutils literal"><span class="pre">dynamics</span></code> and <code class="docutils literal"><span class="pre">dynamics_ins</span></code>)<a class="headerlink" href="#real-time-dynamics-streams-dynamics-and-dynamics-ins" title="Permalink to this headline">¶</a></h3>
+<p id="index-5">Two <em>real-time dynamics streams</em> called <code class="docutils literal"><span class="pre">dynamics</span></code> and <code class="docutils literal"><span class="pre">dynamics_ins</span></code> are provided at the IMU rate of 200 Hz. The
+former stream is the best-effort estimate, combining <code class="docutils literal"><span class="pre">rc_slam</span></code> and <code class="docutils literal"><span class="pre">rc_stereo_ins</span></code> when the SLAM component is
+running. If SLAM is not running, then both data streams are equivalent. The
+estimates can be used for real-time control of a robot. Since the values are provided
+in real time and visual odometry computation requires some processing time,
+the latest visual odometry estimate may not be included.
+Therefore, these estimates are in general slightly less accurate than those in the
+non-real-time <em>camera-pose streams</em> (see above), but are the best estimates
+available at this instant. The provided dynamics streams contain the <em>rc_visard</em>’s</p>
+<ul class="simple" id="index-6">
+<li>translation <span class="math">\(\mathbf{p} = (x, y, z)^T\)</span> in <span class="math">\(m\)</span>,</li>
+</ul>
+<ul class="simple" id="index-7">
+<li>rotation <span class="math">\(\mathbf{q} = (q_x, q_y, q_z, q_w)^T\)</span> as unit quaternion,</li>
+</ul>
+<ul class="simple" id="index-8">
+<li>linear velocities <span class="math">\(\mathbf{v} = (v_x, v_y, v_z)^T\)</span> in <span class="math">\(\frac{m}{s}\)</span>,</li>
+</ul>
+<ul class="simple" id="index-9">
+<li>angular velocities <span class="math">\(\mathbf{\omega} = (\omega_x, \omega_y, \omega_z)^T\)</span> in <span class="math">\(\frac{rad}{s}\)</span>,</li>
+</ul>
+<ul class="simple" id="index-10">
+<li>gravity-compensated linear accelerations <span class="math">\(\mathbf{a} = (a_x, a_y, a_z)^T\)</span> in <span class="math">\(\frac{m}{s^2}\)</span>, and</li>
+</ul>
+<ul class="simple" id="index-11">
+<li>transformation from camera to IMU coordinate frame as pose with frame name and parent frame name.</li>
+</ul>
+<p id="index-12">For each component, the stream also provides the name of the coordinate
+frame in which the values are given. Translation, rotation, and linear velocities
+are given in the world frame; angular velocities and accelerations are
+given in the IMU frame (see <a class="reference internal" href="#sect-coordinate-frames-state-estimation"><span class="std std-ref">Coordinate frames for state estimation</span></a>).
+All values refer to the IMU frame’s origin. That
+means, for example, that linear velocity is the velocity of the IMU frame’s origin in the world frame.</p>
+<p id="index-13">Lastly, the stream contains a <code class="docutils literal"><span class="pre">possible_jump</span></code> flag, which is set to <em>true</em> whenever
+the optional SLAM component (see <a class="reference internal" href="slam.html"><span class="doc">SLAM</span></a>)
+corrects the state estimation after finding a loop
+closure. The state estimate can jump in this case, which should be considered when
+the values are used in a control loop. If SLAM is not running, the jump flag can be
+ignored and will stay <em>false</em>.</p>
+</div>
+<div class="section" id="imu-data-stream-imu">
+<span id="sect-datastream-imu"></span><span id="index-14"></span><h3>IMU data stream (<code class="docutils literal"><span class="pre">imu</span></code>)<a class="headerlink" href="#imu-data-stream-imu" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div></div></blockquote>
+<p id="index-15">The <em>IMU data stream</em> called <code class="docutils literal"><span class="pre">imu</span></code> is provided at the IMU rate of 200 Hz. It consists of the
+acceleration in x, y, z directions plus the angular velocities around these three axis.
+The values are calibrated but not bias- and gravity-compensated, and are given in the IMU frame. The transformation
+between IMU and sensor frame is provided in the <em>real-time dynamics stream</em>.</p>
+</div>
+</div>
+<div class="section" id="services">
+<span id="sect-dynamics-services"></span><h2>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div></div></blockquote>
+<p id="index-16">The sensor dynamics component offers the following services for starting
+dynamics/motion estimation. All services return a numerical code of the entered state.
+The meaning of the returned state codes and names are given in <a class="reference internal" href="#tab-rc-dynamics-states"><span class="std std-numref">Table 10</span></a>.</p>
+<span id="tab-rc-dynamics-states"></span><table border="1" class="docutils" id="id2">
+<caption><span class="caption-number">Table 10 </span><span class="caption-text">Possible states of the sensor dynamics component</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">State name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>IDLE</td>
+<td>The component is ready, but idle</td>
+</tr>
+<tr class="row-odd"><td>WAITING_FOR_INS</td>
+<td>Waiting for stereo INS to start up</td>
+</tr>
+<tr class="row-even"><td>WAITING_FOR_INS_AND_SLAM</td>
+<td>Waiting for stereo INS and SLAM to start up</td>
+</tr>
+<tr class="row-odd"><td>RUNNING</td>
+<td>The stereo INS component is running (SLAM is not running)</td>
+</tr>
+<tr class="row-even"><td>WAITING_FOR_SLAM</td>
+<td>Waiting for SLAM to start up (stereo INS is running)</td>
+</tr>
+<tr class="row-odd"><td>RUNNING_WITH_SLAM</td>
+<td>Both stereo INS and SLAM are running</td>
+</tr>
+<tr class="row-even"><td>FATAL</td>
+<td>A fatal error has occured (either in stereo INS or SLAM)</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">start</span></code></dt>
+<dd><p class="first">Starts the stereo INS component.
+Transitions from state <code class="docutils literal"><span class="pre">IDLE</span></code> through <code class="docutils literal"><span class="pre">WAITING_FOR_INS</span></code> to <code class="docutils literal"><span class="pre">RUNNING</span></code>.</p>
+<p>This service requires no arguments.</p>
+<p>This service returns the following response:</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal"><span class="pre">start_slam</span></code></dt>
+<dd><p class="first">Starts the SLAM and – if not yet started – the stereo INS component.
+From state <code class="docutils literal"><span class="pre">IDLE</span></code>: Transitions through <code class="docutils literal"><span class="pre">WAITING_FOR_INS_AND_SLAM</span></code> and <code class="docutils literal"><span class="pre">WAITING_FOR_SLAM</span></code> to <code class="docutils literal"><span class="pre">RUNNING_WITH_SLAM</span></code>.
+From state <code class="docutils literal"><span class="pre">RUNNING</span></code>: Transitions through <code class="docutils literal"><span class="pre">WAITING_FOR_SLAM</span></code> to <code class="docutils literal"><span class="pre">RUNNING_WITH_SLAM</span></code>.</p>
+<p>This service requires no arguments.</p>
+<p>This service returns the following response:</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal"><span class="pre">stop</span></code></dt>
+<dd><p class="first">Stops the stereo INS and – if running – the SLAM components.
+The trajectory estimate of the SLAM component will still be available.
+Transitions from state <code class="docutils literal"><span class="pre">RUNNING</span></code> or <code class="docutils literal"><span class="pre">RUNNING_WITH_SLAM</span></code> to <code class="docutils literal"><span class="pre">IDLE</span></code>.</p>
+<p>This service requires no arguments.</p>
+<p>This service returns the following response:</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal"><span class="pre">stop_slam</span></code></dt>
+<dd><p class="first">Stops the SLAM component. Stereo INS will continue to run.
+The trajectory estimate of the SLAM component will still be available.
+Transitions from state <code class="docutils literal"><span class="pre">RUNNING_WITH_SLAM</span></code> to <code class="docutils literal"><span class="pre">RUNNING</span></code>.</p>
+<p>This service requires no arguments.</p>
+<p>This service returns the following response:</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal"><span class="pre">restart</span></code></dt>
+<dd><p class="first">Restarts to stereo INS. Equivalent to successive <code class="docutils literal"><span class="pre">stop</span></code> and <code class="docutils literal"><span class="pre">start</span></code>.</p>
+<p>From state <code class="docutils literal"><span class="pre">RUNNING</span></code> or <code class="docutils literal"><span class="pre">RUNNING_WITH_SLAM</span></code>: Transitions through states <code class="docutils literal"><span class="pre">IDLE</span></code> and <code class="docutils literal"><span class="pre">WAITING_FOR_INS</span></code> to <code class="docutils literal"><span class="pre">RUNNING</span></code>.</p>
+<p>This service requires no arguments.</p>
+<p>This service returns the following response:</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal"><span class="pre">restart_slam</span></code></dt>
+<dd><p class="first">Restarts to SLAM mode. Equivalent to successive <code class="docutils literal"><span class="pre">stop</span></code> and <code class="docutils literal"><span class="pre">start_slam</span></code>.</p>
+<p>From state <code class="docutils literal"><span class="pre">RUNNING</span></code> or <code class="docutils literal"><span class="pre">RUNNING_WITH_SLAM</span></code>: Transitions through states <code class="docutils literal"><span class="pre">IDLE</span></code>, <code class="docutils literal"><span class="pre">WAITING_FOR_INS_AND_SLAM</span></code>, <code class="docutils literal"><span class="pre">WAITING_FOR_SLAM</span></code> to <code class="docutils literal"><span class="pre">RUNNING_WITH_SLAM</span></code>.</p>
+<p>This service requires no arguments.</p>
+<p>This service returns the following response:</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>The following diagram shows the main states and transitions. Intermediate states
+and the fatal error state are omitted for conceptual clarity.</p>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="_images/rc_dynamics_state_machine_simplified.png"><img alt="_images/rc_dynamics_state_machine_simplified.png" src="_images/rc_dynamics_state_machine_simplified.png" style="width: 50%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 24 </span><span class="caption-text">Simplified state and transition diagram</span></p>
+</div>
+<p>These services shall respond quickly. Therefore, for services that cause a state transition
+the value of the returned <code class="docutils literal"><span class="pre">current_state</span></code> in general is the first new (intermediate) state that was
+transitioned to, not the final state.
+E.g., for the <code class="docutils literal"><span class="pre">start</span></code> command the returned <code class="docutils literal"><span class="pre">current_state</span></code> will be WAITING_FOR_INS, not state
+RUNNING. If the transition does not take place within 0.1 seconds, the
+current state is returned. See <a class="reference internal" href="#tab-rc-dynamics-states"><span class="std std-numref">Table 10</span></a> for the meaning of the returned state codes.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The state <code class="docutils literal"><span class="pre">FATAL</span></code> can only be left by calling <code class="docutils literal"><span class="pre">stop</span></code>, which performs
+a transition to the state <code class="docutils literal"><span class="pre">IDLE</span></code>. The services <code class="docutils literal"><span class="pre">restart</span></code> and
+<code class="docutils literal"><span class="pre">restart_slam</span></code> internally use <code class="docutils literal"><span class="pre">stop</span></code> and will also work as
+expected. <code class="docutils literal"><span class="pre">start</span></code> and <code class="docutils literal"><span class="pre">start_slam</span></code> only work if the state is
+<code class="docutils literal"><span class="pre">IDLE</span></code>, and do nothing if the state is <code class="docutils literal"><span class="pre">FATAL</span></code>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The dynamics components can also be started and stopped on the
+<em>Dynamics</em> page of the <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>.</p>
+</div>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">get_cam2imu_transform</span></code></dt>
+<dd><p class="first">returns the transformation from camera to IMU coordinate frame.
+This is equivalent to the <code class="docutils literal"><span class="pre">cam2imu_transform</span></code> in the <a class="reference internal" href="rc_dynamics.html#protobuf-dynamics"><span class="std std-ref">Dynamics message</span></a>.</p>
+<p>This service requires no arguments.</p>
+<p>This service returns the following response:</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;parent&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="stereo_visodo.html" class="btn btn-neutral float-right" title="Visual odometry" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="stereo_matching.html" class="btn btn-neutral" title="Stereo matching" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Options</span>
+      en
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Languages</dt>
+        
+          
+          <dd><a href="../de/dynamics.html">de</a></dd>
+          
+        
+          
+          <dd><a href="../en/dynamics.html">en</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versions</dt>
+          
+            <dd><a href="../../v1.1/index.html">v1.1</a></dd>
+          
+            <dd><a href="../../v1.0/index.html">v1.0</a></dd>
+          
+            <dd><a href="../../v1.3/index.html">v1.3</a></dd>
+          
+            <dd><a href="../../v1.2/index.html">v1.2</a></dd>
+          
+            <dd><a href="../../v1.4/index.html">v1.4</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_manual_de.pdf">PDF (de)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_manual_en.pdf">PDF (en)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.4.1-1-g6af52fd',
+            LANGUAGE:'en',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

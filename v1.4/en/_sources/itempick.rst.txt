@@ -1,0 +1,983 @@
+ItemPick
+
+Introduction
+
+The ItemPick component is an optional on-board component of the
+
+rc_visard
+
+.
+
+Note: The ItemPick component is optional and requires a separate
+
+  license
+
+    to be purchased.
+
+It provides an out-of-the-box and model-free perception solution for
+robotic pick-and-place applications with suction grippers. The
+component extracts flat surfaces by clustering points in the scene and
+computes 3D grasp poses for the suction device.
+
+In addition, ItemPick features:
+
+a dedicated page on the rc_visard Web GUI\:(Section \ref{installation
+:sect-web-gui}) for easy setup, configuration, testing, and
+application tuning
+
+the definition of regions of interest to select relevant volumes in
+the scene
+
+a load carrier detection functionality for bin-picking applications,
+to provide grasps only for items inside a bin
+
+the definition of compartments inside a load carrier to provide grasps
+only for specific volumes of the bin
+
+support for static and robot-mounted rc_visard devices and optional
+integration with the on-board Hand-eye calibration (Section
+\ref{handeye_calibration:sect-handeye-calibration}) component, to
+provide grasps in the user-configured external reference frame
+
+a quality value associated to each suggested grasp and related to the
+available grasping surface
+
+sorting of grasps according to gravity so that items on top of a pile
+are grasped first.
+
+Note: In the ItemPick component, cluster and surface are used as
+  synonyms and identify a set of points (or pixels) with defined
+  geometrical properties.
+
+Note: In the ItemPick component, load carrier and bin are used as
+  synonyms and identify a container with four walls, a floor and a
+  rectangular rim.
+
+Data types
+
+Region of Interest
+
+A region of interest defines a volume in space which is of interest
+for a specific user-application. The ItemPick component currently
+supports regions of interest of the following types:
+
+   BOX, with dimensions box.x, box.y, box.z.
+
+   SPHERE, with radius sphere.radius.
+
+The user can specify the region of interest "pose" in the "camera" or
+the "external" coordinate system (see
+
+Hand-eye calibration
+
+).
+
+The ItemPick component can persistently store up to 10 different
+regions of interest, each one identified by a different "id". The
+configuration of regions of interest is normally performed offline
+(e.g., on the ItemPick page of the
+
+rc_visard
+
+ Web GUI), during the set up the desired application.
+
+Note: As opposed to the component parameters, the configured regions
+  of interest are persistent even over firmware updates and rollbacks.
+
+The region of interest can narrow the volume that is searched for a
+load carrier model, or select a volume which only contains items to be
+grasped.
+
+Note: If the region of interest filter is not applied, the ItemPick
+  component processes the whole scene visible to the camera. In case
+  of grasp computation, this means that the whole scene includes items
+  available for grasping.
+
+Load Carrier
+
+A load carrier (bin) is a container with four walls, a floor and a
+rectangular rim. It is defined by its "outer_dimensions" and
+"inner_dimensions".
+
+The load carrier detection algorithm is based on the detection of the
+load carrier rectangular rim. By default, the rectangular
+"rim_thickness" is computed from the outer and inner dimensions. As an
+alternative, its value can also be explicitly specified by the user.
+
+Note: Typically, outer and inner dimensions of a load carrier are
+  available in the specifications of the load carrier manufacturer.
+
+The load carrier reference frame is defined such that its origin is at
+the center of the load carrier outer box, its z axis is perpendicular
+to the load carrier floor and its x axis is directed along the
+direction of maximum elongation of the load carrier.
+
+
+The user can optionally specify a prior for the load carrier "pose".
+The detected load carrier pose is guaranteed to have the minimum
+rotation with respect to the load carrier prior pose. If no prior is
+specified, the algorithm searches for a load carrier whose floor is
+perpendicular to the estimated gravity vector.
+
+The ItemPick component can persistently store up to 10 different load
+carrier models, each one identified by a different "id". The
+configuration of a load carrier model is normally performed offline
+(e.g., on the ItemPick page of the
+
+rc_visard
+
+ Web GUI), during the set up the desired application.
+
+Note: As opposed to the component parameters, the configured load
+  carrier models are persistent even over firmware updates and
+  rollbacks.
+
+The ItemPick module enables the computation of grasps for a specific
+volume of the load carrier ("load_carrier_compartment"). The
+compartment is a box whose "pose" is defined with respect to the load
+carrier reference frame.
+
+
+Suction Grasp
+
+A grasp provided by the ItemPick represents the recommended pose of
+the TCP (Tool Center Point) of the suction gripper. The grasp
+orientation is a right-handed coordinate system and is defined such
+that its z axis is normal to the surface pointing inside the object at
+the grasp position and its x axis is directed along the maximum
+elongation of the surface.
+
+The computed grasp pose is the center of the biggest ellipse that can
+be inscribed in each surface.
+
+
+Each grasp includes the dimensions of the maximum suction surface
+available, modelled as an ellipse of axes "max_suction_surface_length"
+and "max_suction_surface_width". The user is enabled to filter grasps
+by specifying the minimum suction surface required by the suction
+device in use.
+
+The grasp definition is complemented by a "uuid" (Universally Unique
+Identifier) and the "timestamp" of the oldest image that was used to
+compute the grasp.
+
+Item model
+
+The ItemPick component allows to specify a model for the items to be
+picked. Each item model includes the dimensions of the maximum and
+minimum bounding box totally enclosing the item.
+
+The ItemPick component currently supports item models of the following
+types:
+
+   UNKNOWN, for flexible and/or deformable items.
+
+   BOX, for box-shaped rigid items.
+
+Interaction with other components
+
+Internally, the ItemPick component depends on, and interacts with
+other on-board components as listed below.
+
+Note: All changes and configuration updates to these components will
+  affect the ItemPick component’s performance.
+
+Stereo camera and Stereo matching
+
+The ItemPick component makes use internally of the following data:
+
+Rectified images from the Stereo camera component (rc_stereocamera,
+Section \ref{stereo_camera:sect-stereo-camera});
+
+Disparity, error, and confidence images from the Stereo matching
+component (rc_stereomatching, Section \ref{stereo_matching:sect-
+stereo-matching}).
+
+Sensor dynamics
+
+For each load carrier detection and grasp computation, the ItemPick
+component estimates the gravity vector by subscribing to the IMU data
+stream from the
+
+Sensor dynamics
+
+ component ("rc_dynamics").
+
+Note: The gravity vector is estimated from linear acceleration
+  readings from the on-board IMU. For this reason, the ItemPick
+  components requires the
+
+  rc_visard
+
+   to remain still while the gravity vector is being estimated.
+
+IO and Projector Control
+
+In case the
+
+rc_visard
+
+ is used in conjunction with an external random dot projector and the
+
+IO and Projector Control
+
+ component ("rc_iocontrol"), the output mode for the GPIO output in
+use should be se to "ExposureAlternateActive", as explained in the
+
+Description of run-time parameters
+
+ of the
+
+IO and Projector Control
+
+ component.
+
+No additional changes are required to use the ItemPick component in
+combination with a random dot projector.
+
+Hand-eye calibration
+
+In case you have the
+
+rc_visard
+
+ calibrated to a robot, you can choose two different "pose_frame"
+values:
+
+Camera frame (camera). All poses provided to and from the component
+are in the camera frame, and no prior knowledge about the pose of the
+rc_visard in the environment is required. This means that the
+configured regions of interest and load carriers move with the camera.
+It is the user’s responsibility to update the configured poses if the
+camera frame moves (e.g., with a robot-mounted sensor).
+
+External frame (external). All poses provided to and from the
+component are in the external frame, configured by the user during the
+hand-eye calibration process. The component relies on the on-board
+Hand-eye calibration component to retrieve the sensor mounting (static
+or robot mounted) and the hand-eye transformation. If the sensor
+mounting is static, no further information is needed. If the sensor is
+robot-mounted, the robot_pose is required to transform poses to and
+from the external frame.
+
+Note: If no hand-eye calibration is available, all "pose_frame"
+  values should be set to "camera".
+
+All "pose_frame" values that are not "camera" or "external" are
+rejected by the component.
+
+Parameters and Status Values
+
+The ItemPick component is called "rc_itempick" in the REST-API. The
+user can explore and configure the "rc_itempick" component’s run-time
+parameters, e.g., for development and testing, using the
+
+rc_visard
+
+
+Web GUI
+
+ or
+
+Swagger UI
+
+.
+
+This component offers the following run-time parameters.
+
+The rc_itempick component’s application parameters              Name
+Type  Min  Max  Default  Description  max_grasps  int32  1  20  5
+Maximum number of provided grasps
+
+The rc_itempick component’s load carrier detection parameters
+Name  Type  Min  Max  Default  Description  load_carrier_crop_distance
+float64  0.0  0.02  0.005  Safety margin in meters by which the load
+carrier inner dimensions are reduced to define the region of interest
+for grasp computation  load_carrier_model_tolerance  float64  0.003
+0.025  0.008  Indicates how much the estimated load carrier dimensions
+are allowed to differ from the load carrier model dimensions in meters
+
+The rc_itempick component’s surface clustering parameters
+Name  Type  Min  Max  Default  Description  cluster_max_dimension
+float64  0.05  0.8  0.3  Diameter of the largest sphere enclosing each
+cluster in meters. Clusters larger than this value are filtered out
+before grasp computation.  cluster_max_curvature  float64  0.005  0.5
+0.11  Maximum curvature allowed within one cluster. The smaller this
+value, the more clusters will be split apart.  clustering_patch_size
+int32  3  10  4  Size in pixels of the square patches the depth map is
+subdivided into during the first clustering step
+clustering_max_surface_rmse  float64  0.0005  0.01  0.004  Maximum
+root-mean-square error (RMSE) in meters of points belonging to a
+surface  clustering_discontinuity_factor  float64  0.5  5.0  1.0
+Factor used to discriminate depth discontinuities within a patch. The
+smaller this value, the more clusters will be split apart.
+item_model_tolerance  float64  0.003  0.05  0.005  Indicates how much
+the estimated item dimensions are allowed to differ from the item
+model dimensions in meters
+
+This component reports the following status values.
+
+The rc_itempick component’s status values      Name  Description
+state  The current state of the rc_itempick node
+last_timestamp_processed  The timestamp of the last processed dataset
+data_acquisition_time  Time in seconds required by the last active
+service to acquire images. Standard values are between 0.5 s and 0.6 s
+with High depth image quality.  load_carrier_detection_time
+Processing time of the last load carrier detection in seconds
+grasp_computation_time  Processing time of the last grasp computation
+in seconds
+
+The reported "state" can take one of the following values.
+
+Possible states of the ItemPick components      State name
+Description  IDLE  The component is idle.  RUNNING  The component is
+running and ready for load carrier detection and grasp computation.
+FATAL  A fatal error has occurred.
+
+Services
+
+The user can explore and call the "rc_itempick" component’s services,
+e.g., for development and testing, using
+
+Swagger UI
+
+ or the
+
+rc_visard
+
+
+Web GUI
+
+.
+
+Each service component provides a "return_code", which consists of a
+value plus an optional message.
+
+A successful service returns with a "return_code" value of "0".
+Negative "return_code" values indicate that the service failed.
+Positive "return_code" values indicate that the service succeeded with
+additional information. The smaller value is selected in case a
+service has multiple "return_code" values, but all messages are
+appended in the "return_code" message.
+
+The following table contains a list of common codes:
+
+Return codes of the ItemPick services      Code  Description  0
+Success  -1  An invalid argument was provided  -4  Data acquisition
+took longer than the maximum allowed time of 1.5 seconds  -301  More
+than one item model provided to the compute_grasps service, but only
+one is supported  -302  More than one load carrier provided to the
+detect_load_carriers service, but only one is supported  100  The
+requested load carriers were not detected in the scene  101  No valid
+surfaces or grasps were found in the scene  102  The detected load
+carrier is empty  200  The component is in IDLE state  300  A valid
+robot_pose was provided as argument but it is not required  400  No
+item_models were provided to the compute_grasps service request  500
+The region of interest visualization images could not be generated
+during the call to set_region_of_interest  600  An existent persistent
+model was overwritten by the call to set_load_carrier or
+set_region_of_interest
+
+The ItemPick component offers the following services.
+
+"start"
+   Starts the component. If the command is accepted, the component
+   moves to state "RUNNING". The "current_state" value in the service
+   response may differ from "RUNNING" if the state transition is still
+   in process when the service returns.
+
+   This service requires no arguments.
+
+   This service returns the following response:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+"stop"
+   Stops the component. If the command is accepted, the component
+   moves to state "IDLE". The "current_state" value in the service
+   response may differ from "IDLE" if the state transition is still in
+   process when the service returns.
+
+   This service requires no arguments.
+
+   This service returns the following response:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+"set_region_of_interest"
+   Persistently stores a region of interest on the
+
+   rc_visard
+
+   . All configured regions of interest are persistent over firmware
+   updates and rollbacks.
+
+   See
+
+   Region of Interest
+
+    the definition of the region of interest type.
+
+   This service requires the following arguments:
+
+      {
+        "region_of_interest": {
+          "box": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "id": "string",
+          "pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "pose_frame": "string",
+          "sphere": {
+            "radius": "float64"
+          },
+          "type": "string"
+        },
+        "robot_pose": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "position": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          }
+        }
+      }
+
+   This service returns the following response:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+"get_regions_of_interest"
+   Returns the configured regions of interest with the requested
+   "region_of_interest_ids". If no "region_of_interest_ids" are
+   provided, all configured regions of interest are returned.
+
+   This service requires the following arguments:
+
+      {
+        "region_of_interest_ids": [
+          "string"
+        ]
+      }
+
+   This service returns the following response:
+
+      {
+        "regions_of_interest": [
+          {
+            "box": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "id": "string",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "sphere": {
+              "radius": "float64"
+            },
+            "type": "string"
+          }
+        ],
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+"delete_regions_of_interest"
+   Deletes the configured regions of interest with the requested
+   "region_of_interest_ids". All regions of interest to be deleted
+   must be explicitly stated in "region_of_interest_ids".
+
+   This service requires the following arguments:
+
+      {
+        "region_of_interest_ids": [
+          "string"
+        ]
+      }
+
+   This service returns the following response:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+"set_load_carrier"
+   Persistently stores a load carrier on the
+
+   rc_visard
+
+   . All configured load carriers are persistent over firmware updates
+   and rollbacks.
+
+   See
+
+   Load Carrier
+
+    the definition of the load carrier type.
+
+   This service requires the following arguments:
+
+      {
+        "load_carrier": {
+          "id": "string",
+          "inner_dimensions": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "outer_dimensions": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "pose_frame": "string",
+          "rim_thickness": {
+            "x": "float64",
+            "y": "float64"
+          }
+        }
+      }
+
+   This service returns the following response:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+"get_load_carriers"
+   Returns the configured load carriers with the requested
+   "load_carrier_ids". If no "load_carrier_ids" are provided, all
+   configured load carriers are returned.
+
+   This service requires the following arguments:
+
+      {
+        "load_carrier_ids": [
+          "string"
+        ]
+      }
+
+   This service returns the following response:
+
+      {
+        "load_carriers": [
+          {
+            "id": "string",
+            "inner_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "outer_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "rim_thickness": {
+              "x": "float64",
+              "y": "float64"
+            }
+          }
+        ],
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+"delete_load_carriers"
+   Deletes the configured load carriers with the requested
+   "load_carrier_ids". All load carriers to be deleted must be
+   explicitly stated in "load_carrier_ids".
+
+   This service requires the following arguments:
+
+      {
+        "load_carrier_ids": [
+          "string"
+        ]
+      }
+
+   This service returns the following response:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+"detect_load_carriers"
+   Triggers a load carrier detection. All images used by the node are
+   guaranteed to be newer than the service trigger time.
+
+   This service requires the following arguments:
+
+      {
+        "load_carrier_ids": [
+          "string"
+        ],
+        "pose_frame": "string",
+        "region_of_interest_id": "string",
+        "robot_pose": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "position": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          }
+        }
+      }
+
+   This service returns the following response:
+
+      {
+        "load_carriers": [
+          {
+            "id": "string",
+            "inner_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "outer_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "rim_thickness": {
+              "x": "float64",
+              "y": "float64"
+            }
+          }
+        ],
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        },
+        "timestamp": {
+          "nsec": "int32",
+          "sec": "int32"
+        }
+      }
+
+   Required arguments:
+
+      "pose_frame": only if a pose frame is not already specified by
+      the selected region of interest or load carrier pose prior. If a
+      "pose_frame" is provided but not required, its value must be
+      consistent with the selected region of interest pose frame and
+      load carrier prior pose frame, otherwise the service will return
+      with an invalid argument error.
+
+      "load_carrier_ids"
+
+      "robot_pose": only if working in "pose_frame="external"" and the
+
+      rc_visard
+
+       is robot-mounted.
+
+   Optional arguments:
+
+      "region_of_interest_id": delimits the volume of space where to
+      search for the load carrier. The processing time for load
+      carrier detection increases with the size of the selected region
+      of interest.
+
+"compute_grasps"
+   Triggers the computation of grasping poses for a suction device.
+   All images used by the node are guaranteed to be newer than the
+   service trigger time. If successful, the service returns a sorted
+   list of grasps and (optionally) the detected load carriers.
+
+   This service requires the following arguments:
+
+      {
+        "item_models": [
+          {
+            "box": {
+              "max_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "min_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "type": "string",
+            "unknown": {
+              "max_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "min_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            }
+          }
+        ],
+        "load_carrier_compartment": {
+          "box": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          }
+        },
+        "load_carrier_id": "string",
+        "pose_frame": "string",
+        "region_of_interest_id": "string",
+        "robot_pose": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "position": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          }
+        },
+        "suction_surface_length": "float64",
+        "suction_surface_width": "float64"
+      }
+
+   This service returns the following response:
+
+      {
+        "grasps": [
+          {
+            "max_suction_surface_length": "float64",
+            "max_suction_surface_width": "float64",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "quality": "float64",
+            "timestamp": {
+              "nsec": "int32",
+              "sec": "int32"
+            },
+            "type": "string",
+            "uuid": "string"
+          }
+        ],
+        "load_carriers": [
+          {
+            "id": "string",
+            "inner_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "outer_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "rim_thickness": {
+              "x": "float64",
+              "y": "float64"
+            }
+          }
+        ],
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        },
+        "timestamp": {
+          "nsec": "int32",
+          "sec": "int32"
+        }
+      }
+
+   Required arguments:
+
+      "pose_frame": only if a pose frame is not already specified by
+      the selected region of interest or load carrier pose prior. If a
+      "pose_frame" is provided but not required, its value must be
+      consistent with the selected region of interest pose frame and
+      load carrier prior pose frame, otherwise the service will return
+      with an invalid argument error.
+
+      "suction_surface_length": length of the suction device grasping
+      surface.
+
+      "suction_surface_width": width of the suction device grasping
+      surface.
+
+      "robot_pose": only if working in "pose_frame="external"" and the
+
+      rc_visard
+
+       is robot-mounted.
+
+   Optional arguments:
+
+      "region_of_interest_id": delimits the volume of space where to
+      search for the load carrier or selects a volume which contains
+      items to be grasped if no "load_carrier_id" is set. The
+      processing time for load carrier detection and grasp computation
+      increases with the size of the selected region of interest.
+
+      "load_carrier_id": limits grasp computation to the content of
+      the detected load carrier.
+
+      "load_carrier_compartment": selects a compartment within the
+      detected load carrier.
+
+      "item_models": defines a list of items of interest. Currently
+      only one item model is supported for each call.
+
+"save_parameters"
+   This service saves the currently set parameters persistently.
+   Thereby, the same parameters will still apply after a reboot of the
+   sensor. The node parameters are not persistent over firmware
+   updates and rollbacks.
+
+"reset_to_defaults"
+   This service resets all parameters of the component to its default
+   values, as listed in above table. The reset does not apply to
+   regions of interest and load carriers.

@@ -1,0 +1,810 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="de" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Stereokamera &mdash; rc_visard 1.4.1-1-g6af52fd
+ Dokumentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Suche" href="search.html"/>
+    <link rel="top" title="rc_visard 1.4.1-1-g6af52fd
+ Dokumentation" href="index.html"/>
+        <link rel="up" title="Softwaremodule" href="components.html"/>
+        <link rel="next" title="Stereo-Matching" href="stereo_matching.html"/>
+        <link rel="prev" title="Softwaremodule" href="components.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Suche" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Einführung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Überblick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Garantie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Schnittstellen, Zulassungen und Normen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Zulassungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Normen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Sicherheit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">Allgemeine Sicherheitshinweise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Bestimmungsgemäße Verwendung</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware-Spezifikation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Lieferumfang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technische Spezifikation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Umwelt- und Betriebsbedingungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Spezifikationen für die Stromversorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Verkabelung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanische Schnittstelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Koordinatensysteme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-and-configuration">Installation und Konfiguration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Einschalten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Netzwerkkonfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatische Konfiguration (werkseitige Voreinstellung)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manuelle Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rcvisard-devices">Aufspüren von <em>rc_visard</em>-Geräten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Zurücksetzen der Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#web-gui">Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Der <em>rc_visard</em> auf einen Blick</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#stereo-vision">Stereovision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#sensor-dynamics">Sensordynamik</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#calibration-relative-to-a-robot">Kalibrierung zu einem Roboter</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="components.html">Softwaremodule</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Stereokamera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#image-acquisition">Bilderfassung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#planar-rectification">Planare Rektifizierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_matching.html">Stereo-Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Berechnung von Disparitätsbildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Berechnung von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Konfidenz- und Fehlerbilder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dynamics.html">Sensordynamik</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#coordinate-frames-for-state-estimation">Koordinatensysteme für die Zustandsschätzung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#available-state-estimates">Verfügbare Zustandsschätzungen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#camera-pose-streams-pose-and-pose-ins">Kameraposen-Datenströme (<code class="docutils literal"><span class="pre">pose</span></code> und <code class="docutils literal"><span class="pre">pose_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-camera-pose-streams-pose-rt-and-pose-rt-ins">Echtzeit-Datenströme der Kamerapose (<code class="docutils literal"><span class="pre">pose_rt</span></code> und <code class="docutils literal"><span class="pre">pose_rt_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-dynamics-streams-dynamics-and-dynamics-ins">Echtzeit-Dynamik-Datenströme (<code class="docutils literal"><span class="pre">dynamics</span></code> und <code class="docutils literal"><span class="pre">dynamics_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#imu-data-stream-imu">IMU-Datenstrom (<code class="docutils literal"><span class="pre">imu</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_visodo.html">Visuelle Odometrie</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_ins.html">Stereo-INS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#parameters">Parameter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="camera_calibration.html">Kamerakalibrierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#calibration-process">Kalibriervorgang</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-1-calibration-settings">Schritt&nbsp;1: Einstellung der Kalibrierparameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-2-verify-calibration">Schritt&nbsp;2: Kalibrierung überprüfen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-3-performing-calibration">Schritt&nbsp;3: Durchführung der Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-4-storing-the-calibration-result">Schritt&nbsp;4: Kalibrierergebnis speichern</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="handeye_calibration.html">Hand-Auge-Kalibrierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Kalibrierschnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#sensor-mounting">Sensormontage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Kalibrierroutine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-1-setting-parameters">Schritt&nbsp;1: Einstellung der Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-2-selecting-and-reporting-robot-calibration-positions">Schritt&nbsp;2: Auswahl und Übertragung der Kalibrierpositionen des Roboters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-3-calculating-and-saving-the-calibration-transformation">Schritt&nbsp;3: Berechnen und Speichern der Kalibriertransformation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="optional.html">Optionale Softwaremodule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="slam.html">SLAM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#usage">Verwendung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#memory-limitations">Speicherbeschränkungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#parameter-overview">Übersicht über die Parameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iocontrol.html">IO und Projektor-Kontrolle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#introduction">Einführung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#qr-code">QR-Code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#apriltag">AprilTag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#comparison">Vergleich</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-reading">Markererkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#pose-estimation">Posenschätzung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-re-identification">Marker-Wiedererkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#interfaces">Schnittstellen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters-and-status-values">Parameter und Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="itempick.html">ItemPick</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#introduction">Einführung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#data-types">Datentypen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#load-carrier">Load Carrier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#suction-grasp">Greifpunkt für Vakuum-Greifsysteme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#item-model">Objektmodell</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#interaction-with-other-components">Wechselwirkung mit anderen Modulen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#stereo-camera-and-stereo-matching">Stereokamera und Stereo-Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#sensor-dynamics">Sensordynamik</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#io-and-projector-control">IO und Projektor-Kontrolle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#parameters-and-status-values">Parameter und Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Schnittstellen</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-visard">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard</em></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#chunk-data">Chunk Daten</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#general-api-structure">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#nodes-parameters-and-services">Module, Parameter und Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#datastreams">Datenströme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#system-and-logs">System und Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#data-type-definitions">Datentyp-Definitionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#swagger-ui">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rc_dynamics.html">Die rc_dynamics-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#starting-stopping-dynamic-state-estimation">Starten/Stoppen der Dynamik-Zustandsschätzungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#configuring-data-streams">Konfiguration von Datenströmen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#data-stream-protocol">Datenstromprotokoll</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Wartung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcvisard">Neustart des <em>rc_visard</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Anschlussset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Verkabelung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet-Anschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Stromanschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Netzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Ersatzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Fehlerbehebung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED-Farben</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Probleme mit der Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Probleme mit der Konnektivität</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Probleme mit den Kamerabildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Probleme mit Tiefen-/Disparitäts-, Fehler- oder Konfidenzbildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#dynamics-issues">Probleme mit der Zustandsschätzung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">Probleme mit GigE&nbsp;Vision/GenICam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Kontakt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Adresse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Anhang</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pose_formats.html">Formate für Posendaten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyzabc-format">XYZABC-Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyz-quaternion-format">XYZ+Quaternion-Format</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Dokumentation</a> &raquo;</li>
+        
+          <li><a href="components.html">Softwaremodule</a> &raquo;</li>
+        
+      <li>Stereokamera</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="stereo-camera">
+<span id="sect-stereo-camera"></span><h1>Stereokamera<a class="headerlink" href="#stereo-camera" title="Link zu dieser Überschrift">¶</a></h1>
+<p>Das Stereokamera-Modul umfasst Funktionen zur Erfassung von Stereo-Bildpaaren und zur planaren Rektifizierung, die nötig ist, um die Stereokamera als Messinstrument nutzen zu können.</p>
+<div class="section" id="image-acquisition">
+<h2>Bilderfassung<a class="headerlink" href="#image-acquisition" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-0">Die Erfassung von Stereo-Bildpaaren ist der erste Schritt zur Stereovision. Da beide Kameras über Global Shutter verfügen und die Kamerachips per Hardware synchronisiert sind, werden alle Pixel beider Kameras immer zum exakt gleichen Zeitpunkt belichtet.  <a class="reference internal" href="hardware_spec.html#sect-wiring"><span class="std std-ref">GPIO-Ausgang&nbsp;1</span></a> meldet dabei den jeweiligen Belichtungszeitpunkt. Zudem wird die Zeit in der Mitte der Bildbelichtung den Bildern als Zeitstempel angeheftet. Dieser Zeitstempel ist für dynamische Anwendungen wichtig, bei denen sich der <em>rc_visard</em> oder die Szene bewegt.</p>
+<p>Die Belichtungszeit lässt sich manuell auf einen festen Wert einstellen. Dies ist hilfreich in Umgebungen, in denen die Beleuchtung gesteuert wird, da die Lichtintensität so in allen Bildern gleich ist. Die Kamera ist standardmäßig auf automatische Belichtung eingestellt. In diesem Modus wählt der <em>rc_visard</em> die Belichtungszeit automatisch, bis zu einem benutzerdefinierten Höchstwert. Mit dem zulässigen Höchstwert soll eine mögliche Bewegungsunschärfe begrenzt werden: Hierzu kommt es, wenn Aufnahmen gemacht werden, während sich der <em>rc_visard</em> oder die Szene bewegt. Die maximale Belichtungszeit hängt also von der Anwendung ab. Ist die maximale Belichtungszeit erreicht, nutzt der Algorithmus eine Verstärkung (Gain), um die Bildhelligkeit zu erhöhen. Höhere Gain-Faktoren verstärken jedoch auch das Bildrauschen. Es gilt daher, die maximale Belichtungszeit bei schwacher Beleuchtung so zu wählen, dass ein guter Kompromiss zwischen Bewegungsunschärfe und Bildrauschen erzielt wird.</p>
+</div>
+<div class="section" id="planar-rectification">
+<span id="sect-stereo-camera-rectification"></span><h2>Planare Rektifizierung<a class="headerlink" href="#planar-rectification" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-1">Kameraparameter, wie die Brennweite, die Objektivverzeichnung und die Stellung der Kameras zueinander, müssen genau bekannt sein, soll die Stereokamera als Messinstrument eingesetzt werden. Die Parameter werden per Kalibrierung bestimmt (siehe <a class="reference internal" href="camera_calibration.html#sect-camera-calibration"><span class="std std-ref">Kamerakalibrierung</span></a>). Der <em>rc_visard</em> wird bereits ab Werk kalibriert und benötigt in der Regel keine Neukalibrierung. Die Kameraparameter beschreiben mit großer Präzision alle geometrischen Eigenschaften des Stereokamera-Systems, aber das daraus resultierende Modell ist komplex und kompliziert zu benutzen.</p>
+<p>Rektifizierung bezeichnet den Prozess, Bilder auf Grundlage eines idealen Stereokamera-Modells zu reprojizieren. Dabei wird die Objektivverzeichnung korrigiert und die Bilder werden so ausgerichtet, dass ein Objektpunkt in beiden Aufnahmen immer auf die gleiche Bildzeile projiziert wird. Die Sichtachsen der Kameras liegen genau parallel zueinander. Dies bedeutet, dass Objektpunkte in unendlicher Distanz in beiden Aufnahmen auf die gleiche Bildspalte projiziert werden. Je näher ein Objektpunkt liegt, desto größer ist der Unterschied zwischen den Bildspalten im rechten und linken Bild. Dieser Unterschied wird Disparität genannt.</p>
+<p>Mathematisch lässt sich die Projektion des Objektpunkts <span class="math">\(P=(P_x, P_y, P_z)\)</span> auf den Bildpunkt <span class="math">\(p_l=(p_{lx}, p_{ly}, 1)\)</span> im linken rektifizierten Bild und auf den Bildpunkt <span class="math">\(p_r=(p_{rx}, p_{ry}, 1)\)</span> im rechten rektifizierten Bild wie folgt darstellen:</p>
+<div class="math">
+\[ \begin{align}\begin{aligned}\begin{split}A &amp;= \left(\begin{array}{ccc} f &amp; 0 &amp; \frac{w}{2}\\
+                        0 &amp; f &amp; \frac{h}{2}\\
+                        0 &amp; 0 &amp; 1
+\end{array}\right), \qquad
+T_s = \left(\begin{array}{c}t\\
+                        0\\
+                        0
+\end{array}\right),\end{split}\\\begin{split}s_1 p_l &amp;= AP, \\
+s_2 p_r &amp;= A(P-T_s).\end{split}\end{aligned}\end{align} \]</div>
+<p>Die Brennweite <span class="math">\(f\)</span> ist der Abstand zwischen der gemeinsamen Bildebene und den optischen Zentren der linken und rechten Kamera. Sie wird in Pixeln gemessen. Als Basisabstand <span class="math">\(t\)</span> wird der Abstand zwischen den optischen Zentren beider Kameras bezeichnet. Auch die Bildbreite <span class="math">\(w\)</span> und Bildhöhe <span class="math">\(h\)</span> werden in Pixeln gemessen. <span class="math">\(s_1\)</span> und <span class="math">\(s_2\)</span> sind Skalierungsfaktoren, die sicherzustellen, dass die dritten Koordinaten der Bildpunkte <span class="math">\(p_l\)</span> und <span class="math">\(p_r\)</span> 1 entsprechen.</p>
+<p>Der <em>rc_visard</em> bietet über die GenICam-Schnittstelle zeitgestempelte rektifizierte Bilder der linken und rechten Kamera (siehe <a class="reference internal" href="gigevision.html#sect-provided-image-streams"><span class="std std-ref">Chunk Daten</span></a>). Live-Streams in geringerer Qualität werden in der <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> bereitgestellt.</p>
+<div class="admonition note">
+<p class="first admonition-title">Hinweis</p>
+<p class="last">Der <em>rc_visard</em> stellt über seine verschiedenen Schnittstellen einen Brennweitenfaktor bereit. Er bezieht sich auf die Bildbreite, um verschiedene Bildauflösungen zu unterstützen. Die Brennweite <span class="math">\(f\)</span> in Pixeln lässt sich leicht bestimmen, indem der Brennweitenfaktor mit der Bildbreite (in Pixeln) multipliziert wird.</p>
+</div>
+</div>
+<div class="section" id="parameters">
+<span id="sect-cam-params"></span><h2>Parameter<a class="headerlink" href="#parameters" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-2">Das Stereokamera-Modul wird als <code class="docutils literal"><span class="pre">rc_stereocamera</span></code> bezeichnet und in der <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> auf der Registerkarte <em>Kamera</em> dargestellt. Der Benutzer kann die Kamera-Parameter entweder dort oder direkt über die REST-API (<a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API-Schnittstelle</span></a>) oder GigE Vision (<a class="reference internal" href="gigevision.html#sect-genicam"><span class="std std-ref">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</span></a>) ändern.</p>
+<div class="admonition note">
+<p class="first admonition-title">Hinweis</p>
+<p class="last">Wird der <em>rc_visard</em> über GigE&nbsp;Vision genutzt, können die Kamera-Parameter nicht über die Web GUI oder REST-API geändert werden.</p>
+</div>
+<div class="section" id="parameter-overview">
+<h3>Übersicht über die Parameter<a class="headerlink" href="#parameter-overview" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Dieses Softwaremodul bietet folgende Laufzeitparameter.</p>
+<table border="1" class="docutils" id="laufzeitparameter-des-rc-stereocamera-moduls">
+<caption><span class="caption-number">Tab. 6 </span><span class="caption-text">Laufzeitparameter des <code class="docutils literal"><span class="pre">rc_stereocamera</span></code>-Moduls</span><a class="headerlink" href="#laufzeitparameter-des-rc-stereocamera-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Typ</th>
+<th class="head">Min.</th>
+<th class="head">Max.</th>
+<th class="head">Default</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">exp_auto</span></code></td>
+<td>bool</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>Umschalten zwischen automatischer und manueller Belichtung</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">exp_height</span></code></td>
+<td>int32</td>
+<td>0</td>
+<td>959</td>
+<td>0</td>
+<td>Höhe der Region für automatische Belichtung. 0 für das ganze Bild.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">exp_max</span></code></td>
+<td>float64</td>
+<td>6.6e-05</td>
+<td>0.018</td>
+<td>0.007</td>
+<td>Maximale Belichtungszeit in Sekunden, wenn exp_auto auf TRUE gesetzt ist</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">exp_offset_x</span></code></td>
+<td>int32</td>
+<td>0</td>
+<td>1279</td>
+<td>0</td>
+<td>Erste Spalte der Region für automatische Belichtung</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">exp_offset_y</span></code></td>
+<td>int32</td>
+<td>0</td>
+<td>959</td>
+<td>0</td>
+<td>Erste Zeile der Region für automatische Belichtung</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">exp_value</span></code></td>
+<td>float64</td>
+<td>6.6e-05</td>
+<td>0.018</td>
+<td>0.005</td>
+<td>Maximale Belichtungszeit in Sekunden, wenn exp_auto auf FALSE gesetzt ist</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">exp_width</span></code></td>
+<td>int32</td>
+<td>0</td>
+<td>1279</td>
+<td>0</td>
+<td>Breite der Region für automatische Belichtung. 0 für das ganze Bild.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">fps</span></code></td>
+<td>float64</td>
+<td>1.0</td>
+<td>25.0</td>
+<td>25.0</td>
+<td>Bildwiederholrate in Hertz</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">gain_value</span></code></td>
+<td>float64</td>
+<td>0.0</td>
+<td>18.0</td>
+<td>0.0</td>
+<td>Manuelle Verstärkung in Dezibel, wenn exp_auto auf FALSE gesetzt ist</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">wb_auto</span></code></td>
+<td>bool</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>Ein- und Ausschalten des manuellen Weißabgleichs (nur für Farbkameras)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">wb_ratio_blue</span></code></td>
+<td>float64</td>
+<td>0.125</td>
+<td>8.0</td>
+<td>2.4</td>
+<td>Blau zu Grün Verhältnis falls wb_auto auf False gesetzt ist (nur für Farbkameras)</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">wb_ratio_red</span></code></td>
+<td>float64</td>
+<td>0.125</td>
+<td>8.0</td>
+<td>1.2</td>
+<td>Rot zu Grün Verhältnis falls wb_auto auf False gesetzt ist (nur für Farbkameras)</td>
+</tr>
+</tbody>
+</table>
+<p>Dieses Modul meldet folgende Statuswerte:</p>
+<table border="1" class="docutils" id="statuswerte-des-rc-stereocamera-moduls">
+<caption><span class="caption-number">Tab. 7 </span><span class="caption-text">Statuswerte des <code class="docutils literal"><span class="pre">rc_stereocamera</span></code>-Moduls</span><a class="headerlink" href="#statuswerte-des-rc-stereocamera-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">baseline</span></code></td>
+<td>Basisabstand <span class="math">\(t\)</span> der Stereokamera in Metern</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">color</span></code></td>
+<td>0 für Monochrom-Kameras, 1 für Farbkameras</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">exp</span></code></td>
+<td>Tatsächliche Belichtungszeit in Sekunden. Dieser Wert wird unter der Bildvorschau in der Web GUI als <em>Belichtungszeit (ms)</em> angezeigt.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">focal</span></code></td>
+<td>Brennweitenfaktor, normalisiert auf eine Bildbreite von 1</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">fps</span></code></td>
+<td>Tatsächliche Bildwiederholrate der Kamerabilder in Hertz. Dieser Wert wird unter der Bildvorschau in der Web GUI als <em>Bildwiederholrate (Hz)</em> angezeigt.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">gain</span></code></td>
+<td>Tatsächlicher Verstärkungsfaktor in Dezibel. Dieser Wert wird unter der Bildvorschau in der Web GUI als <em>Verstärkung (dB)</em> angezeigt.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">height</span></code></td>
+<td>Höhe des Kamerabildes in Pixeln</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">temp_left</span></code></td>
+<td>Temperatur des linken Kamerasensors in Grad Celsius</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">temp_right</span></code></td>
+<td>Temperatur des rechten Kamerasensors in Grad Celsius</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">time</span></code></td>
+<td>Verarbeitungszeit für die Bilderfassung in Sekunden</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">width</span></code></td>
+<td>Breite des Kamerabildes in Pixeln</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="description-of-run-time-parameters">
+<h3>Beschreibung der Laufzeitparameter<a class="headerlink" href="#description-of-run-time-parameters" title="Link zu dieser Überschrift">¶</a></h3>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/webgui_camera_de.png"><img alt="_images/webgui_camera_de.png" src="_images/webgui_camera_de.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 19 </span><span class="caption-text">Registerkarte <em>Kamera</em> in der Web GUI</span></p>
+</div>
+<span class="target" id="expl-fps"></span><dl class="docutils" id="index-3">
+<dt><code class="docutils literal"><span class="pre">fps</span></code> (<em>Bildwiederholrate</em>)</dt>
+<dd><p class="first">Dieser Wert bezeichnet die Bildwiederholrate der Kamera in Bildern pro Sekunde. Er gibt die obere Frequenz an, mit der Tiefenbilder berechnet werden können. Dies entspricht auch der Frequenz, mit der der <em>rc_visard</em> Bilder über GigE&nbsp;Vision bereitstellt. Wird diese Frequenz verringert, reduziert sich auch die zur Übertragung der Bilder benötigte Bandbreite des Netzwerkes.</p>
+<p>Die Kamera läuft immer mit 25 Hz um die Funktion von internen Modulen wie visueller Odometrie sicher zu stellen die eine konstante Bildwiederholrate benötigen. Die vom Benutzer definierte Bildwiederholrate wird, wie in Abbildung <a class="reference internal" href="#fig-fps"><span class="std std-numref">Abb. 20</span></a> gezeigt, durch das Weglassen von Bildern erreicht, die für das Stereomatching und das Übertragen per GigE Vision benutzt werden. Letzteres dient der Reduktion der Bandbreite.</p>
+<div class="last figure align-center" id="id2">
+<span id="fig-fps"></span><a class="reference internal image-reference" href="_images/fps_de.png"><img alt="_images/fps_de.png" src="_images/fps_de.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 20 </span><span class="caption-text">Die interne Bildaufnahme geschieht immer mit 25 Hz. Der <code class="docutils literal"><span class="pre">fps</span></code> Parameter bestimmt wie viele dieser Kamerabilder per GigE Vision versendet werden.</span></p>
+</div>
+<span class="target" id="expl-exp-auto"></span></dd>
+<dt id="index-4"><code class="docutils literal"><span class="pre">exp_auto</span></code> (<em>Belichtungszeit Auto</em> oder <em>Manuell</em>)</dt>
+<dd>Dieser Wert lässt sich auf 1 – für den automatischen Belichtungsmodus – und auf 0 – für den manuellen Belichtungsmodus – stellen. Bei der manuellen Belichtung wird die gewählte Belichtungszeit konstant gehalten und die Verstärkung bleibt bei 0,0&nbsp;dB, auch wenn die Bilder über- oder unterbelichtet sind. Im automatischen Belichtungsmodus werden die Belichtungszeit und der Verstärkungsfaktor automatisch angepasst, sodass das Bild korrekt belichtet wird. <code class="docutils literal"><span class="pre">exp_value</span></code> und <code class="docutils literal"><span class="pre">gain_value</span></code> werden auf die letzten von der Automatik ermittelten Werte für Belichtungszeit und Verstärkung gesetzt, wenn die Automatik abgeschaltet wird.<span class="target" id="expl-exp-region"></span></dd>
+<dt id="index-5"><code class="docutils literal"><span class="pre">exp_offset_x</span></code>, <code class="docutils literal"><span class="pre">exp_offset_y</span></code>, <code class="docutils literal"><span class="pre">exp_width</span></code>, <code class="docutils literal"><span class="pre">exp_height</span></code></dt>
+<dd>Diese Werte definieren eine rechteckige Region im linken rektifizierten Bild, um den von der automatischen Belichtung überwachten Bereich zu limitieren. Die Belichtungszeit und der Verstärkungsfaktor werden so gewählt, dass die definierte Region optimal belichtet wird. Dies kann zu Über- oder Unterbelichtung in anderen Bildbereichen führen. Die Region wird in der Web GUI mit einem Rechteck im linken rektifizierten Bild visualisiert. Falls die Breite oder Höhe auf 0 gesetzt werden, dann wird das gesamte linke und rechte Bild von der automatischen Belichtungsfunktion berücksichtigt. Dies ist die Standardeinstellung.<span class="target" id="expl-exp-value"></span><span class="target" id="expl-exp-max"><span id="index-6"></span></span></dd>
+<dt id="index-7"><code class="docutils literal"><span class="pre">exp_max</span></code> (<em>Max. Belichtungszeit</em>)</dt>
+<dd>Dieser Wert gibt die maximale Belichtungszeit im automatischen Modus in Sekunden an. In der Web GUI lässt sich diese Belichtungszeit der Einfachheit halber in Millisekunden angeben. Die tatsächliche Belichtungszeit wird automatisch angepasst, sodass das Bild korrekt belichtet wird. Sind die Bilder trotz maximaler Belichtungszeit noch immer unterbelichtet, erhöht der <em>rc_visard</em> schrittweise die Verstärkung, um die Bildhelligkeit der Bilder zu erhöhen. Es ist sinnvoll, die Belichtungszeit zu begrenzen, um die bei schnellen Bewegungen auftretende Bildunschärfe zu vermeiden oder zu verringern. Jedoch führt eine höhere Verstärkung auch zu mehr Bildrauschen. Welcher Kompromiss der beste ist, hängt immer auch von der Anwendung ab.</dd>
+<dt><code class="docutils literal"><span class="pre">exp_value</span></code> (<em>Belichtungszeit</em>)</dt>
+<dd>Dieser Wert gibt die Belichtungszeit im manuellen Modus in Sekunden an. Diese Belichtungszeit wird konstant gehalten, auch wenn die Bilder unterbelichtet sind. In der Web GUI lässt sich die Belichtungszeit der Einfachheit halber in Millisekunden angeben.<span class="target" id="expl-gain-value"></span></dd>
+<dt id="index-8"><code class="docutils literal"><span class="pre">gain_value</span></code> (<em>Gain</em>)</dt>
+<dd>Dieser Wert gibt den Verstärkungsfaktor im manuellen Modus in Dezibel an. Höhere Verstärkungswerte reduzieren die Belichtungszeit, führen aber zu Rauschen.<span class="target" id="expl-wb-auto"></span></dd>
+<dt id="index-9"><code class="docutils literal"><span class="pre">wb_auto</span></code> (<em>Weißabgleich Auto</em> oder <em>Manual</em>)</dt>
+<dd>Dieser Wert kann auf 1 gesetzt werden um den automatischen Weißabgleich anzuschalten. Bei 0 kann das Verhältnis der Farben manuell mit <code class="docutils literal"><span class="pre">wb_ratio_red</span></code> und <code class="docutils literal"><span class="pre">wb_ratio_blue</span></code> gesetzt werden. <code class="docutils literal"><span class="pre">wb_ratio_red</span></code> und <code class="docutils literal"><span class="pre">wb_ratio_blue</span></code> werden auf die letzten von der Automatik ermittelten Werte gesetzt, wenn diese abgeschaltet wird. Der Weißabgleich ist bei monochromen Kameras ohne Funktion.<span class="target" id="expl-wb-ratio"></span></dd>
+<dt id="index-10"><code class="docutils literal"><span class="pre">wb_ratio_red</span></code> und <code class="docutils literal"><span class="pre">wb_ratio_blue</span></code> (<em>Red | Green</em> and <em>Blue | Green</em>)</dt>
+<dd>Mit diesen Werten kann das Verhältnis von Rot zu Grün bzw. Blau zu Grün für einen manuellen Weißabgleich gesetzt werden. Der Weißabgleich ist bei monochromen Kameras ohne Funktion bzw. wird in der Web GUI nicht angezeigt.</dd>
+</dl>
+<p>Die gleichen Parameter sind – mit leicht abweichenden Namen und teilweise mit anderen Einheiten oder Datentypen – auch über die GenICam-Schnittstelle verfügbar (siehe <a class="reference internal" href="gigevision.html#sect-genicam"><span class="std std-ref">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</span></a>).</p>
+</div>
+</div>
+<div class="section" id="services">
+<h2>Services<a class="headerlink" href="#services" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-11">Das Stereokamera-Modul bietet folgende Services, um Parametereinstellungen zu speichern bzw. wiederherzustellen.</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">save_parameters</span></code> (<em>Speichern</em>)</dt>
+<dd><p class="first">Bei Aufruf dieses Services werden die aktuellen Parametereinstellungen des Stereokamera-Moduls auf dem <em>rc_visard</em> gespeichert. Das bedeutet, dass diese Werte selbst nach einem Neustart angewandt werden.</p>
+<p>Für diesen Service sind keine Argumente nötig.</p>
+<p class="last">Dieser Service liefert keine Rückgabewerte.</p>
+</dd>
+<dt><code class="docutils literal"><span class="pre">reset_defaults</span></code> (<em>Zurücksetzen</em>)</dt>
+<dd><p class="first">Hiermit werden die Werkseinstellungen der Parameter dieses Moduls wiederhergestellt und angewandt („factory reset“).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Achtung</p>
+<p class="last">Der Benutzer muss bedenken, dass bei Aufruf dieses Services die aktuellen Parametereinstellungen für das Stereokamera-Modul unwiderruflich verloren gehen.</p>
+</div>
+<p>Für diesen Service sind keine Argumente nötig.</p>
+<p class="last">Dieser Service liefert keine Rückgabewerte.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="stereo_matching.html" class="btn btn-neutral float-right" title="Stereo-Matching" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="components.html" class="btn btn-neutral" title="Softwaremodule" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Optionen</span>
+      de
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Sprachen</dt>
+        
+          
+          <dd><a href="../de/stereo_camera.html">de</a></dd>
+          
+        
+          
+          <dd><a href="../en/stereo_camera.html">en</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versionen</dt>
+          
+            <dd><a href="../../v1.1/index.html">v1.1</a></dd>
+          
+            <dd><a href="../../v1.0/index.html">v1.0</a></dd>
+          
+            <dd><a href="../../v1.3/index.html">v1.3</a></dd>
+          
+            <dd><a href="../../v1.2/index.html">v1.2</a></dd>
+          
+            <dd><a href="../../v1.4/index.html">v1.4</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_manual_de.pdf">PDF (de)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_manual_en.pdf">PDF (en)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.4.1-1-g6af52fd',
+            LANGUAGE:'de',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
