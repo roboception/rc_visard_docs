@@ -1,0 +1,455 @@
+Sensordynamik
+
+Das Dynamik-Modul liefert Schätzungen des Sensorzustands, der die Pose
+(Position und Orientierung), Lineargeschwindigkeit,
+Linearbeschleunigung und Drehrate des Sensors umfasst. Mit diesem
+Modul lassen sich Datenströme für die verschiedenen Submodule starten,
+stoppen und verwalten:
+
+Visuelle Odometrie (rc_stereovisodo)  schätzt die Kamerabewegung auf
+Grundlage der Bewegung von charakteristischen Bildpunkten im linken
+Kamerabild\:(Abschnitt \ref{stereo_visodo:sect-visual-odometry}).
+
+Stereo-INS (rc_stereo_ins)  kombiniert die per visueller Odometrie
+ermittelten Werte mit den Daten der integrierten inertialen
+Messeinheit (IMU), um auf dieser Grundlage akkurate und hochfrequente
+Echtzeit-Zustandsschätzungen bereitzustellen\:(Abschnitt
+\ref{stereo_ins:sect-stereo-ins}).
+
+SLAM (rc_slam)  übernimmt die simultane Lokalisierung und
+Kartenerstellung (SLAM), um akkumulierte Posendaten zu
+korrigieren\:(Abschnitt \ref{slam:sect-slam}).
+
+Hinweis: Die gleichzeitige Nutzung des Dynamik-Moduls und
+
+  Stereo-Matching
+
+   kann zu verringerter Genauigkeit der Bewegungsschätzung führen.
+  Siehe das Kapitel
+
+  Visuelle Odometrie
+
+  , wie dies vermieden werden kann.
+
+Koordinatensysteme für die Zustandsschätzung
+
+Das Weltkoordinatensystem für die Zustandsschätzung definiert sich wie
+folgt: Die Z-Achse des Koordinatensystems zeigt nach oben und ist am
+Gravitationsvektor ausgerichtet. Die X-Achse liegt orthogonal zur
+Z-Achse und zeigt in die Blickrichtung des
+
+rc_visard
+
+ zum Zeitpunkt, zu dem die Zustandsschätzung beginnt. Der Ursprung des
+Weltkoordinatensystems befindet sich am Ursprung des IMU-
+Koordinatensystems des
+
+rc_visard
+
+ in dem Augenblick, in dem die Zustandsschätzung aktiviert wird.
+
+Wird die Zustandsschätzung aktiviert, wenn die Blickrichtung des
+
+rc_visard
+
+ parallel zum Gravitationsvektor liegt (mit einem Toleranzbereich von
+10 Grad), dann ist die Y-Achse des Weltkoordinatensystems entweder an
+der positiven oder negativen X-Achse des IMU-Koordinatensystems
+ausgerichtet. In diesem Fall ist die Anfangsausrichtung des
+Weltkoordinatensystems nicht mehr kontinuierlich. Es ist also
+besondere Vorsicht geboten, wenn die Zustandsschätzung mit dieser
+Orientierung beginnt.
+
+
+Die Transformation zwischen dem IMU-Koordinatensystem und dem Kamera
+/Sensor-Koordinatensystem wird ebenfalls geschätzt und über die
+rc_dynamics-Schnittstelle im
+
+Echtzeit-Dynamik-Datenstrom
+
+ bereitgestellt (siehe
+
+Schnittstellen
+
+).
+
+Achtung: Das Stereo-INS-Modul führt während der Initialisierung eine
+  Selbstkalibrierung der IMU durch. Deswegen darf sich der
+
+  rc_visard
+
+   während des Startens des Stereo-INS-Moduls nicht bewegen und muss
+  ausreichend viel Textur sehen können.
+
+Verfügbare Zustandsschätzungen
+
+Der
+
+rc_visard
+
+ bietet über die rc_dynamics-Schnittstelle sieben verschiedene Arten
+an Datenströmen mit zeitgestempelten Zustandsschätzungen an (siehe
+
+Die rc_dynamics-Schnittstelle
+
+):
+
+        Name  Frequenz  Quelle  Beschreibung  pose  25 Hz  Best Effort
+genaueste Schätzung der Pose des Kamerakoordinatensystems, aber leicht
+zeitverzögert  pose_ins  25 Hz  Stereo-INS  genaueste Schätzung der
+Pose des Kamerakoordinatensystems, aber leicht zeitverzögert  pose_rt
+200 Hz  Best Effort  Pose des Kamerakoordinatensystems  pose_rt_ins
+200 Hz  Stereo-INS  Pose des Kamerakoordinatensystems  dynamics  200
+Hz  Best Effort  Pose, Geschwindigkeit und Beschleunigung im IMU-
+Koordinatensystem  dynamics_ins  200 Hz  Stereo-INS  Pose,
+Geschwindigkeit und Beschleunigung im IMU-Koordinatensystem  imu  200
+Hz  Stereo-INS  IMU-Rohdaten
+
+Best Effort
+
+ bedeutet hier für den Fall, dass das
+
+SLAM
+
+-Modul läuft, dass der Datenstrom per Loop-Closure korrigierte
+Schätzungen umfasst, bzw. dass er dem vom
+
+Stereo-INS
+
+ bereitgestellten Datenstrom entspricht, wenn SLAM nicht läuft ist.
+
+Kameraposen-Datenströme (pose und pose_ins)
+
+Die
+
+Kameraposen-Datenströme
+
+ heißen "pose" und "pose_ins" und sie werden mit einer Frequenz von 25
+Hz mit Zeitstempeln bereitgestellt, die den Bildzeitstempeln
+entsprechen. "pose" bietet eine Best-Effort-Schätzung, für die
+"rc_slam" und "rc_stereo_ins" kombiniert werden, wenn das
+
+SLAM
+
+-Modul läuft. Läuft das SLAM-Modul nicht, sind beide Datenströme
+gleichwertig. Die Posen werden in Weltkoordinaten angegeben und
+beziehen sich auf den Ursprung des Kamerakoordinatensystems (siehe
+
+Koordinatensysteme für die Zustandsschätzung
+
+). Die Datenströme umfassen genaueste Schätzungen, für die alle
+verfügbaren Daten des
+
+rc_visard
+
+ berücksichtigt werden. Sie können für Modellierungsanwendungen
+eingesetzt werden, bei denen Kamerabilder, Tiefenbilder oder
+Punktwolken mit höchster Genauigkeit aneinander ausgerichtet werden
+müssen. Um die größtmögliche Genauigkeit sicherzustellen, verzögert
+sich die Ausgabe dieser Datenströme, bis die zugehörigen Messwerte aus
+der visuellen Odometrie verfügbar sind.
+
+Echtzeit-Datenströme der Kamerapose (pose_rt und pose_rt_ins)
+
+Die
+
+Echtzeit-Datenströme der Kamerapose
+
+ heißen "pose_rt" und "pose_rt_ins" und sie werden mit der IMU-
+Frequenz von 200 Hz bereitgestellt. "pose_rt" bietet eine Best-Effort-
+Schätzung, für die "rc_slam" und "rc_stereo_ins" kombiniert werden,
+wenn das SLAM-Modul läuft. Läuft das SLAM-Modul nicht, sind beide
+Datenströme gleichwertig. Die Posen werden in Weltkoordinaten
+angegeben und beziehen sich auf den Ursprung des Koordinatensystems
+der
+
+rc_visard
+
+-Kamera (siehe
+
+Koordinatensysteme für die Zustandsschätzung
+
+). Die in diesen Datenströmen enthaltenen Werte entsprechen den Werten
+in den
+
+Echtzeit-Dynamik-Datenströmen
+
+, geben aber die Pose im Sensor/Kamera-Koordinatensystem statt im IMU-
+Koordinatensystem an.
+
+Echtzeit-Dynamik-Datenströme (dynamics und dynamics_ins)
+
+Die beiden
+
+Echtzeit-Dynamik-Datenströme
+
+ heißen "dynamics" und "dynamics_ins" und sie werden mit der IMU-
+Frequenz von 200 Hz bereitgestellt. "dynamics" bietet eine Best-
+Effort-Schätzung, für die "rc_slam" und "rc_stereo_ins" kombiniert
+werden, wenn das SLAM-Modul läuft. Läuft das SLAM-Modul nicht, sind
+beide Datenströme gleichwertig. Die Schätzungen können für die
+Echtzeitregelung eines Roboters verwendet werden. Da die Werte in
+Echtzeit bereitgestellt werden und die Berechnung der visuellen
+Odometrie eine gewisse Bearbeitungszeit erfordert, ist die letzte
+Odometrieschätzung möglicherweise nicht enthalten. Daher sind diese
+Schätzungen im Allgemeinen etwas weniger genau als die nicht in
+Echtzeit bereitgestellten
+
+Kameraposen-Datenströme
+
+ (siehe oben); dennoch sind es zu diesem Zeitpunkt die bestmöglichen
+Schätzungen. Die bereitgestellten Dynamik-Datenströme enthalten
+folgende Werte zum
+
+rc_visard
+
+:
+
+Translation  in ;
+
+Rotation  als Einheitsquaternion;
+
+Lineargeschwindigkeit  in ;
+
+Winkelgeschwindigkeit  in ;
+
+gravitationskompensierte Linearbeschleunigung  in  und
+
+Transformation zwischen Kamera- und IMU-Koordinatensystem als Pose mit
+Frame-Namen und Parent-Frame-Namen.
+
+Der Datenstrom enthält für jede Datenkomponente zusätzlich den Namen
+des Koordinatensystems, in dem die Werte angegeben sind.
+Translations-, Rotations- und Lineargeschwindigkeiten werden im
+Weltkoordinatensystem, Winkelgeschwindigkeiten und
+Winkelbeschleunigungen im IMU-Koordinatensystem angegeben (siehe
+
+Koordinatensysteme für die Zustandsschätzung
+
+). Alle Werte beziehen sich auf den Ursprung des IMU-
+Koordinatensystems. Dies bedeutet beispielsweise, dass die
+Lineargeschwindigkeit der Geschwindigkeit des IMU-Koordinatenursprungs
+im Weltkoordinatensystem entspricht.
+
+Schließlich enthält der Datenstrom den Statusindikator
+"possible_jump", der auf
+
+TRUE
+
+ gesetzt ist, wann immer das optional erhältliche SLAM-Modul (siehe
+
+SLAM
+
+) die Zustandsschätzung nach einem Schleifenschluss (Loop Closure)
+korrigiert. Die Zustandsschätzung kann in diesem Fall einen Sprung
+machen, was beachtet werden sollte, wenn die Werte in einem Regelkreis
+verwendet werden. Wenn SLAM nicht läuft, bleibt der Statusindikator
+"possible_jump" auf
+
+FALSE
+
+ und kann ignoriert werden.
+
+IMU-Datenstrom (imu)
+
+Der
+
+IMU-Datenstrom
+
+ heißt "imu" und wird mit der IMU-Frequenz von 200 Hz bereitgestellt.
+Er umfasst die Beschleunigungen in X-, Y- und Z-Richtung sowie die
+Winkelgeschwindigkeiten um diese drei Achsen. Diese Werte sind
+kalibriert, aber nicht bias- und gravitationskompensiert, und werden
+im IMU-Koordinatensystem angegeben. Die Transformation zwischen dem
+IMU-Koordinatensystem und dem Sensorkoordinatensystem wird im
+
+Echtzeit-Dynamik-Datenstrom
+
+ bereitgestellt.
+
+Services
+
+Das Sensordynamik-Modul bietet folgende Services zum Starten der
+Dynamik-/Bewegungsschätzung. Alle Services geben einen numerischen
+Code des eingetretenen Zustands zurück. Die Bedeutung der
+zurückgegebenen Zustandscodes und deren Namen werden in
+
+Tab. 11
+
+ angegeben.
+
+Mögliche Zustände des Sensordynamik-Moduls      Zustandsname
+Beschreibung  IDLE  Das Dynamikmodul ist bereit aber inaktiv
+WAITING_FOR_INS  Es wird auf Daten des Stereo-INS-Moduls gewartet
+WAITING_FOR_INS_AND_SLAM  Es wird auf Daten des Stereo-INS- und des
+SLAM-Moduls gewartet  RUNNING  Das Stereo-INS-Modul läuft
+WAITING_FOR_SLAM  Es wird auf den Start des SLAM-Moduls gewartet
+(Stereo-INS läuft)  RUNNING_WITH_SLAM  Die Module Stereo INS und SLAM
+laufen  FATAL  Ein schwerwiegender Fehler ist aufgetreten (im Stereo-
+INS- oder SLAM-Modul)
+
+"start"
+   Startet das Stereo-INS-Modul. Der Status geht von "IDLE" über
+   "WAITING_FOR_INS" zu "RUNNING".
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+"start_slam"
+   Startet SLAM und – falls es noch nicht läuft – das Stereo-INS-
+   Modul. Aus dem Zustand "IDLE" geht es über
+   "WAITING_FOR_INS_AND_SLAM" und "WAITING_FOR_SLAM" zu
+   "RUNNING_WITH_SLAM". Aus dem Zustand "RUNNING" geht es über
+   "WAITING_FOR_SLAM" zu "RUNNING_WITH_SLAM".
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+"stop"
+   Stoppt das Stereo-INS-Modul und – falls es läuft – das SLAM-Modul.
+   Die Trajektorienschätzung des SLAM-Moduls (bis zum Zeitpunkt des
+   Stoppens) ist weiterhin verfügbar. Geht vom Zustand "RUNNING" oder
+   "RUNNING_WITH_SLAM" zu "IDLE".
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+"stop_slam"
+   Stoppt das SLAM-Modul. Das Stereo-INS-Modul läuft weiter. Die
+   Trajektorienschätzung des SLAM-Moduls (bis zum Zeitpunkt des
+   Stoppens) ist weiterhin verfügbar. Geht vom Zustand
+   "RUNNING_WITH_SLAM" zu "IDLE".
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+"restart"
+   Startet die Stereo-INS neu. Äquivalent zu aufeinanderforgendem
+   "stop" und "start".
+
+   Vom Zustand "RUNNING" oder "RUNNING_WITH_SLAM": Geht über die
+   Zustände "IDLE" und "WAITING_FOR_INS" zu "RUNNING".
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+"restart_slam"
+   Neustart in den SLAM-Modus. Äquivalent zu aufeinanderfolgendem
+   "stop" und "start_slam".
+
+   Vom Zustand "RUNNING" oder "RUNNING_WITH_SLAM": Geht über die
+   Zustände "IDLE", "WAITING_FOR_INS_AND_SLAM", "WAITING_FOR_SLAM" zu
+   "RUNNING_WITH_SLAM".
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+Das folgende Diagramm zeigt die wichtigsten Zustände und Übergänge.
+Zwischenzustände und der Fehlerzustand "FATAL" sind aus Gründen der
+Übersichtlichkeit nicht aufgeführt.
+
+
+Die Services sollten schnell reagieren. Deswegen ist bei Services, die
+eine Zustandsänderung verursachen, der Rückgabewert "current_state" im
+Allgemeinen der erste neue (Zwischen-)Zustand, in den gewechselt
+wurde, und nicht der finale Zustand. Zum Beispiel gibt der "start"
+Service als "current_state" "WAITING_FOR_INS" und nicht "RUNNING"
+zurück. Falls der Zustandsübergang nicht innerhalb von 0.1 Sekunden
+vonstatten geht, wird der aktuelle Zustand zurückgegeben. In
+
+Tab. 11
+
+ ist die Bedeutung der zurückgegebenen Zustandscodes aufgeführt.
+
+Hinweis: Der Zustand "FATAL" kann nur durch den Aufruf des "stop"
+  Services verlassen werden. Dieser Service geht in den Zustand
+  "IDLE". Die Services "restart" und "restart_slam" nutzen intern auch
+  "stop" und funktionieren daher ebenso. Die Services "start" und
+  "start_slam" funktionieren nur, wenn der aktuelle Zustand "IDLE"
+  ist, und haben keinen Effekt wenn der Zustand "FATAL" ist.
+
+Hinweis: Das Sensordynamik-Modul lässt sich auch über die Rubrik
+
+  Dynamik
+
+   auf der Registerkarte
+
+  Überblick
+
+   der
+
+  Web GUI
+
+   starten und stoppen.
+
+"get_cam2imu_transform"
+   Gibt die Transformation zwischen Kamera- und IMU-Koordinatensystem
+   zurück. Diese entspricht der "cam2imu_transform" der
+
+   Dynamics Nachricht
+
+   .
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "name": "string",
+        "parent": "string",
+        "pose": {
+          "pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "timestamp": {
+            "nsec": "int32",
+            "sec": "int32"
+          }
+        }
+      }

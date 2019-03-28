@@ -1,0 +1,193 @@
+IO und Projektor-Kontrolle
+
+Das IOControl-Modul erlaubt das Lesen der digitalen Eingänge und die
+Kontrolle der digitalen Ausgänge (siehe
+
+Verkabelung
+
+). Die Ausgänge können auf aus (low) oder an (high) gesetzt werden.
+Sie können auch so konfiguriert werden, dass sie genau für die
+Belichtungszeit jedes Bildes oder auch nur jedes zweiten Bildes an
+sind.
+
+Hinweis: Das IOControl-Modul ist optional und benötigt eine eigene
+
+  Lizenz
+
+  , welche erworben werden muss.
+
+Parameter
+
+Das IOControl-Modul wird in der REST-API als "rc_iocontrol"
+bezeichnet. Der Benutzer kann die Parameter über die REST-API (
+
+REST-API-Schnittstelle
+
+) oder GenICam-Schnittstelle mit den DigitalIOControl-Parametern
+"LineSelector" und "LineSource" ändern (
+
+GigE Vision 2.0/GenICam-Schnittstelle
+
+).
+
+Übersicht über die Parameter
+
+Dieses Softwaremodul bietet folgende Laufzeitparameter.
+
+Laufzeitparameter des rc_iocontrol-Moduls              Name  Typ  Min.
+Max.  Default  Beschreibung  out1_mode  string  -  -  ExposureActive
+Low, High, ExposureActive, ExposureAlternateActive  out2_mode  string
+-  -  Low  Low, High, ExposureActive, ExposureAlternateActive
+
+Dieses Modul meldet keine Statuswerte.
+
+Beschreibung der Laufzeitparameter
+
+"out1_mode" und "out2_mode" (
+Out1
+
+ und
+Out2
+
+)
+   Die Betriebsarten für Ausgang 1 und Ausgang 2 können individuell
+   gesetzt werden:
+
+   "Low" schaltet den Ausgang permanent aus. Das ist die
+   Standardeinstellung für den Ausgang 2.
+
+   "High" schaltet den Ausgang permanent an.
+
+   "ExposureActive" schaltet den Ausgang für die Belichtungszeit jedes
+   Bildes an. Das ist die Standardeinstellung für Ausgang 1.
+
+   "ExposureAlternateActive" schaltet den Ausgang für die
+   Belichtungszeit jedes zweiten Bildes an.
+
+Hinweis: Die Parameter können nur verändert werden falls eine
+  IOControl Lizenz auf dem
+
+  rc_visard
+
+   verfügbar ist. Sonst gelten die Voreinstellungen für die Parameter,
+  d.h. "out1_mode" = "ExposureActive" und "out2_mode" = "Low".
+
+Abbildung
+
+Abb. 43
+
+ zeigt welche Bilder für das Stereomatching und die GigE Vision
+Übertragung in der Betriebsart "ExposureActive" mit einer
+benutzerdefinierten Bildwiederholrate von 8 Hz benutzt werden.
+
+
+Die Betriebsart "ExposureAlternateActive" ist gedacht, um einen
+externen Projektor mit Zufallsmuster anzusteuern, der am Ausgang 1 des
+
+rc_visard
+
+ angeschlossen ist. In diesem Fall nutzt das
+
+Stereo-Matching
+
+-Modul nur Bilder, bei denen Ausgang 1 an, d.h. der Projektor an, ist.
+Die maximale Bildwiederholrate, welche für Stereo-Matching genutzt
+wird, ist hierbei die halbe vom Benutzer konfigurierte
+Bildwiederholrate (siehe
+
+FPS
+
+). Alle anderen Module wie z.B.
+
+Visuelle Odometry
+
+,
+
+TagDetect
+
+ und
+
+ItemPick
+
+ benutzen Bilder, bei denen der entsprechende Ausgang aus, d.h. der
+Projektor aus, ist. Abbildung
+
+Abb. 44
+
+ zeigt ein Beispiel.
+
+
+Hinweis: In der Betriebsart "ExposureAlternateActive" gibt es zu
+  einem Bild mit angeschaltetem Ausgang, d.h. mit projiziertem Muster
+  immer mit 40 ms Abstand ein Bild mit ausgeschaltetem Ausgang, d.h.
+  ohne projiziertes Muster. Dies ist unabhängig von der
+  benutzerdefinierten Bildwiederholrate. Dies sollte berücksichtigt
+  werden für die Synchronisierung von Disparitäts- und Kamerabildern
+  in dieser speziellen Betriebsart.
+
+Die Funktionalität kann auch über die DigitalIOControl-Parameter der
+GenICam Schnittstelle kontrolliert werden (
+
+GigE Vision 2.0/GenICam-Schnittstelle
+
+).
+
+Services
+
+Dieses Softwaremodul bietet folgende Services.
+
+"get_io_values"
+   Mit diesem Aufruf kann der aktuelle Zustand der Ein- und Ausgänge
+   abgefragt werden. Der zurückgegebene Zeitstempel ist der Zeitpunkt
+   der Messung. Der Aufruf gibt einen Fehler zurück, falls der
+
+   rc_visard
+
+    keine IOControl Lizenz hat.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert folgende Rückgabewerte:
+
+      {
+        "in1": "bool",
+        "in2": "bool",
+        "out1": "bool",
+        "out2": "bool",
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        },
+        "timestamp": {
+          "nsec": "int32",
+          "sec": "int32"
+        }
+      }
+
+   Mögliche Rückgabewerte sind in der Tabelle unten angegeben.
+
+   Mögliche Rückgabewerte des get_io_values Serviceaufrufs.      Code
+   Beschreibung  0  Erfolgreich  -2  Interner Fehler  -9  Lizenz für
+   iocontrol ist nicht verfügbar
+
+"save_parameters"
+   Beim Aufruf dieses Services werden die aktuellen
+   Parametereinstellungen des Moduls auf dem rc_visard gespeichert.
+   Das bedeutet, dass diese Werte selbst nach einem Neustart angewandt
+   werden.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert keine Rückgabewerte.
+
+"reset_defaults"
+   Hiermit werden die Werkseinstellungen der Parameter dieses Moduls
+   wiederhergestellt und angewandt („factory reset“).
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert keine Rückgabewerte.
+
+   Achtung: Der Benutzer muss bedenken, dass beim Aufruf dieses
+     Services die aktuellen Parametereinstellungen für das IOControl-
+     Modul unwiderruflich verloren gehen.

@@ -1,0 +1,32 @@
+.. include:: global_rst.glb
+
+
+.. _sect-interfaces:
+
+Interfaces
+==========
+
+Three interfaces are provided for configuring and obtaining data from the |rc_visard|:
+
+1. :doc:`GigE Vision 2.0/GenICam<gigevision>`:latex:`\:(Section \ref{gigevision:sect-genicam})`
+
+   Images and camera related configuration.
+
+2. :doc:`REST API<rest_api>`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+
+   API to configure the |rc_visard|, query status information, request streams, etc.
+
+3. :doc:`rc_dynamics streams<rc_dynamics>`:latex:`\:(Section \ref{rc_dynamics:sect-rc-dynamics-interface})`
+
+   Real-time streams containing state estimates with poses, velocities, etc. are provided over the *rc_dynamics* interface.
+   It sends *protobuf*-encoded messages via UDP.
+
+
+.. toctree-filt::
+   :caption: Interfaces Contents
+   :maxdepth: 2
+
+   gigevision
+   rest_api
+   rc_dynamics
+   :roboception_only:time_sync

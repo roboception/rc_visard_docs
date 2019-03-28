@@ -1,0 +1,249 @@
+Der rc_visard auf einen Blick
+
+Der
+
+rc_visard
+
+ ist eine selbstregistrierende 3D-Kamera. Sie erstellt rektifizierte
+Bilder sowie Disparitäts-, Konfidenz- und Fehlerbilder, mit denen sich
+die Tiefenwerte der Aufnahme berechnen lassen. Zusätzlich werden
+intern gemessene Beschleunigungs- und Drehraten mit
+Bewegungsschätzungen aus den Kamerabildern kombiniert, um Echtzeit-
+Schätzungen der aktuellen Pose (Position und Orientierung),
+Geschwindigkeit und Beschleunigung des Sensors anbieten zu können.
+
+Stereovision
+
+Der
+
+rc_visard
+
+ basiert auf
+
+Stereovision
+
+ und nutzt hierzu das Verfahren
+
+SGM
+
+ (
+
+Semi-Global Matching
+
+). Bei der Stereovision werden 3D-Informationen gewonnen, indem zwei
+aus verschiedenen Blickwinkeln aufgenommene Bilder miteinander
+verglichen werden. Das zugrunde liegende Prinzip ist darin begründet,
+dass Objektpunkte je nach Abstand vom Kamerapaar an unterschiedlichen
+Stellen in beiden Kameras erscheinen. Während sehr weit entfernte
+Objektpunkte in beiden Kamerabildern etwa an der gleichen Position
+erscheinen, liegen sehr nahe Objektpunkte an unterschiedlichen Stellen
+im linken und rechten Kamerabild. Dieser Versatz der Objektpunkte in
+beiden Kamerabildern wird auch „Disparität“ genannt. Je größer die
+Disparität, desto näher ist das Objekt der Kamera. Das Prinzip der
+Stereovision wird in
+
+Abb. 16
+
+ genauer dargestellt.
+
+
+Stereovision beruht auf passiver Wahrnehmung. Dies bedeutet, dass
+keine Licht- oder sonstigen Signale zur Distanzmessung ausgesandt
+werden, sondern nur das von der Umgebung ausgehende oder reflektierte
+Licht genutzt wird. Dadurch kann der
+
+rc_visard
+
+ sowohl im Innen- als auch im Außenbereich eingesetzt werden. Zudem
+können problemlos mehrere
+
+rc_visard
+
+-Sensoren störungsfrei auf engem Raum betrieben werden.
+
+Um die 3D-Informationen berechnen zu können, muss der Stereo-Matching-
+Algorithmus die zusammengehörenden Objektpunkte im linken und rechten
+Kamerabild finden. Hierfür bedient er sich der Bildtextur, d. h. der
+durch Muster oder Oberflächenstrukturen der Objekte verursachten
+Schwankungen in der Bildintensität. Das Stereo-Matching-Verfahren kann
+bei Oberflächen ohne jede Textur, wie z. B. bei flachen weißen Wänden,
+keine Werte liefern. Das vom
+
+rc_visard
+
+ genutzte Verfahren (
+
+SGM
+
+) bietet – selbst bei feineren Strukturen – den bestmöglichen
+Kompromiss aus Laufzeit und Genauigkeit.
+
+Für das Stereo-Matching-Verfahren müssen die Positionen der linken und
+rechten Kamera sowie ihre Ausrichtung zueinander genau bekannt sein.
+Dies wird durch Kalibrierung erreicht. Die Kameras des
+
+rc_visard
+
+ werden bereits im Werk vorkalibriert. Hat sich der
+
+rc_visard
+
+ jedoch, beispielsweise während des Transports, dekalibriert, muss die
+Stereokamera neu kalibriert werden.
+
+Für die Berechnung der 3D-Informationen benötigt der
+
+rc_visard
+
+ folgende Softwaremodule:
+
+Stereokamera: Dieses Modul dient dazu, synchronisierte Stereo-
+Bildpaare aufzunehmen und diese in Bilder umzuwandeln, die so weit es
+geht den Aufnahmen einer idealen Stereokamera entsprechen
+(Rektifizierung)\:(Abschnitt \ref{stereo_camera:sect-stereo-camera}).
+
+Stereo-Matching: Dieses Modul errechnet mithilfe des Stereo-Matching-
+Verfahrens SGM die Disparitäten der rektifizierten Stereo-
+Bildpaare\:(Abschnitt \ref{stereo_matching:sect-stereo-matching}).
+
+Kamerakalibrierung: Mit diesem Modul kann der Benutzer die
+Stereokamera des rc_visard neu kalibrieren\:(Abschnitt
+\ref{camera_calibration:sect-camera-calibration}).
+
+Sensordynamik
+
+Neben 3D-Informationen zu einer Szene kann der
+
+rc_visard
+
+ auch Echtzeit-Schätzungen zu seiner
+
+Eigenbewegung
+
+ oder seinem
+
+dynamischen Zustand
+
+ bereitstellen. Hierfür misst er seine aktuelle Pose, d. h. seine
+Position und Ausrichtung in Bezug auf ein Referenzkoordinatensystem,
+sowie seine Geschwindigkeit und Beschleunigung. Für diese Messungen
+werden die Messungen aus der SVO (stereobasierte visuelle Odometrie)
+mit den Werten des integrierten inertialen Messsystems (
+
+IMU
+
+) kombiniert. Diese Kombination wird auch als visuelles
+Trägheitsnavigationssystem (V
+
+INS
+
+) bezeichnet .
+
+Die visuelle Odometrie verfolgt die Bewegung charakteristischer Punkte
+in Kamerabildern, um auf dieser Grundlage die Kamerabewegung
+abzuschätzen. Objektpunkte werden je nach Blickrichtung der Kamera auf
+verschiedene Pixel projiziert. Die 3D-Koordinaten jedes dieser
+Objektpunkte lassen sich über Stereo-Matching der Punktprojektionen im
+linken und rechten Kamerabild errechnen. So werden für zwei
+unterschiedliche Betrachtungspositionen A und B zwei zugehörige 3D-
+Punktwolken errechnen. Eine statische Umgebung vorausgesetzt,
+entspricht die Bewegung, die eine Punktwolke in eine andere Punktwolke
+transformiert, der Kamerabewegung. Das Prinzip wird in
+
+Abb. 17
+
+ für einen vereinfachten 2D-Anwendungsfall dargestellt.
+
+
+Da die visuelle Odometrie auf eine gute Qualität der Bilddaten
+angewiesen ist, verschlechtern sich die Bewegungsschätzungen, wenn
+Bilder verschwommen oder schlecht beleuchtet sind. Zudem ist die
+Frequenz der visuellen Odometrie zu gering für Regelungsanwendungen.
+Aus diesem Grund verfügt der
+
+rc_visard
+
+ über eine integrierte inertiale Messeinheit (IMU), die
+Beschleunigungen und Winkelgeschwindigkeiten misst, die auftreten wenn
+sich der
+
+rc_visard
+
+ bewegt. Das System misst zudem die Erdbeschleunigung, was die globale
+Ausrichtung in der Vertikale ermöglicht. Außerdem werden für IMU-
+Messungen hohe Messraten von 200 Hz genutzt. Lineargeschwindigkeit,
+Position und Orientierung des
+
+rc_visard
+
+ lassen sich durch Aufintegrieren der IMU-Messungen errechnen. Die
+Integrationsergebnisse führen jedoch im Laufe der Zeit zu einem
+Abdriften. Um eine akkurate, robuste und hochfrequente Schätzung der
+aktuellen Position, Orientierung, Geschwindigkeit und Beschleunigung
+des
+
+rc_visard
+
+ bereitzustellen, die in einem Regelkreis verwendet werden kann,
+kombiniert der
+
+rc_visard
+
+ die akkuraten, niederfrequenten und manchmal unzuverlässigen
+Odometriemessungen mit den robusten hochfrequenten IMU-Messungen.
+
+Für die Berechnung der Zustandsschätzungen sind neben dem
+Stereokamera-Modul und dem Kalibriermodul auch folgende
+
+rc_visard
+
+-Softwaremodule erforderlich:
+
+Sensordynamik: Mit diesem Modul lassen sich die für die einzelnen
+Submodule benötigten Schätzungen starten und stoppen und
+verwalten\:(Abschnitt \ref{dynamics:sect-dynamics}).  Visuelle
+Odometrie: Dieses Modul errechnet eine Bewegungsschätzung aufgrund von
+Kamerabildern\:(Abschnitt \ref{stereo_visodo:sect-visual-odometry}).
+Stereo-INS: Dieses Modul kombiniert die von der visuellen Odometrie
+bereitgestellten Bewegungsschätzungen mit den Messungen der
+integrierten IMU, um so hochfrequente Echtzeit-Lageschätzungen
+bereitstellen zu können\:(Abschnitt \ref{stereo_ins:sect-stereo-ins}).
+SLAM: Dieses Modul, das optional für den rc_visard erhältlich ist,
+erstellt eine interne Karte der Umgebung, auf deren Grundlage
+Posenfehler korrigiert werden\:(Abschnitt \ref{slam:sect-slam}).
+
+Kalibrierung zu einem Roboter
+
+Der
+
+rc_visard
+
+ wurde für den Einsatz im industriellen Umfeld konzipiert. Dies
+schließt auch Roboteranwendungen mit ein, für die der
+
+rc_visard
+
+ entweder fest an einem Roboter oder auch statisch an einem
+Roboterarbeitsplatz montiert wird. Um die Ausgabewerte des
+
+rc_visard
+
+ verwenden zu können, muss der Roboter wissen, wo im Roboter-
+Koordinatensystem der Sensor lokalisiert ist. Um die Lage des
+
+rc_visard
+
+ im Roboter-Koordinatensystem zu berechnen, bietet der Sensor die
+Möglichkeit einer
+
+Hand-Auge Kalibrierung
+
+. Die Kalibrierroutine lässt sich entweder programmgesteuert über die
+
+REST-API-Schnittstelle
+
+ oder manuell über die
+
+Web GUI
+
+ ausführen.

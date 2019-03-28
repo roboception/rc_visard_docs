@@ -1,0 +1,443 @@
+.. include:: global_rst.glb
+
+.. _sect-rest-api:
+
+|rest-api| interface
+--------------------
+
+.. index::
+   single: REST-API
+
+Besides the :ref:`GenICam interface <sect-genicam>`:latex:`\ (Section
+\ref{gigevision:sect-genicam})`, the |rc_visard| offers a comprehensive RESTful web
+interface (|rest-api|) which any HTTP client or library can access.
+Whereas most of the provided parameters, services, and functionalities can also
+be accessed via the user-friendly :ref:`Web GUI<sect-web-gui>`:latex:`\ (Section
+\ref{installation:sect-web-gui})`, the |rest-api| serves rather as a
+machine-to-machine interface to programmatically
+
+*  set and get run-time parameters of computation nodes, e.g., of cameras,
+   disparity calculation, and visual odometry;
+*  do service calls, e.g., to start and stop individual computational nodes,
+   or to use offered services such as the hand-eye calibration;
+*  configure data streams that provide |rc-visard|'s :ref:`dynamic state
+   estimates <sect-dynamics-streams>`:latex:`\:(Section \ref{dynamics:sect-dynamics-streams})`
+   as described in the :ref:`rc_dynamics interface<sect-rc-dynamics-interface>`:latex:`\:(Section \ref{rc_dynamics:sect-rc-dynamics-interface})`;
+*  read the current state of the system and individual computational nodes; and
+*  update the |rc_visard|'s firmware or license.
+
+
+.. NOTE:: In the |rc_visard|'s |rest-api|, a *node* is a computational component
+            that bundles certain algorithmic functionality and offers a
+            holistic interface (parameters, services, current status). Examples
+            for such nodes are the stereo matching node or the visual odometry node.
+
+
+General API structure
+.....................
+
+.. index::
+   single: REST-API; entry point
+   pair: REST-API; version
+
+The general **entry point** to the |rc-visard|'s API is ``http://<rcvisard>/api/``,
+where ``<rcvisard>`` is either the device's IP address or its host name as known
+by the respective DHCP server, as explained in
+:ref:`network configuration<sect-network-configuration>`:latex:`\ (Section
+\ref{installation:sect-network-configuration})`.
+Accessing this entry point with a web browser lets the user explore and test
+the full API during run-time using the :ref:`sect-swagger-ui`
+:latex:`\ (Section  \ref{rest_api:sect-swagger-ui})`.
+
+For actual HTTP requests, the **current API version is appended** to the entry point
+of the API, i.e., ``http://<rcvisard>/api/v1``. All data sent to and
+received by the |rest-api| follows the JavaScript Object Notation (JSON).
+The API is designed to let the user **create, retrieve, modify, and delete**
+so-called **resources** as listed in :ref:`sect-rest-resources-and-methods`:latex:`\ (Section
+\ref{rest_api:sect-rest-resources-and-methods})` using the HTTP requests below.
+
+.. tabularcolumns:: |p{40mm}|p{50mm}|
+
++-------------------+---------------------------------------------------------------------+
+| Request type      | Description                                                         |
++===================+=====================================================================+
+| GET               | Access one or more resources and return the result as JSON.         |
++-------------------+---------------------------------------------------------------------+
+| PUT               | Modify a resource and return the modified resource as JSON.         |
++-------------------+---------------------------------------------------------------------+
+| DELETE            | Delete a resource.                                                  |
++-------------------+---------------------------------------------------------------------+
+| POST              | Upload file (e.g., license or firmware image).                      |
++-------------------+---------------------------------------------------------------------+
+
+Depending on the type and the specific request itself, **arguments** to HTTP
+requests can be transmitted as part of the **path** (:term:`URI`) to the
+resource, as
+**query** string, as **form data**, or in the **body** of the request. The following
+examples use the command line tool *curl*, which is available for various operating
+systems. See https://curl.haxx.se.
+
+-  Get a node's current status; its name is encoded in the path (URI)
+
+   .. code-block:: bash
+
+      curl -X GET 'http://<rcvisard>/api/v1/nodes/rc_stereomatching'
+
+-  Get values of some of a node's parameters using a query string
+
+   .. code-block:: bash
+
+      curl -X GET 'http://<rcvisard>/api/v1/nodes/rc_stereomatching/parameters?name=minconf&name=maxdepth'
+
+-  Configure a new datastream; the destination parameter is transmitted as form data
+
+   .. code-block:: bash
+
+      curl -X PUT --header 'Content-Type: application/x-www-form-urlencoded' -d 'destination=10.0.1.14%3A30000' 'http://<rcvisard>/api/v1/datastreams/pose'
+
+-  Set a node's parameter as JSON-encoded text in the body of the request
+
+   .. code-block:: bash
+
+      curl -X PUT --header 'Content-Type: application/json' -d '[{"name": "mindepth", "value": 0.1}]' 'http://<rcvisard>/api/v1/nodes/rc_stereomatching/parameters'
+
+
+As for the responses to such requests, some common return codes for the
+|rcvisard|'s API are:
+
+.. tabularcolumns:: |p{40mm}|p{50mm}|
+
++--------------------------+--------------------------------------------------------------+
+| Status Code              | Description                                                  |
++==========================+==============================================================+
+| ``200 OK``               | The request was successful; the resource is returned as JSON.|
++--------------------------+--------------------------------------------------------------+
+|``400 Bad Request``       | A required attribute or argument of the API request is       |
+|                          | missing or invalid.                                          |
++--------------------------+--------------------------------------------------------------+
+| ``404 Not Found``        | A resource could not be accessed; e.g., an ID for a resource |
+|                          | could not be found.                                          |
++--------------------------+--------------------------------------------------------------+
+| ``403 Forbidden``        | Access is (temporarily) forbidden; e.g., some parameters are |
+|                          | locked while a GigE Vision application is connected.         |
++--------------------------+--------------------------------------------------------------+
+| ``429 Too many requests``| Rate limited due to excessive request frequency.             |
++--------------------------+--------------------------------------------------------------+
+
+The following listing shows a sample response to a successful request that accesses
+information about the ``rc_stereomatching`` node's ``minconf`` parameter:
+
+.. code-block:: http
+
+   HTTP/1.1 200 OK
+   Content-Type: application/json
+   Content-Length: 157
+
+   {
+       "name": "minconf",
+       "min": 0,
+       "default": 0,
+       "max": 1,
+       "value": 0,
+       "type": "float64",
+       "description": "Minimum confidence"
+   }
+
+.. NOTE:: The actual behavior, allowed requests, and specific return codes
+            depend heavily on the specific resource, context, and action.
+            Please refer to the |rcvisard|'s
+            :ref:`available resources <sect-rest-resources-and-methods>`:latex:`\
+            (Section \ref{rest_api:sect-rest-resources-and-methods})` and to
+            each :ref:`software component's <sect-software-components>`:latex:`\
+            (Section \ref{components:sect-software-components})`
+            parameters and services.
+
+
+.. _sect-rest-resources-and-methods:
+
+Available resources and requests
+................................
+
+
+The available |restapi| resources are structured into the following parts:
+
+*  ``/nodes``: Access the |rcvisard|'s
+   :ref:`software components <sect-software-components>`
+   :latex:`\:(Section \ref{components:sect-software-components})` with their
+   run-time status, parameters, and offered services.
+*  ``/datastreams``: Access and manage data streams of the |rcvisard|'s
+   :ref:`sect-rc-dynamics-interface`
+   :latex:`\:(Section \ref{rc_dynamics:sect-rc-dynamics-interface})`.
+*  ``/logs``: Access the log files on the |rcvisard|.
+*  ``/system``: Access the system state and manage licenses as well as
+   firmware updates.
+
+
+Nodes, parameters, and services
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. index::
+   pair: REST-API; node
+
+Nodes represent the |rcvisard|'s
+:ref:`software components <sect-software-components>`
+:latex:`\:(Section \ref{components:sect-software-components})`, each
+bundling a certain algorithmic functionality. All available |restapi| nodes
+can be listed with their service calls and parameters using
+
+.. code-block:: bash
+
+   curl -X GET http://<rcvisard>/api/v1/nodes
+
+Information about a specific node (e.g., ``rc_stereocamera``) can be retrieved using
+
+.. code-block:: bash
+
+   curl -X GET http://<rcvisard>/api/v1/nodes/rc_stereocamera
+
+.. index::
+   pair: REST-API; status value
+
+Status:
+   During run-time, each node offers information about its current status.
+   This includes not only the current **processing status** of the component
+   (e.g., ``running`` or ``stale``), but
+   most nodes also offer run-time statistics or read-only parameters,
+   so-called **status values**. As an example, the ``rc_stereocamera`` values
+   can be retrieved using
+
+   .. code-block:: bash
+
+      curl -X GET http://<rcvisard>/api/v1/nodes/rc_stereocamera/status
+
+   .. note:: The returned **status values** are specific to individual nodes and
+      are documented in the respective
+      :ref:`software component <sect-software-components>`
+      :latex:`\:(Section \ref{components:sect-software-components})`.
+
+   .. note:: The **status values** are only reported when the respective
+      node is in the ``running`` state.
+
+.. index::
+   pair: REST-API; parameter
+
+Parameters:
+   Most nodes expose parameters via the |rcvisard|'s |restapi| to allow
+   their run-time behaviors to be changed according to application context or requirements.
+   The |restapi| permits to read and write a parameter's value, but also
+   provides further information such as minimum, maximum, and default
+   values.
+
+   As an example, the ``rc_stereomatching`` parameters can be
+   retrieved using
+
+   .. code-block:: bash
+
+      curl -X GET http://<rcvisard>/api/v1/nodes/rc_stereomatching/parameters
+
+   Its ``median`` parameter could be set to 3 using
+
+   .. code-block:: bash
+
+      curl -X PUT --header 'Content-Type: application/json' -d '{ "value": 3 }' http://<rcvisard>/api/v1/nodes/rc_stereomatching/parameters/median
+
+   .. note:: Run-time parameters are specific to individual nodes and
+      are documented in the respective
+      :ref:`software component <sect-software-components>`
+      :latex:`\:(Section \ref{components:sect-software-components})`.
+
+   .. note:: Most of the parameters that nodes offer via the |restapi| can be
+      explored and tested via the |rcvisard|'s user-friendly :ref:`Web GUI<sect-web-gui>`
+      :latex:`\ (Section \ref{installation:sect-web-gui})`.
+
+   .. note:: Some parameters exposed via the |rcvisard|'s |restapi| are also
+      available from the
+      :ref:`sect-genicam` :latex:`\:(Section \ref{gigevision:sect-genicam})`.
+      Please note that setting those parameters via the |rest-api| is
+      prohibited if a GenICam client is connected.
+
+   In addition, each node that offers run-time parameters also features
+   services to save, i.e., persist, the current parameter setting, or to
+   restore the default values for all of its parameters.
+
+.. index::
+   pair: REST-API; services
+
+Services:
+   Some nodes also offer services that can be called via |restapi|, e.g., to
+   save and restore parameters as discussed above, or to start and stop nodes.
+   As an example, the services of pose estimation
+   (see :ref:`sect-stereo-ins`:latex:`, Section \ref{stereo_ins:sect-stereo-ins}`),
+   could be listed using
+
+   .. code-block:: bash
+
+      curl -X GET http://<rcvisard>/api/v1/nodes/rc_stereo_ins/services
+
+   A node's service is called by issuing a ``PUT`` request for the
+   respective resource and providing the service-specific arguments
+   (see the ``"args"`` field of the
+   :ref:`Service data model <sect-rest-datamodel-service>`:latex:`, Section \ref{rest_api:sect-rest-datamodel-service}`). 
+   As an example, egomotion estimation can be switched on by:
+
+   .. code-block:: bash
+
+      curl -X PUT --header 'Content-Type: application/json' -d '{ "args": {}  }' http://<rcvisard>/api/v1/nodes/rc_dynamics/services/start
+
+   .. note:: The services and corresponding argument data models are
+      specific to individual nodes and are documented in the respective
+      :ref:`software component <sect-software-components>`
+      :latex:`\:(Section \ref{components:sect-software-components})`.
+
+The following list includes all |restapi| requests regarding the node's status,
+parameters, and services calls:
+
+.. include:: _gen/swagger/nodes.txt
+
+
+.. _sect-rest-datastreams:
+
+Datastreams
+~~~~~~~~~~~
+
+.. index::
+   pair: REST-API; data stream
+   pair: REST-API; dynamics
+
+The following resources and requests allow access to and configuration of the
+:ref:`sect-rc-dynamics-interface` data streams\ :latex:`\:
+(Section \ref{rc_dynamics:sect-rc-dynamics-interface})`. These
+|restapi| requests offer
+
+   - showing available and currently running data streams, e.g.,
+
+     .. code-block:: bash
+
+        curl -X GET http://<rcvisard>/api/v1/datastreams
+
+   - starting a data stream to a destination, e.g.,
+
+     .. code-block:: bash
+
+        curl -X PUT --header 'Content-Type: application/x-www-form-urlencoded' -d 'destination=<target-ip>:<target-port>' http://<rcvisard>/api/v1/datastreams/pose
+
+   - and stopping data streams, e.g.,
+
+     .. code-block:: bash
+
+        curl -X DELETE http://<rcvisard>/api/v1/datastreams/pose?destination=<target-ip>:<target-port>
+
+The following list includes all |restapi| requests associated with data streams:
+
+.. include:: _gen/swagger/datastreams.txt
+
+
+System and logs
+~~~~~~~~~~~~~~~
+
+.. index::
+   pair: REST-API; logs
+   pair: REST-API; system
+
+The following resources and requests expose the |rcvisard|'s system-level API. They
+enable
+
+   - access to log files (system-wide or component-specific)
+   - access to information about the device and run-time statistics such as
+     date, MAC address, clock-time synchronization status, and available
+     resources;
+   - management of installed software licenses; and
+   - the |rcvisard| to be updated with a new firmware image.
+
+.. include:: _gen/swagger/logs.txt
+.. include:: _gen/swagger/system.txt
+
+
+.. _sect-rest-datamodel:
+
+Data type definitions
+.....................
+
+.. index::
+   pair: REST-API; data-type
+   pair: REST-API; data model
+
+The |restapi| defines the following data models, which are used to access
+or modify :ref:`the available resources <sect-rest-resources-and-methods>`
+:latex:`\:(Section \ref{rest_api:sect-rest-resources-and-methods})` either as
+required attributes/parameters of the requests or as return types.
+
+.. include:: _gen/swagger/definitions.txt
+
+
+.. _sect-swagger-ui:
+
+Swagger UI
+..........
+
+.. index::
+   single: Swagger UI
+
+The |rc-visard|'s `Swagger UI <https://swagger.io/>`_ allows developers to easily
+visualize and interact with the |rest-api|, e.g., for development and testing. Accessing
+``http://<rcvisard>/api/`` or ``http://<rcvisard>/api/swagger``
+(the former will automatically be redirected to the latter) opens a visualization
+of the |rc-visard|'s general API structure including all
+:ref:`available resources and requests <sect-rest-resources-and-methods>`
+:latex:`\ (Section \ref{rest_api:sect-rest-resources-and-methods})`
+and offers a simple user interface for exploring all of its features.
+
+.. note::      Users must be aware that, although the |rc_visard|'s Swagger UI is
+               designed to explore and test the |rest-api|, it is a fully
+               functional interface.
+               That is, any issued requests are actually
+               processed and particularly ``PUT``, ``POST``, and ``DELETE``
+               requests might change the overall status and/or behavior of the
+               device.
+
+.. figure:: images/swagger_ui_overview.png
+   :width: 160mm
+   :align: center
+
+   Initial view of the |rc_visard|'s Swagger UI with its resources and requests
+   grouped into ``nodes``, ``datastreams``, ``logs``, and ``system``
+
+Using this interface, available resources and requests can be explored by
+clicking on them to uncollapse or recollapse them.
+The following figure shows an example of how to get a node's current status
+by filling in the necessary parameter (``node`` name) and clicking the
+*Try it out!* button. This action results in the Swagger UI showing,
+amongst others, the actual ``curl`` command that was executed when
+issuing the request as well as the response body showing the current status
+of the requested node in a JSON-formatted string.
+
+.. figure:: images/swagger_ui_example_simple_get.png
+   :width: 160mm
+   :align: center
+
+   Result of requesting the ``rc_stereomatching`` node's status
+
+Some actions, such as setting parameters or calling services, require more
+complex parameters to an HTTP request. The Swagger UI allows developers to
+explore the attributes required for these actions during run-time, as shown in
+the next example. In the figure below, the attributes required for the
+the ``rc_hand_eye_calibration`` node's ``set_pose`` service are explored by
+performing a ``GET`` request on this resource. The response features a full
+description of the service offered, including all required arguments with
+their names and types as a JSON-formatted string.
+
+.. figure:: images/swagger_ui_example_get_service_args.png
+   :width: 160mm
+   :align: center
+
+   The result of the ``GET`` request on the ``set_pose`` service shows the
+   required arguments for this service call.
+
+Users can easily use this preformatted JSON string as a template for the service
+arguments to actually call the service:
+
+.. figure:: images/swagger_ui_example_fill_service_args.png
+   :width: 160mm
+   :align: center
+
+   Filling in the arguments of the ``set_pose`` service request
