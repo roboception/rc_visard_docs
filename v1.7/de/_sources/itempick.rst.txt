@@ -1,0 +1,1455 @@
+ItemPick und BoxPick
+
+Einführung
+
+Die ItemPick und BoxPick Module sind optional erhältliche Module,
+welche intern auf dem
+
+rc_visard
+
+ laufen.
+
+Bemerkung: Die Module sind optional und benötigen gesonderte
+  ItemPick bzw. BoxPick
+
+  Lizenzen
+
+   .
+
+Die Module liefern eine gebrauchsfertige, modellfreie
+Perzeptionslösung, um robotische Pick-and-Place-Anwendungen für
+Vakuum-Greifsysteme zu realisieren. Dazu analysieren die Module die
+sichtbare 3D-Szene, extrahieren mittels Clustering-Verfahren ebene
+Greifoberflächen und berechnen daraus mögliche 3D-Greifposen für die
+Positionierung des Sauggreifers.
+
+Darüber hinaus bieten beide Module:
+
+eine intuitiv gestaltete Bedienoberfläche für Inbetriebnahme,
+Konfiguration und Test auf der rc_visard Web GUI\:(Abschnitt
+\ref{installation:sect-web-gui})
+
+die Möglichkeit, sogenannte Regions of Interest (ROIs) zu definieren,
+um relevante Teilbereiche der Szene auszuwählen
+
+eine integrierte Behältererkennung, um in Bin-Picking-Anwendungen
+("Griff in die Kiste") Greifpunkte nur für Objekte in dem erkannten
+Behälter zu berechnen
+
+die Unterstützung von Behältern mit Fächern, so dass Greifpunkte für
+Objekte nur in einem definierten Teilvolumen des Behälters berechnet
+werden
+
+die Unterstützung von sowohl statisch montierten als auch
+robotergeführten rc_visard Sensoren. Optional können sie mit der Hand-
+Auge-Kalibrierung (Abschnitt \ref{handeye_calibration:sect-handeye-
+calibration}) kombiniert werden, um Greifposen in einem
+benutzerdefinierten externen Koordinatensystem zu liefern
+
+einen Qualitätswert für jeden vorgeschlagenen Greifpunkt, der die
+Ebenheit der für das Greifen verfügbaren Oberfläche bewertet
+
+die Sortierung der berechneten Greifpunkte an Hand des
+Gravitationsvektors und der Größe, so dass bei gestapelten Objekten
+zuerst die oberen gegriffen werden.
+
+Bemerkung: In diesem Kapitel werden die Begriffe Cluster und
+  Oberfläche synonym verwendet und bezeichnen eine Menge von Punkten
+  (oder Pixeln) mit ähnlichen geometrischen Eigenschaften.
+
+Bemerkung: In diesem Kapitel werden die Begriffe Lagerkiste, Load
+  Carrier und Bin synonym verwendet und bezeichnen einen Behälter mit
+  vier Wänden, einem Boden und einem rechteckigen Rand.
+
+Datentypen
+
+Region of Interest
+
+Eine sogenannte Region of Interest (ROI) definiert ein abgegrenztes,
+für eine spezifische Anwendung relevantes Raumvolumen. Aktuell
+unterstützt das ItemPick und BoxPick Modul folgende unterschiedliche
+Arten von ROIs:
+
+   BOX, für quaderförmige ROIs mit den Abmessungen box.x, box.y,
+   box.z.
+
+   SPHERE, für kugelförmige ROIs mit dem  Radius sphere.radius.
+
+Die Pose "pose" einer ROI kann entweder relativ zum
+
+Kamera
+
+-Koordinatensystem "camera" oder mit Hilfe der Hand-Auge-Kalibrierung
+im
+
+externen
+
+ Koordinatesystem "external" angegeben werden (siehe
+
+Hand-Auge-Kalibrierung
+
+).
+
+Beide Module erlauben das Speichern von jeweils bis zu 10
+verschiedenen ROIs, von denen jede mit einer "id" versehen ist. Die
+Konfiguration von ROIs kann mit Hilfe der
+
+rc_visard
+
+ Web GUI oder der REST-API vorgenommen werden.
+
+Bemerkung: Die erstellten ROIs sind persistent auf dem
+
+  rc_visard
+
+   gespeichert und -- im Gegensatz zu den Laufzeitparametern des
+  Moduls -- auch nach Firmware-Updates und -Wiederherstellungen
+  verfügbar.
+
+Je nach Anwendungsfall schränkt eine ROI entweder den Suchbereich für
+die Bin-Erkennung oder den Bereich, in dem Greifpunkte für Objekte
+berechnet werden sollen, ein.
+
+Bemerkung: Wird keine ROI verwendet, legen die Module den gesamten
+  sichtbaren Bereich für die Berechnungen zu Grunde.
+
+Load Carrier
+
+Ein sogenannter Load Carrier (auch "Bin" oder "Lagerkiste") ist ein
+Behälter mit vier Wänden, einem Boden und einem rechteckigen Rand.
+Seine Geometrie ist durch die Angaben zu inneren und äußeren
+Abmessungen ("inner_dimensions" und "outer_dimensions") definiert.
+
+Der Erkennungsalgorithmus basiert auf der Erkennung des oberen,
+rechteckigen Randes (engl. rim) des Behälters. Für Standardbehälter
+wird dessen Stärke "rim_thickness" aus der Differenz von
+"inner_dimensions" und "outer_dimensions" berechnet. Für Nicht-
+Standardbehälter kann dieser Wert alternativ vom Nutzer explizit
+gesetzt werden.
+
+Bemerkung: Die Innen- und Außenmaße eines Behälters sind
+  typischerweise in den Angaben des jeweiligen Herstellers
+  spezifiziert, und können im Produktblatt oder der Produktseite
+  nachgeschlagen werden.
+
+Das Referenzkoordinatensystem für Load Carrier ist so definiert, dass
+dessen Urprung im Zentrum des durch die Außenmaße definierten Quaders
+liegt. Dabei zeigt die z-Achse senkrecht aus dem Behälter hinaus.
+
+
+Um Mehrdeutigkeiten bei der Lageschätzung der Behältererkennung zu
+umgehen, kann eine grobe Vorgabe für die Pose "pose" des Behälters
+spezifiziert werden. Wird keine angegeben, sucht der Algorithmus
+standardmäßig nach Behältern, die horizontal zum Gravitationsvektor
+stehen.
+
+Die Module erlauben das Speichern von jeweils bis zu 10 verschiedenen
+Behältern, von denen jeder mit einer "id" versehen ist. Die für eine
+spezifische Anwendung relevanten Behälter können mit Hilfe der
+
+rc_visard
+
+ Web GUI oder der REST-API konfiguriert werden.
+
+Bemerkung: Die konfigurierten Behälter sind persistent auf dem
+
+  rc_visard
+
+   gespeichert und -- im Gegensatz zu den Laufzeitparametern des
+  Moduls -- auch nach Firmware-Updates und -Wiederherstellungen
+  verfügbar.
+
+Die Module bieten die Möglichkeit, die Greifpunktberechnung auf einen
+benutzerdefinierten Teilbereich des detektierten Behälters
+einzuschränken. Solch ein Unterabteil ("load_carrier_compartment") ist
+durch einen Quader definiert, dessen Pose "pose" relativ zum
+Referenzkoordinatensystem des Behälters angegeben wird.
+
+
+Greifpunkt für Vakuum-Greifsysteme
+
+Ein vom ItemPick oder BoxPick Modul ermittelter Greifpunkt definiert
+die Position und Orientierung des TCP (Tool Center Point) des
+Sauggreifers sowie die für den Sauger zur Verfügung stehende
+Greiffläche. Die Orientierung des TCP ist so angegeben, dass die
+z-Achse orthogonal zur Greiffläche in das zu greifende Objekt zeigt
+und die x-Achse entlang der längsten Ausdehnung ausgerichtet ist.
+
+Für jeden Greifpunkt liegt der Ursprung der Greifpose "pose" im
+Mittelpunkt der größten von der jeweiligen Greiffläche umschlossenen
+Ellipse.
+
+
+Zusätzlich enthält jeder Greifpunkt eine geometrische Beschreibung der
+errechneten Greiffläche in Form von Achslängen
+("max_suction_surface_length" und "max_suction_surface_width")
+derjenigen Ellipse, welche die Greiffläche bestmöglich beschreibt. Die
+Berechnung von Greifpunkten berücksichtigt vom Nutzer angegebene,
+durch die Geometrie des Sauggreifers bedingte Minimalanforderungen an
+diese Achslängen. Zu kleine Greifflächen können damit bereits während
+der Berechnung herausgefiltert werden.
+
+Im BoxPick Modul entspricht der Greifpunkt dem Zentrum des
+detektierten Rechtecks, wobei die Achsenlängen der Greiffläche durch
+Länge und Breite des Rechtecks gegeben sind. Falls mehr als 15% der
+Rechtecksfläche ungültige Datenpunkte enthält oder durch andere
+Objekte verdeckt ist, wird dem Rechteck kein Greifpunkt zugeordnet.
+
+Jeder berechnete Greifpunkt lässt sich an Hand einer "uuid"
+(Universally Unique Identifier) eindeutig identifizieren und enthält
+zusätzlich den Zeitstempel der Bildaufnahme, die der
+Greifpunktberechnung zu Grunde lag (bei mehreren Bildern, der
+Zeitstempel des ältesten Bildes).
+
+Objektmodell
+
+Liegen Informationen über die Geometrien der zu greifenden Objekte
+vor, können diese vom Nutzer an das ItemPick oder BoxPick Modul
+übergegeben und somit für die Greifpunktberechnung berücksichtigt
+werden. Jedes solcher "item_models" enthält die Angaben über den
+Geometrietyp und über die minimalen und maximalen Abmessungen des
+jeweiligen Objekts.
+
+   Das ItemPick Modul unterstützt flexible und/oder deformierbare
+   Objekte, welche bis auf minimale und maximale Größe nicht weiter
+   spezifiziert sind.
+
+   Das BoxPick Modul unterstützt Rechtecke, welche über minimale und
+   maximale Länge und Breite spezifiziert werden können.
+
+Wechselwirkung mit anderen Modulen
+
+Die folgenden, intern auf dem
+
+rc_visard
+
+ laufenden Module liefern Daten für das ItemPick und BoxPick Modul
+oder haben Einfluss auf die Datenverarbeitung.
+
+Bemerkung: Jedwede Konfigurationsänderung dieser Module kann direkte
+  Auswirkungen auf die Qualität oder das Leistungsverhalten der
+  Greifpunktberechnung zur Folge haben.
+
+Stereokamera und Stereo-Matching
+
+Folgende Daten werden vom ItemPick und BoxPick Modul verarbeitet:
+
+Die rektifizierten Bilder des Stereokamera-Moduls (rc_stereocamera,
+Abschnitt \ref{stereo_camera:sect-stereo-camera});
+
+Die Disparitäts-, Konfidenz- und Fehlerbilder des Stereo-Matching-
+Moduls (rc_stereomatching, Abschnitt \ref{stereo_matching:sect-stereo-
+matching}).
+
+Sensordynamik
+
+Jedes Mal, wenn eine Behältererkennung oder Greifpunktberechnung
+durchgeführt wird, schätzt das ItemPick bzw. BoxPick Modul die
+Gravitationsrichtung basierend auf den IMU Daten der
+
+Sensordynamik
+
+-Modul ("rc_dynamics").
+
+Bemerkung: Die Richtung des Gravitationsvektors wird mittels
+  Messungen der linearen Beschleunigungs der IMU bestimmt. Für eine
+  korrekte Schätzung des Gravitationsvektors muss der
+
+  rc_visard
+
+   still stehen.
+
+IO und Projektor-Kontrolle
+
+Für den Anwendungsfall, dass der
+
+rc_visard
+
+ zusammen mit einem externen Projektor mit Zufallsmuster und dem Modul
+für
+
+IO und Projektor-Kontrolle
+
+ ("rc_iocontrol") betrieben wird, sollte der entsprechende digitale
+Ausgang in den Betriebsmodus "ExposureAlternateActive" geschaltet
+werden, siehe
+
+Beschreibung der Laufzeitparameter
+
+ des
+
+IO und Projektor-Kontrolle
+
+-Moduls.
+
+Darüber hinaus sind keine weiteren Änderungen für diesen
+Anwendungsfall notwendig.
+
+Hand-Auge-Kalibrierung
+
+Für den Anwendungsfall, dass der
+
+rc_visard
+
+ zu einem Roboter-Koordinatensystem kalibriert ist, kann zwischen den
+folgenden zwei Optionen für das Referenzkoordinatensystem "pose_frame"
+gewählt werden:
+
+Kamera-Koordinatensystem (camera): Alle Posen sind im Kamera-
+Koordinatensystem angegeben. Das gilt sowohl für Posen, welche vom
+Nutzer an das ItemPick oder BoxPick Modul übermittelt werden, als auch
+für Posen, welche das ItemPick oder BoxPick Modul berechnet und an den
+Nutzer zurückgibt. In diesem Fall ist kein zusätzliches Wissen über
+die Lage des rc_visard in seiner Umgebung notwendig. Das bedeutet
+insbesondere, dass sich ROIs oder Behälter, welche in diesem
+Koordinatensystem angegeben sind, mit dem rc_visard bewegen. Es liegt
+daher in der Verantwortung des Anwenders, in solchen Fällen die
+entsprechenden Posen der Situation entsprechend zu aktualisieren
+(beispielsweise für den Anwendungsfall eines robotergeführten
+Sensors).
+
+Benutzerdefiniertes externes Koordinatensystem (external). Alle Posen
+sind im sogenannten externen Koordinatensystem angegeben, welches vom
+Nutzer während der Hand-Auge-Kalibrierung gewählt wurde. In diesem
+Fall bezieht das ItemPick-Modul alle notwendigen Informationen über
+die Sensormontage und die kalibrierte Hand-Auge-Transformation
+automatisch vom handeye_calibration Modul. Für den Fall eines
+robotergeführten rc_visard ist vom Nutzer zusätzlich die jeweils
+aktuelle Roboterpose robot_pose anzugeben.
+
+Bemerkung: Ist der
+
+  rc_visard
+
+   aktuell nicht mittels der Hand-Auge-Kalibrierung kalibriert, muss
+  als Referenzkoordinatensystem "pose_frame" immer "camera" angegeben
+  werden.
+
+Zulässige Werte zur Angabe des Referenzkoordinatensystems sind
+"camera" und "external". Andere Werte werden als ungültig
+zurückgewiesen.
+
+Parameter und Statuswerte
+
+Die verschiedenen Laufzeitparameter und Konfigurationsoptionen der
+ItemPick und BoxPick Module können sowohl über die
+
+Web GUI
+
+ als auch über die
+
+Swagger UI
+
+ des
+
+rc_visard
+
+ auspropiert werden. Der entsprechene Name des ItemPick bzw. BoxPick
+Moduls in der REST-API ist "rc_itempick" bzw. "rc_boxpick".
+
+Diese Softwaremodule bieten folgende Laufzeitparameter.
+
+Applikationsspezifische Laufzeitparameter der rc_itempick und
+rc_boxpick Module              Name  Typ  Min  Max  Default
+Beschreibung  max_grasps  int32  1  20  5  Maximale Anzahl von
+bereitgestellten Greifpunkten
+
+Laufzeitparameter der rc_itempick und rc_boxpick Module für die
+Behältererkennung              Name  Typ  Min  Max  Default
+Beschreibung  load_carrier_crop_distance  float64  0.0  0.02  0.005
+Sicherheitspielraum in Meter, um den die inneren Abmesssungen eines
+detektierten Behälters verringert werden, bevor sie als interne ROI
+für die nachfolgende Greifpunktberechnung gesetzt werden
+load_carrier_model_tolerance  float64  0.003  0.025  0.008  Zulässige
+maximale Abweichung zwischen den geschätzten Abmessungen eines
+detektierten Behälters und den vom Nutzer definierten Abmessungen des
+jeweiligen Behälter-Modells in Meter. Behälter, deren Abmessungen
+stärker abweichen, werden nicht als solche erkannt
+
+Laufzeitparameter der rc_itempick und rc_boxpick Module für das
+Clustering-Verfahren              Name  Typ  Min  Max  Default
+Beschreibung  cluster_max_dimension  float64  0.05  0.8  0.3  Nur für
+rc_itempick. Größenbeschränkung für mögliche Greifflächen in Meter.
+Flächen, die nicht durch einen Kreis dieses Durchmessers umschrieben
+werden können, werden aussortiert.  cluster_max_curvature  float64
+0.005  0.5  0.11  Maximal erlaubte Krümmung für Greifflächen. Je
+kleiner dieser Wert ist, desto mehr mögliche Greifflächen werden in
+kleinere Flächen mit weniger Krümmung aufgeteilt.
+clustering_patch_size  int32  3  10  4  Nur für rc_itempick.
+Pixelgröße der Patches für die Unterteilung des Tiefenbildes im ersten
+Clustering-Schritt  clustering_max_surface_rmse  float64  0.0005  0.01
+0.004  Maximal erlaubte Abweichung (Root Mean Square Error, RMSE) von
+Punkten zur Greiffläche in Meter  clustering_discontinuity_factor
+float64  0.5  5.0  1.0  Dieser Wert beschreibt die erlaubte Unebenheit
+von Greifflächen. Je kleiner dieser Wert ist, umso mehr werden
+mögliche Greifflächen in kleinere Flächen mit weniger Unebenheiten
+aufgeteilt.  item_model_tolerance  float64  0.0  0.05  0.0  Nur für
+rc_itempick. Dieser Parameter ist veraltet. Beschreibt die maximal
+zulässige Abweichung eines detektierten Objekts von den spezifizierten
+Objektgeometrien in Meter
+
+Dieses Modul meldet folgende Statuswerte:
+
+Statuswerte der rc_itempick und rc_boxpick Module      Name
+Beschreibung  state  Aktueller Zustand des rc_itempick bzw. rc_boxpick
+Moduls  last_timestamp_processed  Zeitstempel des letzten
+verarbeiteten Bilddatensatzes  data_acquisition_time  Zeit in
+Sekunden, für die beim letzten Aufruf auf Bilddaten gewartet werden
+musste. Normalerweise sollte dieser Wert zwischen 0.5 und 0.6 Sekunden
+bei Tiefenbildern der Auflösung High liegen.
+load_carrier_detection_time  Berechnungszeit für die Load Carrier
+Erkennung beim letzten Aufruf in Sekunden  grasp_computation_time
+Berechnungszeit für die Greifpunktberechnung beim letzten Aufruf in
+Sekunden
+
+Folgende "state"-Werte werden gemeldet.
+
+Mögliche Werte für den Zustand der ItemPick und BoxPick Module
+Zustand  Beschreibung  IDLE  Das Modul ist inaktiv.  RUNNING  Das
+Modul wurde gestartet und ist bereit, Behälter zu erkennen und
+Greifpunkte zu berechnen.  FATAL  Ein schwerwiegender Fehler ist
+aufgetreten.
+
+Services
+
+Die zur Verfügung stehenden Services des "rc_itempick" bzw.
+"rc_boxpick" Moduls können mit Hilfe der
+
+Swagger UI
+
+ oder der
+
+rc_visard
+
+
+Web GUI
+
+ ausprobiert und getestet werden.
+
+Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen
+sogenannten "return_code" bestehend aus einem Integer-Wert und einer
+optionalen Textnachricht zurück.
+
+Erfolgreiche Service-Anfragen werden mit einem Wert von "0" quittiert.
+Positive Werte bedeuten, dass die Service-Anfrage zwar erfolgreich
+bearbeitet wurde, aber zusätzliche Informationen zur Verfügung stehen.
+Negative Werte bedeuten, dass Fehler aufgetreten sind. Für den Fall,
+dass mehrere Rückgabewerte zutreffend wären, wird der kleinste
+zurückgegeben; die entsprechenden Textnachrichten werden aber alle in
+"return_code.message" akkumuliert.
+
+Die folgende Tabelle führt die möglichen Rückgabe-Codes an:
+
+Fehlercodes und Warnung der Services des ItemPick bzw. BoxPick Moduls
+Code  Beschreibung  0  Erfolgreich  -1  Ungültige(s) Argument(e)  -4
+Die maximal erlaubte Zeitspanne von 3.0 Sekunden für die interne
+Akquise der Bilddaten wurde überschritten  -301  Für die Anfrage zur
+Greifpunktberechnung compute_grasps wurden mehrere Objektmodelle
+(item_models) vom Typ UNKNOWN übergeben  -302  Für die Anfrage zur
+Behälterkennung detect_load_carriers wurden im Argument
+load_carrier_ids mehrere Behälter angegeben. Momentan wird nur ein
+Behälter gleichzeitig unterstützt  100  Die angefragten Behälter
+wurden in der Szene nicht gefunden  101  Es wurden keine gültigen
+Greifflächen in der Szene gefunden  102  Der detektierte Behälter ist
+leer  200  Das ItemPick-Modul befindet sich im Zustand IDLE  300  Ein
+gültiges robot_pose-Argument wurde angegeben, ist aber nicht
+erforderlich  400  Der Serviceanfrage compute_grasps wurden keine
+Objektangaben (item_models) als Argumente mitgegeben  500  Während des
+Aufrufs von set_region_of_interest konnten keine entsprechenden
+Visualisierungen erzeugt werden  600  Mit dem Aufruf von
+set_load_carrier oder set_region_of_interest wurde ein bereits
+existierendes Objekt mit selber id überschrieben
+
+Das ItemPick bzw. BoxPick Module stellt folgende Services zur
+Verfügung.
+
+"start"
+   Versetzt das ItemPick-Modul in den Zustand "RUNNING". Es kann
+   vorkommen, dass der Zustandsübergang noch nicht vollständig
+   abgeschlossen ist, wenn die Serviceantwort generiert wird. In
+   diesem Fall liefert diese den entsprechenden, sich von "RUNNING"
+   unterscheidenden Zustand zurück.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+"stop"
+   Stoppt das Modul und versetzt es in den Zustand "IDLE". Es kann
+   vorkommen, dass der Zustandsübergang noch nicht vollständig
+   abgeschlossen ist, wenn die Serviceantwort generiert wird. In
+   diesem Fall liefert diese den entsprechenden, sich von "IDLE"
+   unterscheidenden Zustand zurück.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+"set_region_of_interest"
+   Konfiguriert und speichert eine Region of Interest (ROI) auf dem
+
+   rc_visard
+
+   . Alle ROIs sind dauerhaft -- auch über Firmware-Updates und
+   -Wiederherstellungen hinweg -- gespeichert.
+
+   Vergleiche hierzu die exakte Definition und Beschreibung einer
+
+   Region of Interest
+
+   .
+
+   Für diesen Service sind folgende Argumente nötig:
+
+      {
+        "region_of_interest": {
+          "box": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "id": "string",
+          "pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "pose_frame": "string",
+          "sphere": {
+            "radius": "float64"
+          },
+          "type": "string"
+        },
+        "robot_pose": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "position": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          }
+        }
+      }
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+"get_regions_of_interest"
+   Gibt die mit "region_of_interest_ids" spezifizierten, gespeicherten
+   Regions of Interest (ROIs) zurück. Werden keine
+   "region_of_interest_ids" angegeben, enthält die Serviceantwort alle
+   gespeicherten ROIs.
+
+   Für diesen Service sind folgende Argumente nötig:
+
+      {
+        "region_of_interest_ids": [
+          "string"
+        ]
+      }
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "regions_of_interest": [
+          {
+            "box": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "id": "string",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "sphere": {
+              "radius": "float64"
+            },
+            "type": "string"
+          }
+        ],
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+"delete_regions_of_interest"
+   Löscht die mit "region_of_interest_ids" spezifizierten,
+   gespeicherten ROIs. Alle zu löschenden ROIs müssen explizit
+   angegeben werden.
+
+   Für diesen Service sind folgende Argumente nötig:
+
+      {
+        "region_of_interest_ids": [
+          "string"
+        ]
+      }
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+"set_load_carrier"
+   Konfiguriert und speichert einen Load Carrier (Behälter) auf dem
+
+   rc_visard
+
+   . Alle Behälter sind dauerhaft -- auch über Firmware-Updates und
+   -Wiederherstellungen hinweg -- gespeichert.
+
+   Vergleiche hierzu die Definition und Beschreibung eines
+
+   Load Carrier
+
+   .
+
+   Für diesen Service sind folgende Argumente nötig:
+
+      {
+        "load_carrier": {
+          "id": "string",
+          "inner_dimensions": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "outer_dimensions": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "pose_frame": "string",
+          "rim_thickness": {
+            "x": "float64",
+            "y": "float64"
+          }
+        }
+      }
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+"get_load_carriers"
+   Gibt die mit "load_carrier_ids" spezifizierten, gespeicherten Load
+   Carriers (Behälter) zurück. Werden keine "load_carrier_ids"
+   angegeben, enthält die Serviceantwort alle gespeicherten Behälter.
+
+   Für diesen Service sind folgende Argumente nötig:
+
+      {
+        "load_carrier_ids": [
+          "string"
+        ]
+      }
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "load_carriers": [
+          {
+            "id": "string",
+            "inner_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "outer_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "rim_thickness": {
+              "x": "float64",
+              "y": "float64"
+            }
+          }
+        ],
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+"delete_load_carriers"
+   Löscht die mit "load_carrier_ids" spezifizierten, gespeicherten
+   Load Carriers (Behälter). Alle zu löschenden Behälter müssen
+   explizit angegeben werden.
+
+   Für diesen Service sind folgende Argumente nötig:
+
+      {
+        "load_carrier_ids": [
+          "string"
+        ]
+      }
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+"detect_load_carriers"
+   Mit dieser Serviceanfrage wird eine Behältererkennung durchgeführt.
+   Dabei garantiert das Zeitverhalten dieses Services, dass nur
+   Bilddaten zur Erkennung benutzt werden, welche nach dem
+   Anfragezeitpunkt generiert wurden.
+
+   Für diesen Service sind folgende Argumente nötig:
+
+      {
+        "load_carrier_ids": [
+          "string"
+        ],
+        "pose_frame": "string",
+        "region_of_interest_id": "string",
+        "robot_pose": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "position": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          }
+        }
+      }
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "load_carriers": [
+          {
+            "id": "string",
+            "inner_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "outer_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "rim_thickness": {
+              "x": "float64",
+              "y": "float64"
+            }
+          }
+        ],
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        },
+        "timestamp": {
+          "nsec": "int32",
+          "sec": "int32"
+        }
+      }
+
+   Obligatorische Serviceargumente:
+
+      "pose_frame": definiert das Referenzkoordinatensystem für die
+      Ausgabe der Pose für die detektierten Load Carriers.
+
+      "load_carrier_ids"
+
+      "robot_pose": wird nur für den Fall eines robotergeführten
+
+      rc_visard
+
+       mit Referenzkoordinatensystem "pose_frame="external"" benötigt.
+
+   Optionale Serviceargumente:
+
+      "region_of_interest_id": schränkt die Suche nach zu
+      detektierenden Behältern auf das durch die ROI definierte
+      Raumvolumen ein. Je größer eine ROI, desto mehr Rechenzeit wird
+      für die Behältererkennung benötigt.
+
+"detect_items" (nur für BoxPick verfügbar)
+   Diese Serviceanfrage startet die Detektion von Rechtecken. Der
+   Detektionsprozess beinhaltet die Load Carrier Erkennung innerhalb
+   der spezifizierten ROI. Die zurückgegebenen Posen sind relativ zum
+   Mittelpunkt des Rechtecks definiet. Die z-Achse zeigt in Richtung
+   der Kamera. Es können mehrere Rechtecke mit unterschiedlichem
+   Wertebereich für Länge und Breite gleichzeitig angegeben werden.
+
+   Falls die Anfrage erfolgreich war, wird eine Liste der detektierten
+   Rechtecke und optional der detektierte Load Carrier zurückgegeben.
+
+   Für diesen Service sind folgende Argumente nötig:
+
+      {
+        "item_models": [
+          {
+            "rectangle": {
+              "max_dimensions": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "min_dimensions": {
+                "x": "float64",
+                "y": "float64"
+              }
+            },
+            "type": "string"
+          }
+        ],
+        "load_carrier_compartment": {
+          "box": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          }
+        },
+        "load_carrier_id": "string",
+        "pose_frame": "string",
+        "region_of_interest_id": "string",
+        "robot_pose": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "position": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          }
+        }
+      }
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "items": [
+          {
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "rectangle": {
+              "x": "float64",
+              "y": "float64"
+            },
+            "timestamp": {
+              "nsec": "int32",
+              "sec": "int32"
+            },
+            "type": "string",
+            "uuid": "string"
+          }
+        ],
+        "load_carriers": [
+          {
+            "id": "string",
+            "inner_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "outer_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "rim_thickness": {
+              "x": "float64",
+              "y": "float64"
+            }
+          }
+        ],
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        },
+        "timestamp": {
+          "nsec": "int32",
+          "sec": "int32"
+        }
+      }
+
+   Obligatorische Serviceargumente:
+
+      "pose_frame": definiert das Referenzkoordinatensystem für die
+      Ausgabe der Pose für die detektierten Rechtecke.
+
+      "item_models": definiert eine Liste von Rechtecken mit minimaler
+      und maximaler Größe, wobei die minimalen Abmessungen stets
+      kleiner sein müssen als die zugehörigen maximalen Abmessungen.
+      Es muss mindestens ein "item_model" angegeben werden. Die
+      Abmessungen sollten möglichst präzise angegeben werden, um
+      fehlerhafte Resultate zu vermeiden.
+
+      "robot_pose": wird nur für den Fall eines robotergeführten
+
+      rc_visard
+
+       mit Referenzkoordinatensystem "pose_frame="external"" benötigt.
+
+   Optionale Serviceargumente:
+
+      "region_of_interest_id": schränkt je nach Anwendungsfall
+      entweder die Suche nach zu detektierenden Behältern oder direkt
+      die Suche nach Greifpunkten auf das durch die ROI definierte
+      Raumvolumen ein. Je größer eine ROI, desto mehr Rechenzeit wird
+      für die Berechnungen benötigt.
+
+      "load_carrier_id": beschränkt die Greifpunktberechnung auf den
+      Inhalt des zu detektierenden Load Carriers (Behälter).
+
+      "load_carrier_compartment": beschränkt die Greifpunktberechnung
+      auf das mit diesem Serviceargument definierte Teilvolumen (Fach
+      oder Abteil) in einem zu detektierenden Load Carrier (Behälter).
+
+"compute_grasps" (für ItemPick)
+   Mit dieser Serviceanfrage wird die Berechung von Greifpunkten für
+   Sauggreifer durchgeführt. Dabei garantiert das Zeitverhalten dieses
+   Services, dass nur Bilddaten zur Erkennung benutzt werden, welche
+   nach dem Anfragezeitpunkt generiert wurden.
+
+   Falls die Anfrage erfolgreich war, wird eine sortierte Liste von
+   Greifpunkten und optional der detektierte Load Carrier
+   zurückgegeben.
+
+   Für diesen Service sind folgende Argumente nötig:
+
+      {
+        "item_models": [
+          {
+            "type": "string",
+            "unknown": {
+              "max_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "min_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            }
+          }
+        ],
+        "load_carrier_compartment": {
+          "box": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          }
+        },
+        "load_carrier_id": "string",
+        "pose_frame": "string",
+        "region_of_interest_id": "string",
+        "robot_pose": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "position": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          }
+        },
+        "suction_surface_length": "float64",
+        "suction_surface_width": "float64"
+      }
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "grasps": [
+          {
+            "item_uuid": "string",
+            "max_suction_surface_length": "float64",
+            "max_suction_surface_width": "float64",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "quality": "float64",
+            "timestamp": {
+              "nsec": "int32",
+              "sec": "int32"
+            },
+            "type": "string",
+            "uuid": "string"
+          }
+        ],
+        "load_carriers": [
+          {
+            "id": "string",
+            "inner_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "outer_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "rim_thickness": {
+              "x": "float64",
+              "y": "float64"
+            }
+          }
+        ],
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        },
+        "timestamp": {
+          "nsec": "int32",
+          "sec": "int32"
+        }
+      }
+
+   Obligatorische Serviceargumente:
+
+      "pose_frame": definiert das Referenzkoordinatensystem für die
+      Ausgabe der Pose für die berechneten Greifpunkte.
+
+      "suction_surface_length": Länge der Greiffläche des verwendeten
+      Vakuum-Greifsystems.
+
+      "suction_surface_width": Breite der Greiffläche des verwendeten
+      Vakuum-Greifsystems.
+
+      "robot_pose": wird nur für den Fall eines robotergeführten
+
+      rc_visard
+
+       mit Referenzkoordinatensystem "pose_frame="external"" benötigt.
+
+   Optionale Serviceargumente:
+
+      "region_of_interest_id": schränkt je nach Anwendungsfall
+      entweder die Suche nach zu detektierenden Behältern oder direkt
+      die Suche nach Greifpunkten auf das durch die ROI definierte
+      Raumvolumen ein. Je größer eine ROI, desto mehr Rechenzeit wird
+      für die Berechnungen benötigt.
+
+      "load_carrier_id": beschränkt die Greifpunktberechnung auf den
+      Inhalt des zu detektierenden Load Carriers (Behälter).
+
+      "load_carrier_compartment": beschränkt die Greifpunktberechnung
+      auf das mit diesem Serviceargument definierte Teilvolumen (Fach
+      oder Abteil) in einem zu detektierenden Load Carrier (Behälter).
+
+      "item_models": Liste mit spezifischen Angaben zu
+      Objektgeometrien. Momentan wird nur die Angabe eines einzelnen
+      Objektmodells vom Typ "UNKNOWN" unterstützt.
+
+"compute_grasps" (für BoxPick)
+   Diese Serviceanfrage startet die Detektion von Rechtecken und
+   berechnet zudem für jedes detektierte Rechteck einen zugehörigen
+   Greifpunkt für Sauggreifer. Die zurückgegebenen Greifpunkte sind
+   relativ zum Mittelpunkt des Rechtecks definiet. Es können mehrere
+   Rechtecke mit unterschiedlichem Wertebereich für Länge und Breite
+   gleichzeitig angegeben werden. Dabei garantiert das Zeitverhalten
+   dieses Services, dass nur Bilddaten zur Erkennung benutzt werden,
+   welche nach dem Anfragezeitpunkt generiert wurden.
+
+   Falls die Anfrage erfolgreich war, wird eine Liste von Rechtecken,
+   eine Liste von Greifpunkten und optional der detektierte Load
+   Carrier zurückgegeben. Jeder Greifpunkt beinhaltet die "uuid" des
+   zugehörigen Rechtecks und umgekehrt.
+
+   Für diesen Service sind folgende Argumente nötig:
+
+      {
+        "item_models": [
+          {
+            "rectangle": {
+              "max_dimensions": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "min_dimensions": {
+                "x": "float64",
+                "y": "float64"
+              }
+            },
+            "type": "string"
+          }
+        ],
+        "load_carrier_compartment": {
+          "box": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          }
+        },
+        "load_carrier_id": "string",
+        "pose_frame": "string",
+        "region_of_interest_id": "string",
+        "robot_pose": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "position": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          }
+        },
+        "suction_surface_length": "float64",
+        "suction_surface_width": "float64"
+      }
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "grasps": [
+          {
+            "item_uuid": "string",
+            "max_suction_surface_length": "float64",
+            "max_suction_surface_width": "float64",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "quality": "float64",
+            "timestamp": {
+              "nsec": "int32",
+              "sec": "int32"
+            },
+            "type": "string",
+            "uuid": "string"
+          }
+        ],
+        "items": [
+          {
+            "grasp_uuids": [
+              "string"
+            ],
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "rectangle": {
+              "x": "float64",
+              "y": "float64"
+            },
+            "timestamp": {
+              "nsec": "int32",
+              "sec": "int32"
+            },
+            "type": "string",
+            "uuid": "string"
+          }
+        ],
+        "load_carriers": [
+          {
+            "id": "string",
+            "inner_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "outer_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "rim_thickness": {
+              "x": "float64",
+              "y": "float64"
+            }
+          }
+        ],
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        },
+        "timestamp": {
+          "nsec": "int32",
+          "sec": "int32"
+        }
+      }
+
+   Obligatorische Serviceargumente:
+
+      "pose_frame": definiert das Referenzkoordinatensystem für die
+      Ausgabe der Pose für die berechneten Greifpunkte und
+      detektierten Rechtecke.
+
+      "item_models":  definiert eine Liste von Rechtecken mit
+      minimaler und maximaler Größe, wobei die minimalen Abmessungen
+      stets kleiner sein müssen als die zugehörigen maximalen
+      Abmessungen. Es muss mindestens ein item_model angegeben werden.
+      Die Abmessungen sollten möglichst präzise angegeben werden, um
+      fehlerhafte Resultate zu vermeiden.
+
+      "suction_surface_length": Länge der Greiffläche des verwendeten
+      Vakuum-Greifsystems.
+
+      "suction_surface_width": Breite der Greiffläche des verwendeten
+      Vakuum-Greifsystems.
+
+      "robot_pose": wird nur für den Fall eines robotergeführten
+
+      rc_visard
+
+       mit Referenzkoordinatensystem "pose_frame="external"" benötigt.
+
+   Optionale Serviceargumente:
+
+      "region_of_interest_id": schränkt je nach Anwendungsfall
+      entweder die Suche nach zu detektierenden Behältern oder direkt
+      die Suche nach Greifpunkten auf das durch die ROI definierte
+      Raumvolumen ein. Je größer eine ROI, desto mehr Rechenzeit wird
+      für die Berechnungen benötigt.
+
+      "load_carrier_id": beschränkt die Greifpunktberechnung auf den
+      Inhalt des zu detektierenden Load Carriers (Behälter).
+
+      "load_carrier_compartment": beschränkt die Greifpunktberechnung
+      auf das mit diesem Serviceargument definierte Teilvolumen (Fach
+      oder Abteil) in einem zu detektierenden Load Carrier (Behälter).
+
+"save_parameters"
+   Beim Aufruf dieses Services werden die aktuellen
+   Parametereinstellungen des ItemPick oder BoxPick Moduls auf dem
+
+   rc_visard
+
+    gespeichert. Das bedeutet, dass diese Werte selbst nach einem
+   Neustart angewandt werden. Bei Firmware-Updates oder
+   -Wiederherstellungen werden sie jedoch wieder auf den Standardwert
+   gesetzt.
+
+"reset_to_defaults"
+   Hiermit werden die Werkseinstellungen der Parameter dieses Moduls
+   wiederhergestellt und angewandt ("factory reset"). Dies betrifft
+   nicht die konfigurierten ROIs und Load Carrier.

@@ -1,0 +1,997 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Stereo matching &mdash; rc_visard 1.7.0
+ documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="rc_visard 1.7.0
+ documentation" href="index.html"/>
+        <link rel="up" title="Software components" href="components.html"/>
+        <link rel="next" title="Sensor dynamics" href="dynamics.html"/>
+        <link rel="prev" title="Stereo camera" href="stereo_camera.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Warranty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Applicable standards</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Approvals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Safety</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">General warnings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Intended use</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Scope of delivery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technical specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Environmental and operating conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Power-supply specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Wiring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanical interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-and-configuration">Installation and configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Power up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Network configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatic configuration (factory default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manual configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rcvisard-devices">Discovery of <em>rc_visard</em> devices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Resetting configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#web-gui">Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">The <em>rc_visard</em> in a nutshell</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#stereo-vision">Stereo vision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#sensor-dynamics">Sensor dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#calibration-relative-to-a-robot">Calibration relative to a robot</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="components.html">Software components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="stereo_camera.html">Stereo camera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#image-acquisition">Image acquisition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#planar-rectification">Planar rectification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Stereo matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#computing-disparity-images">Computing disparity images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#computing-depth-images-and-point-clouds">Computing depth images and point clouds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#confidence-and-error-images">Confidence and error images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dynamics.html">Sensor dynamics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#coordinate-frames-for-state-estimation">Coordinate frames for state estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#available-state-estimates">Available state estimates</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#camera-pose-streams-pose-and-pose-ins">Camera-pose streams (<code class="docutils literal notranslate"><span class="pre">pose</span></code> and <code class="docutils literal notranslate"><span class="pre">pose_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-camera-pose-streams-pose-rt-and-pose-rt-ins">Real-time camera-pose streams (<code class="docutils literal notranslate"><span class="pre">pose_rt</span></code> and <code class="docutils literal notranslate"><span class="pre">pose_rt_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-dynamics-streams-dynamics-and-dynamics-ins">Real-time dynamics streams (<code class="docutils literal notranslate"><span class="pre">dynamics</span></code> and <code class="docutils literal notranslate"><span class="pre">dynamics_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#imu-data-stream-imu">IMU data stream (<code class="docutils literal notranslate"><span class="pre">imu</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_visodo.html">Visual odometry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_ins.html">Stereo INS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#self-calibration">Self-Calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#parameters">Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="camera_calibration.html">Camera calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#self-calibration">Self-calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#calibration-process">Calibration process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-1-calibration-settings">Step 1: Calibration settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-2-verify-calibration">Step 2: Verify calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-3-performing-calibration">Step 3: Performing calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-4-storing-the-calibration-result">Step 4: Storing the calibration result</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="handeye_calibration.html">Hand-eye calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Calibration interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#sensor-mounting">Sensor mounting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Calibration routine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-1-setting-parameters">Step 1: Setting parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-2-selecting-and-reporting-robot-calibration-positions">Step 2:  Selecting and reporting robot calibration positions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-3-calculating-and-saving-the-calibration-transformation">Step 3: Calculating and saving the calibration transformation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="optional.html">Optional software components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="slam.html">SLAM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#memory-limitations">Memory limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#parameter-overview">Parameter overview</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iocontrol.html">IO and Projector Control</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#qr-code">QR code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#apriltag">AprilTag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#comparison">Comparison</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-reading">Tag reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#pose-estimation">Pose estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag re-identification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#interfaces">Interfaces</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters-and-status-values">Parameters and status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="itempick.html">ItemPick and BoxPick</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#data-types">Data types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#load-carrier">Load Carrier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#suction-grasp">Suction Grasp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#item-model">Item model</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#interaction-with-other-components">Interaction with other components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#stereo-camera-and-stereo-matching">Stereo camera and Stereo matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#sensor-dynamics">Sensor dynamics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#io-and-projector-control">IO and Projector Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#hand-eye-calibration">Hand-eye calibration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#parameters-and-status-values">Parameters and Status Values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Interfaces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-visard">Custom GenICam features of the <em>rc_visard</em></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#general-api-structure">General API structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#available-resources-and-requests">Available resources and requests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#nodes-parameters-and-services">Nodes, parameters, and services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#datastreams">Datastreams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#system-and-logs">System and logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#data-type-definitions">Data type definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#swagger-ui">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rc_dynamics.html">The rc_dynamics interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#starting-stopping-dynamic-state-estimation">Starting/stopping dynamic-state estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#configuring-data-streams">Configuring data streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#data-stream-protocol">Data-stream protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Maintenance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Updating the firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcvisard">Rebooting the <em>rc_visard</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Connectivity kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Wiring</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Power connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Power supplies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Spare parts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED colors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Hardware issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Connectivity issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Camera-image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Depth/Disparity, error, and confidence image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#dynamics-issues">Dynamics issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">GigE Vision/GenICam issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Address</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pose_formats.html">Pose formats</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyzabc-format">XYZABC format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyz-quaternion-format">XYZ+quaternion format</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="components.html">Software components</a> &raquo;</li>
+        
+      <li>Stereo matching</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="stereo-matching">
+<span id="sect-stereo-matching"></span><h1>Stereo matching<a class="headerlink" href="#stereo-matching" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">The stereo matching component uses the rectified stereo-image pair and computes
+disparity, error, and confidence images.</p>
+<div class="section" id="computing-disparity-images">
+<span id="sect-disparity-images"></span><h2>Computing disparity images<a class="headerlink" href="#computing-disparity-images" title="Permalink to this headline">¶</a></h2>
+<p>After rectification, the left and right images have the nice property that an
+object point is projected onto the same pixel row in both images. That point’s pixel
+column in the right image is always lower than or equal
+to the same point’s pixel column in the left image. The term disparity
+signifies the difference between the pixel columns in the right and left images
+and expresses the depth or distance of the object point from the <em>rc_visard</em>. The
+disparity image stores the disparity values of all pixels in the left camera
+image.</p>
+<p>The larger the disparity, the closer the object point. A disparity of 0
+means that the projections of the object point are in the same image column
+and the object point is at infinite distance. Often, there are pixels for which disparity
+cannot be determined. This is the case for occlusions that appear on the
+left sides of objects, because these areas are not seen from the right camera.
+Furthermore, disparity cannot be determined for textureless areas. Pixels
+for which the disparity cannot be determined are marked as invalid with the
+special disparity value of 0. To distinguish between invalid disparity
+measurements and disparity measurements of 0 for objects that are infinitely
+far away, the disparity value for the latter is set to the smallest possible
+disparity value above 0.</p>
+<p id="index-1">To compute disparity values, the stereo matching algorithm has to find
+corresponding object points in the left and right camera images. These are points
+that represent the same object point in the scene. For stereo matching, the <em>rc_visard</em> uses
+<em>SGM</em> (<em>Semi-Global Matching</em>), which offers brief run times and
+a great accuracy, especially at object borders, fine structures, and in weakly textured areas.</p>
+<p id="index-2">A key requirement for any stereo matching method is the presence of texture in the
+image, i.e., image-intensity changes due to patterns or surface
+structure within the scene. In completely untextured regions such as a flat white
+wall without any structure, disparity values can either not be computed or the
+results are erroneous or have low confidence (see
+<a class="reference internal" href="#sect-confidence-error"><span class="std std-ref">Confidence and error images</span></a>). The texture in the scene should not be an
+artificial, repetitive pattern, since those structures may lead to ambiguities and hence to  wrong disparity measurements.</p>
+<p>If the <em>rc_visard</em> has to work in
+untextured environments, then a static artificial texture can be projected
+onto the scene using an external pattern projector. This pattern should be random-like
+and not contain repetitive structures.</p>
+</div>
+<div class="section" id="computing-depth-images-and-point-clouds">
+<span id="sect-point-clouds"></span><h2>Computing depth images and point clouds<a class="headerlink" href="#computing-depth-images-and-point-clouds" title="Permalink to this headline">¶</a></h2>
+<p id="index-3">The following equations show how to compute an object point’s actual 3D coordinates <span class="math notranslate nohighlight">\(P_x, P_y, P_z\)</span> in the
+<a class="reference internal" href="hardware_spec.html#sect-coordinate-frames"><span class="std std-ref">sensor coordinate frame</span></a>
+from the disparity image’s pixel coordinates <span class="math notranslate nohighlight">\(p_{x}, p_{y}\)</span>
+and the disparity value <span class="math notranslate nohighlight">\(d\)</span> in pixels:</p>
+<div class="math notranslate nohighlight" id="equation-reconstruction">
+<span class="eqno">(1)<a class="headerlink" href="#equation-reconstruction" title="Permalink to this equation">¶</a></span>\[\begin{split}P_x&amp;=\frac{p_x \cdot t}{d}\\
+P_y&amp;=\frac{p_y \cdot t}{d}\\
+P_z&amp;=\frac{f \cdot t}{d},\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(f\)</span> is the focal length after rectification in pixels and <span class="math notranslate nohighlight">\(t\)</span>
+is the stereo baseline in meters, which was determined during calibration. These values
+are also transferred over the GenICam interface (see
+<a class="reference internal" href="gigevision.html#sect-custom-genicam-params"><span class="std std-ref">Custom GenICam features of the rc_visard</span></a>).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <em>rc_visard</em> reports a focal length factor via its various
+interfaces. It relates to the image width
+for supporting different image resolutions. The focal length <span class="math notranslate nohighlight">\(f\)</span>
+in pixels can be easily obtained by multiplying the focal length factor
+by the image width in pixels.</p>
+</div>
+<p>Please note that equations <a class="reference internal" href="#equation-reconstruction">(1)</a> assume that the coordinate frame is centered
+in the middle of the image. The following figure shows the definition of the image coordinate
+frame.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/image_coordinates.png"><img alt="_images/image_coordinates.png" src="_images/image_coordinates.png" style="width: 30%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 21 </span><span class="caption-text">The image coordinate frame’s origin is defined to be at the image’s center
+– <span class="math notranslate nohighlight">\(w\)</span> is the image width and <span class="math notranslate nohighlight">\(h\)</span> is the image height.</span></p>
+</div>
+<p>The same equations, but with the corresponding GenICam parameters are given in
+<a class="reference internal" href="gigevision.html#sect-image-stream-conversions"><span class="std std-ref">Image stream conversions</span></a>.</p>
+<p id="index-4">The set of all object points computed from the disparity image gives the point
+cloud, which can be used for 3D modeling applications. The disparity image is
+converted into a depth image by replacing
+the disparity value in each pixel with the value of <span class="math notranslate nohighlight">\(P_z\)</span>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Roboception provides software and examples for receiving disparity images from
+the <em>rc_visard</em> via GigE Vision and computing depth images and point clouds. See
+<a class="reference external" href="http://www.roboception.com/download">http://www.roboception.com/download</a>.</p>
+</div>
+</div>
+<div class="section" id="confidence-and-error-images">
+<span id="sect-confidence-error"></span><h2>Confidence and error images<a class="headerlink" href="#confidence-and-error-images" title="Permalink to this headline">¶</a></h2>
+<p id="index-5">For each disparity image, the <em>rc_visard</em> provides an error image and a confidence image,
+which give uncertainty measures for each disparity value. These images
+have the same resolution and the same frame rate as the disparity image. The
+error image contains the disparity error <span class="math notranslate nohighlight">\(d_{eps}\)</span> in pixels corresponding
+to the disparity value at the same image coordinates in the disparity image.
+The confidence image contains the corresponding confidence value <span class="math notranslate nohighlight">\(c\)</span>
+between 0 and 1. The confidence is defined as the probability of the true
+disparity value being within the interval of three times the error around the
+measured disparity <span class="math notranslate nohighlight">\(d\)</span>, i.e., <span class="math notranslate nohighlight">\([d-3d_{eps}, d+3d_{eps}]\)</span>.
+Thus, the disparity image with error and confidence values can be used in
+applications requiring probabilistic inference. The confidence and error values
+corresponding to an invalid disparity measurement will be 0.</p>
+<p>The disparity error <span class="math notranslate nohighlight">\(d_{eps}\)</span> (in pixels) can be converted to a depth error <span class="math notranslate nohighlight">\(z_{eps}\)</span>
+(in meters) using the focal length <span class="math notranslate nohighlight">\(f\)</span> (in pixels), the baseline <span class="math notranslate nohighlight">\(t\)</span> (in meters), and the disparity
+value <span class="math notranslate nohighlight">\(d\)</span> (in pixels) of the same pixel in the disparity image:</p>
+<div class="math notranslate nohighlight" id="equation-eq-deptherror">
+<span class="eqno">(2)<a class="headerlink" href="#equation-eq-deptherror" title="Permalink to this equation">¶</a></span>\[z_{eps}=\frac{d_{eps}\cdot f\cdot t}{d^2}.\]</div>
+<p>Combining equations <a class="reference internal" href="#equation-reconstruction">(1)</a> and <a class="reference internal" href="#equation-eq-deptherror">(2)</a> allows the
+depth error to be related to the depth:</p>
+<div class="math notranslate nohighlight">
+\[z_{eps}=\frac{d_{eps}\cdot{P_z}^2}{f\cdot t}.\]</div>
+<p>With the focal length and baselines of both <em>rc_visard</em> models and the typical disparity
+error <span class="math notranslate nohighlight">\(d_{eps}\)</span> of 0.5 pixels, the depth error can be visualized as shown below.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/reconstruction_error.png"><img alt="_images/reconstruction_error.png" src="_images/reconstruction_error.png" style="width: 60%;" /></a>
+</div>
+<p id="index-6">The <em>rc_visard</em> provides time-stamped disparity, error, and confidence images over the
+GenICam interface (see <a class="reference internal" href="gigevision.html#sect-provided-image-streams"><span class="std std-ref">Chunk data</span></a>).
+Live streams of the images are provided with reduced quality in the
+<a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>.</p>
+</div>
+<div class="section" id="parameters">
+<span id="sect-disp-image-parameters"></span><h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<p id="index-7">The stereo matching component is called <code class="docutils literal notranslate"><span class="pre">rc_stereomatching</span></code> in the REST-API and it is represented by the
+<em>Depth Image</em> tab in the <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>.
+The user can change the stereo matching parameters there, or use the REST-API
+(<a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API interface</span></a>) or GigE Vision
+(<a class="reference internal" href="gigevision.html#sect-genicam"><span class="std std-ref">GigE Vision 2.0/GenICam image interface</span></a>).</p>
+<div class="section" id="parameter-overview">
+<h3>Parameter overview<a class="headerlink" href="#parameter-overview" title="Permalink to this headline">¶</a></h3>
+<p>This component offers the following run-time parameters.</p>
+<table border="1" class="docutils" id="id2">
+<caption><span class="caption-number">Table 8 </span><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">rc_stereomatching</span></code> component’s run-time parameters</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Min</th>
+<th class="head">Max</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code></td>
+<td>string</td>
+<td>-</td>
+<td>-</td>
+<td>Continuous</td>
+<td>S(ingleFrame) or C(ontinuous)</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">disprange</span></code></td>
+<td>int32</td>
+<td>32</td>
+<td>512</td>
+<td>256</td>
+<td>Disparity range in pixels</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">fill</span></code></td>
+<td>int32</td>
+<td>0</td>
+<td>4</td>
+<td>3</td>
+<td>Disparity tolerance for hole filling in pixels</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">maxdepth</span></code></td>
+<td>float64</td>
+<td>0.1</td>
+<td>100.0</td>
+<td>100.0</td>
+<td>Maximum depth in meters</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">maxdeptherr</span></code></td>
+<td>float64</td>
+<td>0.01</td>
+<td>100.0</td>
+<td>100.0</td>
+<td>Maximum depth error in meters</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">median</span></code></td>
+<td>int32</td>
+<td>1</td>
+<td>5</td>
+<td>1</td>
+<td>Window size for median filtering in pixels</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">minconf</span></code></td>
+<td>float64</td>
+<td>0.5</td>
+<td>1.0</td>
+<td>0.5</td>
+<td>Minimum confidence</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">mindepth</span></code></td>
+<td>float64</td>
+<td>0.1</td>
+<td>100.0</td>
+<td>0.1</td>
+<td>Minimum depth in meters</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">quality</span></code></td>
+<td>string</td>
+<td>-</td>
+<td>-</td>
+<td>High</td>
+<td>F(ull), H(igh), M(edium), or L(ow). Full requires ‘stereo_plus’ license.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">seg</span></code></td>
+<td>int32</td>
+<td>0</td>
+<td>4000</td>
+<td>200</td>
+<td>Minimum size of valid disparity segments in pixels</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">smooth</span></code></td>
+<td>bool</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>Smoothing of disparity image (requires ‘stereo_plus’ license)</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">static_scene</span></code></td>
+<td>bool</td>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+<td>Accumulation of images in static scenes to reduce noise</td>
+</tr>
+</tbody>
+</table>
+<p>This component reports the following status values.</p>
+<table border="1" class="docutils" id="id3">
+<caption><span class="caption-number">Table 9 </span><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">rc_stereomatching</span></code> component’s status values</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">fps</span></code></td>
+<td>Actual frame rate of the disparity, error, and confidence images. This value is shown in the Web GUI below the image preview as <em>FPS (Hz)</em>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">time_matching</span></code></td>
+<td>Time in seconds for performing stereo matching using <em>SGM</em> on the GPU</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">time_postprocessing</span></code></td>
+<td>Time in seconds for postprocessing the matching result on the CPU</td>
+</tr>
+</tbody>
+</table>
+<p>Since SGM stereo matching and post processing run in parallel, the overall processing time for
+this component is the maximum of <code class="docutils literal notranslate"><span class="pre">time_matching</span></code> and <code class="docutils literal notranslate"><span class="pre">time_postprocessing</span></code>. This time is
+shown in the Web GUI below the image preview as <em>Processing Time (s)</em>.</p>
+</div>
+<div class="section" id="description-of-run-time-parameters">
+<h3>Description of run-time parameters<a class="headerlink" href="#description-of-run-time-parameters" title="Permalink to this headline">¶</a></h3>
+<p>Each run-time parameter is represented by a row on the Web GUI’s <em>Depth Image</em> tab. The name in the
+Web GUI is given in brackets behind the parameter name and the parameters are listed in the order
+they appear in the Web GUI:</p>
+<div class="figure align-center" id="id4">
+<a class="reference internal image-reference" href="_images/webgui_depth_image.png"><img alt="_images/webgui_depth_image.png" src="_images/webgui_depth_image.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 22 </span><span class="caption-text">The Web GUI’s <em>Depth Image</em> tab</span></p>
+</div>
+<dl class="docutils" id="index-8">
+<dt><code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> (<em>Acquisition Mode</em>)</dt>
+<dd>The acquisition mode can be set to <cite>Continuous</cite> or <cite>SingleFrame</cite>. The former
+is the default, which performs stereo matching continuously according to the
+user defined frame rate and the available computation resources. The latter
+performs stereo matching upon each click of the <em>Acquire</em> button.</dd>
+<dt id="expl-depth-quality"><span id="index-9"></span><code class="docutils literal notranslate"><span class="pre">quality</span></code> (<em>Quality</em>)</dt>
+<dd><p class="first">Disparity images can be computed in different resolutions:
+high (640 x 480), medium (320 x 240) and low (214 x 160). The lower
+the resolution, the higher the frame rate of the disparity image. A 25 Hz frame
+rate can be achieved only at the lowest resolution. Please note that the frame
+rate of the disparity, confidence, and error images will always be less than or
+equal to the camera frame rate.</p>
+<p class="last">Additionally, full resolution matching with 1280 x 960 pixel is possible with
+a valid StereoPlus license. If full resolution is selected, the disparity range
+is internally limited to 128, due to limited on-board memory resources. Due to
+this limitation, it is not recommended to use the full resolution matching
+in parallel to the <a class="reference internal" href="slam.html"><span class="doc">SLAM</span></a> component.</p>
+</dd>
+<dt id="expl-depth-static"><span id="index-10"></span><code class="docutils literal notranslate"><span class="pre">static_scene</span></code> (<em>Static</em>)</dt>
+<dd>This option averages 8 consecutive camera images before matching. This reduces
+noise, which improves the stereo matching result. The timestamp of the first
+image is taken as timestamp of the disparity image. This option only affects
+matching in full or high quality. It must only be enabled if the scene does not
+change during the acquisition of the 8 images.<span class="target" id="expl-depth-disp-range"></span></dd>
+<dt id="index-11"><code class="docutils literal notranslate"><span class="pre">disprange</span></code> (<em>Disparity Range</em>)</dt>
+<dd><p class="first">The disparity range always start at 0 and goes up to the maximum disparity value a pixel
+in the disparity image can have. Increasing the disparity range results in a smaller
+minimum distance that can be measured, because larger disparity values mean smaller
+distances. The disparity range is given in pixels and can be set to a value between
+32 pixels and 512 pixels. Since a larger disparity range also means a larger search
+area for the matching pixel in the right rectified image, the processing time
+increases with a larger disparity range and the frame rate decreases. The
+disparity range’s value is related to the high quality disparity image with
+640 x 480 pixels and does not have to be scaled when a different quality is chosen.
+Thus, the chosen disparity range gives the same minimum distance for every
+image-quality option.</p>
+<p class="last">If full resolution quality is selected, the disparity range is internally
+limited to 128, due to limited on-board memory resources.</p>
+</dd>
+<dt id="expl-depth-smooth"><span id="index-12"></span><code class="docutils literal notranslate"><span class="pre">smooth</span></code> (<em>Smoothing</em>)</dt>
+<dd>This option activates advanced smoothing of disparity values. It is only
+available with a valid StereoPlus license.<span class="target" id="expl-depth-fill"></span></dd>
+<dt id="index-13"><code class="docutils literal notranslate"><span class="pre">fill</span></code> (<em>Fill-in</em>)</dt>
+<dd>This option is used to fill holes in the disparity image by interpolating a plane.
+Only holes smaller than the segmentation size (see below) are selected
+for interpolation. The fill-in value is the maximum allowed disparity deviation
+of any of the hole’s border pixels from the interpolation plane. Only if all
+of its border pixels deviate less than the fill-in value from the plane, a hole
+will be filled. Larger fill-in values decrease the number of holes, but the
+interpolated values can have larger errors. The confidence for the interpolated
+pixels is set to a low value of 0.5. Their error is set
+to the mean deviation of the hole border pixels from the interpolation plane. A value
+of 0 effectively switches hole filling off.<span class="target" id="expl-depth-seg"></span></dd>
+<dt id="index-14"><code class="docutils literal notranslate"><span class="pre">seg</span></code> (<em>Segmentation</em>)</dt>
+<dd>The segmentation parameter is used to set the minimum number of
+pixels that a connected disparity region in the disparity image must fill.
+Isolated regions that are smaller are set to invalid in the disparity image.
+The value is related to the high quality disparity image with 640 x 480
+pixels resolution and does not have to be scaled when a different quality
+is chosen. Segmentation is useful for removing erroneous disparities. However,
+larger values may also remove real objects.<span class="target" id="expl-depth-median"></span></dd>
+<dt id="index-15"><code class="docutils literal notranslate"><span class="pre">median</span></code> (<em>Median</em>)</dt>
+<dd>This value gives the window side length in pixels for the median filter,
+which smoothes the disparity image. Larger values lead to oversmoothing and cost
+more processing time. A window size of 1 effectively turns this filter off.<span class="target" id="expl-depth-min-conf"></span></dd>
+<dt id="index-16"><code class="docutils literal notranslate"><span class="pre">minconf</span></code> (<em>Minimum Confidence</em>)</dt>
+<dd>The minimum confidence can be set to filter potentially false disparity measurements.
+All pixels with less confidence than the chosen value are set to invalid
+in the disparity image.<span class="target" id="expl-depth-max-depth-err"></span></dd>
+<dt id="index-17"><code class="docutils literal notranslate"><span class="pre">maxdeptherr</span></code> (<em>Maximum Depth Error</em>)</dt>
+<dd>The maximum depth error is used to filter measurements
+that are too inaccurate. All pixels with a larger depth error than the chosen
+value are set to invalid in the disparity image. The maximum
+depth error is given in meters. The depth error generally grows quadratically
+with an object’s distance from the sensor (see <a class="reference internal" href="#sect-confidence-error"><span class="std std-ref">Confidence and error images</span></a>).<span class="target" id="expl-depth-min-depth"></span></dd>
+<dt id="index-18"><code class="docutils literal notranslate"><span class="pre">mindepth</span></code> (<em>Minimum Distance</em>)</dt>
+<dd>The minimum distance is the smallest distance from the sensor
+at which measurements should be possible. Larger values implicitly reduce the
+disparity range, which also reduces the computation time. The minimum distance
+is given in meters.<span class="target" id="expl-depth-max-depth"></span></dd>
+<dt id="index-19"><code class="docutils literal notranslate"><span class="pre">maxdepth</span></code> (<em>Maximum Distance</em>)</dt>
+<dd>The maximum distance is the largest distance from the sensor
+at which measurements should be possible. Pixels with larger distance values are
+set to invalid in the disparity image. Setting this value to its maximum permits
+values up to infinity. The maximum distance is given in meters.</dd>
+</dl>
+<p>The same parameters are also available over the GenICam interface with slightly different names and partly with different data types
+(see <a class="reference internal" href="gigevision.html#sect-genicam"><span class="std std-ref">GigE Vision 2.0/GenICam image interface</span></a>).</p>
+</div>
+</div>
+<div class="section" id="services">
+<h2>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h2>
+<p>The stereo matching component offers the following services for persisting and
+restoring parameter settings.</p>
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">acquisition_trigger</span></code></dt>
+<dd><p class="first">This call signals the module to perform stereo matching of the next available
+images, if the parameter <code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> is set to <cite>SingleFrame</cite>. An
+error is returned if the <code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> is set to <cite>Continuous</cite>.</p>
+<p>This service requires no arguments.</p>
+<p>This service returns the following response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Possible return codes are shown below.</p>
+<span id="tab-stereo-acquisition-trigger-return-codes"></span><table border="1" class="last docutils" id="id5">
+<caption><span class="caption-number">Table 10 </span><span class="caption-text">Possible return codes of the <code class="docutils literal notranslate"><span class="pre">acquisition_trigger</span></code> service call.</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>Success</td>
+</tr>
+<tr class="row-odd"><td>-8</td>
+<td>Triggering is only possible in SingleFrame acquisition mode</td>
+</tr>
+<tr class="row-even"><td>101</td>
+<td>Trigger is ignored, because there is a trigger call pending</td>
+</tr>
+<tr class="row-odd"><td>102</td>
+<td>Trigger is ignored, because there are no subscribers</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code>  (<em>Save</em>)</dt>
+<dd><p class="first">With this service call, the stereo matching component’s current parameter settings
+are persisted to the <em>rc_visard</em>. That is,
+these values are applied even after reboot.</p>
+<p>This service requires no arguments.</p>
+<p class="last">This service returns no response.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code>  (<em>Reset</em>)</dt>
+<dd><p class="first">Restores and applies the default values for this component’s parameters
+(“factory reset”).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The user must be aware that calling this service causes the
+current parameter settings for the stereo matching component to be irrecoverably lost.</p>
+</div>
+<p>This service requires no arguments.</p>
+<p class="last">This service returns no response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dynamics.html" class="btn btn-neutral float-right" title="Sensor dynamics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="stereo_camera.html" class="btn btn-neutral" title="Stereo camera" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Options</span>
+      en
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Languages</dt>
+        
+          
+          <dd><a href="../de/stereo_matching.html">de</a></dd>
+          
+        
+          
+          <dd><a href="../en/stereo_matching.html">en</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versions</dt>
+          
+            <dd><a href="../../v1.1/index.html">v1.1</a></dd>
+          
+            <dd><a href="../../v1.0/index.html">v1.0</a></dd>
+          
+            <dd><a href="../../v1.3/index.html">v1.3</a></dd>
+          
+            <dd><a href="../../v1.2/index.html">v1.2</a></dd>
+          
+            <dd><a href="../../v1.5/index.html">v1.5</a></dd>
+          
+            <dd><a href="../../v1.4/index.html">v1.4</a></dd>
+          
+            <dd><a href="../../v1.7/index.html">v1.7</a></dd>
+          
+            <dd><a href="../../v1.6/index.html">v1.6</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_manual_de.pdf">PDF (de)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_manual_en.pdf">PDF (en)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.7.0',
+            LANGUAGE:'en',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

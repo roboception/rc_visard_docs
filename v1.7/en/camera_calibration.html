@@ -1,0 +1,771 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Camera calibration &mdash; rc_visard 1.7.0
+ documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="rc_visard 1.7.0
+ documentation" href="index.html"/>
+        <link rel="up" title="Software components" href="components.html"/>
+        <link rel="next" title="Hand-eye calibration" href="handeye_calibration.html"/>
+        <link rel="prev" title="Stereo INS" href="stereo_ins.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Warranty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Applicable standards</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Approvals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Safety</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">General warnings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Intended use</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Scope of delivery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technical specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Environmental and operating conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Power-supply specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Wiring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanical interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-and-configuration">Installation and configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Power up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Network configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatic configuration (factory default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manual configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rcvisard-devices">Discovery of <em>rc_visard</em> devices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Resetting configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#web-gui">Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">The <em>rc_visard</em> in a nutshell</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#stereo-vision">Stereo vision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#sensor-dynamics">Sensor dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#calibration-relative-to-a-robot">Calibration relative to a robot</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="components.html">Software components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="stereo_camera.html">Stereo camera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#image-acquisition">Image acquisition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#planar-rectification">Planar rectification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_matching.html">Stereo matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Computing disparity images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Computing depth images and point clouds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Confidence and error images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dynamics.html">Sensor dynamics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#coordinate-frames-for-state-estimation">Coordinate frames for state estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#available-state-estimates">Available state estimates</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#camera-pose-streams-pose-and-pose-ins">Camera-pose streams (<code class="docutils literal notranslate"><span class="pre">pose</span></code> and <code class="docutils literal notranslate"><span class="pre">pose_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-camera-pose-streams-pose-rt-and-pose-rt-ins">Real-time camera-pose streams (<code class="docutils literal notranslate"><span class="pre">pose_rt</span></code> and <code class="docutils literal notranslate"><span class="pre">pose_rt_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-dynamics-streams-dynamics-and-dynamics-ins">Real-time dynamics streams (<code class="docutils literal notranslate"><span class="pre">dynamics</span></code> and <code class="docutils literal notranslate"><span class="pre">dynamics_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#imu-data-stream-imu">IMU data stream (<code class="docutils literal notranslate"><span class="pre">imu</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_visodo.html">Visual odometry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_ins.html">Stereo INS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#self-calibration">Self-Calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#parameters">Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Camera calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#self-calibration">Self-calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calibration-process">Calibration process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#step-1-calibration-settings">Step 1: Calibration settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-2-verify-calibration">Step 2: Verify calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-3-performing-calibration">Step 3: Performing calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-4-storing-the-calibration-result">Step 4: Storing the calibration result</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="handeye_calibration.html">Hand-eye calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Calibration interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#sensor-mounting">Sensor mounting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Calibration routine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-1-setting-parameters">Step 1: Setting parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-2-selecting-and-reporting-robot-calibration-positions">Step 2:  Selecting and reporting robot calibration positions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-3-calculating-and-saving-the-calibration-transformation">Step 3: Calculating and saving the calibration transformation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="optional.html">Optional software components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="slam.html">SLAM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#memory-limitations">Memory limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#parameter-overview">Parameter overview</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iocontrol.html">IO and Projector Control</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#qr-code">QR code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#apriltag">AprilTag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#comparison">Comparison</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-reading">Tag reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#pose-estimation">Pose estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag re-identification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#interfaces">Interfaces</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters-and-status-values">Parameters and status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="itempick.html">ItemPick and BoxPick</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#data-types">Data types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#load-carrier">Load Carrier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#suction-grasp">Suction Grasp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#item-model">Item model</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#interaction-with-other-components">Interaction with other components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#stereo-camera-and-stereo-matching">Stereo camera and Stereo matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#sensor-dynamics">Sensor dynamics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#io-and-projector-control">IO and Projector Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#hand-eye-calibration">Hand-eye calibration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#parameters-and-status-values">Parameters and Status Values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Interfaces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-visard">Custom GenICam features of the <em>rc_visard</em></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#general-api-structure">General API structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#available-resources-and-requests">Available resources and requests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#nodes-parameters-and-services">Nodes, parameters, and services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#datastreams">Datastreams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#system-and-logs">System and logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#data-type-definitions">Data type definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#swagger-ui">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rc_dynamics.html">The rc_dynamics interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#starting-stopping-dynamic-state-estimation">Starting/stopping dynamic-state estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#configuring-data-streams">Configuring data streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#data-stream-protocol">Data-stream protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Maintenance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Updating the firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcvisard">Rebooting the <em>rc_visard</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Connectivity kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Wiring</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Power connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Power supplies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Spare parts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED colors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Hardware issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Connectivity issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Camera-image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Depth/Disparity, error, and confidence image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#dynamics-issues">Dynamics issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">GigE Vision/GenICam issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Address</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pose_formats.html">Pose formats</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyzabc-format">XYZABC format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyz-quaternion-format">XYZ+quaternion format</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="components.html">Software components</a> &raquo;</li>
+        
+      <li>Camera calibration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="camera-calibration">
+<span id="sect-camera-calibration"></span><h1>Camera calibration<a class="headerlink" href="#camera-calibration" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">To use the stereo camera as measuring instrument, camera parameters such as focal length,
+lens distortion, and the relationship of the cameras to each other must be exactly known. The
+parameters are determined by calibration and used for image rectification
+(see <a class="reference internal" href="stereo_camera.html#sect-stereo-camera-rectification"><span class="std std-ref">Planar rectification</span></a>),
+which is the basis for all other image processing modules. The <em>rc_visard</em> is calibrated at
+production time. Nevertheless, checking calibration and recalibration might be necessary
+if the <em>rc_visard</em> was exposed to strong mechanical impact. The camera calibration component is
+responsible for checking calibration and recalibrating.</p>
+<div class="section" id="self-calibration">
+<h2>Self-calibration<a class="headerlink" href="#self-calibration" title="Permalink to this headline">¶</a></h2>
+<p id="index-1">The camera calibration component automatically runs in self-calibration mode at a low
+frequency in the background. In this mode, the <em>rc_visard</em> observes the alignment of image
+rows of both rectified images. A mechanical impact, such as one caused by dropping the <em>rc_visard</em>,
+might result in a misalignment. If a significant misalignment is detected, then it is
+automatically corrected. After each reboot and after each correction, the current self-calibration
+offset is reported in the camera component’s log file
+(see <a class="reference internal" href="maintenance.html#sect-downloading-log-files"><span class="std std-ref">Downloading log files</span></a>)
+as:</p>
+<blockquote>
+<div><em>“rc_stereocalib: Current self-calibration offset is 0.00, update counter is 0”</em></div></blockquote>
+<p>The update counter is incremented after each automatic correction. It is reset to 0 after manual
+recalibration of the <em>rc_visard</em>.</p>
+<p>Under normal conditions, such as the absence of mechanical impact on the <em>rc_visard</em>, self-calibration should never
+occur. Self-calibration allows the <em>rc_visard</em> to work normally even after misalignment is detected, since it
+is automatically corrected. Nevertheless, checking camera calibration manually is recommended
+if the update counter is not 0.</p>
+</div>
+<div class="section" id="calibration-process">
+<h2>Calibration process<a class="headerlink" href="#calibration-process" title="Permalink to this headline">¶</a></h2>
+<p>Manual calibration can be done through the Web GUI’s <em>Camera Calibration</em> tab.
+This tab provides a wizard to guide the user through the calibration
+process.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Camera calibration is normally unnecessary since the <em>rc_visard</em> is calibrated at
+production time. Therefore, calibration is only required after strong mechanical impacts,
+such as occur when dropping the <em>rc_visard</em>.</p>
+</div>
+<div class="section" id="step-1-calibration-settings">
+<h3>Step 1: Calibration settings<a class="headerlink" href="#step-1-calibration-settings" title="Permalink to this headline">¶</a></h3>
+<p id="index-2">The quality of camera calibration heavily depends on the quality of the calibration grid.
+Calibration grids for the <em>rc_visard</em> can be obtained from Roboception.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/webgui_camera_calibration_1.png"><img alt="_images/webgui_camera_calibration_1.png" src="_images/webgui_camera_calibration_1.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 26 </span><span class="caption-text">Calibration settings</span></p>
+</div>
+<p>The <em>Camera calibration</em> component has to be selected in the
+<a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>
+to verify or perform camera calibration.
+In the first step, the width and height of the grid must be specified as shown in the screenshot
+above. The <em>Next</em> button proceeds to the next step.</p>
+</div>
+<div class="section" id="step-2-verify-calibration">
+<h3>Step 2: Verify calibration<a class="headerlink" href="#step-2-verify-calibration" title="Permalink to this headline">¶</a></h3>
+<p>In the second step, the current calibration can be verified. To perform
+the verification, the grid must be held such that it is simultaneously visible in both cameras.
+Make sure that all black squares of the grid are completely visible and not occluded. A green check
+mark overlays each correctly detected square.
+The correct detection of the grid is only possible if all of the black squares are detected.
+After the grid is detected, the calibration error is automatically computed, and the result is
+displayed on the screen.</p>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="_images/webgui_camera_calibration_2.png"><img alt="_images/webgui_camera_calibration_2.png" src="_images/webgui_camera_calibration_2.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 27 </span><span class="caption-text">Verification of calibration</span></p>
+</div>
+<p>Some of the squares not being detected, or being detected only briefly might indicate a low-quality
+or damaged calibration grid, or bad lighting conditions.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To compute a meaningful calibration error, the grid should be held as closely as possible
+to the cameras. If the grid only covers a small section of the camera images, the calibration
+error will always be less than when the grid covers the full image.</p>
+</div>
+<p>The typical calibration error is around 0.3 pixels. If the error is less than 0.4 to 0.5 pixels,
+then the calibration procedure can be skipped. If the calibration error is greater, the
+calibration procedure should be performed to guarantee full sensor performance. The button
+<em>Next</em> starts the procedure.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">A large error during verification can be due to miscalibrated cameras, an inaccurate
+calibration grid, or wrong grid width or height. Please make sure that the grid is accurate and
+the entered grid width and height are correct. Otherwise, manual calibration will actually
+decalibrate the cameras!</p>
+</div>
+</div>
+<div class="section" id="step-3-performing-calibration">
+<h3>Step 3: Performing calibration<a class="headerlink" href="#step-3-performing-calibration" title="Permalink to this headline">¶</a></h3>
+<p>The camera’s exposure time should be set appropriately before starting the calibration.
+To achieve good calibration results, the images should be well-exposed and image noise should
+be avoided. Thus, the maximum auto-exposure time should be great enough to achieve a very small
+gain factor, ideally 0.0 dB. The gain factor is displayed below the camera images as shown
+in <a class="reference internal" href="#fig-webgui-calibration-start"><span class="std std-numref">Fig. 28</span></a>.</p>
+<div class="figure align-center" id="id3">
+<span id="fig-webgui-calibration-start"></span><a class="reference internal image-reference" href="_images/webgui_camera_calibration_3.png"><img alt="_images/webgui_camera_calibration_3.png" src="_images/webgui_camera_calibration_3.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 28 </span><span class="caption-text">Starting the calibration procedure</span></p>
+</div>
+<p>For calibration, the grid has to be held in certain poses. The arrows from the grid
+corners to the green areas indicate that all grid corners should be placed inside the
+green areas. The green areas are called sensitive areas. The <em>Size of Sensitive Area</em>
+slider can control their size to ease calibration as shown in the screen shot in
+<a class="reference internal" href="#fig-webgui-calibration-start"><span class="std std-numref">Fig. 28</span></a>.
+However, please be aware that increasing their size too much may result in slightly
+less calibration accuracy.</p>
+<p>Holding the grid upside down is a common mistake made during calibration. Spotting this in
+this case is easy because the green lines from the grid corners into the green areas will
+cross each other as shown in <a class="reference internal" href="#fig-webgui-calibration-wrong"><span class="std std-numref">Fig. 29</span></a>.</p>
+<div class="figure align-center" id="id4">
+<span id="fig-webgui-calibration-wrong"></span><a class="reference internal image-reference" href="_images/webgui_camera_calibration_wrong.png"><img alt="_images/webgui_camera_calibration_wrong.png" src="_images/webgui_camera_calibration_wrong.png" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 29 </span><span class="caption-text">Wrongly holding the grid upside down leads to crossed green lines.</span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Calibration might appear cumbersome as it involves holding the grid in certain
+predefined poses. However, only this can ensure an unbiased, high-quality calibration
+result.</p>
+</div>
+<div class="section" id="monocalibration">
+<h4>Monocalibration<a class="headerlink" href="#monocalibration" title="Permalink to this headline">¶</a></h4>
+<p id="index-3">Full calibration consists of calibrating each camera individually and then performing a stereo
+calibration to determine the relationship between them. In most cases,
+the intrinsic calibration of each camera does not get corrupted. For this reason, <em>Skip Monocalibration</em>
+in the <em>Calibrate</em> tab should be clicked to skip monocalibration during the first recalibration. Continue with the guidelines given in <a class="reference internal" href="#sect-stereo-calibration"><span class="std std-ref">Stereo calibration</span></a>.
+If stereo calibration yields an unsatisfactory calibration error, then calibration should be
+repeated without skipping monocalibration.</p>
+<p>The monocalibration process involves five poses for each camera as shown in <a class="reference internal" href="#fig-poses-monocalibration"><span class="std std-numref">Fig. 30</span></a>.</p>
+<div class="figure align-center" id="id5">
+<span id="fig-poses-monocalibration"></span><a class="reference internal image-reference" href="_images/calib-views.png"><img alt="_images/calib-views.png" src="_images/calib-views.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 30 </span><span class="caption-text">Poses required for monocamera calibration</span></p>
+</div>
+<p>After the corners or sides of the grid are placed on top of the sensitive areas, the process
+automatically shows the next pose required. When the process is finished for the left camera,
+the same procedure is repeated for the right one.</p>
+</div>
+<div class="section" id="stereo-calibration">
+<span id="sect-stereo-calibration"></span><h4>Stereo calibration<a class="headerlink" href="#stereo-calibration" title="Permalink to this headline">¶</a></h4>
+<p id="index-4">After monocalibration is completed or has been skipped, the stereo calibration process is
+started. During stereo calibration, both cameras are calibrated to each other to find their
+relative rotation and translation.</p>
+<p>First, the grid should be held closer than 40 cm from the sensor. It must be fully visible
+in both images and the cameras should look perpendicularly onto the grid. A green outline that
+stays in the image indicates the images’ acceptance.</p>
+<div class="figure align-center" id="id6">
+<a class="reference internal image-reference" href="_images/webgui_camera_calibration_3_close.png"><img alt="_images/webgui_camera_calibration_3_close.png" src="_images/webgui_camera_calibration_3_close.png" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 31 </span><span class="caption-text">Holding the grid closer than 40 cm during stereo calibration</span></p>
+</div>
+<p>Next, the grid should be held at least 1 m from the cameras. The small cross in the middle
+of the images should be inside of the grid and the cameras must look perpendicularly onto the grid.
+A green outline that stays in the image indicates the images’ acceptance.</p>
+<div class="figure align-center" id="id7">
+<a class="reference internal image-reference" href="_images/webgui_camera_calibration_3_far.png"><img alt="_images/webgui_camera_calibration_3_far.png" src="_images/webgui_camera_calibration_3_far.png" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 32 </span><span class="caption-text">Holding the grid farther away than 1 m during stereo calibration</span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the check marks on the calibration grid all vanish, then either the camera does not
+look perpendicularly onto the grid, the green cross in the middle of the images is not inside the
+grid, or the grid is too far away from the camera.</p>
+</div>
+</div>
+</div>
+<div class="section" id="step-4-storing-the-calibration-result">
+<h3>Step 4: Storing the calibration result<a class="headerlink" href="#step-4-storing-the-calibration-result" title="Permalink to this headline">¶</a></h3>
+<p>Clicking the <em>Compute Calibration</em> button finishes the process and displays the final result.
+The presented result is the mean reprojection error of all calibration points. It is given in
+pixels and typically has a value around 0.3.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The given result is the minimum error left after calibration. The real error
+is definitely not less than this, but could in theory be larger. This is true for every
+camera-calibration algorithm and the reason why we enforce holding the grid in very specific
+poses. Doing so ensures that the real calibration error cannot significantly
+exceed the reported error.</p>
+</div>
+<p>Pressing <em>Save Calibration</em> applies the calibration and saves it to the sensor.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If a hand-eye calibration was stored on the <em>rc_visard</em> before camera calibration,
+the hand-eye calibration values could have become invalid. Please repeat the hand-eye
+calibration procedure.</p>
+</div>
+</div>
+</div>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<p id="index-5">The component is called <code class="docutils literal notranslate"><span class="pre">rc_stereocalib</span></code> in the REST-API.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The camera calibration component’s available parameters and status values are
+for internal use only and may change in the future without further notice. Calibration should
+only be performed through the Web GUI as described above.</p>
+</div>
+</div>
+<div class="section" id="services">
+<h2>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note" id="index-6">
+<p class="first admonition-title">Note</p>
+<p class="last">The camera calibration component’s available service calls are for internal
+use only and may change in the future without further notice. Calibration should only be
+performed through the Web GUI as described above.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="handeye_calibration.html" class="btn btn-neutral float-right" title="Hand-eye calibration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="stereo_ins.html" class="btn btn-neutral" title="Stereo INS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Options</span>
+      en
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Languages</dt>
+        
+          
+          <dd><a href="../de/camera_calibration.html">de</a></dd>
+          
+        
+          
+          <dd><a href="../en/camera_calibration.html">en</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versions</dt>
+          
+            <dd><a href="../../v1.1/index.html">v1.1</a></dd>
+          
+            <dd><a href="../../v1.0/index.html">v1.0</a></dd>
+          
+            <dd><a href="../../v1.3/index.html">v1.3</a></dd>
+          
+            <dd><a href="../../v1.2/index.html">v1.2</a></dd>
+          
+            <dd><a href="../../v1.5/index.html">v1.5</a></dd>
+          
+            <dd><a href="../../v1.4/index.html">v1.4</a></dd>
+          
+            <dd><a href="../../v1.7/index.html">v1.7</a></dd>
+          
+            <dd><a href="../../v1.6/index.html">v1.6</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_manual_de.pdf">PDF (de)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_manual_en.pdf">PDF (en)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.7.0',
+            LANGUAGE:'en',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

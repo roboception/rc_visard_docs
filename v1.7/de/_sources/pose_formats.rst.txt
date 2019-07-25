@@ -1,0 +1,58 @@
+Formate für Posendaten
+
+XYZABC-Format
+
+Das XYZABC-Format wird verwendet, um eine Pose mit sechs Werten
+auszudrücken. XYZ gibt die Positionskoordinaten in Millimetern an. ABC
+sind Eulersche Winkel in Grad. Die für Eulersche Winkel eingesetzte
+Konvention lautet ZYX, d. h. A rotiert um die Z-Achse, B rotiert um
+die Y-Achse und C rotiert um die X-Achse. Die Elemente der Drehmatrix
+lassen sich wie folgt berechnen:
+
+   r_{11} & = \cos{B}\cos{A}, \\ r_{12} & =
+   \sin{C}\sin{B}\cos{A}-\cos{C}\sin{A}, \\ r_{13} & =
+   \cos{C}\sin{B}\cos{A}+\sin{C}\sin{A}, \\ r_{21} & = \cos{B}\sin{A},
+   \\ r_{22} & = \sin{C}\sin{B}\sin{A}+\cos{C}\cos{A}, \\ r_{23} & =
+   \cos{C}\sin{B}\sin{A}-\sin{C}\cos{A}, \\ r_{31} & = -\sin{B}, \\
+   r_{32} & = \sin{C}\cos{B}, \text{and} \\ r_{33} & = \cos{C}\cos{B}.
+   \\
+
+Bemerkung: Es wird davon ausgegangen, dass die trigonometrischen
+  Funktionen \sin und \cos Werte in Grad akzeptieren. Das Argument
+  muss mit dem Faktor \frac{\pi}{180} multipliziert werden, wenn die
+  Funktionen ihre Argumente im Bogenmaß erwarten.
+
+Mithilfe dieser Werte lassen sich die Drehmatrix R und der
+Translationsvektor T wie folgt definieren:
+
+   R = \left(\begin{array}{ccc}   r_{11} & r_{12} & r_{13} \\   r_{21}
+   & r_{22} & r_{23} \\   r_{31} & r_{32} & r_{33} \end{array}\right),
+   \qquad T = \left(\begin{array}{c}   X \\   Y \\   Z
+   \end{array}\right).
+
+Die Transformation lässt sich wie folgt auf einen Punkt P anwenden:
+
+   P' = R P + T.
+
+XYZ+Quaternion-Format
+
+Das XYZ+Quaternion-Format wird verwendet, um eine Position durch
+Positionskoordinaten und eine Einheitsquaternion auszudrücken. XYZ
+gibt die Positionskoordinaten in Metern an. Die Quaternion ist ein
+Vektor der Länge 1, der eine Rotation durch vier Werte definiert, d.
+h. q=(\begin{array}{cccc}a & b & c & w\end{array})^T mit ||q||=1.
+Hierfür lassen sich die Drehmatrix und der Translationsvektor wie
+folgt definieren:
+
+   R = 2 \left(\begin{array}{ccc}   \frac{1}{2} - b^2 - c^2 & a b - c
+   w & a c + b w \\   a b + c w & \frac{1}{2} - a^2 - c^2 & b c - a w
+   \\   a c - b w & b c + a w & \frac{1}{2} - a^2 - b^2
+   \end{array}\right), \qquad T = \left(\begin{array}{c}   X \\   Y \\
+   Z \end{array}\right).
+
+Die Transformation lässt sich wie folgt auf einen Punkt P anwenden:
+
+   P' = R P + T.
+
+Bemerkung: Im XYZ+Quaternion-Format werden die Posendaten in Metern,
+  im XYZABC- Format in Millimetern angegeben.

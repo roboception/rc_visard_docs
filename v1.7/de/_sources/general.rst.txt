@@ -1,0 +1,73 @@
+Überblick
+
+Der 3D-Sensor
+
+rc_visard
+
+ stellt Echtzeit-Kamerabilder und Disparitätsbilder bereit, die auch
+zur Berechnung von Tiefenbildern und 3D-Punktewolken verwendet werden
+können. Zudem erstellt er Konfidenz- und Fehlerbilder, mit denen sich
+die Qualität der Bilderfassung messen lässt. Der Sensor kann sich
+aufgrund von Bild- und Trägheitsdaten selbst lokalisieren. Mit dem
+integrierten SLAM-Modul lässt sich eine mobile Navigationslösung
+umsetzen. Der
+
+rc_visard
+
+, ein Gerät der Schutzklasse IP 54, umfasst eine intuitive Web- und
+eine standardisierte GenICam-Schnittstelle, wodurch er mit allen
+großen Bildverarbeitungsbibliotheken kompatibel ist. Der
+
+rc_visard
+
+ wird in zwei Basisabständen angeboten: Der
+
+rc_visard
+
+ 65 eignet sich ideal für die Montage auf Roboter-Manipulatoren,
+wohingegen der
+
+rc_visard
+
+ 160 als Navigationsgerät oder extern befestigter Sensor eingesetzt
+werden kann. Dank der intuitiven Kalibrierung, Konfiguration und
+Bedienung ist der
+
+rc_visard
+
+ für jedermann der ideale 3D-Sensor.
+
+
+Werden im vorliegenden Handbuch die Begriffe "Sensor",  "
+
+rc_visard
+
+ 65" und "
+
+rc_visard
+
+ 160" verwendet, so beziehen sich diese auf die von Roboception
+angebotene
+
+rc_visard
+
+-Produktfamilie an selbstregistrierenden Kameras. Die Installation und
+Steuerung all dieser Sensoren sind absolut identisch. Zudem verwenden
+alle den gleichen Montagesockel.
+
+Bemerkung: Sofern nicht anders angegeben, gelten die in diesem
+  Handbuch enthaltenen Informationen für beide Versionen des
+  Roboception- Sensors, d. h. für den
+
+  rc_visard
+
+   65 und den
+
+  rc_visard
+
+   160.
+
+Bemerkung: Das vorliegende Handbuch nutzt das metrische System und
+  verwendet vorrangig die Maßeinheiten Meter und Millimeter. Sofern
+  nicht anders angegeben, sind Abmessungen in technischen Zeichnungen
+  in Millimetern angegeben.

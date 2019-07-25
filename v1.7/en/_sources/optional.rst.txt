@@ -1,0 +1,38 @@
+Optional software components
+
+The
+
+rc_visard
+
+ offers optional software components that can be activated by
+purchasing a separate
+
+license
+
+.
+
+The
+
+rc_visard
+
+'s optional software consists of the following components:
+
+SLAM (rc_slam, Section \ref{slam:sect-slam})  performs simultaneous
+localization and mapping for correcting accumulated poses. The
+rc_visard's covered trajectory is offered via the REST-API
+interface\:(Section \ref{rest_api:sect-rest-api}).
+
+IO and Projector Control (rc_iocontrol, Section \ref{iocontrol:sect-
+iocontrol})  provides control over the general purpose inputs and
+outputs with special modes for controlling an external random dot
+projector.
+
+TagDetect (rc_april_tag_detect and rc_qr_code_detect, Section
+\ref{tagdetect:sect-tag-detection})  allows the detection of AprilTags
+and QR codes, as well as the estimation of their poses.
+
+ItemPick and BoxPick (rc_itempick and rc_boxpick, Section
+\ref{itempick:sect-itempick})  provides an out-of-the-box perception
+solution for robotic pick-and-place applications of unknown objects or
+boxes.
+

@@ -1,0 +1,514 @@
+Stereo-Matching
+
+Das Stereo-Matching-Modul berechnet auf Grundlage des rektifizierten
+Stereobildpaars Disparitäts-, Fehler- und Konfidenzbilder.
+
+Berechnung von Disparitätsbildern
+
+Nach der Rektifizierung haben das linke und das rechte Kamerabild die
+Eigenschaft, dass ein Objektpunkt in beiden Bildern auf die gleiche
+Pixelreihe projiziert wird. Die Pixelspalte des Objektpunkts ist im
+rechten Bild maximal so groß wie die Pixelspalte des Objektpunks im
+linken Bild. Der Begriff Disparität bezeichnet den Unterschied
+zwischen den Pixelspalten im rechten und linken Bild und gibt die
+Tiefe des Objektpunkts, d. h. dessen Abstand zum
+
+rc_visard
+
+ an. Das Disparitätsbild speichert die Disparitätswerte aller Pixel
+des linken Kamerabilds.
+
+Je größer die Disparität, desto näher liegt der Objektpunkt. Beträgt
+die Disparität 0, bedeutet dies, dass die Projektionen des
+Objektpunkts in der gleichen Bildspalte liegen und der Objektpunkt
+sich in unendlicher Distanz befindet. Häufig gibt es Pixel, für welche
+die Disparität nicht bestimmt werden kann. Dies ist der Fall bei
+Verdeckungen auf der linken Seite von Objekten, da diese Bereiche von
+der rechten Kamera nicht eingesehen werden können. Zudem lässt sich
+die Disparität auch bei texturlosen Bereichen nicht bestimmen. Pixel,
+für welche die Disparität nicht bestimmt werden kann, werden mit dem
+besonderen Disparitätswert 0 als ungültig markiert. Um zwischen
+ungültigen Disparitätsmessungen und Messungen, bei denen die
+Disparität aufgrund der unendlich weit entfernten Objekte 0 beträgt,
+unterscheiden zu können, wird der Disparitätswert für den
+letztgenannten Fall auf den kleinstmöglichen Disparitätswert über 0
+gesetzt.
+
+Um Disparitätswerte zu berechnen, muss der Stereo-Matching-Algorithmus
+die zugehörigen Objektpunkte im linken und rechten Kamerabild finden.
+Diese Punkte stellen jeweils den gleichen Objektpunkt in der Szene
+dar. Für das Stereo-Matching nutzt der
+
+rc_visard
+
+
+SGM
+
+ (
+
+Semi-Global Matching
+
+). Dieser Algorithmus zeichnet sich durch eine kurze Laufzeit aus und
+bietet, insbesondere an Objekträndern, bei feinen Strukturen und in
+schwach texturierten Bereichen, eine hohe Genauigkeit.
+
+Unabhängig vom eingesetzten Verfahren ist es beim Stereo-Matching
+wichtig, dass das Bild über eine gewisse Textur verfügt, durch Muster
+oder Oberflächenstrukturen. Bei einer gänzlich untexturierten Szene,
+wie einer weißen Wand ohne jede Struktur, können Disparitätswerte
+entweder nicht berechnet werden oder aber die Ergebnisse sind
+fehlerhaft oder von geringer Konfidenz (siehe
+
+Konfidenz- und Fehlerbilder
+
+). Bei der Textur in der Szene sollte es sich nicht um ein
+künstliches, regelmäßig wiederkehrendes Muster handeln, da diese
+Strukturen zu Mehrdeutigkeiten und damit zu falschen
+Disparitätsmessungen führen können.
+
+Wird der
+
+rc_visard
+
+ in untexturierten Umgebungen eingesetzt, lässt sich mithilfe eines
+externen Musterprojektors eine statische künstliche Struktur auf die
+Szene projizieren. Dieses projizierte Muster sollte zufällig sein und
+keine wiederkehrenden Strukturen enthalten.
+
+Berechnung von Tiefenbildern und Punktwolken
+
+Die folgenden Gleichungen zeigen, wie sich die tatsächlichen 3D-
+Koordinaten P_x, P_y, P_z eines Objektpunkts im
+
+Sensor-Koordinatensystem
+
+ aus den Pixelkoordinaten p_{x}, p_{y} des Disparitätsbilds und dem
+Disparitätswert d in Pixeln berechnen lassen:
+
+   P_x&=\frac{p_x \cdot t}{d}\\ P_y&=\frac{p_y \cdot t}{d}\\
+   P_z&=\frac{f \cdot t}{d},
+
+wobei f die Brennweite nach der Rektifizierung (in Pixeln) und t der
+während der Kalibrierung ermittelte Stereo-Basisabstand (in Metern)
+ist. Diese Werte werden auch über die GenICam-Schnittstelle zur
+Verfügung gestellt (siehe
+
+Besondere Parameter der GenICam-Schnittstelle des rc_visard
+
+).
+
+Bemerkung: Der
+
+  rc_visard
+
+   stellt über seine verschiedenen Schnittstellen einen
+  Brennweitenfaktor bereit. Er bezieht sich auf die Bildbreite, um
+  verschiedene Bildauflösungen zu unterstützen. Die Brennweite f in
+  Pixeln lässt sich leicht bestimmen, indem der Brennweitenfaktor mit
+  der Bildbreite (in Pixeln) multipliziert wird.
+
+Es ist zu beachten Sie, dass für Gleichungen
+
+(1)
+
+ davon ausgegangen wird, dass das Bildkoordinatensystem in der
+Bildmitte zentriert ist. In der folgenden Abbildung ist die Definition
+des Bildkoordinatensystems dargestellt.
+
+
+Die gleichen Formeln, aber mit den entsprechenden GenICam Parametern
+sind in
+
+Umwandlung von Bild-Streams
+
+ angegeben.
+
+Die Gesamtheit aller aus dem Disparitätsbild errechneten Objektpunkte
+ergibt eine Punktwolke, die für 3D-Modellierungsanwendungen verwendet
+werden kann. Das Disparitätsbild kann in ein Tiefenbild umgewandelt
+werden, indem der Disparitätswert jedes Pixels durch den Wert P_z
+ersetzt wird.
+
+Bemerkung: Auf der Homepage von Roboception (
+
+  http://www.roboception.com/download
+
+  ) stehen Software und Beispiele zur Verfügung, um Disparitätsbilder
+  welche über GigE Vision vom
+
+  rc_visard
+
+   empfangen werden, in Tiefenbilder und Punktwolken umzuwandeln.
+
+Konfidenz- und Fehlerbilder
+
+Für jedes Disparitätsbild erstellt der
+
+rc_visard
+
+ ein Fehler- und ein Konfidenzbild, um die Unsicherheit jedes
+einzelnen Disparitätswerts anzugeben. Fehler- und Konfidenzbilder
+besitzen die gleiche Auflösung und Bildwiederholrate wie das
+Disparitätsbild. Im Fehlerbild ist der Disparitätsfehler d_{eps} in
+Pixeln angegeben; er bezieht sich auf den Disparitätswert an der
+gleichen Bildkoordinate im Disparitätsbild. Das Konfidenzbild gibt den
+entsprechenden Konfidenzwert c zwischen 0 und 1 an. Die Konfidenz gibt
+an, wie wahrscheinlich es ist, dass der wahre Disparitätswert
+innerhalb des Intervalls des dreifachen Fehlers um die gemessene
+Disparität d liegt , d. h. [d-3d_{eps}, d+3d_{eps}]. So lässt sich das
+Disparitätsbild mit Fehler- und Konfidenzwerten in Anwendungen
+einsetzen, für die probabilistische Folgerungen nötig sind. Die
+Konfidenz- und Fehlerwerte für eine ungültige Disparitätsmessung
+betragen 0.
+
+Der Disparitätsfehler d_{eps} (in Pixeln) lässt sich mithilfe der
+Brennweite f (in Pixeln), des Basisabstands t (in Metern) und des
+Disparitätswerts d (in Pixeln) desselben Pixels im Disparitätsbild in
+einen Tiefenfehler z_{eps} (in Metern) umrechnen:
+
+   z_{eps}=\frac{d_{eps}\cdot f\cdot t}{d^2}.
+
+Durch Kombination der Gleichungen
+
+(1)
+
+ und
+
+(2)
+
+ kann der Tiefenfehler zur Tiefe in Bezug gebracht werden:
+
+   z_{eps}=\frac{d_{eps}\cdot{P_z}^2}{f\cdot t}.
+
+Unter Berücksichtigung der Brennweite und Basisabstände beider
+
+rc_visard
+
+-Modelle sowie des typischen Disparitätsfehlers d_{eps} von 0,5 Pixeln
+lässt sich der Tiefenfehler wie folgt grafisch darstellen:
+
+
+Der
+
+rc_visard
+
+ stellt über die GenICam-Schnittstelle zeitgestempelte Disparitäts-,
+Fehler- und Konfidenzbilder zur Verfügung (siehe
+
+Chunk Daten
+
+). Live-Streams in geringerer Qualität werden in der
+
+Web GUI
+
+ bereitgestellt.
+
+Parameter
+
+Das Stereo-Matching-Modul wird in der REST-API als "rc_stereomatching"
+bezeichnet und in der
+
+Web GUI
+
+ auf der Registerkarte
+
+Tiefenbild
+
+ dargestellt. Der Benutzer kann die Stereo-Matching-Parameter entweder
+dort oder über die REST-API (
+
+REST-API-Schnittstelle
+
+) oder über GigE Vision (
+
+GigE Vision 2.0/GenICam-Schnittstelle
+
+) ändern.
+
+Übersicht über die Parameter
+
+Dieses Softwaremodul bietet folgende Laufzeitparameter.
+
+Laufzeitparameter des rc_stereomatching-Moduls              Name  Typ
+Min.  Max.  Default  Beschreibung  acquisition_mode  string  -  -
+Continuous  S(ingleFrame) oder C(ontinuous)  disprange  int32  32  512
+256  Disparitätsbereich in Pixeln  fill  int32  0  4  3
+Disparitätstoleranz (für das Füllen von Löchern) in Pixeln  maxdepth
+float64  0.1  100.0  100.0  Maximale Tiefe in Metern  maxdeptherr
+float64  0.01  100.0  100.0  Maximaler Tiefenfehler in Metern  median
+int32  1  5  1  Größe des Medianfilter-Fensters in Pixeln  minconf
+float64  0.5  1.0  0.5  Mindestkonfidenz  mindepth  float64  0.1
+100.0  0.1  Minimaler Abstand in Metern  quality  string  -  -  High
+F(ull), H(igh), M(edium), oder L(ow). Full benötigt eine 'stereo_plus'
+Lizenz.  seg  int32  0  4000  200  Mindestgröße der gültigen
+Disparitätssegmente in Pixeln  smooth  bool  False  True  True
+Glättung von Disparitätsbildern (benötigt eine 'stereo_plus' Lizenz)
+static_scene  bool  False  True  False  Mitteln von Bildern in
+statischen Szenen um Rauschen zu reduzieren.
+
+Dieses Modul meldet folgende Statuswerte:
+
+Statuswerte des rc_stereomatching-Moduls      Name  Beschreibung  fps
+Tatsächliche Bildwiederholrate der Disparitäts-, Fehler- und
+Konfidenzbilder. Dieser Wert wird unter der Bildvorschau in der Web
+GUI als Bildwiederholrate (Hz) angezeigt.  time_matching  Zeit in
+Sekunden für die Durchführung des Stereo-Matchings mittels SGM auf der
+GPU  time_postprocessing  Zeit in Sekunden für die Nachbearbeitung des
+Matching-Ergebnisses auf der CPU
+
+Da das SGM-Stereo-Matching-Verfahren und die Nachbearbeitung parallel
+ablaufen, entspricht die Gesamtverarbeitungszeit dieses Moduls dem
+Höchstwert aus "time_matching" und "time_postprocessing". Diese Zeit
+wird unter der Bildvorschau in der Web GUI als
+
+Verarbeitungszeit (s)
+
+ angezeigt.
+
+Beschreibung der Laufzeitparameter
+
+Jeder Laufzeitparameter ist durch eine eigene Zeile auf der
+Registerkarte
+
+Tiefenbild
+
+ der Web GUI repräsentiert. Der Web GUI-Name des Parameters ist in
+Klammern hinter dem Namen des Parameters angegeben und die Parameter
+werden in der Reihenfolge, in der sie in der Web GUI erscheinen,
+aufgelistet:
+
+
+"acquisition_mode" (
+Aufnahmemodus
+
+)
+   Der Aufnahmemodus kann auf *Continuous* oder *SingleFrame*
+   eingestellt werden. *Continuous* ist die Standardeinstellung bei
+   der das Stereomatching kontinuierlich mit der vom Benutzer
+   eingestellten Bildwiederholrate, entsprechend der verfügbaren
+   Rechenresourcen, durchgeführt wird. Bei *SingleFrame* wird das
+   Stereomatching bei jedem Drücken des
+
+   Aufnehmen
+
+    Knopfes durchgeführt.
+
+"quality" (
+Qualität
+
+)
+   Disparitätsbilder lassen sich in verschiedenen Auflösungen
+   berechnen: Hoch (640 x 480 Pixel), Mittel (320 x 240 Pixel) und
+   Niedrig (214 x 160 Pixel). Je niedriger die Auflösung, desto höher
+   die Bildwiederholrate des Disparitätsbilds. Eine Bildwiederholrate
+   von 25 Hz lässt sich nur bei niedriger Auflösung erreichen. Es ist
+   zu beachten, dass die Bildwiederholrate der Disparitäts-,
+   Konfidenz- und Fehlerbilder immer höchstens der Bildwiederholrate
+   der Kamera entspricht.
+
+   Zusätzlich steht mit der StereoPlus Lizenz das Stereomatching mit
+   der vollen Auflösung von 1280 x 960 Pixeln zur Verfügung. Bei
+   voller Auflösung wird der Disparitätsbereich intern auf 128
+   beschränkt, aufgrund von on-board Speicherlimitierungen. Aus diesem
+   Grund ist es auch nicht empfohlen bei voller Auflösung gleichzeitig
+   das
+
+   SLAM
+
+    Modul zu verwenden.
+
+"static_scene" (
+Statisch
+
+)
+   Mit dieser Option werden 8 aufeinander folgende Kamerabilder vor
+   dem Matching gemittelt. Dies reduziert Rauschen, was die Qualität
+   des Stereomatching Resultats verbessert. Der Zeitstempel des ersten
+   Bildes wird als Zeitstempel für das Disparitätsbild verwendet.
+   Diese Option betrifft nur das Matching in voller und hoher
+   Qualität. Es darf nur verwendet werden wenn die Szene sich während
+   der Aufnahme der 8 Bilder nicht verändert.
+
+"disprange" (
+Disparitätsbereich
+
+)
+   Der Disparitätsbereich geht immer von 0 bis zum maximalen
+   Disparitätswert, den ein Pixel in einem Disparitätsbild annehmen
+   kann. Wird der Disparitätsbereich erhöht, wird der messbare
+   Mindestabstand kleiner, da größere Disparitätswerte mit geringeren
+   Messabständen einhergehen. Der Disparitätsbereich ist in Pixeln
+   angegeben und kann auf einen Wert zwischen 32 und 512 Pixeln
+   eingestellt werden. Da mit einem größeren Disparitätsbereich auch
+   der Bereich für die Suche nach dem passenden Pixel im rechten
+   rektifizierten Bild wächst, führt ein größerer Disparitätsbereich
+   zu einer längeren Verarbeitungszeit und einer geringeren
+   Bildwiederholrate. Der Wert des Disparitätsbereichs bezieht sich
+   auf ein hochauflösendes Disparitätsbild (640 x 480 Pixel) und muss
+   nicht skaliert werden, wenn eine niedrigere Auflösung gewählt wird.
+   So gibt der Disparitätsbereich für jede Auflösungsoption den
+   gleichen Mindestabstand an.
+
+   Bei voller Qualität wird der Disparitätsbereich intern auf 128
+   beschränkt, aufgrund von on-board Speicherlimitierungen.
+
+"smooth" (
+Glättung
+
+)
+   Diese Option aktiviert die Glättung von Disparitätswerten. Sie ist
+   nur mit gültiger StereoPlus Lizenz verfügbar.
+
+"fill" (
+Füllen
+
+)
+   Diese Option wird verwendet, um Löcher im Disparitätsbild durch
+   Interpolation einer Ebene zu füllen. Dabei werden lediglich Löcher,
+   die kleiner als die Segmentierungsgröße (siehe unten) sind, für die
+   Interpolation ausgewählt. Der Füllwert gibt die maximale
+   Disparitätsabweichung an, die ein Rand-Pixel von der
+   Interpolationsebene haben darf. Nur wenn alle Rand-Pixel um weniger
+   als den Füllwert von der Ebene abweichen, wird ein Loch gefüllt.
+   Größere Füllwerte verringern die Anzahl an Löchern, aber die
+   interpolierten Werte können größere Fehler aufweisen. Die Konfidenz
+   für die interpolierten Pixel wird auf einen geringen Wert von 0,5
+   eingestellt. Deren Fehler ist auf die mittlere Abweichung der Loch-
+   Randpixel von der Interpolationsebene eingestellt. Das Auffüllen
+   lässt sich deaktivieren, wenn der Wert auf 0 gesetzt wird.
+
+"seg" (
+Segmentierung
+
+)
+   Der Segmentierungsparameter wird verwendet, um die Mindestanzahl an
+   Pixeln anzugeben, die eine zusammenhängende Disparitätsregion im
+   Disparitätsbild ausfüllen muss. Isolierte Regionen, die kleiner
+   sind, werden im Disparitätsbild auf ungültig gesetzt. Der Wert
+   bezieht sich immer auf ein Disparitätsbild mit hoher Qualität mit
+   der Auflösung 640 x 480 Pixeln und muss nicht verändert werden wenn
+   andere Qualitäten gewählt werden. Die Segmentierung eignet sich, um
+   Disparitätsfehler zu entfernen. Bei größeren Werten kann es jedoch
+   vorkommen, dass real vorhandene Objekte entfernt werden.
+
+"median" (
+Median
+
+)
+   Dieser Wert bestimmt die Seitenlänge der Filterregion (in Pixeln)
+   für den Medianfilter, der das Disparitätsbild glättet. Größere
+   Werte führen zu einer Überglättung und beanspruchen mehr
+   Bearbeitungszeit. Der Medianfilter lässt sich effektiv abschalten,
+   wenn das Filterfenster auf die Größe 1 gesetzt wird.
+
+"minconf" (
+Minimale Konfidenz
+
+)
+   Die Mindestkonfidenz lässt sich einstellen, um potenziell falsche
+   Disparitätsmessungen herauszufiltern. Dabei werden alle Pixel,
+   deren Konfidenz unter dem gewählten Wert liegt, im Disparitätsbild
+   auf „ungültig“ gesetzt.
+
+"maxdeptherr" (
+Maximaler Fehler
+
+)
+   Der maximale Tiefenfehler wird verwendet, um Messungen, die zu
+   ungenau sind, herauszufiltern. Alle Pixel mit einem Tiefenfehler,
+   der den gewählten Wert überschreitet, werden im Disparitätsbild auf
+   „ungültig“ gesetzt. Der maximale Tiefenfehler wird in Metern
+   angegeben. Der Tiefenfehler wächst in der Regel quadratisch mit dem
+   Abstand eines Objekts vom Sensor (siehe
+
+   Konfidenz- und Fehlerbilder
+
+   ).
+
+"mindepth" (
+Minimaler Abstand
+
+)
+   Der Mindestabstand bezeichnet den geringsten Abstand vom Sensor, ab
+   dem Messungen möglich sind. Größere Werte verringern implizit den
+   Disparitätsbereich, wodurch sich auch die Rechenzeit verkürzt. Der
+   Mindestabstand wird in Metern angegeben.
+
+"maxdepth" (
+Maximaler Abstand
+
+)
+   Der Höchstabstand ist der größte Abstand vom Sensor, bis zu dem
+   Messungen möglich sind. Pixel mit größeren Distanzwerten werden auf
+   „ungültig“ gesetzt. Wird dieser Wert auf das Maximum gesetzt, so
+   sind Werte bis zur Unendlichkeit möglich. Der Höchstabstand wird in
+   Metern angegeben.
+
+Die gleichen Parameter sind – mit leicht abweichenden Namen und
+teilweise mit anderen Einheiten oder Datentypen – auch über die
+GenICam-Schnittstelle verfügbar (siehe
+
+GigE Vision 2.0/GenICam-Schnittstelle
+
+).
+
+Services
+
+Das Stereo-Matching-Modul bietet folgende Services, um
+Parametereinstellungen zu speichern bzw. wiederherzustellen.
+
+"acquisition_trigger"
+   Der Aufruf signalisiert dem Modul das Stereomatching auf den
+   nächsten Stereobildern durchzuführen, falls "acquisition_mode" auf
+   *SingleFrame* eingestellt ist. Es wird ein Fehler zurückgegeben
+   falls "acquisition_mode" auf *Continuous* eingestellt ist.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert die folgenden Rückgabewerte:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+   Mögliche Rückgabewerte sind in der Tabelle unten aufgeführt.
+
+   Mögliche Rückgabewerte des acquisition_trigger Serviceaufrufs.
+   Code  Beschreibung  0  Erfolgreich  -8  Triggern ist nur im Modus
+   SingleFrame möglich.  101  Triggern wird ignoriert, da bereits ein
+   anderer Triggeraufruf stattfindet.  102  Triggern wird ignoriert,
+   da es keine Empfänger registriert sind.
+
+"save_parameters" (
+Speichern
+
+)
+   Beim Aufruf dieses Services werden die aktuellen
+   Parametereinstellungen des Stereo-Matching-Moduls auf dem
+
+   rc_visard
+
+    gespeichert. Das bedeutet, dass diese Werte selbst nach einem
+   Neustart angewandt werden.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert keine Rückgabewerte.
+
+"reset_defaults" (
+Zurücksetzen
+
+)
+   Hiermit werden die Werkseinstellungen der Parameter dieses Moduls
+   wiederhergestellt und angewandt ("factory reset").
+
+   Warnung: Der Benutzer muss bedenken, dass beim Aufruf dieses
+     Services die aktuellen Parametereinstellungen für das Stereo-
+     Matching-Modul unwiderruflich verloren gehen.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert keine Rückgabewerte.

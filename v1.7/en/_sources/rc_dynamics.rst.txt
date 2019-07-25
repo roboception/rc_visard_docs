@@ -1,0 +1,183 @@
+The rc_dynamics interface
+
+The rc_dynamics interface offers continuous, real-time data-stream
+access to
+
+rc_visard
+
+'s several
+
+dynamic state estimates
+
+ as continuous, real-time data streams. It allows state estimates of
+all offered types to be configured to be streamed to any host in the
+network. The
+
+Data-stream protocol
+
+ used is agnostic vis-à-vis operating system and programming language.
+
+Starting/stopping dynamic-state estimation
+
+The
+
+rc_visard
+
+'s dynamic-state estimates are only available if the respective
+component, i.e., the
+
+sensor dynamics component
+
+, is turned on. This can be done either in the Web GUI - a respective
+switch is offered in the
+
+Dynamics
+
+ tab - or via the REST-API by using the component's service calls. A
+sample curl request to start dynamic-state estimation would look like:
+
+   curl -X PUT --header 'Content-Type: application/json' -d '{}' 'http://<rcvisard>/api/v1/nodes/rc_dynamics/services/start'
+
+Note: To save computational resources, it is recommended to stop
+  dynamic- state estimation when not needed any longer.
+
+Configuring data streams
+
+Availabe data streams, i.e., dynamic-state estimates, can be listed
+and configured by the
+
+rc_visard
+
+'s
+
+REST-API
+
+, e.g., a list of all available data streams can be requested with
+
+GET /datastreams
+
+. For a detailed description of the following data streams, please
+refer to
+
+Available state estimates
+
+.
+
+Available data streams via the rc_dynamics interface          Name
+Protocol  Protobuf  Description  dynamics  UDP  Dynamics  Dynamics of
+sensor (pose, velocity, acceleration) from INS or SLAM (best effort
+depending on availability) at realtime frequency (IMU rate)
+dynamics_ins  UDP  Dynamics  Dynamics of sensor (pose, velocity,
+acceleration) from stereo INS at realtime frequency (IMU rate)  pose
+UDP  Frame  Pose of left camera from INS or SLAM (best effort
+depending on availability) at maximum camera frequency (fps)  pose_rt
+UDP  Frame  Pose of left camera from INS or SLAM (best effort
+depending on availability) at realtime frequency (IMU rate)  pose_ins
+UDP  Frame  Pose of left camera from stereo INS at maximum camera
+frequency (fps)  pose_rt_ins  UDP  Frame  Pose of left camera from
+stereo INS at realtime frequency (IMU rate)  imu  UDP  Imu  Raw IMU
+(Inertial Measurement Unit) values at realtime frequency (IMU rate)
+
+The general procedure for working with the rc_dynamics interface is
+the following:
+
+Request a data stream via REST-API.  The following sample curl command
+issues a PUT /datastreams/{stream} request to initiate a stream of
+type pose_rt from the rc_visard to client host 10.0.1.14 at port
+30000:  curl -X PUT --header 'Content-Type: application/x-www-form-
+urlencoded' --header 'Accept: application/json' -d
+'destination=10.0.1.14:30000'
+'http://<rcvisard>/api/v1/datastreams/pose_rt'
+
+Receive and deserialize data.  With a successful request, the stream
+is initiated and data of the specified stream type is continuously
+sent to the client host. According to the Data-stream
+protocol\:(Section \ref{rc_dynamics:sect-datastream-protocol}), the
+client needs to receive, deserialize and process the data.
+
+Stop a requested data stream via REST-API.  The following sample curl
+command issues a DELETE /datastreams/{stream} request to delete, i.e.,
+stop, the previously requested stream of type pose_rt with destination
+10.0.1.14:30000:  curl -X DELETE --header 'Accept: application/json' 
+'http://<rcvisard>/api/v1/datastreams/pose_rt?destination=10.0.1.14:3
+0000'  To remove all destinations for a stream, simply omit the
+destination parameter.
+
+Warning: Data streams can not be deleted automatically, i.e., the
+
+  rc_visard
+
+   keeps streaming data even if the client-side is disconnected or has
+  stopped consuming the sent datagrams. A maximum of 10 destinations
+  per stream are allowed. It is therefore strongly recommended to stop
+  data streams via the REST-API when they are or no longer used.
+
+Data-stream protocol
+
+Once a data stream is established, data is continuously sent to the
+specified client host and port ("destination") via the following
+protocol:
+
+Network protocol:
+   The only currently supported network protocol is
+
+   UDP
+
+   , i.e., data is sent as UDP datagrams.
+
+Data serialization:
+   The data being sent is serialized via
+
+   Google protocol buffers
+
+   . The following message type definitions are used.
+
+   The camera-pose streams and real-time camera-pose streams\:(Section
+   \ref{dynamics:sect-datastream-pose-rt}) are serialized using the
+   Frame message type:  message Frame {   optional PoseStamped pose  =
+   1;   optional string parent     = 2; // Name of the parent frame
+   optional string name       = 3; // Name of the frame }
+
+   The real-time dynamics stream\:(Section \ref{dynamics:sect-
+   datastream-dynamics}) is serialized using the Dynamics message
+   type:  message Dynamics {   optional Time timestamp
+   = 1; // Time when the data was captured   optional Pose pose
+   = 2;   optional string pose_frame                  = 3; // Name of
+   the frame that the pose is given in   optional Vector3d
+   linear_velocity           = 4; // Linear velocity in m/s   optional
+   string linear_velocity_frame       = 5; // Name of the frame that
+   the linear_velocity is given in   optional Vector3d
+   angular_velocity          = 6; // Angular velocity in rad/s
+   optional string angular_velocity_frame      = 7; // Name of the
+   frame that the angular_velocity is given in   optional Vector3d
+   linear_acceleration       = 8; // Gravity compensated linear
+   acceleration in m/s²   optional string linear_acceleration_frame
+   = 9; // Name of the frame that the acceleration is given in
+   repeated double covariance                  = 10 [packed=true]; //
+   Row-major representation of the 15x15 covariance matrix   optional
+   Frame cam2imu_transform            = 11; // pose of the left camera
+   wrt. the IMU frame   optional bool possible_jump                 =
+   12; // True if there possibly was a jump in the pose estimation }
+
+   The IMU stream\:(Section \ref{dynamics:sect-datastream-imu}) is
+   serialized using the Imu message type:  message Imu {   optional
+   Time timestamp                     = 1; // Time when the data was
+   captured   optional Vector3d linear_acceleration       = 2; //
+   Linear acceleration in m/s² measured by the IMU   optional Vector3d
+   angular_velocity          = 3; // Angular velocity in rad/s
+   measured by the IMU }
+
+   The nested types PoseStamped, Pose, Time,  Quaternion, and Vector3D
+   are defined as follows:  message PoseStamped {   optional Time
+   timestamp  = 1; // Time when the data was captured   optional Pose
+   pose       = 2; }   message Pose {   optional Vector3d position
+   = 1; // Position in meters   optional Quaternion orientation = 2;
+   // Orientation as unit quaternion   repeated double covariance
+   = 3 [packed=true]; // Row-major representation of the 6x6
+   covariance matrix (x, y, z, rotation about X axis, rotation about Y
+   axis, rotation about Z axis) }   message Time {   /// \brief
+   Seconds   optional int64 sec = 1;    /// \brief Nanoseconds
+   optional int32 nsec = 2; }   message Quaternion {   optional double
+   x = 2;   optional double y = 3;   optional double z = 4;   optional
+   double w = 5; }   message Vector3d {   optional double x = 1;
+   optional double y = 2;   optional double z = 3; }
