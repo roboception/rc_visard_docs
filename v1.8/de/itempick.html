@@ -1,0 +1,1867 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="de" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ItemPick und BoxPick &mdash; rc_visard 1.8.1
+ Dokumentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Stichwortverzeichnis"
+              href="genindex.html"/>
+        <link rel="search" title="Suche" href="search.html"/>
+    <link rel="top" title="rc_visard 1.8.1
+ Dokumentation" href="index.html"/>
+        <link rel="up" title="Optionale Softwaremodule" href="optional.html"/>
+        <link rel="next" title="SilhouetteMatch" href="silhouettematch.html"/>
+        <link rel="prev" title="TagDetect" href="tagdetect.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.8
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Suche" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Einführung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Überblick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Garantie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Schnittstellen, Zulassungen und Normen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Zulassungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Normen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Sicherheit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">Allgemeine Sicherheitshinweise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Bestimmungsgemäße Verwendung</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware-Spezifikation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Lieferumfang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technische Spezifikation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Umwelt- und Betriebsbedingungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Spezifikationen für die Stromversorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Verkabelung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanische Schnittstelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Koordinatensysteme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-and-configuration">Installation und Konfiguration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Einschalten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Netzwerkkonfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatische Konfiguration (werkseitige Voreinstellung)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manuelle Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rcvisard-devices">Aufspüren von <em>rc_visard</em>-Geräten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Zurücksetzen der Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#web-gui">Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Der <em>rc_visard</em> auf einen Blick</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#stereo-vision">Stereovision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#sensor-dynamics">Sensordynamik</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#calibration-relative-to-a-robot">Kalibrierung zu einem Roboter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="components.html">Softwaremodule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stereo_camera.html">Stereokamera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#image-acquisition">Bilderfassung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#planar-rectification">Planare Rektifizierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_matching.html">Stereo-Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Berechnung von Disparitätsbildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Berechnung von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Konfidenz- und Fehlerbilder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dynamics.html">Sensordynamik</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#coordinate-frames-for-state-estimation">Koordinatensysteme für die Zustandsschätzung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#available-state-estimates">Verfügbare Zustandsschätzungen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#camera-pose-streams-pose-and-pose-ins">Kameraposen-Datenströme (<code class="docutils literal notranslate"><span class="pre">pose</span></code> und <code class="docutils literal notranslate"><span class="pre">pose_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-camera-pose-streams-pose-rt-and-pose-rt-ins">Echtzeit-Datenströme der Kamerapose (<code class="docutils literal notranslate"><span class="pre">pose_rt</span></code> und <code class="docutils literal notranslate"><span class="pre">pose_rt_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-dynamics-streams-dynamics-and-dynamics-ins">Echtzeit-Dynamik-Datenströme (<code class="docutils literal notranslate"><span class="pre">dynamics</span></code> und <code class="docutils literal notranslate"><span class="pre">dynamics_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#imu-data-stream-imu">IMU-Datenstrom (<code class="docutils literal notranslate"><span class="pre">imu</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_visodo.html">Visuelle Odometrie</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_ins.html">Stereo-INS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#parameters">Parameter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="camera_calibration.html">Kamerakalibrierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#calibration-process">Kalibriervorgang</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-1-calibration-settings">Schritt&nbsp;1: Einstellung der Kalibrierparameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-2-verify-calibration">Schritt&nbsp;2: Kalibrierung überprüfen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-3-performing-calibration">Schritt&nbsp;3: Durchführung der Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-4-storing-the-calibration-result">Schritt&nbsp;4: Kalibrierergebnis speichern</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="handeye_calibration.html">Hand-Auge-Kalibrierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Kalibrierschnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#sensor-mounting">Sensormontage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Kalibrierroutine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-1-setting-parameters">Schritt&nbsp;1: Einstellung der Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-2-selecting-and-reporting-robot-calibration-positions">Schritt&nbsp;2: Auswahl und Übertragung der Kalibrierpositionen des Roboters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-3-calculating-and-saving-the-calibration-transformation">Schritt&nbsp;3: Berechnen und Speichern der Kalibriertransformation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="optional.html">Optionale Softwaremodule</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="slam.html">SLAM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#usage">Verwendung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#memory-limitations">Speicherbeschränkungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#parameter-overview">Übersicht über die Parameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iocontrol.html">IO und Projektor-Kontrolle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#introduction">Einführung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#qr-code">QR-Code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#apriltag">AprilTag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#comparison">Vergleich</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-reading">Markererkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#pose-estimation">Posenschätzung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-re-identification">Marker-Wiedererkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#interfaces">Schnittstellen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters-and-status-values">Parameter und Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ItemPick und BoxPick</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Einführung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-types">Datentypen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load-carrier">Load Carrier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#suction-grasp">Greifpunkt für Vakuum-Greifsysteme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#item-model">Objektmodell</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#interaction-with-other-components">Wechselwirkung mit anderen Modulen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#stereo-camera-and-stereo-matching">Stereokamera und Stereo-Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sensor-dynamics">Sensordynamik</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#io-and-projector-control">IO und Projektor-Kontrolle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters-and-status-values">Parameter und Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#introduction">Einführung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#suitable-objects">Taugliche Objekte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#suitable-scene">Taugliche Szene</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Kalibrierung der Basisebene</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#apriltag-based-base-plane-calibration">AprilTag-basierte Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#stereo-based-base-plane-calibration">Stereo-basierte Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#manual-base-plane-calibration">Manuelle Kalibrierung der Basisebene</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setzen einer Region of Interest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#interaction-with-other-components">Wechselwirkung mit anderen Modulen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#stereo-camera-and-stereo-matching">Stereokamera und Stereo-Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#io-and-projector-control">IO und Projektor-Kontrolle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#parameters-and-status-values">Parameter und Statuswerte</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#services">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#template-upload">Template Upload</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Schnittstellen</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-visard">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard</em></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#chunk-data">Chunk Daten</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#general-api-structure">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#nodes-parameters-and-services">Module, Parameter und Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#datastreams">Datenströme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#system-and-logs">System und Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#data-type-definitions">Datentyp-Definitionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#swagger-ui">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rc_dynamics.html">Die rc_dynamics-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#starting-stopping-dynamic-state-estimation">Starten/Stoppen der Dynamik-Zustandsschätzungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#configuring-data-streams">Konfiguration von Datenströmen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#data-stream-protocol">Datenstromprotokoll</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Konfiguration der Ethernet-Verbindung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Allgemeine XML-Struktur</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Rückgabecode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Anfrage-XML-Struktur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Antwort-XML-Struktur</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI-XML-Konfigurationsdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Wartung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcvisard">Neustart des <em>rc_visard</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Anschlussset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Verkabelung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet-Anschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Stromanschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Netzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Ersatzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Fehlerbehebung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED-Farben</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Probleme mit der Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Probleme mit der Konnektivität</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Probleme mit den Kamerabildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Probleme mit Tiefen-/Disparitäts-, Fehler- oder Konfidenzbildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#dynamics-issues">Probleme mit der Zustandsschätzung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">Probleme mit GigE&nbsp;Vision/GenICam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Kontakt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Adresse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Anhang</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pose_formats.html">Formate für Posendaten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyzabc-format">XYZABC-Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyz-quaternion-format">XYZ+Quaternion-Format</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Dokumentation</a> &raquo;</li>
+        
+          <li><a href="optional.html">Optionale Softwaremodule</a> &raquo;</li>
+        
+      <li>ItemPick und BoxPick</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="itempick-and-boxpick">
+<span id="sect-itempick"></span><h1>ItemPick und BoxPick<a class="headerlink" href="#itempick-and-boxpick" title="Link zu dieser Überschrift">¶</a></h1>
+<span class="target" id="index-0"></span><div class="section" id="introduction">
+<span id="index-1"></span><h2>Einführung<a class="headerlink" href="#introduction" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Die ItemPick und BoxPick Module sind optional erhältliche Module, welche intern auf dem <em>rc_visard</em> laufen.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Die Module sind optional und benötigen gesonderte ItemPick bzw. BoxPick <a class="reference internal" href="maintenance.html#sect-updating-license"><span class="std std-ref">Lizenzen</span></a> .</p>
+</div>
+<p>Die Module liefern eine gebrauchsfertige, modellfreie Perzeptionslösung, um robotische Pick-and-Place-Anwendungen für Vakuum-Greifsysteme zu realisieren. Dazu analysieren die Module die sichtbare 3D-Szene, extrahieren mittels Clustering-Verfahren ebene Greifoberflächen und berechnen daraus mögliche 3D-Greifposen für die Positionierung des Sauggreifers.</p>
+<p>Darüber hinaus bieten beide Module:</p>
+<ul class="simple">
+<li>eine intuitiv gestaltete Bedienoberfläche für Inbetriebnahme, Konfiguration und Test auf der <em>rc_visard</em> <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a></li>
+<li>die Möglichkeit, sogenannte Regions of Interest (ROIs) zu definieren, um relevante Teilbereiche der Szene auszuwählen</li>
+<li>eine integrierte Behältererkennung, um in Bin-Picking-Anwendungen („Griff in die Kiste“) Greifpunkte nur für Objekte in dem erkannten Behälter zu berechnen</li>
+<li>die Unterstützung von Behältern mit Fächern, so dass Greifpunkte für Objekte nur in einem definierten Teilvolumen des Behälters berechnet werden</li>
+<li>die Unterstützung von sowohl statisch montierten als auch robotergeführten <em>rc_visard</em> Sensoren. Optional können sie mit der <a class="reference internal" href="handeye_calibration.html"><span class="doc">Hand-Auge-Kalibrierung</span></a>  kombiniert werden, um Greifposen in einem benutzerdefinierten externen Koordinatensystem zu liefern</li>
+<li>einen Qualitätswert für jeden vorgeschlagenen Greifpunkt, der die Ebenheit der für das Greifen verfügbaren Oberfläche bewertet</li>
+<li>die Sortierung der berechneten Greifpunkte an Hand des Gravitationsvektors und der Größe, so dass bei gestapelten Objekten zuerst die oberen gegriffen werden.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">In diesem Kapitel werden die Begriffe Cluster und Oberfläche synonym verwendet und bezeichnen eine Menge von Punkten (oder Pixeln) mit ähnlichen geometrischen Eigenschaften.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">In diesem Kapitel werden die Begriffe Lagerkiste, Load Carrier und Bin synonym verwendet und bezeichnen einen Behälter mit vier Wänden, einem Boden und einem rechteckigen Rand.</p>
+</div>
+</div>
+<div class="section" id="data-types">
+<span id="sect-data-types"></span><h2>Datentypen<a class="headerlink" href="#data-types" title="Link zu dieser Überschrift">¶</a></h2>
+<div class="section" id="region-of-interest">
+<span id="sect-itempick-roi"></span><span id="index-2"></span><h3>Region of Interest<a class="headerlink" href="#region-of-interest" title="Link zu dieser Überschrift">¶</a></h3>
+<p id="index-3">Eine sogenannte Region of Interest (ROI) definiert ein abgegrenztes, für eine spezifische Anwendung relevantes Raumvolumen. Aktuell unterstützt das ItemPick und BoxPick Modul folgende unterschiedliche Arten von ROIs:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">BOX</span></code>, für quaderförmige ROIs mit den Abmessungen <code class="docutils literal notranslate"><span class="pre">box.x</span></code>, <code class="docutils literal notranslate"><span class="pre">box.y</span></code>, <code class="docutils literal notranslate"><span class="pre">box.z</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">SPHERE</span></code>, für kugelförmige ROIs mit dem  Radius <code class="docutils literal notranslate"><span class="pre">sphere.radius</span></code>.</li>
+</ul>
+</div></blockquote>
+<p>Die Pose <code class="docutils literal notranslate"><span class="pre">pose</span></code> einer ROI kann entweder relativ zum <em>Kamera</em>-Koordinatensystem <code class="docutils literal notranslate"><span class="pre">camera</span></code> oder mit Hilfe der Hand-Auge-Kalibrierung im <em>externen</em> Koordinatesystem <code class="docutils literal notranslate"><span class="pre">external</span></code> angegeben werden (siehe <a class="reference internal" href="#sect-itempick-hand-eye-dep"><span class="std std-ref">Hand-Auge-Kalibrierung</span></a>).</p>
+<p>Beide Module erlauben das Speichern von jeweils bis zu 10 verschiedenen ROIs, von denen jede mit einer <code class="docutils literal notranslate"><span class="pre">id</span></code> versehen ist. Die Konfiguration von ROIs kann mit Hilfe der <em>rc_visard</em> Web GUI oder der REST-API vorgenommen werden.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Die erstellten ROIs sind persistent auf dem <em>rc_visard</em> gespeichert und – im Gegensatz zu den Laufzeitparametern des Moduls – auch nach Firmware-Updates und -Wiederherstellungen verfügbar.</p>
+</div>
+<p>Je nach Anwendungsfall schränkt eine ROI entweder den Suchbereich für die Bin-Erkennung oder den Bereich, in dem Greifpunkte für Objekte berechnet werden sollen, ein.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Wird keine ROI verwendet, legen die Module den gesamten sichtbaren Bereich für die Berechnungen zu Grunde.</p>
+</div>
+</div>
+<div class="section" id="load-carrier">
+<span id="sect-itempick-load-carrier"></span><h3>Load Carrier<a class="headerlink" href="#load-carrier" title="Link zu dieser Überschrift">¶</a></h3>
+<p id="index-4">Ein sogenannter Load Carrier (auch „Bin“ oder „Lagerkiste“) ist ein Behälter mit vier Wänden, einem Boden und einem rechteckigen Rand. Seine Geometrie ist durch die Angaben zu inneren und äußeren Abmessungen (<code class="docutils literal notranslate"><span class="pre">inner_dimensions</span></code> und <code class="docutils literal notranslate"><span class="pre">outer_dimensions</span></code>) definiert.</p>
+<p>Der Erkennungsalgorithmus basiert auf der Erkennung des oberen, rechteckigen Randes (engl. rim) des Behälters. Für Standardbehälter wird dessen Stärke <code class="docutils literal notranslate"><span class="pre">rim_thickness</span></code> aus der Differenz von <code class="docutils literal notranslate"><span class="pre">inner_dimensions</span></code> und <code class="docutils literal notranslate"><span class="pre">outer_dimensions</span></code> berechnet. Für Nicht-Standardbehälter kann dieser Wert alternativ vom Nutzer explizit gesetzt werden.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Die Innen- und Außenmaße eines Behälters sind typischerweise in den Angaben des jeweiligen Herstellers spezifiziert, und können im Produktblatt oder der Produktseite nachgeschlagen werden.</p>
+</div>
+<p>Das Referenzkoordinatensystem für Load Carrier ist so definiert, dass dessen Urprung im Zentrum des durch die Außenmaße definierten Quaders liegt. Dabei zeigt die z-Achse senkrecht aus dem Behälter hinaus.</p>
+<div class="figure align-center" id="id1">
+<span id="fig-itempick-load-carrier"></span><a class="reference internal image-reference" href="_images/itempick_load_carrier_reference_rim_sidebyside.svg"><img alt="_images/itempick_load_carrier_reference_rim_sidebyside.svg" src="_images/itempick_load_carrier_reference_rim_sidebyside.svg" width="100%" /></a>
+<p class="caption"><span class="caption-number">Abb. 50 </span><span class="caption-text">Illustration verschiedener Behälter-Modelle und des Referenzkoordinatensystems.</span></p>
+</div>
+<p>Um Mehrdeutigkeiten bei der Lageschätzung der Behältererkennung zu umgehen, kann eine grobe Vorgabe für die Pose <code class="docutils literal notranslate"><span class="pre">pose</span></code> des Behälters spezifiziert werden. Wird keine angegeben, sucht der Algorithmus standardmäßig nach Behältern, die horizontal zum Gravitationsvektor stehen.</p>
+<p>Die Module erlauben das Speichern von jeweils bis zu 10 verschiedenen Behältern, von denen jeder mit einer <code class="docutils literal notranslate"><span class="pre">id</span></code> versehen ist. Die für eine spezifische Anwendung relevanten Behälter können mit Hilfe der <em>rc_visard</em> Web GUI oder der REST-API konfiguriert werden.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Die konfigurierten Behälter sind persistent auf dem <em>rc_visard</em> gespeichert und – im Gegensatz zu den Laufzeitparametern des Moduls – auch nach Firmware-Updates und -Wiederherstellungen verfügbar.</p>
+</div>
+<p>Die Module bieten die Möglichkeit, die Greifpunktberechnung auf einen benutzerdefinierten Teilbereich des detektierten Behälters einzuschränken. Solch ein Unterabteil (<code class="docutils literal notranslate"><span class="pre">load_carrier_compartment</span></code>) ist durch einen Quader definiert, dessen Pose <code class="docutils literal notranslate"><span class="pre">pose</span></code> relativ zum Referenzkoordinatensystem des Behälters angegeben wird.</p>
+<div class="figure align-center" id="id2">
+<span id="fig-itempick-compartment"></span><a class="reference internal image-reference" href="_images/itempick_load_carrier_compartment.svg"><img alt="_images/itempick_load_carrier_compartment.svg" src="_images/itempick_load_carrier_compartment.svg" width="100%" /></a>
+<p class="caption"><span class="caption-number">Abb. 51 </span><span class="caption-text">Benutzerdefinierter Teilbereich eines Behälters.</span></p>
+</div>
+</div>
+<div class="section" id="suction-grasp">
+<h3>Greifpunkt für Vakuum-Greifsysteme<a class="headerlink" href="#suction-grasp" title="Link zu dieser Überschrift">¶</a></h3>
+<p id="index-5">Ein vom ItemPick oder BoxPick Modul ermittelter Greifpunkt definiert die Position und Orientierung des TCP (Tool Center Point) des Sauggreifers sowie die für den Sauger zur Verfügung stehende Greiffläche. Die Orientierung des TCP ist so angegeben, dass die z-Achse orthogonal zur Greiffläche in das zu greifende Objekt zeigt und die x-Achse entlang der längsten Ausdehnung ausgerichtet ist.</p>
+<p>Für jeden Greifpunkt liegt der Ursprung der Greifpose <code class="docutils literal notranslate"><span class="pre">pose</span></code> im Mittelpunkt der größten von der jeweiligen Greiffläche umschlossenen Ellipse.</p>
+<div class="figure align-center" id="id3">
+<span id="fig-itempick-grasp-surface"></span><a class="reference internal image-reference" href="_images/itempick_grasp_surface.png"><img alt="_images/itempick_grasp_surface.png" src="_images/itempick_grasp_surface.png" style="width: 300px;" /></a>
+<p class="caption"><span class="caption-number">Abb. 52 </span><span class="caption-text">Veranschaulichung eines berechneten Greifpunktes mit Greifpose und der zugehörigen Ellipse, welche die Greiffläche bestmöglich beschreibt.</span></p>
+</div>
+<p>Zusätzlich enthält jeder Greifpunkt eine geometrische Beschreibung der errechneten Greiffläche in Form von Achslängen (<code class="docutils literal notranslate"><span class="pre">max_suction_surface_length</span></code> und <code class="docutils literal notranslate"><span class="pre">max_suction_surface_width</span></code>) derjenigen Ellipse, welche die Greiffläche bestmöglich beschreibt. Die Berechnung von Greifpunkten berücksichtigt vom Nutzer angegebene, durch die Geometrie des Sauggreifers bedingte Minimalanforderungen an diese Achslängen. Zu kleine Greifflächen können damit bereits während der Berechnung herausgefiltert werden.</p>
+<p>Im BoxPick Modul entspricht der Greifpunkt dem Zentrum des detektierten Rechtecks, wobei die Achsenlängen der Greiffläche durch Länge und Breite des Rechtecks gegeben sind. Falls mehr als 15% der Rechtecksfläche ungültige Datenpunkte enthält oder durch andere Objekte verdeckt ist, wird dem Rechteck kein Greifpunkt zugeordnet.</p>
+<p>Jeder berechnete Greifpunkt lässt sich an Hand einer <code class="docutils literal notranslate"><span class="pre">uuid</span></code> (Universally Unique Identifier) eindeutig identifizieren und enthält zusätzlich den Zeitstempel der Bildaufnahme, die der Greifpunktberechnung zu Grunde lag (bei mehreren Bildern, der Zeitstempel des ältesten Bildes).</p>
+</div>
+<div class="section" id="item-model">
+<h3>Objektmodell<a class="headerlink" href="#item-model" title="Link zu dieser Überschrift">¶</a></h3>
+<p id="index-6">Liegen Informationen über die Geometrien der zu greifenden Objekte vor, können diese vom Nutzer an das ItemPick oder BoxPick Modul übergegeben und somit für die Greifpunktberechnung berücksichtigt werden. Jedes solcher <code class="docutils literal notranslate"><span class="pre">item_models</span></code> enthält die Angaben über den Geometrietyp und über die minimalen und maximalen Abmessungen des jeweiligen Objekts.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Das ItemPick Modul unterstützt flexible und/oder deformierbare Objekte, welche bis auf minimale und maximale Größe nicht weiter spezifiziert sind.</li>
+<li>Das BoxPick Modul unterstützt Rechtecke, welche über minimale und maximale Länge und Breite spezifiziert werden können.</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="interaction-with-other-components">
+<span id="sect-itempick-dependencies"></span><h2>Wechselwirkung mit anderen Modulen<a class="headerlink" href="#interaction-with-other-components" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Die folgenden, intern auf dem <em>rc_visard</em> laufenden Module liefern Daten für das ItemPick und BoxPick Modul oder haben Einfluss auf die Datenverarbeitung.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Jedwede Konfigurationsänderung dieser Module kann direkte Auswirkungen auf die Qualität oder das Leistungsverhalten der Greifpunktberechnung zur Folge haben.</p>
+</div>
+<div class="section" id="stereo-camera-and-stereo-matching">
+<span id="sect-itempick-stereo-camera-matching"></span><h3>Stereokamera und Stereo-Matching<a class="headerlink" href="#stereo-camera-and-stereo-matching" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Folgende Daten werden vom ItemPick und BoxPick Modul verarbeitet:</p>
+<ul class="simple">
+<li>Die rektifizierten Bilder des <a class="reference internal" href="stereo_camera.html"><span class="doc">Stereokamera</span></a>-Moduls (<code class="docutils literal notranslate"><span class="pre">rc_stereocamera</span></code>);</li>
+<li>Die Disparitäts-, Konfidenz- und Fehlerbilder des <a class="reference internal" href="stereo_matching.html"><span class="doc">Stereo-Matching</span></a>-Moduls (<code class="docutils literal notranslate"><span class="pre">rc_stereomatching</span></code>).</li>
+</ul>
+</div>
+<div class="section" id="sensor-dynamics">
+<span id="sect-itempick-dynamics"></span><h3>Sensordynamik<a class="headerlink" href="#sensor-dynamics" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Jedes Mal, wenn eine Behältererkennung oder Greifpunktberechnung durchgeführt wird, schätzt das ItemPick bzw. BoxPick Modul die Gravitationsrichtung basierend auf den IMU Daten der <a class="reference internal" href="dynamics.html"><span class="doc">Sensordynamik</span></a>-Modul (<code class="docutils literal notranslate"><span class="pre">rc_dynamics</span></code>).</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Die Richtung des Gravitationsvektors wird mittels Messungen der linearen Beschleunigungs der IMU bestimmt. Für eine korrekte Schätzung des Gravitationsvektors muss der <em>rc_visard</em> still stehen.</p>
+</div>
+</div>
+<div class="section" id="io-and-projector-control">
+<span id="sect-itempick-iocontrol-dep"></span><h3>IO und Projektor-Kontrolle<a class="headerlink" href="#io-and-projector-control" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Für den Anwendungsfall, dass der <em>rc_visard</em> zusammen mit einem externen Projektor mit Zufallsmuster und dem Modul für <a class="reference internal" href="iocontrol.html"><span class="doc">IO und Projektor-Kontrolle</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_iocontrol</span></code>) betrieben wird, sollte der entsprechende digitale Ausgang in den Betriebsmodus <code class="docutils literal notranslate"><span class="pre">ExposureAlternateActive</span></code> geschaltet werden, siehe <a class="reference internal" href="iocontrol.html#sect-iocontrol-params"><span class="std std-ref">Beschreibung der Laufzeitparameter</span></a> des <a class="reference internal" href="iocontrol.html"><span class="doc">IO und Projektor-Kontrolle</span></a>-Moduls.</p>
+<p>Darüber hinaus sind keine weiteren Änderungen für diesen Anwendungsfall notwendig.</p>
+</div>
+<div class="section" id="hand-eye-calibration">
+<span id="sect-itempick-hand-eye-dep"></span><h3>Hand-Auge-Kalibrierung<a class="headerlink" href="#hand-eye-calibration" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Für den Anwendungsfall, dass der <em>rc_visard</em> zu einem Roboter-Koordinatensystem kalibriert ist, kann zwischen den folgenden zwei Optionen für das Referenzkoordinatensystem <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> gewählt werden:</p>
+<ol class="arabic simple">
+<li><strong>Kamera-Koordinatensystem</strong> (<code class="docutils literal notranslate"><span class="pre">camera</span></code>): Alle Posen sind im Kamera-Koordinatensystem angegeben. Das gilt sowohl für Posen, welche vom Nutzer an das ItemPick oder BoxPick Modul übermittelt werden, als auch für Posen, welche das ItemPick oder BoxPick Modul berechnet und an den Nutzer zurückgibt. In diesem Fall ist kein zusätzliches Wissen über die Lage des <em>rc_visard</em> in seiner Umgebung notwendig. Das bedeutet insbesondere, dass sich ROIs oder Behälter, welche in diesem Koordinatensystem angegeben sind, mit dem <em>rc_visard</em> bewegen. Es liegt daher in der Verantwortung des Anwenders, in solchen Fällen die entsprechenden Posen der Situation entsprechend zu aktualisieren (beispielsweise für den Anwendungsfall eines robotergeführten Sensors).</li>
+<li><strong>Benutzerdefiniertes externes Koordinatensystem</strong> (<code class="docutils literal notranslate"><span class="pre">external</span></code>). Alle Posen sind im sogenannten externen Koordinatensystem angegeben, welches vom Nutzer während der Hand-Auge-Kalibrierung gewählt wurde. In diesem Fall bezieht das ItemPick-Modul alle notwendigen Informationen über die Sensormontage und die kalibrierte Hand-Auge-Transformation automatisch vom <a class="reference internal" href="handeye_calibration.html"><span class="doc">handeye_calibration</span></a> Modul. Für den Fall eines robotergeführten <em>rc_visard</em> ist vom Nutzer zusätzlich die jeweils aktuelle Roboterpose <code class="docutils literal notranslate"><span class="pre">robot_pose</span></code> anzugeben.</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Ist der <em>rc_visard</em> aktuell nicht mittels der Hand-Auge-Kalibrierung kalibriert, muss als Referenzkoordinatensystem <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> immer <code class="docutils literal notranslate"><span class="pre">camera</span></code> angegeben werden.</p>
+</div>
+<p>Zulässige Werte zur Angabe des Referenzkoordinatensystems sind <code class="docutils literal notranslate"><span class="pre">camera</span></code> und <code class="docutils literal notranslate"><span class="pre">external</span></code>. Andere Werte werden als ungültig zurückgewiesen.</p>
+</div>
+</div>
+<div class="section" id="parameters-and-status-values">
+<span id="sect-itempick-parameters"></span><h2>Parameter und Statuswerte<a class="headerlink" href="#parameters-and-status-values" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-7">Die verschiedenen Laufzeitparameter und Konfigurationsoptionen der ItemPick und BoxPick Module können sowohl über die <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> als auch über die <a class="reference internal" href="rest_api.html#sect-swagger-ui"><span class="std std-ref">Swagger UI</span></a> des <em>rc_visard</em> auspropiert werden. Der entsprechene Name des ItemPick bzw. BoxPick Moduls in der REST-API ist <code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code> bzw. <code class="docutils literal notranslate"><span class="pre">rc_boxpick</span></code>.</p>
+<p>Diese Softwaremodule bieten folgende Laufzeitparameter.</p>
+<table border="1" class="docutils" id="applikationsspezifische-laufzeitparameter-der-rc-itempick-und-rc-boxpick-module">
+<caption><span class="caption-number">Tab. 34 </span><span class="caption-text">Applikationsspezifische Laufzeitparameter der <code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code> und <code class="docutils literal notranslate"><span class="pre">rc_boxpick</span></code> Module</span><a class="headerlink" href="#applikationsspezifische-laufzeitparameter-der-rc-itempick-und-rc-boxpick-module" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Typ</th>
+<th class="head">Min</th>
+<th class="head">Max</th>
+<th class="head">Default</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">max_grasps</span></code></td>
+<td>int32</td>
+<td>1</td>
+<td>20</td>
+<td>5</td>
+<td>Maximale Anzahl von bereitgestellten Greifpunkten</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils" id="laufzeitparameter-der-rc-itempick-und-rc-boxpick-module-fur-die-behaltererkennung">
+<caption><span class="caption-number">Tab. 35 </span><span class="caption-text">Laufzeitparameter der <code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code> und <code class="docutils literal notranslate"><span class="pre">rc_boxpick</span></code> Module für die Behältererkennung</span><a class="headerlink" href="#laufzeitparameter-der-rc-itempick-und-rc-boxpick-module-fur-die-behaltererkennung" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Typ</th>
+<th class="head">Min</th>
+<th class="head">Max</th>
+<th class="head">Default</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">load_carrier_crop_distance</span></code></td>
+<td>float64</td>
+<td>0.0</td>
+<td>0.02</td>
+<td>0.005</td>
+<td>Sicherheitspielraum in Meter, um den die inneren Abmesssungen eines detektierten Behälters verringert werden, bevor sie als interne ROI für die nachfolgende Greifpunktberechnung gesetzt werden</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">load_carrier_model_tolerance</span></code></td>
+<td>float64</td>
+<td>0.003</td>
+<td>0.025</td>
+<td>0.008</td>
+<td>Zulässige maximale Abweichung zwischen den geschätzten Abmessungen eines detektierten Behälters und den vom Nutzer definierten Abmessungen des jeweiligen Behälter-Modells in Meter. Behälter, deren Abmessungen stärker abweichen, werden nicht als solche erkannt</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils" id="laufzeitparameter-der-rc-itempick-und-rc-boxpick-module-fur-das-clustering-verfahren">
+<caption><span class="caption-number">Tab. 36 </span><span class="caption-text">Laufzeitparameter der <code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code> und <code class="docutils literal notranslate"><span class="pre">rc_boxpick</span></code> Module für das Clustering-Verfahren</span><a class="headerlink" href="#laufzeitparameter-der-rc-itempick-und-rc-boxpick-module-fur-das-clustering-verfahren" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Typ</th>
+<th class="head">Min</th>
+<th class="head">Max</th>
+<th class="head">Default</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">cluster_max_dimension</span></code></td>
+<td>float64</td>
+<td>0.05</td>
+<td>0.8</td>
+<td>0.3</td>
+<td><strong>Nur für rc_itempick</strong>. Größenbeschränkung für mögliche Greifflächen in Meter. Flächen, die nicht durch einen Kreis dieses Durchmessers umschrieben werden können, werden aussortiert.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">cluster_max_curvature</span></code></td>
+<td>float64</td>
+<td>0.005</td>
+<td>0.5</td>
+<td>0.11</td>
+<td>Maximal erlaubte Krümmung für Greifflächen. Je kleiner dieser Wert ist, desto mehr mögliche Greifflächen werden in kleinere Flächen mit weniger Krümmung aufgeteilt.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">clustering_patch_size</span></code></td>
+<td>int32</td>
+<td>3</td>
+<td>10</td>
+<td>4</td>
+<td><strong>Nur für rc_itempick</strong>. Pixelgröße der Patches für die Unterteilung des Tiefenbildes im ersten Clustering-Schritt</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">clustering_max_surface_rmse</span></code></td>
+<td>float64</td>
+<td>0.0005</td>
+<td>0.01</td>
+<td>0.004</td>
+<td>Maximal erlaubte Abweichung (Root Mean Square Error, RMSE) von Punkten zur Greiffläche in Meter</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">clustering_discontinuity_factor</span></code></td>
+<td>float64</td>
+<td>0.5</td>
+<td>5.0</td>
+<td>1.0</td>
+<td>Dieser Wert beschreibt die erlaubte Unebenheit von Greifflächen. Je kleiner dieser Wert ist, umso mehr werden mögliche Greifflächen in kleinere Flächen mit weniger Unebenheiten aufgeteilt.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">item_model_tolerance</span></code></td>
+<td>float64</td>
+<td>0.0</td>
+<td>0.05</td>
+<td>0.0</td>
+<td><strong>Nur für rc_itempick</strong>. Dieser Parameter ist veraltet. Beschreibt die maximal zulässige Abweichung eines detektierten Objekts von den spezifizierten Objektgeometrien in Meter</td>
+</tr>
+</tbody>
+</table>
+<p>Dieses Modul meldet folgende Statuswerte:</p>
+<table border="1" class="docutils" id="statuswerte-der-rc-itempick-und-rc-boxpick-module">
+<caption><span class="caption-number">Tab. 37 </span><span class="caption-text">Statuswerte der <code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code> und <code class="docutils literal notranslate"><span class="pre">rc_boxpick</span></code> Module</span><a class="headerlink" href="#statuswerte-der-rc-itempick-und-rc-boxpick-module" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">state</span></code></td>
+<td>Aktueller Zustand des <code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code> bzw. <code class="docutils literal notranslate"><span class="pre">rc_boxpick</span></code> Moduls</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">last_timestamp_processed</span></code></td>
+<td>Zeitstempel des letzten verarbeiteten Bilddatensatzes</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">data_acquisition_time</span></code></td>
+<td>Zeit in Sekunden, für die beim letzten Aufruf auf Bilddaten gewartet werden musste. Normalerweise sollte dieser Wert zwischen 0.5 und 0.6 Sekunden bei Tiefenbildern der Auflösung <code class="docutils literal notranslate"><span class="pre">High</span></code> liegen.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">load_carrier_detection_time</span></code></td>
+<td>Berechnungszeit für die Load Carrier Erkennung beim letzten Aufruf in Sekunden</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">grasp_computation_time</span></code></td>
+<td>Berechnungszeit für die Greifpunktberechnung beim letzten Aufruf in Sekunden</td>
+</tr>
+</tbody>
+</table>
+<p>Folgende <code class="docutils literal notranslate"><span class="pre">state</span></code>-Werte werden gemeldet.</p>
+<span id="tab-itempick-states"></span><table border="1" class="docutils" id="mogliche-werte-fur-den-zustand-der-itempick-und-boxpick-module">
+<caption><span class="caption-number">Tab. 38 </span><span class="caption-text">Mögliche Werte für den Zustand der ItemPick und BoxPick Module</span><a class="headerlink" href="#mogliche-werte-fur-den-zustand-der-itempick-und-boxpick-module" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Zustand</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>IDLE</td>
+<td>Das Modul ist inaktiv.</td>
+</tr>
+<tr class="row-odd"><td>RUNNING</td>
+<td>Das Modul wurde gestartet und ist bereit, Behälter zu erkennen und Greifpunkte zu berechnen.</td>
+</tr>
+<tr class="row-even"><td>FATAL</td>
+<td>Ein schwerwiegender Fehler ist aufgetreten.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="services">
+<span id="sect-itempick-services"></span><h2>Services<a class="headerlink" href="#services" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-8">Die zur Verfügung stehenden Services des <code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code> bzw. <code class="docutils literal notranslate"><span class="pre">rc_boxpick</span></code> Moduls können mit Hilfe der <a class="reference internal" href="rest_api.html#sect-swagger-ui"><span class="std std-ref">Swagger UI</span></a> oder der <em>rc_visard</em> <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> ausprobiert und getestet werden.</p>
+<p>Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen sogenannten <code class="docutils literal notranslate"><span class="pre">return_code</span></code> bestehend aus einem Integer-Wert und einer optionalen Textnachricht zurück.</p>
+<p>Erfolgreiche Service-Anfragen werden mit einem Wert von <code class="docutils literal notranslate"><span class="pre">0</span></code> quittiert. Positive Werte bedeuten, dass die Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche Informationen zur Verfügung stehen. Negative Werte bedeuten, dass Fehler aufgetreten sind. Für den Fall, dass mehrere Rückgabewerte zutreffend wären, wird der kleinste zurückgegeben; die entsprechenden Textnachrichten werden aber alle in <code class="docutils literal notranslate"><span class="pre">return_code.message</span></code> akkumuliert.</p>
+<p>Die folgende Tabelle führt die möglichen Rückgabe-Codes an:</p>
+<span id="tab-itempick-return-codes"></span><table border="1" class="docutils" id="fehlercodes-und-warnung-der-services-des-itempick-bzw-boxpick-moduls">
+<caption><span class="caption-number">Tab. 39 </span><span class="caption-text">Fehlercodes und Warnung der Services des ItemPick bzw. BoxPick Moduls</span><a class="headerlink" href="#fehlercodes-und-warnung-der-services-des-itempick-bzw-boxpick-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Code</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>Erfolgreich</td>
+</tr>
+<tr class="row-odd"><td>-1</td>
+<td>Ungültige(s) Argument(e)</td>
+</tr>
+<tr class="row-even"><td>-4</td>
+<td>Die maximal erlaubte Zeitspanne von 3.0 Sekunden für die interne Akquise der Bilddaten wurde überschritten</td>
+</tr>
+<tr class="row-odd"><td>-301</td>
+<td>Für die Anfrage zur Greifpunktberechnung <code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> wurden mehrere Objektmodelle (<code class="docutils literal notranslate"><span class="pre">item_models</span></code>) vom Typ <code class="docutils literal notranslate"><span class="pre">UNKNOWN</span></code> übergeben</td>
+</tr>
+<tr class="row-even"><td>-302</td>
+<td>Für die Anfrage zur Behälterkennung <code class="docutils literal notranslate"><span class="pre">detect_load_carriers</span></code> wurden im Argument <code class="docutils literal notranslate"><span class="pre">load_carrier_ids</span></code> mehrere Behälter angegeben. Momentan wird nur ein Behälter gleichzeitig unterstützt</td>
+</tr>
+<tr class="row-odd"><td>100</td>
+<td>Die angefragten Behälter wurden in der Szene nicht gefunden</td>
+</tr>
+<tr class="row-even"><td>101</td>
+<td>Es wurden keine gültigen Greifflächen in der Szene gefunden</td>
+</tr>
+<tr class="row-odd"><td>102</td>
+<td>Der detektierte Behälter ist leer</td>
+</tr>
+<tr class="row-even"><td>200</td>
+<td>Das ItemPick-Modul befindet sich im Zustand <code class="docutils literal notranslate"><span class="pre">IDLE</span></code></td>
+</tr>
+<tr class="row-odd"><td>300</td>
+<td>Ein gültiges <code class="docutils literal notranslate"><span class="pre">robot_pose</span></code>-Argument wurde angegeben, ist aber nicht erforderlich</td>
+</tr>
+<tr class="row-even"><td>400</td>
+<td>Der Serviceanfrage <code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> wurden keine Objektangaben (<code class="docutils literal notranslate"><span class="pre">item_models</span></code>) als Argumente mitgegeben</td>
+</tr>
+<tr class="row-odd"><td>500</td>
+<td>Während des Aufrufs von <code class="docutils literal notranslate"><span class="pre">set_region_of_interest</span></code> konnten keine entsprechenden Visualisierungen erzeugt werden</td>
+</tr>
+<tr class="row-even"><td>600</td>
+<td>Mit dem Aufruf von <code class="docutils literal notranslate"><span class="pre">set_load_carrier</span></code> oder <code class="docutils literal notranslate"><span class="pre">set_region_of_interest</span></code> wurde ein bereits existierendes Objekt mit selber <code class="docutils literal notranslate"><span class="pre">id</span></code> überschrieben</td>
+</tr>
+</tbody>
+</table>
+<p>Das ItemPick bzw. BoxPick Module stellt folgende Services zur Verfügung.</p>
+<dl class="docutils" id="expl-itempick-srv-start">
+<dt><code class="docutils literal notranslate"><span class="pre">start</span></code></dt>
+<dd><p class="first">Versetzt das ItemPick-Modul in den Zustand <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code>. Es kann vorkommen, dass der Zustandsübergang noch nicht vollständig abgeschlossen ist, wenn die Serviceantwort generiert wird. In diesem Fall liefert diese den entsprechenden, sich von <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code> unterscheidenden Zustand zurück.</p>
+<p>Für diesen Service sind keine Argumente nötig.</p>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="docutils" id="expl-itempick-srv-stop">
+<dt><code class="docutils literal notranslate"><span class="pre">stop</span></code></dt>
+<dd><p class="first">Stoppt das Modul und versetzt es in den Zustand <code class="docutils literal notranslate"><span class="pre">IDLE</span></code>. Es kann vorkommen, dass der Zustandsübergang noch nicht vollständig abgeschlossen ist, wenn die Serviceantwort generiert wird. In diesem Fall liefert diese den entsprechenden, sich von <code class="docutils literal notranslate"><span class="pre">IDLE</span></code> unterscheidenden Zustand zurück.</p>
+<p>Für diesen Service sind keine Argumente nötig.</p>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="docutils" id="expl-itempick-srv-set-roi">
+<dt><code class="docutils literal notranslate"><span class="pre">set_region_of_interest</span></code></dt>
+<dd><p class="first">Konfiguriert und speichert eine Region of Interest (ROI) auf dem <em>rc_visard</em>. Alle ROIs sind dauerhaft – auch über Firmware-Updates und -Wiederherstellungen hinweg – gespeichert.</p>
+<p>Vergleiche hierzu die exakte Definition und Beschreibung einer <a class="reference internal" href="#sect-itempick-roi"><span class="std std-ref">Region of Interest</span></a>.</p>
+<p>Für diesen Service sind folgende Argumente nötig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;region_of_interest&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;box&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sphere&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;robot_pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="docutils" id="expl-itempick-srv-get-roi">
+<dt><code class="docutils literal notranslate"><span class="pre">get_regions_of_interest</span></code></dt>
+<dd><p class="first">Gibt die mit <code class="docutils literal notranslate"><span class="pre">region_of_interest_ids</span></code> spezifizierten, gespeicherten Regions of Interest (ROIs) zurück. Werden keine <code class="docutils literal notranslate"><span class="pre">region_of_interest_ids</span></code> angegeben, enthält die Serviceantwort alle gespeicherten ROIs.</p>
+<p>Für diesen Service sind folgende Argumente nötig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;region_of_interest_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;regions_of_interest&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;box&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;sphere&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="docutils" id="expl-itempick-srv-delete-roi">
+<dt><code class="docutils literal notranslate"><span class="pre">delete_regions_of_interest</span></code></dt>
+<dd><p class="first">Löscht die mit <code class="docutils literal notranslate"><span class="pre">region_of_interest_ids</span></code> spezifizierten, gespeicherten ROIs. Alle zu löschenden ROIs müssen explizit angegeben werden.</p>
+<p>Für diesen Service sind folgende Argumente nötig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;region_of_interest_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="docutils" id="expl-itempick-srv-set-lc">
+<dt><code class="docutils literal notranslate"><span class="pre">set_load_carrier</span></code></dt>
+<dd><p class="first">Konfiguriert und speichert einen Load Carrier (Behälter) auf dem <em>rc_visard</em>. Alle Behälter sind dauerhaft – auch über Firmware-Updates und -Wiederherstellungen hinweg – gespeichert.</p>
+<p>Vergleiche hierzu die Definition und Beschreibung eines <a class="reference internal" href="#sect-itempick-load-carrier"><span class="std std-ref">Load Carrier</span></a>.</p>
+<p>Für diesen Service sind folgende Argumente nötig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;load_carrier&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;inner_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;outer_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rim_thickness&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="docutils" id="expl-itempick-srv-get-lc">
+<dt><code class="docutils literal notranslate"><span class="pre">get_load_carriers</span></code></dt>
+<dd><p class="first">Gibt die mit <code class="docutils literal notranslate"><span class="pre">load_carrier_ids</span></code> spezifizierten, gespeicherten Load Carriers (Behälter) zurück. Werden keine <code class="docutils literal notranslate"><span class="pre">load_carrier_ids</span></code> angegeben, enthält die Serviceantwort alle gespeicherten Behälter.</p>
+<p>Für diesen Service sind folgende Argumente nötig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;load_carrier_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;load_carriers&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;inner_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;outer_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;rim_thickness&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="docutils" id="expl-itempick-srv-delete-lc">
+<dt><code class="docutils literal notranslate"><span class="pre">delete_load_carriers</span></code></dt>
+<dd><p class="first">Löscht die mit <code class="docutils literal notranslate"><span class="pre">load_carrier_ids</span></code> spezifizierten, gespeicherten Load Carriers (Behälter). Alle zu löschenden Behälter müssen explizit angegeben werden.</p>
+<p>Für diesen Service sind folgende Argumente nötig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;load_carrier_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="docutils" id="expl-itempick-srv-detect-lc">
+<dt><code class="docutils literal notranslate"><span class="pre">detect_load_carriers</span></code></dt>
+<dd><p class="first">Mit dieser Serviceanfrage wird eine Behältererkennung durchgeführt. Dabei garantiert das Zeitverhalten dieses Services, dass nur Bilddaten zur Erkennung benutzt werden, welche nach dem Anfragezeitpunkt generiert wurden.</p>
+<p>Für diesen Service sind folgende Argumente nötig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;load_carrier_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;region_of_interest_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;robot_pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;load_carriers&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;inner_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;outer_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;rim_thickness&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Obligatorische Serviceargumente:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">pose_frame</span></code>: definiert das Referenzkoordinatensystem für die Ausgabe der Pose für die detektierten Load Carriers.</p>
+<p><code class="docutils literal notranslate"><span class="pre">load_carrier_ids</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">robot_pose</span></code>: wird nur für den Fall eines robotergeführten <em>rc_visard</em> mit Referenzkoordinatensystem <code class="docutils literal notranslate"><span class="pre">pose_frame=&quot;external&quot;</span></code> benötigt.</p>
+</div></blockquote>
+<p>Optionale Serviceargumente:</p>
+<blockquote class="last">
+<div><code class="docutils literal notranslate"><span class="pre">region_of_interest_id</span></code>: schränkt die Suche nach zu detektierenden Behältern auf das durch die ROI definierte Raumvolumen ein. Je größer eine ROI, desto mehr Rechenzeit wird für die Behältererkennung benötigt.</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="expl-itempick-srv-detect-items">
+<dt><code class="docutils literal notranslate"><span class="pre">detect_items</span></code> (nur für BoxPick verfügbar)</dt>
+<dd><p class="first">Diese Serviceanfrage startet die Detektion von Rechtecken. Der Detektionsprozess beinhaltet die Load Carrier Erkennung innerhalb der spezifizierten ROI. Die zurückgegebenen Posen sind relativ zum Mittelpunkt des Rechtecks definiet. Die z-Achse zeigt in Richtung der Kamera. Es können mehrere Rechtecke mit unterschiedlichem Wertebereich für Länge und Breite gleichzeitig angegeben werden.</p>
+<p>Falls die Anfrage erfolgreich war, wird eine Liste der detektierten Rechtecke und optional der detektierte Load Carrier zurückgegeben.</p>
+<p>Für diesen Service sind folgende Argumente nötig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;item_models&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;rectangle&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;max_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;min_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;load_carrier_compartment&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;box&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;load_carrier_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;region_of_interest_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;robot_pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;rectangle&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;load_carriers&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;inner_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;outer_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;rim_thickness&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Obligatorische Serviceargumente:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">pose_frame</span></code>: definiert das Referenzkoordinatensystem für die Ausgabe der Pose für die detektierten Rechtecke.</p>
+<p><code class="docutils literal notranslate"><span class="pre">item_models</span></code>: definiert eine Liste von Rechtecken mit minimaler und maximaler Größe, wobei die minimalen Abmessungen stets kleiner sein müssen als die zugehörigen maximalen Abmessungen. Es muss mindestens ein <code class="docutils literal notranslate"><span class="pre">item_model</span></code> angegeben werden. Die Abmessungen sollten möglichst präzise angegeben werden, um fehlerhafte Resultate zu vermeiden.</p>
+<p><code class="docutils literal notranslate"><span class="pre">robot_pose</span></code>: wird nur für den Fall eines robotergeführten <em>rc_visard</em> mit Referenzkoordinatensystem <code class="docutils literal notranslate"><span class="pre">pose_frame=&quot;external&quot;</span></code> benötigt.</p>
+</div></blockquote>
+<p>Optionale Serviceargumente:</p>
+<blockquote class="last">
+<div><p><code class="docutils literal notranslate"><span class="pre">region_of_interest_id</span></code>: schränkt je nach Anwendungsfall entweder die Suche nach zu detektierenden Behältern oder direkt die Suche nach Greifpunkten auf das durch die ROI definierte Raumvolumen ein. Je größer eine ROI, desto mehr Rechenzeit wird für die Berechnungen benötigt.</p>
+<p><code class="docutils literal notranslate"><span class="pre">load_carrier_id</span></code>: beschränkt die Greifpunktberechnung auf den Inhalt des zu detektierenden Load Carriers (Behälter).</p>
+<p><code class="docutils literal notranslate"><span class="pre">load_carrier_compartment</span></code>: beschränkt die Greifpunktberechnung auf das mit diesem Serviceargument definierte Teilvolumen (Fach oder Abteil) in einem zu detektierenden Load Carrier (Behälter).</p>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="expl-itempick-srv-compute-grasps">
+<dt><code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> (für ItemPick)</dt>
+<dd><p class="first">Mit dieser Serviceanfrage wird die Berechung von Greifpunkten für Sauggreifer durchgeführt. Dabei garantiert das Zeitverhalten dieses Services, dass nur Bilddaten zur Erkennung benutzt werden, welche nach dem Anfragezeitpunkt generiert wurden.</p>
+<p>Falls die Anfrage erfolgreich war, wird eine sortierte Liste von Greifpunkten und optional der detektierte Load Carrier zurückgegeben.</p>
+<p>Für diesen Service sind folgende Argumente nötig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;item_models&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;unknown&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;max_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;min_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;load_carrier_compartment&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;box&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;load_carrier_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;region_of_interest_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;robot_pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;suction_surface_length&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;suction_surface_width&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;grasps&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;item_uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;max_suction_surface_length&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;max_suction_surface_width&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;quality&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;load_carriers&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;inner_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;outer_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;rim_thickness&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Obligatorische Serviceargumente:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">pose_frame</span></code>: definiert das Referenzkoordinatensystem für die Ausgabe der Pose für die berechneten Greifpunkte.</p>
+<p><code class="docutils literal notranslate"><span class="pre">suction_surface_length</span></code>: Länge der Greiffläche des verwendeten Vakuum-Greifsystems.</p>
+<p><code class="docutils literal notranslate"><span class="pre">suction_surface_width</span></code>: Breite der Greiffläche des verwendeten Vakuum-Greifsystems.</p>
+<p><code class="docutils literal notranslate"><span class="pre">robot_pose</span></code>: wird nur für den Fall eines robotergeführten <em>rc_visard</em> mit Referenzkoordinatensystem <code class="docutils literal notranslate"><span class="pre">pose_frame=&quot;external&quot;</span></code> benötigt.</p>
+</div></blockquote>
+<p>Optionale Serviceargumente:</p>
+<blockquote class="last">
+<div><p><code class="docutils literal notranslate"><span class="pre">region_of_interest_id</span></code>: schränkt je nach Anwendungsfall entweder die Suche nach zu detektierenden Behältern oder direkt die Suche nach Greifpunkten auf das durch die ROI definierte Raumvolumen ein. Je größer eine ROI, desto mehr Rechenzeit wird für die Berechnungen benötigt.</p>
+<p><code class="docutils literal notranslate"><span class="pre">load_carrier_id</span></code>: beschränkt die Greifpunktberechnung auf den Inhalt des zu detektierenden Load Carriers (Behälter).</p>
+<p><code class="docutils literal notranslate"><span class="pre">load_carrier_compartment</span></code>: beschränkt die Greifpunktberechnung auf das mit diesem Serviceargument definierte Teilvolumen (Fach oder Abteil) in einem zu detektierenden Load Carrier (Behälter).</p>
+<p><code class="docutils literal notranslate"><span class="pre">item_models</span></code>: Liste mit spezifischen Angaben zu Objektgeometrien. Momentan wird nur die Angabe eines einzelnen Objektmodells vom Typ <code class="docutils literal notranslate"><span class="pre">UNKNOWN</span></code> unterstützt.</p>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="expl-itempick-srv-compute-grasps-boxpick">
+<dt><code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> (für BoxPick)</dt>
+<dd><p class="first">Diese Serviceanfrage startet die Detektion von Rechtecken und berechnet zudem für jedes detektierte Rechteck einen zugehörigen Greifpunkt für Sauggreifer. Die zurückgegebenen Greifpunkte sind relativ zum Mittelpunkt des Rechtecks definiet. Es können mehrere Rechtecke mit unterschiedlichem Wertebereich für Länge und Breite gleichzeitig angegeben werden. Dabei garantiert das Zeitverhalten dieses Services, dass nur Bilddaten zur Erkennung benutzt werden, welche nach dem Anfragezeitpunkt generiert wurden.</p>
+<p>Falls die Anfrage erfolgreich war, wird eine Liste von Rechtecken, eine Liste von Greifpunkten und optional der detektierte Load Carrier zurückgegeben. Jeder Greifpunkt beinhaltet die <code class="docutils literal notranslate"><span class="pre">uuid</span></code> des zugehörigen Rechtecks und umgekehrt.</p>
+<p>Für diesen Service sind folgende Argumente nötig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;item_models&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;rectangle&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;max_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;min_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;load_carrier_compartment&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;box&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;load_carrier_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;region_of_interest_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;robot_pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;suction_surface_length&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;suction_surface_width&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;grasps&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;item_uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;max_suction_surface_length&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;max_suction_surface_width&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;quality&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;grasp_uuids&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;string&quot;</span>
+      <span class="p">],</span>
+      <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;rectangle&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;load_carriers&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;inner_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;outer_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;rim_thickness&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Obligatorische Serviceargumente:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">pose_frame</span></code>: definiert das Referenzkoordinatensystem für die Ausgabe der Pose für die berechneten Greifpunkte und detektierten Rechtecke.</p>
+<p><code class="docutils literal notranslate"><span class="pre">item_models</span></code>:  definiert eine Liste von Rechtecken mit minimaler und maximaler Größe, wobei die minimalen Abmessungen stets kleiner sein müssen als die zugehörigen maximalen Abmessungen. Es muss mindestens ein item_model angegeben werden. Die Abmessungen sollten möglichst präzise angegeben werden, um fehlerhafte Resultate zu vermeiden.</p>
+<p><code class="docutils literal notranslate"><span class="pre">suction_surface_length</span></code>: Länge der Greiffläche des verwendeten Vakuum-Greifsystems.</p>
+<p><code class="docutils literal notranslate"><span class="pre">suction_surface_width</span></code>: Breite der Greiffläche des verwendeten Vakuum-Greifsystems.</p>
+<p><code class="docutils literal notranslate"><span class="pre">robot_pose</span></code>: wird nur für den Fall eines robotergeführten <em>rc_visard</em> mit Referenzkoordinatensystem <code class="docutils literal notranslate"><span class="pre">pose_frame=&quot;external&quot;</span></code> benötigt.</p>
+</div></blockquote>
+<p>Optionale Serviceargumente:</p>
+<blockquote class="last">
+<div><p><code class="docutils literal notranslate"><span class="pre">region_of_interest_id</span></code>: schränkt je nach Anwendungsfall entweder die Suche nach zu detektierenden Behältern oder direkt die Suche nach Greifpunkten auf das durch die ROI definierte Raumvolumen ein. Je größer eine ROI, desto mehr Rechenzeit wird für die Berechnungen benötigt.</p>
+<p><code class="docutils literal notranslate"><span class="pre">load_carrier_id</span></code>: beschränkt die Greifpunktberechnung auf den Inhalt des zu detektierenden Load Carriers (Behälter).</p>
+<p><code class="docutils literal notranslate"><span class="pre">load_carrier_compartment</span></code>: beschränkt die Greifpunktberechnung auf das mit diesem Serviceargument definierte Teilvolumen (Fach oder Abteil) in einem zu detektierenden Load Carrier (Behälter).</p>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="expl-itempick-srv-save-params">
+<dt><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></dt>
+<dd>Beim Aufruf dieses Services werden die aktuellen Parametereinstellungen des ItemPick oder BoxPick Moduls auf dem <em>rc_visard</em> gespeichert. Das bedeutet, dass diese Werte selbst nach einem Neustart angewandt werden. Bei Firmware-Updates oder -Wiederherstellungen werden sie jedoch wieder auf den Standardwert gesetzt.</dd>
+</dl>
+<dl class="docutils" id="expl-itempick-srv-reset-params">
+<dt><code class="docutils literal notranslate"><span class="pre">reset_to_defaults</span></code></dt>
+<dd>Hiermit werden die Werkseinstellungen der Parameter dieses Moduls wiederhergestellt und angewandt („factory reset“). Dies betrifft nicht die konfigurierten ROIs und Load Carrier.</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="silhouettematch.html" class="btn btn-neutral float-right" title="SilhouetteMatch" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tagdetect.html" class="btn btn-neutral" title="TagDetect" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Optionen</span>
+      de
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Sprachen</dt>
+        
+          
+          <dd><a href="../de/itempick.html">de</a></dd>
+          
+        
+          
+          <dd><a href="../en/itempick.html">en</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versionen</dt>
+          
+            <dd><a href="../../v1.1/index.html">v1.1</a></dd>
+          
+            <dd><a href="../../v1.0/index.html">v1.0</a></dd>
+          
+            <dd><a href="../../v1.3/index.html">v1.3</a></dd>
+          
+            <dd><a href="../../v1.2/index.html">v1.2</a></dd>
+          
+            <dd><a href="../../v1.5/index.html">v1.5</a></dd>
+          
+            <dd><a href="../../v1.4/index.html">v1.4</a></dd>
+          
+            <dd><a href="../../v1.7/index.html">v1.7</a></dd>
+          
+            <dd><a href="../../v1.6/index.html">v1.6</a></dd>
+          
+            <dd><a href="../../v1.8/index.html">v1.8</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_manual_de.pdf">PDF (de)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_manual_en.pdf">PDF (en)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.8.1',
+            LANGUAGE:'de',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,884 @@
+Hand-Auge-Kalibrierung
+
+Für Anwendungen, bei denen der
+
+rc_visard
+
+ in eines oder mehrere Robotersysteme integriert wird, muss er zum
+jeweiligen Roboter-Koordinatensystem kalibriert werden. Zu diesem
+Zweck wird der
+
+rc_visard
+
+ mit einer internen Kalibrierroutine, dem Modul zur
+
+Hand-Auge-Kalibrierung
+
+, ausgeliefert.
+
+Bemerkung: Für die Hand-Auge-Kalibrierung ist es völlig unerheblich,
+  in Bezug auf welches benutzerdefinierte Roboter-Koordinatensystem
+  der
+
+  rc_visard
+
+   kalibriert wird. Hierbei kann es sich um einen Endeffektor des
+  Roboters (z. B. Flansch oder Tool Center Point
+  (Werkzeugmittelpunkt)) oder um einen beliebigen anderen Punkt in der
+  Roboterstruktur handeln. Einzige Voraussetzung für die Hand-Auge-
+  Kalibrierung ist, dass die Pose (d. h. Positions- und
+  Rotationswerte) dieses Roboter-Koordinatensystems in Bezug auf ein
+  benutzerdefiniertes externes Koordinatensystem (z. B. Welt oder
+  Roboter-Montagepunkt) direkt von der Robotersteuerung erfasst und an
+  das Kalibriermodul übertragen werden kann.
+
+Die
+
+Kalibrierroutine
+
+  ist ein benutzerfreundliches dreistufiges Verfahren, für das mit
+einem Kalibriermuster gearbeitet wird. Kalibriermuster für den
+
+rc_visard
+
+ können von Roboception bezogen werden.
+
+Kalibrierschnittstellen
+
+Für die Durchführung der Hand-Auge-Kalibrierung stehen die folgenden
+beiden Schnittstellen zur Verfügung:
+
+Alle Services und Parameter dieses Moduls, die für eine
+programmgesteuerte Durchführung der Hand-Auge-Kalibrierung benötigt
+werden, sind in der REST-API-Schnittstelle\:(Abschnitt \ref{rest_api
+:sect-rest-api}) des rc_visard enthalten. Der REST-API-Name dieses
+Moduls lautet rc_hand_eye_calibration und seine Services werden in
+Services\:(Abschnitt \ref{handeye_calibration:sect-handeye-
+calibration-services}) erläutert.  Für den beschriebenen Ansatz wird
+eine Netzwerkverbindung zwischen dem rc_visard und der
+Robotersteuerung benötigt, damit die Steuerung die Roboterposen an das
+Kalibriermodul des Sensors übertragen kann.
+
+Für Anwendungsfälle, bei denen sich die Roboterposen nicht
+programmgesteuert an das Modul zur Hand-Auge-Kalibrierung des
+rc_visard übertragen lassen, sieht die Registerkarte Hand-Auge-
+Kalibrierung der Web GUI \:(Abschnitt \ref{installation:sect-web-gui})
+einen geführten Prozess vor, mit dem sich die Kalibrierroutine manuell
+durchführen lässt.  Während der Kalibrierung muss der Benutzer die
+Roboterposen, auf die über das jeweilige Teach-in- oder Handheld-Gerät
+zugegriffen werden muss, manuell in die Web GUI eingeben.
+
+Sensormontage
+
+Wie in
+
+Abb. 33
+
+ und
+
+Abb. 34
+
+ dargestellt, ist für die Montage des
+
+rc_visard
+
+ zwischen zwei unterschiedlichen Anwendungsfällen zu unterscheiden:
+
+Der rc_visard wird am Roboter montiert, d. h. seine
+Montagepunkte\:(Abschnitt \ref{hardware_spec:sect-mechanical}) sind
+mechanisch mit einem Roboterpunkt (d. h. Flansch oder
+flanschmontiertes Werkzeug) verbunden und der rc_visard bewegt sich
+demnach mit dem Roboter.
+
+Der rc_visard ist nicht am Roboter montiert, sondern an einem Tisch
+oder anderen Ort in der Nähe des Roboters befestigt und verbleibt
+daher verglichen mit dem Roboter in einer statischen Position.
+
+Die allgemeine
+
+Kalibrierroutine
+
+ ist in beiden Anwendungsfällen sehr ähnlich. Sie unterscheidet sich
+jedoch hinsichtlich der semantischen Auslegung der Ausgabedaten, d. h.
+der erhaltenen Kalibriertransformation, und hinsichtlich der
+Befestigung des Kalibriermusters.
+
+Kalibrierung eines robotergeführten Sensors
+   Soll ein robotergeführter
+
+   rc_visard
+
+    zum Roboter kalibriert werden, so muss das Kalibriermuster in
+   einer statischen Position zum Roboter, z. B. auf einem Tisch oder
+   festen Sockel, befestigt werden (siehe
+
+   Abb. 33
+
+   ).
+
+   Warnung: Es ist äußerst wichtig, dass sich das Kalibriermuster in
+     Schritt 2 der
+
+     Kalibrierroutine
+
+      nicht bewegt. Daher wird dringend empfohlen, das Muster in
+     seiner Position sicher zu fixieren, um unbeabsichtigte
+     Bewegungen, wie sie durch Vibrationen, Kabelbewegungen oder
+     Ähnliches ausgelöst werden, zu verhindern.
+
+   Das Ergebnis der Kalibrierung (Schritt 3 der
+
+   Kalibrierroutine
+
+   ) ist eine Pose \mathbf{T}^{\text{robot}}_{\text{camera}}, die die
+   (zuvor unbekannte) relative Transformation zwischen dem
+
+   Kamera
+
+   -Koordinatensystem des
+
+   rc_visard
+
+    und dem benutzerdefinierten
+
+   Roboter
+
+   -Koordinatensystems beschreibt, sodass Folgendes gilt:
+
+      \mathbf{p}_{\text{robot}} =     \mathbf{R}
+      \left(\mathbf{T}^{\text{robot}}_{\text{camera}}\right)     \cdot
+      \mathbf{p}_{\text{camera}}     + \mathbf{t}
+      \left(\mathbf{T}^{\text{robot}}_{\text{camera}}\right)     \:,
+
+   wobei \mathbf{p}_{\text{robot}} = (x,y,z)^T ein 3D-Punkt ist,
+   dessen Koordinaten im
+
+   Roboter
+
+   -Koordinatensystem angegeben werden; \mathbf{p}_{\text{camera}} den
+   gleichem Punkt im
+
+   Kamera
+
+   -Koordinatensystem darstellt; und \mathbf{R}(\mathbf{T}) sowie
+   \mathbf{t}(\mathbf{T}) die 3\times 3 Drehmatrix und den 3\times 1
+   Translationsvektor für eine Pose \mathbf{T} angeben.
+
+
+Kalibrierung eines statisch montierten Sensors
+   In Anwendungsfällen, bei denen der
+
+   rc_visard
+
+    statisch verglichen zum Roboter montiert wird, muss das
+   Kalibriermuster, wie im Beispiel in
+
+   Abb. 34
+
+    und
+
+   Abb. 35
+
+    angegeben, angebracht werden.
+
+   Bemerkung: Für das Modul zur Hand-Auge-Kalibrierung spielt es
+     keine Rolle, wie das Kalibriermuster in Bezug auf das
+     benutzerdefinierte
+
+     Roboter
+
+     -Koordinatensystem genau angebracht und positioniert wird. Das
+     bedeutet, dass die relative Positionierung des Kalibriermusters
+     zu diesem Koordinatensystem weder bekannt sein muss, noch für die
+     Kalibrierroutine relevant ist (siehe in
+
+     Abb. 35
+
+     ).
+
+   Warnung: Es ist äußerst wichtig, das Kalibriermuster sicher am
+     Roboter anzubringen, damit sich seine relative Position in Bezug
+     auf das in Schritt 2 der
+
+     Kalibrierroutine
+
+      vom Benutzer definierte
+
+     Roboter
+
+     -Koordinatensystem nicht verändert.Daher wird dringend empfohlen,
+     unbeabsichtigte Bewegungen, wie sie beispielsweise durch
+     Vibrationen verursacht werden, zu vermeiden. Hierfür kann das
+     Kalibriermuster beispielsweise auf einer hölzernen Unterlage
+     (empfohlene Mindestdicke: 1 cm) aufgebracht werden, die
+     anschließend an die Roboterstruktur, z. B. seinen Flansch oder
+     sein Werkzeug, angeschraubt wird.
+
+   In diesem Anwendungsfall ist das Ergebnis der Kalibrierung (Schritt
+   3 der
+
+   Kalibrierroutine
+
+   ) die Pose \mathbf{T}^{\text{ext}}_{\text{camera}}, die die (zuvor
+   unbekannte) relative Transformation der zwischen dem
+
+   Kamera
+
+   -Koordinatensystem des
+
+   rc_visard
+
+    und dem benutzerdefinierten
+
+   Roboter
+
+   -Koordinatensystem beschreibt, sodass Folgendes gilt:
+
+      \mathbf{p}_{\text{ext}} =     \mathbf{R}
+      \left(\mathbf{T}^{\text{ext}}_{\text{camera}}\right)     \cdot
+      \mathbf{p}_{\text{camera}}     + \mathbf{t}
+      \left(\mathbf{T}^{\text{ext}}_{\text{camera}}\right)     \:,
+
+   wobei \mathbf{p}_{\text{ext}} = (x,y,z)^T ein 3D-Punkt ist, dessen
+   Koordinaten im externen Referenzkoordinatensystem
+
+   ext
+
+    angegeben werden; \mathbf{p}_{\text{camera}} den gleichen Punkt im
+
+   Kamera
+
+   -Koordinatensystem darstellt; und \mathbf{R}(\mathbf{T}) sowie
+   \mathbf{t}(\mathbf{T}) die 3\times 3 Drehmatrix und den 3\times 1
+   Translationsvektor für eine Position \mathbf{T} angeben.
+
+
+Kalibrierroutine
+
+Die allgemeine Hand-Auge-Kalibrierroutine besteht aus den in
+
+Abb. 36
+
+ angegebenen drei Schritten. Auch der Hand-Auge-Kalibriervorgang der
+
+Web GUI
+
+ greift diese drei Schritte auf.
+
+
+Schritt 1: Einstellung der Parameter
+
+Bevor mit der eigentlichen Kalibrierroutine begonnen werden kann,
+müssen die Parameter für die Mustergröße und Sensormontage eingestellt
+werden. Für die REST-API sind die entsprechenden
+
+Parameter
+
+ aufgelistet.
+
+Web GUI-Beispiel:
+   Die Web GUI bietet eine Oberfläche, über die sich diese Parameter
+   im ersten Schritt der Kalibrierroutine, wie in
+
+   Abb. 37
+
+    gezeigt, erfassen lassen. Neben den Angaben zur Mustergröße und
+   Sensormontage kann der Benutzer in der Web GUI auch das Format der
+
+   Pose
+
+    einstellen. Dieses Format wird im nachfolgenden Schritt 2 des
+   Kalibriervorgangs verwendet, um die Roboterposen zu übertragen.
+   Folgende Formate sind möglich:
+
+   XYZABC
+
+    für Positionen und Eulersche Winkel oder
+
+   XYZ+Quaternion
+
+    für Positionen samt Quaternionen für die Darstellung von
+   Drehungen. Für die genauen Definitionen siehe
+
+   Formate für Posendaten
+
+   .
+
+   Bemerkung: Der Parameter
+
+     Pose
+
+      in der Web GUI wurde lediglich der Benutzerfreundlichkeit halber
+     hinzugefügt. Für die programmgesteuerte Übertragung von
+     Roboterposen über die REST-API ist die Verwendung des
+
+     XYZ+Quaternion
+
+     -Formats zwingend vorgeschrieben.
+
+
+Schritt 2: Auswahl und Übertragung der Kalibrierpositionen des
+Roboters
+
+In diesem Schritt (2a.) definiert der Benutzer verschiedene
+Kalibrierpositionen, die der Roboter anfahren muss. Dabei ist
+sicherzustellen, dass das Kalibriermuster bei allen Positionen im
+linken Kamerabild des
+
+rc_visard
+
+ vollständig sichtbar ist. Zudem müssen die Roboterpositionen sorgsam
+ausgewählt werden, damit der
+
+rc_visard
+
+ das Kalibriermuster aus unterschiedlichen Perspektiven aufnehmen
+kann.
+
+Abb. 38
+
+ zeigt eine schematische Darstellung der empfohlenen vier Ansichten.
+
+
+Warnung: Die Kalibrierqualität, d. h. die Genauigkeit des
+  berechneten Kalibrierergebnisses, hängt von den Ansichten des
+  Kalibriermuster ab. Je vielfältiger die Perspektiven sind, desto
+  besser gelingt die Kalibrierung. Werden sehr ähnliche Ansichten
+  ausgewählt, d. h. werden die Positionen des Roboters bei den
+  verschiedenen Wiederholungen von Schritt 2a nur leicht variiert,
+  kann dies zu einer ungenauen Schätzung der gewünschten
+  Kalibriertransformation führen.
+
+Nachdem der Roboter die jeweilige Kalibrierposition erreicht hat, muss
+die entsprechende Pose \mathbf{T}^{\text{ext}}_{\text{robot}} des
+benutzerdefinierten
+
+Roboter
+
+-Koordinatensystems im benutzerdefinierten externen
+Referenzkoordinatensystem
+
+ext
+
+ an das Modul zur Hand-Auge-Kalibrierung übertragen werden (2b.).
+Hierfür bietet das Softwaremodul verschiedene
+
+Slots
+
+, in denen die gemeldeten Posen mit den zugehörigen Bildern der linken
+Kamera des
+
+rc_visard
+
+ hinterlegt werden können. Alle gefüllten Slots werden dann verwendet,
+um die gewünschte Kalibriertransformation zwischen dem Kamera-
+Koordinatensystem des
+
+rc_visard
+
+ und dem benutzerdefinierten
+
+Roboter
+
+-Koordinatensystem (bei robotergeführten Sensoren) bzw. dem
+benutzerdefinierten externen Referenzkoordinatensystem
+
+ext
+
+ (bei statisch montierten Sensoren) zu berechnen.
+
+Bemerkung: Um die Transformation für die Hand-Auge-Kalibrierung
+  erfolgreich zu berechnen, müssen mindestens drei verschiedenen
+  Roboter- Kalibrierposen übertragen und in Slots hinterlegt werden.
+  Um Kalibrierfehler zu verhindern, die durch ungenaue Messungen
+  entstehen können, sind mindestens
+
+  vier Kalibrierposen empfohlen
+
+  .
+
+Um diese Posen programmgesteuert zu übertragen, bietet die REST-API
+den Service "set_pose" (siehe
+
+Services
+
+).
+
+Web GUI-Beispiel:
+   Nachdem die Kalibriereinstellungen in Schritt 1 abgeschlossen und
+   die Schaltfläche
+
+   Weiter
+
+    betätigt wurde, bietet die Web GUI vier verschiedene Slots (
+
+   Erste Ansicht
+
+   ,
+
+   Zweite Ansicht
+
+   , usw.), in die der Benutzer die Posen manuell eintragen kann. Ganz
+   oben wird ein Live-Stream der Kamera angezeigt, um nachverfolgen zu
+   können, ob das Kalibriermuster aktuell erkannt wird oder nicht.
+   Neben jedem Slot wird eine Empfehlung für die Ansicht des
+   Kalibriermusters angezeigt. Der Roboter sollte für jeden Slot so
+   bewegt werden, dass die empfohlene Ansicht erreicht wird.
+
+
+   Sobald das tatsächliche Bild der empfohlenen Ansicht entspricht,
+   sind die Posen des benutzerdefinierten
+
+   Roboter
+
+   -Koordinatensystems manuell in den entsprechenden Textfeldern zu
+   erfassen und das Kamerabild mit der Schaltfläche
+
+   Bild aufnehmen
+
+    aufzunehmen.
+
+   Bemerkung: Der Zugriff auf die Posendaten des Roboters hängt vom
+     Modell des Roboters und seinem Hersteller ab. Möglicherweise
+     lässt sich dies über ein im Lieferumfang des Roboters enthaltenes
+     Teach-in- oder Handheld-Gerät vornehmen.
+
+   Warnung: Es ist sorgsam darauf zu achten, dass genaue und
+     korrekte Werte eingegeben werden. Selbst kleinste Ungenauigkeiten
+     oder Tippfehler können dazu führen, dass die Kalibrierung
+     fehlschlägt.
+
+   Dieser Vorgang ist insgesamt viermal zu wiederholen. Vorausgesetzt,
+   die in
+
+   Abb. 38
+
+    dargestellten Empfehlungen zur Aufnahme des Kalibriermusters von
+   oben, von links, von vorn und von rechts wurden eingehalten, werden
+   die folgenden Kamerabilder mit den jeweiligen Roboterposen an das
+   Softwaremodul zur Hand-Auge-Kalibrierung übertragen:
+
+
+Schritt 3: Berechnen und Speichern der Kalibriertransformation
+
+Der letzte Schritt in der Hand-Auge-Kalibrierroutine besteht darin,
+die gewünschte Kalibriertransformation auf Grundlage der erfassten
+Posen und Kamerabilder zu berechnen. Die REST-API bietet hierfür den
+Service "calibrate" (siehe
+
+Services
+
+). Je nachdem, wie der
+
+rc_visard
+
+ montiert ist, wird dabei die Transformation (d. h. die Pose) zwischen
+dem
+
+Kamera
+
+-Koordinatensystem und entweder dem benutzerdefinierten
+
+Roboter
+
+-Koordinatensystem (bei robotergeführten Sensoren) oder dem
+benutzerdefinierten externen Referenzkoordinatensystem
+
+ext
+
+ (bei statisch montierten Sensoren) berechnet und ausgegeben (siehe
+
+Sensormontage
+
+).
+
+Damit der Benutzer die Qualität der resultierenden
+Kalibriertransformation beurteilen kann, gibt das Modul den
+Kalibrierfehler an. Dieser in Pixeln ausgedrückte Wert gibt den
+quadratischen Mittelwert des Reprojektionsfehlers über alle
+Kalibrierslots und alle Eckpunkte des Kalibriermusters an. Für eine
+intuitivere Darstellung lässt sich dieser Wert durch Verwendung der
+Brennweite f des
+
+rc_visard
+
+ in Pixeln normalisieren:
+
+   E = \frac{E_\text{camera}}{f}     \:.
+
+Bemerkung: Der
+
+  rc_visard
+
+   stellt über seine verschiedenen Schnittstellen einen
+  Brennweitenfaktor bereit. Er bezieht sich auf die Bildbreite, um
+  verschiedene Bildauflösungen zu unterstützen. Die Brennweite f in
+  Pixeln lässt sich leicht bestimmen, indem der Brennweitenfaktor mit
+  der Bildbreite (in Pixeln) multipliziert wird.
+
+Der Wert E lässt sich nun als objektbezogener Fehler in Metern in der
+3D-Welt auslegen. Angenommen, der Abstand zwischen dem Kalibriermuster
+und dem
+
+rc_visard
+
+ beträgt einen Meter, dann liegt die
+
+mittlere
+
+ Genauigkeit bei der Transformation der Kalibriermuster-Koordinaten
+vom
+
+Kamera
+
+-Koordinatensystem in das Zielkoordinatensystem bei 1\cdot E Metern.
+Bei einem Abstand von 0,5 Metern gilt 0.5\cdot E Meter usw.
+
+Web GUI-Beispiel:
+   Sofort nachdem die letzte der vier Aufnahmen getätigt wurde, löst
+   die Web GUI automatisch die Berechnung des Kalibrierergebnisses
+   aus. Der Benutzer muss nur auf die Schaltfläche
+
+   Weiter
+
+    klicken, um zum Ergebnis zu gelangen. Für dieses Beispiel mit
+   einem statisch montierten
+
+   rc_visard
+
+    entspricht das Ergebnis der Position der linken Kamera des Sensors
+   im Weltkoordinatensystem des Roboters – dargestellt in dem in
+   Schritt 1 der Kalibrierroutine angegebenen Format
+
+   Pose
+
+   .
+
+   Aus dem in
+
+   Abb. 41
+
+    angegebenen Fehler von E_\text{camera}=0.4 Pixeln ergibt sich eine
+   Kalibriergenauigkeit von
+   E=\frac{E_\text{camera}}{f}\approx\frac{0.4}{1081.46}\approx
+   0.00036. Bei einem Abstand von einem Meter zum Sensor entspricht
+   dies 0,36 mm; damit liegt der Fehler für diesen Kalibriervorgang im
+   Submillimeterbereich.
+
+
+Parameter
+
+Das Modul zur Hand-Auge-Kalibrierung wird in der REST-API als
+"rc_hand_eye_calibration" bezeichnet und in der
+
+Web GUI
+
+ auf der Registerkarte
+
+Hand-Auge-Kalibrierung
+
+ dargestellt. Der Benutzer kann die Kalibrierparameter entweder dort
+oder über die
+
+REST-API-Schnittstelle
+
+ ändern.
+
+Übersicht über die Parameter
+
+Dieses Softwaremodul bietet folgende Laufzeitparameter.
+
+Laufzeitparameter des rc_hand_eye_calibration-Moduls              Name
+Typ  Min.  Max.  Default  Beschreibung  grid_height  float64  0.0
+10.0  0.0  Höhe des Kalibriermusters in Metern  grid_width  float64
+0.0  10.0  0.0  Breite des Kalibriermusters in Metern  robot_mounted
+bool  False  True  True  Angabe, ob der rc_visard auf einem Roboter
+montiert ist
+
+Dieses Modul meldet keine Statuswerte.
+
+Beschreibung der Laufzeitparameter
+
+Für die Beschreibungen der Parameter sind die in der Web GUI gewählten
+Namen der Parameter in Klammern angegeben.
+
+"grid_width" (
+Breite des Musters (m)
+
+)
+   Breite des Kalibriermusters in Metern. Die Breite sollte mit sehr
+   hoher Genauigkeit, vorzugsweise im Submillimeterbereich, ermittelt
+   werden.
+
+"grid_height" (
+Höhe des Musters (m)
+
+)
+   Höhe des Kalibriermusters in Metern. Die Höhe sollte mit sehr hoher
+   Genauigkeit, vorzugsweise im Submillimeterbereich, ermittelt
+   werden.
+
+"robot_mounted" (
+Sensor Montageart
+
+)
+   Ist dieser Parameter auf 1 gesetzt, dann ist der
+
+   rc_visard
+
+    an einem Roboter montiert. Ist er auf 0 gesetzt, ist der
+
+   rc_visard
+
+    statisch montiert und das Kalibriermuster ist am Roboter
+   angebracht.
+
+(
+Pose
+
+)
+   Der Benutzerfreundlichkeit halber kann der Benutzer die
+   Kalibrierungsdaten in der Web GUI entweder im Format
+
+   XYZABC
+
+    oder im Format
+
+   XYZ+Quaternion
+
+    angeben (siehe
+
+   Formate für Posendaten
+
+   ). Wird die Kalibrierung über die REST-API vorgenommen, dann wird
+   das Kalibrierergebnis immer im Format
+
+   XYZ+Quaternion
+
+    angegeben.
+
+Services
+
+Auf die Services, die die REST-API für die programmgesteuerte
+Durchführung der Hand-Auge-Kalibrierung und für die Speicherung oder
+Wiederherstellung der Modulparameter bietet, wird im Folgenden näher
+eingegangen.
+
+"save_parameters"
+   Mit diesem Service werden die aktuellen Parametereinstellungen zur
+   Hand-Auge-Kalibrierung auf dem
+
+   rc_visard
+
+    gespeichert. Das bedeutet, dass diese Werte selbst nach einem
+   Neustart angewandt werden.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert keine Rückgabewerte.
+
+"reset_defaults"
+   Hiermit werden die Werkseinstellungen der Parameter dieses Moduls
+   wieder hergestellt und angewandt ("factory reset"). Dies hat keine
+   Auswirkungen auf das Kalibrierergebnis oder auf die während der
+   Kalibrierung gefüllten "Slots". Es werden lediglich Parameter, wie
+   die Maße des Kalibriermusters oder die Montageart des Sensors,
+   zurückgesetzt.
+
+   Warnung: Der Benutzer muss bedenken, dass beim Aufruf dieses
+     Services die aktuellen Parametereinstellungen unwiderruflich
+     verloren gehen.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert keine Rückgabewerte.
+
+"set_pose"
+   Dieser Service setzt die Roboterpose als Kalibrierpose für die
+   Hand-Auge-Kalibrierroutine.
+
+   Für diesen Service sind folgende Argumente nötig:
+
+      {
+        "pose": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "position": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          }
+        },
+        "slot": "int32"
+      }
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "message": "string",
+        "status": "int32",
+        "success": "bool"
+      }
+
+   Das "slot"-Argument wird verwendet, um den verschiedenen
+   Kalibrierpositionen Ziffern zuzuordnen. Wann immer der Service
+   "set_pose" aufgerufen wird, wird ein Kamerabild aufgezeichnet.
+   Dieser Service schlägt fehl, wenn das Kalibriermuster im aktuellen
+   Bild nicht erkannt werden kann.
+
+   Rückgabewerte des  set_pose-Services        status  success
+   Beschreibung  1  true  Pose erfolgreich gespeichert  3  true  Pose
+   erfolgreich gespeichert; es wurden genügend Posen für die
+   Kalibrierung gespeichert, d. h. die Kalibrierung kann durchgeführt
+   werden  4  false  das Kalibriermuster wurde nicht erkannt, z. B.
+   weil es im Kamerabild nicht vollständig sichtbar ist  8  false
+   keine Bilddaten verfügbar  12  false  die gegebenen Werte der
+   Orientierung sind ungültig
+
+"reset_calibration"
+   Hiermit werden alle zuvor aufgenommenen Posen mitsamt der
+   zugehörigen Bilder gelöscht. Das letzte hinterlegte
+   Kalibrierergebnis wird neu geladen. Dieser Service kann verwendet
+   werden, um die Hand-Auge-Kalibrierung (neu) zu starten.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "message": "string",
+        "status": "int32",
+        "success": "bool"
+      }
+
+"calibrate"
+   Dieser Service dient dazu, das Ergebnis der Hand-Auge-Kalibrierung
+   auf Grundlage der über den Service "set_pose" konfigurierten
+   Roboterposen zu berechnen und auszugeben.
+
+   Bemerkung: Zur Berechnung der Transformation der Hand-Auge-
+     Kalibrierung werden mindestens drei Roboterposen benötigt (siehe
+     "set_pose"). Empfohlen wird jedoch die Verwendung von vier
+     Kalibrierposen.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "error": "float64",
+        "message": "string",
+        "pose": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "position": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          }
+        },
+        "robot_mounted": "bool",
+        "status": "int32",
+        "success": "bool"
+      }
+
+   Rückgabewerte des  calibrate-Services        status  success
+   Beschreibung  0  true  Kalibrierung erfolgreich; die resultierende
+   Kalibrierpose wurde zurückgegeben  1  false  nicht genügend Posen
+   gespeichert, um die Kalibrierung durchzuführen  2  false  das
+   berechnete Ergebnis ist ungültig, bitte prüfen Sie die Eingabewerte
+   3  false  die angegebenen Abmessungen des Kalibriermusters sind
+   ungültig
+
+"save_calibration"
+   Hiermit wird das Ergebnis der Hand-Auge-Kalibrierung persistent auf
+   dem
+
+   rc_visard
+
+    gespeichert und das vorherige Ergebnis überschrieben. Das
+   gespeicherte Ergebnis lässt sich jederzeit über den Service
+   "get_calibration" abrufen.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "message": "string",
+        "status": "int32",
+        "success": "bool"
+      }
+
+   Rückgabewerte des  save_calibration-Services        status  success
+   Beschreibung  0  true  die Kalibrierung wurde erfolgreich
+   gespeichert  1  false  die Kalibrierung konnte nicht im Dateisystem
+   gespeichert werden  2  false  die Kalibrierung ist nicht verfügbar
+
+"remove_calibration"
+   löscht die persistente Hand-Auge-Kalibrierung auf dem
+
+   rc_visard
+
+   . Nach diesem Aufruf gibt der "get_calibration" Service zurück,
+   dass keine Hand-Auge-Kalibrierung vorliegt.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "message": "string",
+        "status": "int32",
+        "success": "bool"
+      }
+
+   Rückgabewerte des  get_calibration-Services        status  success
+   Beschreibung  0  true  persistente Kalibrierung gelöscht, Sensor
+   nicht mehr kalibriert  1  true  keine persistente Kalibrierung
+   gefunden, Sensor nicht mehr kalibriert  2  false  die Kalibrierung
+   konnte nicht gelöscht werden
+
+"get_calibration"
+   Hiermit wird die derzeit auf dem
+
+   rc_visard
+
+    gespeicherte Hand-Auge-Kalibrierung abgerufen.
+
+   Für diesen Service sind keine Argumente nötig.
+
+   Dieser Service liefert folgenden Rückgabewert:
+
+      {
+        "error": "float64",
+        "message": "string",
+        "pose": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "position": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          }
+        },
+        "robot_mounted": "bool",
+        "status": "int32",
+        "success": "bool"
+      }
+
+   Rückgabewerte des  get_calibration-Services        status  success
+   Beschreibung  0  true  eine gültige Kalibrierung wurde
+   zurückgegeben  2  false  die Kalibrierung ist nicht verfügbar

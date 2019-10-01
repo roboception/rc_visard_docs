@@ -1,0 +1,43 @@
+.. include:: global_rst.glb
+
+.. _sect-opt-software-components:
+
+Optional software components
+============================
+
+The |rc_visard| offers optional software components that can be activated by
+purchasing a separate
+:ref:`license<sect-updating-license>`:latex:`\:(Section \ref{maintenance:sect-updating-license})`.
+
+The |rc_visard|'s optional software consists of the following components:
+
+- :doc:`slam` (``rc_slam``:latex:`, Section \ref{slam:sect-slam}`)
+   performs simultaneous localization and mapping for correcting
+   accumulated poses. The |rcvisard|'s covered trajectory is offered via the
+   :ref:`sect-rest-api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+.. ifconfig:: not kuka
+
+   - :doc:`iocontrol` (``rc_iocontrol``:latex:`, Section \ref{iocontrol:sect-iocontrol}`)
+      provides control over the general purpose inputs and outputs with special modes
+      for controlling an external random dot projector.
+
+   - :doc:`tagdetect` (``rc_april_tag_detect`` and ``rc_qr_code_detect``:latex:`, Section \ref{tagdetect:sect-tag-detection}`)
+      allows the detection of AprilTags and QR codes, as well as the estimation of their poses.
+
+   - :doc:`itempick` (``rc_itempick`` and ``rc_boxpick``:latex:`, Section \ref{itempick:sect-itempick}`)
+      provides an out-of-the-box perception solution for robotic pick-and-place
+      applications of unknown objects or boxes.
+
+   - :doc:`silhouettematch` (``rc_silhouettematch``:latex:`, Section \ref{silhouettematch:sect-silhouettematch}`)
+      provides an object detection solution for objects placed on a plane.
+
+.. toctree-filt::
+   :maxdepth: 2
+   :hidden:
+
+   slam
+   :roboception_only:iocontrol
+   :roboception_only:tagdetect
+   :roboception_only:itempick
+   :roboception_only:silhouettematch

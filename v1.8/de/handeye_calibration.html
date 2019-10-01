@@ -1,0 +1,1147 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="de" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Hand-Auge-Kalibrierung &mdash; rc_visard 1.8.1
+ Dokumentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Stichwortverzeichnis"
+              href="genindex.html"/>
+        <link rel="search" title="Suche" href="search.html"/>
+    <link rel="top" title="rc_visard 1.8.1
+ Dokumentation" href="index.html"/>
+        <link rel="up" title="Softwaremodule" href="components.html"/>
+        <link rel="next" title="Optionale Softwaremodule" href="optional.html"/>
+        <link rel="prev" title="Kamerakalibrierung" href="camera_calibration.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.8
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Suche" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Einführung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Überblick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Garantie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Schnittstellen, Zulassungen und Normen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Zulassungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Normen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Sicherheit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">Allgemeine Sicherheitshinweise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Bestimmungsgemäße Verwendung</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware-Spezifikation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Lieferumfang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technische Spezifikation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Umwelt- und Betriebsbedingungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Spezifikationen für die Stromversorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Verkabelung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanische Schnittstelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Koordinatensysteme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-and-configuration">Installation und Konfiguration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Einschalten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Netzwerkkonfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatische Konfiguration (werkseitige Voreinstellung)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manuelle Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rcvisard-devices">Aufspüren von <em>rc_visard</em>-Geräten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Zurücksetzen der Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#web-gui">Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Der <em>rc_visard</em> auf einen Blick</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#stereo-vision">Stereovision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#sensor-dynamics">Sensordynamik</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#calibration-relative-to-a-robot">Kalibrierung zu einem Roboter</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="components.html">Softwaremodule</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="stereo_camera.html">Stereokamera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#image-acquisition">Bilderfassung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#planar-rectification">Planare Rektifizierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_matching.html">Stereo-Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Berechnung von Disparitätsbildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Berechnung von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Konfidenz- und Fehlerbilder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dynamics.html">Sensordynamik</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#coordinate-frames-for-state-estimation">Koordinatensysteme für die Zustandsschätzung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#available-state-estimates">Verfügbare Zustandsschätzungen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#camera-pose-streams-pose-and-pose-ins">Kameraposen-Datenströme (<code class="docutils literal notranslate"><span class="pre">pose</span></code> und <code class="docutils literal notranslate"><span class="pre">pose_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-camera-pose-streams-pose-rt-and-pose-rt-ins">Echtzeit-Datenströme der Kamerapose (<code class="docutils literal notranslate"><span class="pre">pose_rt</span></code> und <code class="docutils literal notranslate"><span class="pre">pose_rt_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-dynamics-streams-dynamics-and-dynamics-ins">Echtzeit-Dynamik-Datenströme (<code class="docutils literal notranslate"><span class="pre">dynamics</span></code> und <code class="docutils literal notranslate"><span class="pre">dynamics_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#imu-data-stream-imu">IMU-Datenstrom (<code class="docutils literal notranslate"><span class="pre">imu</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_visodo.html">Visuelle Odometrie</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_ins.html">Stereo-INS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#parameters">Parameter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="camera_calibration.html">Kamerakalibrierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#calibration-process">Kalibriervorgang</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-1-calibration-settings">Schritt&nbsp;1: Einstellung der Kalibrierparameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-2-verify-calibration">Schritt&nbsp;2: Kalibrierung überprüfen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-3-performing-calibration">Schritt&nbsp;3: Durchführung der Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-4-storing-the-calibration-result">Schritt&nbsp;4: Kalibrierergebnis speichern</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Hand-Auge-Kalibrierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#calibration-interfaces">Kalibrierschnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sensor-mounting">Sensormontage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calibration-routine">Kalibrierroutine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#step-1-setting-parameters">Schritt&nbsp;1: Einstellung der Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-2-selecting-and-reporting-robot-calibration-positions">Schritt&nbsp;2: Auswahl und Übertragung der Kalibrierpositionen des Roboters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-3-calculating-and-saving-the-calibration-transformation">Schritt&nbsp;3: Berechnen und Speichern der Kalibriertransformation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="optional.html">Optionale Softwaremodule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="slam.html">SLAM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#usage">Verwendung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#memory-limitations">Speicherbeschränkungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#parameter-overview">Übersicht über die Parameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iocontrol.html">IO und Projektor-Kontrolle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#introduction">Einführung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#qr-code">QR-Code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#apriltag">AprilTag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#comparison">Vergleich</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-reading">Markererkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#pose-estimation">Posenschätzung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-re-identification">Marker-Wiedererkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#interfaces">Schnittstellen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters-and-status-values">Parameter und Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="itempick.html">ItemPick und BoxPick</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#introduction">Einführung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#data-types">Datentypen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#load-carrier">Load Carrier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#suction-grasp">Greifpunkt für Vakuum-Greifsysteme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#item-model">Objektmodell</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#interaction-with-other-components">Wechselwirkung mit anderen Modulen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#stereo-camera-and-stereo-matching">Stereokamera und Stereo-Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#sensor-dynamics">Sensordynamik</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#io-and-projector-control">IO und Projektor-Kontrolle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#parameters-and-status-values">Parameter und Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#introduction">Einführung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#suitable-objects">Taugliche Objekte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#suitable-scene">Taugliche Szene</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Kalibrierung der Basisebene</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#apriltag-based-base-plane-calibration">AprilTag-basierte Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#stereo-based-base-plane-calibration">Stereo-basierte Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#manual-base-plane-calibration">Manuelle Kalibrierung der Basisebene</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setzen einer Region of Interest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#interaction-with-other-components">Wechselwirkung mit anderen Modulen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#stereo-camera-and-stereo-matching">Stereokamera und Stereo-Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#io-and-projector-control">IO und Projektor-Kontrolle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#parameters-and-status-values">Parameter und Statuswerte</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#services">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#template-upload">Template Upload</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Schnittstellen</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-visard">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard</em></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#chunk-data">Chunk Daten</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#general-api-structure">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#nodes-parameters-and-services">Module, Parameter und Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#datastreams">Datenströme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#system-and-logs">System und Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#data-type-definitions">Datentyp-Definitionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#swagger-ui">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rc_dynamics.html">Die rc_dynamics-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#starting-stopping-dynamic-state-estimation">Starten/Stoppen der Dynamik-Zustandsschätzungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#configuring-data-streams">Konfiguration von Datenströmen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#data-stream-protocol">Datenstromprotokoll</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Konfiguration der Ethernet-Verbindung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Allgemeine XML-Struktur</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Rückgabecode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Anfrage-XML-Struktur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Antwort-XML-Struktur</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI-XML-Konfigurationsdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Wartung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcvisard">Neustart des <em>rc_visard</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Anschlussset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Verkabelung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet-Anschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Stromanschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Netzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Ersatzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Fehlerbehebung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED-Farben</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Probleme mit der Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Probleme mit der Konnektivität</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Probleme mit den Kamerabildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Probleme mit Tiefen-/Disparitäts-, Fehler- oder Konfidenzbildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#dynamics-issues">Probleme mit der Zustandsschätzung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">Probleme mit GigE&nbsp;Vision/GenICam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Kontakt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Adresse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Anhang</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pose_formats.html">Formate für Posendaten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyzabc-format">XYZABC-Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyz-quaternion-format">XYZ+Quaternion-Format</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Dokumentation</a> &raquo;</li>
+        
+          <li><a href="components.html">Softwaremodule</a> &raquo;</li>
+        
+      <li>Hand-Auge-Kalibrierung</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hand-eye-calibration">
+<span id="sect-handeye-calibration"></span><h1>Hand-Auge-Kalibrierung<a class="headerlink" href="#hand-eye-calibration" title="Link zu dieser Überschrift">¶</a></h1>
+<p id="index-0">Für Anwendungen, bei denen der <em>rc_visard</em> in eines oder mehrere Robotersysteme integriert wird, muss er zum jeweiligen Roboter-Koordinatensystem kalibriert werden. Zu diesem Zweck wird der <em>rc_visard</em> mit einer internen Kalibrierroutine, dem Modul zur <em>Hand-Auge-Kalibrierung</em>, ausgeliefert.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Für die Hand-Auge-Kalibrierung ist es völlig unerheblich, in Bezug auf welches benutzerdefinierte Roboter-Koordinatensystem der <em>rc_visard</em> kalibriert wird. Hierbei kann es sich um einen Endeffektor des Roboters (z.&nbsp;B. Flansch oder Tool Center Point (Werkzeugmittelpunkt)) oder um einen beliebigen anderen Punkt in der Roboterstruktur handeln. Einzige Voraussetzung für die Hand-Auge-Kalibrierung ist, dass die Pose (d.&nbsp;h. Positions- und Rotationswerte) dieses Roboter-Koordinatensystems in Bezug auf ein benutzerdefiniertes externes Koordinatensystem (z. B. Welt oder Roboter-Montagepunkt) direkt von der Robotersteuerung erfasst und an das Kalibriermodul übertragen werden kann.</p>
+</div>
+<p>Die <a class="reference internal" href="#sect-handeye-calibration-procedure"><span class="std std-ref">Kalibrierroutine</span></a>  ist ein benutzerfreundliches dreistufiges Verfahren, für das mit einem Kalibriermuster gearbeitet wird. Kalibriermuster für den <em>rc_visard</em> können von Roboception bezogen werden.</p>
+<div class="section" id="calibration-interfaces">
+<h2>Kalibrierschnittstellen<a class="headerlink" href="#calibration-interfaces" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Für die Durchführung der Hand-Auge-Kalibrierung stehen die folgenden beiden Schnittstellen zur Verfügung:</p>
+<ol class="arabic">
+<li><p class="first">Alle Services und Parameter dieses Moduls, die für eine <strong>programmgesteuerte</strong> Durchführung der Hand-Auge-Kalibrierung benötigt werden, sind in der <a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API-Schnittstelle</span></a> des <em>rc_visard</em> enthalten. Der REST-API-Name dieses Moduls lautet <code class="docutils literal notranslate"><span class="pre">rc_hand_eye_calibration</span></code> und seine Services werden in <a class="reference internal" href="#sect-handeye-calibration-services"><span class="std std-ref">Services</span></a> erläutert.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Für den beschriebenen Ansatz wird eine Netzwerkverbindung zwischen dem <em>rc_visard</em> und der Robotersteuerung benötigt, damit die Steuerung die Roboterposen an das Kalibriermodul des Sensors übertragen kann.</p>
+</div>
+</li>
+<li><p class="first">Für Anwendungsfälle, bei denen sich die Roboterposen nicht programmgesteuert an das Modul zur Hand-Auge-Kalibrierung des <em>rc_visard</em> übertragen lassen, sieht die Registerkarte <em>Hand-Auge-Kalibrierung</em> der <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>  einen geführten Prozess vor, mit dem sich die Kalibrierroutine <strong>manuell</strong> durchführen lässt.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Während der Kalibrierung muss der Benutzer die Roboterposen, auf die über das jeweilige Teach-in- oder Handheld-Gerät zugegriffen werden muss, manuell in die Web GUI eingeben.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="sensor-mounting">
+<span id="sect-handeyecalib-mounting"></span><h2>Sensormontage<a class="headerlink" href="#sensor-mounting" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-1">Wie in <a class="reference internal" href="#fig-sketch-handeyecalib-robot-mounted"><span class="std std-numref">Abb. 33</span></a> und <a class="reference internal" href="#fig-sketch-handeyecalib-static"><span class="std std-numref">Abb. 34</span></a> dargestellt, ist für die Montage des <em>rc_visard</em> zwischen zwei unterschiedlichen Anwendungsfällen zu unterscheiden:</p>
+<ol class="loweralpha simple">
+<li>Der <em>rc_visard</em> wird <strong>am Roboter montiert</strong>, d.&nbsp;h. seine <a class="reference internal" href="hardware_spec.html#sect-mechanical"><span class="std std-ref">Montagepunkte</span></a>) sind mechanisch mit einem Roboterpunkt (d.&nbsp;h. Flansch oder flanschmontiertes Werkzeug) verbunden und der <em>rc_visard</em> bewegt sich demnach mit dem Roboter.</li>
+<li>Der <em>rc_visard</em> ist nicht am Roboter montiert, sondern an einem Tisch oder anderen Ort in der Nähe des Roboters befestigt und verbleibt daher verglichen mit dem Roboter in einer <strong>statischen</strong> Position.</li>
+</ol>
+<p>Die allgemeine <a class="reference internal" href="#sect-handeye-calibration-procedure"><span class="std std-ref">Kalibrierroutine</span></a> ist in beiden Anwendungsfällen sehr ähnlich. Sie unterscheidet sich jedoch hinsichtlich der semantischen Auslegung der Ausgabedaten, d.&nbsp;h. der erhaltenen Kalibriertransformation, und hinsichtlich der Befestigung des Kalibriermusters.</p>
+<dl class="docutils">
+<dt>Kalibrierung eines robotergeführten Sensors</dt>
+<dd><p class="first">Soll ein robotergeführter <em>rc_visard</em> zum Roboter kalibriert werden, so muss das Kalibriermuster in einer statischen Position zum Roboter, z.&nbsp;B. auf einem Tisch oder festen Sockel, befestigt werden (siehe <a class="reference internal" href="#fig-sketch-handeyecalib-robot-mounted"><span class="std std-numref">Abb. 33</span></a>).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Es ist äußerst wichtig, dass sich das Kalibriermuster in Schritt&nbsp;2 der <a class="reference internal" href="#sect-handeye-calibration-procedure"><span class="std std-ref">Kalibrierroutine</span></a> nicht bewegt. Daher wird dringend empfohlen, das Muster in seiner Position sicher zu fixieren, um unbeabsichtigte Bewegungen, wie sie durch Vibrationen, Kabelbewegungen oder Ähnliches ausgelöst werden, zu verhindern.</p>
+</div>
+<p>Das Ergebnis der Kalibrierung (Schritt&nbsp;3 der <a class="reference internal" href="#sect-handeye-calibration-procedure"><span class="std std-ref">Kalibrierroutine</span></a>) ist eine Pose <span class="math notranslate nohighlight">\(\mathbf{T}^{\text{robot}}_{\text{camera}}\)</span>, die die (zuvor unbekannte) relative Transformation zwischen dem <em>Kamera</em>-Koordinatensystem des <em>rc_visard</em> und dem benutzerdefinierten <em>Roboter</em>-Koordinatensystems beschreibt, sodass Folgendes gilt:</p>
+<div class="math notranslate nohighlight" id="equation-handeye-calib-robotmounted-result">
+<span class="eqno">(3)<a class="headerlink" href="#equation-handeye-calib-robotmounted-result" title="Permalink to this equation">¶</a></span>\[\mathbf{p}_{\text{robot}} =
+    \mathbf{R} \left(\mathbf{T}^{\text{robot}}_{\text{camera}}\right)
+    \cdot \mathbf{p}_{\text{camera}}
+    + \mathbf{t} \left(\mathbf{T}^{\text{robot}}_{\text{camera}}\right)
+    \:,\]</div>
+<p>wobei <span class="math notranslate nohighlight">\(\mathbf{p}_{\text{robot}} = (x,y,z)^T\)</span> ein 3D-Punkt ist, dessen Koordinaten im <em>Roboter</em>-Koordinatensystem angegeben werden; <span class="math notranslate nohighlight">\(\mathbf{p}_{\text{camera}}\)</span> den gleichem Punkt im <em>Kamera</em>-Koordinatensystem darstellt; und <span class="math notranslate nohighlight">\(\mathbf{R}(\mathbf{T})\)</span> sowie <span class="math notranslate nohighlight">\(\mathbf{t}(\mathbf{T})\)</span> die <span class="math notranslate nohighlight">\(3\times 3\)</span> Drehmatrix und den <span class="math notranslate nohighlight">\(3\times 1\)</span> Translationsvektor für eine Pose <span class="math notranslate nohighlight">\(\mathbf{T}\)</span> angeben.</p>
+<div class="last figure align-center" id="id1">
+<span id="fig-sketch-handeyecalib-robot-mounted"></span><a class="reference internal image-reference" href="_images/sketch_handeye_calib_robotmounted_de.png"><img alt="_images/sketch_handeye_calib_robotmounted_de.png" src="_images/sketch_handeye_calib_robotmounted_de.png" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 33 </span><span class="caption-text">Wichtige Koordinatensysteme und Transformationen für die Kalibrierung eines robotergeführten <em>rc_visard</em>: Der Sensor wird mit einer festen relativen Position zu einem benutzerdefinierten <em>Roboter</em>-Koordinatensystem (z.&nbsp;B. Flansch oder Werkzeugmittelpunkt) montiert. Es ist wichtig, dass die Pose <span class="math notranslate nohighlight">\(\mathbf{T}^{\text{ext}}_{\text{robot}}\)</span> des <em>Roboter</em>-Koordinatensystems in Bezug auf ein benutzerdefiniertes externes Referenzkoordinatensystem (<em>ext</em>) während der Kalibrierroutine gemessen werden kann. Das Ergebnis des Kalibriervorgangs ist die gewünschte Kalibriertransformation <span class="math notranslate nohighlight">\(\mathbf{T}^{\text{robot}}_{\text{camera}}\)</span>, d.&nbsp;h. die Pose des <em>Kamera</em>-Koordinatensystems im benutzerdefinierten <em>Roboter</em>-Koordinatensystems.</span></p>
+</div>
+</dd>
+<dt>Kalibrierung eines statisch montierten Sensors</dt>
+<dd><p class="first">In Anwendungsfällen, bei denen der <em>rc_visard</em> statisch verglichen zum Roboter montiert wird, muss das Kalibriermuster, wie im Beispiel in <a class="reference internal" href="#fig-sketch-handeyecalib-static"><span class="std std-numref">Abb. 34</span></a> und <a class="reference internal" href="#fig-sketch-handeyecalib-gridmount"><span class="std std-numref">Abb. 35</span></a> angegeben, angebracht werden.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Für das Modul zur Hand-Auge-Kalibrierung spielt es keine Rolle, wie das Kalibriermuster in Bezug auf das benutzerdefinierte <em>Roboter</em>-Koordinatensystem genau angebracht und positioniert wird. Das bedeutet, dass die relative Positionierung des Kalibriermusters zu diesem Koordinatensystem weder bekannt sein muss, noch für die Kalibrierroutine relevant ist (siehe in <a class="reference internal" href="#fig-sketch-handeyecalib-gridmount"><span class="std std-numref">Abb. 35</span></a>).</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p>Es ist äußerst wichtig, das Kalibriermuster sicher am Roboter anzubringen, damit sich seine relative Position in Bezug auf das in Schritt&nbsp;2 der <a class="reference internal" href="#sect-handeye-calibration-procedure"><span class="std std-ref">Kalibrierroutine</span></a> vom Benutzer definierte <em>Roboter</em>-Koordinatensystem nicht verändert.</p>
+<p class="last">Daher wird dringend empfohlen, unbeabsichtigte Bewegungen, wie sie beispielsweise durch Vibrationen verursacht werden, zu vermeiden. Hierfür kann das Kalibriermuster beispielsweise auf einer hölzernen Unterlage (empfohlene Mindestdicke: 1&nbsp;cm) aufgebracht werden, die anschließend an die Roboterstruktur, z.&nbsp;B. seinen Flansch oder sein Werkzeug, angeschraubt wird.</p>
+</div>
+<p>In diesem Anwendungsfall ist das Ergebnis der Kalibrierung (Schritt&nbsp;3 der <a class="reference internal" href="#sect-handeye-calibration-procedure"><span class="std std-ref">Kalibrierroutine</span></a>) die Pose <span class="math notranslate nohighlight">\(\mathbf{T}^{\text{ext}}_{\text{camera}}\)</span>, die die (zuvor unbekannte) relative Transformation der zwischen dem <em>Kamera</em>-Koordinatensystem des <em>rc_visard</em> und dem benutzerdefinierten <em>Roboter</em>-Koordinatensystem beschreibt, sodass Folgendes gilt:</p>
+<div class="math notranslate nohighlight" id="equation-handeye-calib-static-result">
+<span class="eqno">(4)<a class="headerlink" href="#equation-handeye-calib-static-result" title="Permalink to this equation">¶</a></span>\[\mathbf{p}_{\text{ext}} =
+    \mathbf{R} \left(\mathbf{T}^{\text{ext}}_{\text{camera}}\right)
+    \cdot \mathbf{p}_{\text{camera}}
+    + \mathbf{t} \left(\mathbf{T}^{\text{ext}}_{\text{camera}}\right)
+    \:,\]</div>
+<p>wobei <span class="math notranslate nohighlight">\(\mathbf{p}_{\text{ext}} = (x,y,z)^T\)</span> ein 3D-Punkt ist, dessen Koordinaten im externen Referenzkoordinatensystem <em>ext</em> angegeben werden; <span class="math notranslate nohighlight">\(\mathbf{p}_{\text{camera}}\)</span> den gleichen Punkt im <em>Kamera</em>-Koordinatensystem darstellt; und <span class="math notranslate nohighlight">\(\mathbf{R}(\mathbf{T})\)</span> sowie <span class="math notranslate nohighlight">\(\mathbf{t}(\mathbf{T})\)</span> die <span class="math notranslate nohighlight">\(3\times 3\)</span> Drehmatrix und den <span class="math notranslate nohighlight">\(3\times 1\)</span> Translationsvektor für eine Position <span class="math notranslate nohighlight">\(\mathbf{T}\)</span> angeben.</p>
+<div class="figure align-center" id="id2">
+<span id="fig-sketch-handeyecalib-static"></span><a class="reference internal image-reference" href="_images/sketch_handeye_calib_static_de.png"><img alt="_images/sketch_handeye_calib_static_de.png" src="_images/sketch_handeye_calib_static_de.png" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 34 </span><span class="caption-text">Wichtige Koordinatensysteme und Transformationen für die Kalibrierung eines statisch montierten <em>rc_visard</em>: Der Sensor wird mit einer festen Position relativ zu einem benutzerdefinierten externen Referenzkoordinatensystem <em>ext</em> (z.&nbsp;B. Weltkoordinatensystem oder Roboter-Montagepunkt) montiert. Es ist wichtig, dass die Pose <span class="math notranslate nohighlight">\(\mathbf{T}^{\text{ext}}_{\text{robot}}\)</span> des benutzerdefinierten <em>Roboter</em>-Koordinatensystems in Bezug auf dieses Koordinatensystem während der Kalibrierroutine gemessen werden kann. Das Ergebnis des Kalibrierprozesses ist die gewünschte Kalibriertransformation <span class="math notranslate nohighlight">\(\mathbf{T}^{\text{ext}}_{\text{camera}}\)</span>, d.&nbsp;h. die Pose des <em>Kamera</em>-Koordinatensystems im benutzerdefinierten externen Koordinatensystem <em>ext</em>.</span></p>
+</div>
+<div class="last figure align-center" id="id3">
+<span id="fig-sketch-handeyecalib-gridmount"></span><a class="reference internal image-reference" href="_images/sketch_handeye_calib_gridmount_de.png"><img alt="_images/sketch_handeye_calib_gridmount_de.png" src="_images/sketch_handeye_calib_gridmount_de.png" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 35 </span><span class="caption-text">Alternative Montageoptionen für die Befestigung des Kalibriermusters am Roboter</span></p>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="calibration-routine">
+<span id="sect-handeye-calibration-procedure"></span><h2>Kalibrierroutine<a class="headerlink" href="#calibration-routine" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-2">Die allgemeine Hand-Auge-Kalibrierroutine besteht aus den in <a class="reference internal" href="#fig-sketch-handeyecalib-procedure"><span class="std std-numref">Abb. 36</span></a> angegebenen drei Schritten. Auch der Hand-Auge-Kalibriervorgang der <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> greift diese drei Schritte auf.</p>
+<div class="figure align-center" id="id4">
+<span id="fig-sketch-handeyecalib-procedure"></span><a class="reference internal image-reference" href="_images/sketch_handeye_calib_procedure_de.png"><img alt="_images/sketch_handeye_calib_procedure_de.png" src="_images/sketch_handeye_calib_procedure_de.png" style="width: 90%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 36 </span><span class="caption-text">Darstellung der drei Schritte der Hand-Auge-Kalibrierroutine</span></p>
+</div>
+<div class="section" id="step-1-setting-parameters">
+<h3>Schritt&nbsp;1: Einstellung der Parameter<a class="headerlink" href="#step-1-setting-parameters" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Bevor mit der eigentlichen Kalibrierroutine begonnen werden kann, müssen die Parameter für die Mustergröße und Sensormontage eingestellt werden. Für die REST-API sind die entsprechenden <a class="reference internal" href="#sect-handeye-calibration-params"><span class="std std-ref">Parameter</span></a> aufgelistet.</p>
+<dl class="docutils">
+<dt>Web GUI-Beispiel:</dt>
+<dd><p class="first">Die Web GUI bietet eine Oberfläche, über die sich diese Parameter im ersten Schritt der Kalibrierroutine, wie in <a class="reference internal" href="#fig-handeyecalib-webgui1"><span class="std std-numref">Abb. 37</span></a> gezeigt, erfassen lassen. Neben den Angaben zur Mustergröße und Sensormontage kann der Benutzer in der Web GUI auch das Format der <em>Pose</em> einstellen. Dieses Format wird im nachfolgenden Schritt&nbsp;2 des Kalibriervorgangs verwendet, um die Roboterposen zu übertragen. Folgende Formate sind möglich: <em>XYZABC</em> für Positionen und Eulersche Winkel oder <em>XYZ+Quaternion</em> für Positionen samt Quaternionen für die Darstellung von Drehungen. Für die genauen Definitionen siehe <a class="reference internal" href="pose_formats.html#sect-pose-formats"><span class="std std-ref">Formate für Posendaten</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Der Parameter <em>Pose</em> in der Web GUI wurde lediglich der Benutzerfreundlichkeit halber hinzugefügt. Für die programmgesteuerte Übertragung von Roboterposen über die REST-API ist die Verwendung des <em>XYZ+Quaternion</em>-Formats zwingend vorgeschrieben.</p>
+</div>
+<div class="last figure align-center" id="id5">
+<span id="fig-handeyecalib-webgui1"></span><a class="reference internal image-reference" href="_images/webgui_hand_eye_calib1_de.png"><img alt="_images/webgui_hand_eye_calib1_de.png" src="_images/webgui_hand_eye_calib1_de.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 37 </span><span class="caption-text">Erfassung der Parameter zur Hand-Auge-Kalibrierung in der Web GUI des <em>rc_visard</em></span></p>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="step-2-selecting-and-reporting-robot-calibration-positions">
+<h3>Schritt&nbsp;2: Auswahl und Übertragung der Kalibrierpositionen des Roboters<a class="headerlink" href="#step-2-selecting-and-reporting-robot-calibration-positions" title="Link zu dieser Überschrift">¶</a></h3>
+<p>In diesem Schritt (2a.) definiert der Benutzer verschiedene Kalibrierpositionen, die der Roboter anfahren muss. Dabei ist sicherzustellen, dass das Kalibriermuster bei allen Positionen im linken Kamerabild des <em>rc_visard</em> vollständig sichtbar ist. Zudem müssen die Roboterpositionen sorgsam ausgewählt werden, damit der <em>rc_visard</em> das Kalibriermuster aus unterschiedlichen Perspektiven aufnehmen kann. <a class="reference internal" href="#fig-handeyecalib-poses"><span class="std std-numref">Abb. 38</span></a> zeigt eine schematische Darstellung der empfohlenen vier Ansichten.</p>
+<div class="figure align-center" id="id6">
+<span id="fig-handeyecalib-poses"></span><a class="reference internal image-reference" href="_images/handeyecalib-alldraw.png"><img alt="_images/handeyecalib-alldraw.png" src="_images/handeyecalib-alldraw.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 38 </span><span class="caption-text">Empfohlene Ansichten des Kalibriermusters während des Kalibriervorgangs</span></p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Die Kalibrierqualität, d.&nbsp;h. die Genauigkeit des berechneten Kalibrierergebnisses, hängt von den Ansichten des Kalibriermuster ab. Je vielfältiger die Perspektiven sind, desto besser gelingt die Kalibrierung. Werden sehr ähnliche Ansichten ausgewählt, d.&nbsp;h. werden die Positionen des Roboters bei den verschiedenen Wiederholungen von Schritt&nbsp;2a nur leicht variiert, kann dies zu einer ungenauen Schätzung der gewünschten Kalibriertransformation führen.</p>
+</div>
+<p id="index-3">Nachdem der Roboter die jeweilige Kalibrierposition erreicht hat, muss die entsprechende Pose <span class="math notranslate nohighlight">\(\mathbf{T}^{\text{ext}}_{\text{robot}}\)</span> des benutzerdefinierten <em>Roboter</em>-Koordinatensystems im benutzerdefinierten externen Referenzkoordinatensystem <em>ext</em> an das Modul zur Hand-Auge-Kalibrierung übertragen werden (2b.). Hierfür bietet das Softwaremodul verschiedene <em>Slots</em>, in denen die gemeldeten Posen mit den zugehörigen Bildern der linken Kamera des <em>rc_visard</em> hinterlegt werden können. Alle gefüllten Slots werden dann verwendet, um die gewünschte Kalibriertransformation zwischen dem Kamera-Koordinatensystem des <em>rc_visard</em> und dem benutzerdefinierten <em>Roboter</em>-Koordinatensystem (bei robotergeführten Sensoren) bzw. dem benutzerdefinierten externen Referenzkoordinatensystem <em>ext</em> (bei statisch montierten Sensoren) zu berechnen.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Um die Transformation für die Hand-Auge-Kalibrierung erfolgreich zu berechnen, müssen mindestens drei verschiedenen Roboter-Kalibrierposen übertragen und in Slots hinterlegt werden. Um Kalibrierfehler zu verhindern, die durch ungenaue Messungen entstehen können, sind mindestens <strong>vier Kalibrierposen empfohlen</strong>.</p>
+</div>
+<p>Um diese Posen programmgesteuert zu übertragen, bietet die REST-API den Service <code class="docutils literal notranslate"><span class="pre">set_pose</span></code> (siehe <a class="reference internal" href="#sect-handeye-calibration-services"><span class="std std-ref">Services</span></a>).</p>
+<dl class="docutils">
+<dt>Web GUI-Beispiel:</dt>
+<dd><p class="first">Nachdem die Kalibriereinstellungen in Schritt&nbsp;1 abgeschlossen und die Schaltfläche <em>Weiter</em> betätigt wurde, bietet die Web GUI vier verschiedene Slots (<em>Erste Ansicht</em>, <em>Zweite Ansicht</em>, usw.), in die der Benutzer die Posen manuell eintragen kann. Ganz oben wird ein Live-Stream der Kamera angezeigt, um nachverfolgen zu können, ob das Kalibriermuster aktuell erkannt wird oder nicht. Neben jedem Slot wird eine Empfehlung für die Ansicht des Kalibriermusters angezeigt. Der Roboter sollte für jeden Slot so bewegt werden, dass die empfohlene Ansicht erreicht wird.</p>
+<div class="figure align-center" id="id7">
+<a class="reference internal image-reference" href="_images/webgui_hand_eye_calib2_de.png"><img alt="_images/webgui_hand_eye_calib2_de.png" src="_images/webgui_hand_eye_calib2_de.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 39 </span><span class="caption-text">Erstes Beispielbild für den Hand-Auge-Kalibriervorgang eines statisch montierten <em>rc_visard</em></span></p>
+</div>
+<p>Sobald das tatsächliche Bild der empfohlenen Ansicht entspricht, sind die Posen des benutzerdefinierten <em>Roboter</em>-Koordinatensystems manuell in den entsprechenden Textfeldern zu erfassen und das Kamerabild mit der Schaltfläche <em>Bild aufnehmen</em> aufzunehmen.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Der Zugriff auf die Posendaten des Roboters hängt vom Modell des Roboters und seinem Hersteller ab. Möglicherweise lässt sich dies über ein im Lieferumfang des Roboters enthaltenes Teach-in- oder Handheld-Gerät vornehmen.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Es ist sorgsam darauf zu achten, dass genaue und korrekte Werte eingegeben werden. Selbst kleinste Ungenauigkeiten oder Tippfehler können dazu führen, dass die Kalibrierung fehlschlägt.</p>
+</div>
+<p>Dieser Vorgang ist insgesamt viermal zu wiederholen. Vorausgesetzt, die in <a class="reference internal" href="#fig-handeyecalib-poses"><span class="std std-numref">Abb. 38</span></a> dargestellten Empfehlungen zur Aufnahme des Kalibriermusters von oben, von links, von vorn und von rechts wurden eingehalten, werden die folgenden Kamerabilder mit den jeweiligen Roboterposen an das Softwaremodul zur Hand-Auge-Kalibrierung übertragen:</p>
+<div class="last figure align-center" id="id8">
+<span id="fig-handeyecalib-images"></span><a class="reference internal image-reference" href="_images/handeyecalib-allpics.png"><img alt="_images/handeyecalib-allpics.png" src="_images/handeyecalib-allpics.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 40 </span><span class="caption-text">Kamerabilder, die zum Zwecke der Kalibrierung aufgezeichnet wurden</span></p>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="step-3-calculating-and-saving-the-calibration-transformation">
+<h3>Schritt&nbsp;3: Berechnen und Speichern der Kalibriertransformation<a class="headerlink" href="#step-3-calculating-and-saving-the-calibration-transformation" title="Link zu dieser Überschrift">¶</a></h3>
+<p id="index-4">Der letzte Schritt in der Hand-Auge-Kalibrierroutine besteht darin, die gewünschte Kalibriertransformation auf Grundlage der erfassten Posen und Kamerabilder zu berechnen. Die REST-API bietet hierfür den Service <code class="docutils literal notranslate"><span class="pre">calibrate</span></code> (siehe  <a class="reference internal" href="#sect-handeye-calibration-services"><span class="std std-ref">Services</span></a>). Je nachdem, wie der <em>rc_visard</em> montiert ist, wird dabei die Transformation (d.&nbsp;h. die Pose) zwischen dem <em>Kamera</em>-Koordinatensystem und entweder dem benutzerdefinierten <em>Roboter</em>-Koordinatensystem (bei robotergeführten Sensoren) oder dem benutzerdefinierten externen Referenzkoordinatensystem <em>ext</em> (bei statisch montierten Sensoren) berechnet und ausgegeben (siehe <a class="reference internal" href="#sect-handeyecalib-mounting"><span class="std std-ref">Sensormontage</span></a>).</p>
+<p>Damit der Benutzer die Qualität der resultierenden Kalibriertransformation beurteilen kann, gibt das Modul den Kalibrierfehler an. Dieser in Pixeln ausgedrückte Wert gibt den quadratischen Mittelwert des Reprojektionsfehlers über alle Kalibrierslots und alle Eckpunkte des Kalibriermusters an. Für eine intuitivere Darstellung lässt sich dieser Wert durch Verwendung der Brennweite <span class="math notranslate nohighlight">\(f\)</span> des <em>rc_visard</em> in Pixeln normalisieren:</p>
+<div class="math notranslate nohighlight">
+\[E = \frac{E_\text{camera}}{f}
+    \:.\]</div>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Der <em>rc_visard</em> stellt über seine verschiedenen Schnittstellen einen Brennweitenfaktor bereit. Er bezieht sich auf die Bildbreite, um verschiedene Bildauflösungen zu unterstützen. Die Brennweite <span class="math notranslate nohighlight">\(f\)</span> in Pixeln lässt sich leicht bestimmen, indem der Brennweitenfaktor mit der Bildbreite (in Pixeln) multipliziert wird.</p>
+</div>
+<p>Der Wert <span class="math notranslate nohighlight">\(E\)</span> lässt sich nun als objektbezogener Fehler in Metern in der 3D-Welt auslegen. Angenommen, der Abstand zwischen dem Kalibriermuster und dem <em>rc_visard</em> beträgt einen Meter, dann liegt die <em>mittlere</em> Genauigkeit bei der Transformation der Kalibriermuster-Koordinaten vom <em>Kamera</em>-Koordinatensystem in das Zielkoordinatensystem bei <span class="math notranslate nohighlight">\(1\cdot E\)</span>&nbsp;Metern. Bei einem Abstand von 0,5&nbsp;Metern gilt <span class="math notranslate nohighlight">\(0.5\cdot E\)</span>&nbsp;Meter usw.</p>
+<dl class="docutils">
+<dt>Web GUI-Beispiel:</dt>
+<dd><p class="first">Sofort nachdem die letzte der vier Aufnahmen getätigt wurde, löst die Web GUI automatisch die Berechnung des Kalibrierergebnisses aus. Der Benutzer muss nur auf die Schaltfläche <em>Weiter</em> klicken, um zum Ergebnis zu gelangen. Für dieses Beispiel mit einem statisch montierten <em>rc_visard</em> entspricht das Ergebnis der Position der linken Kamera des Sensors im Weltkoordinatensystem des Roboters – dargestellt in dem in Schritt&nbsp;1 der Kalibrierroutine angegebenen Format <em>Pose</em>.</p>
+<p>Aus dem in <a class="reference internal" href="#fig-webgui-hand-eye-calibration-result"><span class="std std-numref">Abb. 41</span></a> angegebenen Fehler von <span class="math notranslate nohighlight">\(E_\text{camera}=0.4\)</span>&nbsp;Pixeln ergibt sich eine Kalibriergenauigkeit von <span class="math notranslate nohighlight">\(E=\frac{E_\text{camera}}{f}\approx\frac{0.4}{1081.46}\approx 0.00036\)</span>. Bei einem Abstand von einem Meter zum Sensor entspricht dies 0,36&nbsp;mm; damit liegt der Fehler für diesen Kalibriervorgang im Submillimeterbereich.</p>
+<div class="last figure align-center" id="id9">
+<span id="fig-webgui-hand-eye-calibration-result"></span><a class="reference internal image-reference" href="_images/webgui_hand_eye_calib3_de.png"><img alt="_images/webgui_hand_eye_calib3_de.png" src="_images/webgui_hand_eye_calib3_de.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 41 </span><span class="caption-text">Ergebnis der Hand-Auge-Kalibrierung, dargestellt in der Web GUI</span></p>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="parameters">
+<span id="sect-handeye-calibration-params"></span><h2>Parameter<a class="headerlink" href="#parameters" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-5">Das Modul zur Hand-Auge-Kalibrierung wird in der REST-API als <code class="docutils literal notranslate"><span class="pre">rc_hand_eye_calibration</span></code> bezeichnet und in der <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> auf der Registerkarte <em>Hand-Auge-Kalibrierung</em> dargestellt. Der Benutzer kann die Kalibrierparameter entweder dort oder über die <a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API-Schnittstelle</span></a> ändern.</p>
+<div class="section" id="parameter-overview">
+<h3>Übersicht über die Parameter<a class="headerlink" href="#parameter-overview" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Dieses Softwaremodul bietet folgende Laufzeitparameter.</p>
+<table border="1" class="docutils" id="laufzeitparameter-des-rc-hand-eye-calibration-moduls">
+<caption><span class="caption-number">Tab. 15 </span><span class="caption-text">Laufzeitparameter des <code class="docutils literal notranslate"><span class="pre">rc_hand_eye_calibration</span></code>-Moduls</span><a class="headerlink" href="#laufzeitparameter-des-rc-hand-eye-calibration-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Typ</th>
+<th class="head">Min.</th>
+<th class="head">Max.</th>
+<th class="head">Default</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">grid_height</span></code></td>
+<td>float64</td>
+<td>0.0</td>
+<td>10.0</td>
+<td>0.0</td>
+<td>Höhe des Kalibriermusters in Metern</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">grid_width</span></code></td>
+<td>float64</td>
+<td>0.0</td>
+<td>10.0</td>
+<td>0.0</td>
+<td>Breite des Kalibriermusters in Metern</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">robot_mounted</span></code></td>
+<td>bool</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>Angabe, ob der <em>rc_visard</em> auf einem Roboter montiert ist</td>
+</tr>
+</tbody>
+</table>
+<p>Dieses Modul meldet keine Statuswerte.</p>
+</div>
+<div class="section" id="description-of-run-time-parameters">
+<h3>Beschreibung der Laufzeitparameter<a class="headerlink" href="#description-of-run-time-parameters" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Für die Beschreibungen der Parameter sind die in der Web GUI gewählten Namen der Parameter in Klammern angegeben.</p>
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">grid_width</span></code> (<em>Breite des Musters (m)</em>)</dt>
+<dd>Breite des Kalibriermusters in Metern. Die Breite sollte mit sehr hoher Genauigkeit, vorzugsweise im Submillimeterbereich, ermittelt werden.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">grid_height</span></code> (<em>Höhe des Musters (m)</em>)</dt>
+<dd>Höhe des Kalibriermusters in Metern. Die Höhe sollte mit sehr hoher Genauigkeit, vorzugsweise im Submillimeterbereich, ermittelt werden.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">robot_mounted</span></code> (<em>Sensor Montageart</em>)</dt>
+<dd>Ist dieser Parameter auf 1 gesetzt, dann ist der <em>rc_visard</em> an einem Roboter montiert. Ist er auf 0 gesetzt, ist der <em>rc_visard</em> statisch montiert und das Kalibriermuster ist am Roboter angebracht.</dd>
+<dt>(<em>Pose</em>)</dt>
+<dd>Der Benutzerfreundlichkeit halber kann der Benutzer die Kalibrierungsdaten in der Web GUI entweder im Format <em>XYZABC</em> oder im Format <em>XYZ+Quaternion</em> angeben (siehe <a class="reference internal" href="pose_formats.html#sect-pose-formats"><span class="std std-ref">Formate für Posendaten</span></a>). Wird die Kalibrierung über die REST-API vorgenommen, dann wird das Kalibrierergebnis immer im Format <em>XYZ+Quaternion</em> angegeben.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="services">
+<span id="sect-handeye-calibration-services"></span><h2>Services<a class="headerlink" href="#services" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Auf die Services, die die REST-API für die programmgesteuerte Durchführung der Hand-Auge-Kalibrierung und für die Speicherung oder Wiederherstellung der Modulparameter bietet, wird im Folgenden näher eingegangen.</p>
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></dt>
+<dd><p class="first">Mit diesem Service werden die aktuellen Parametereinstellungen zur Hand-Auge-Kalibrierung auf dem <em>rc_visard</em> gespeichert. Das bedeutet, dass diese Werte selbst nach einem Neustart angewandt werden.</p>
+<p>Für diesen Service sind keine Argumente nötig.</p>
+<p class="last">Dieser Service liefert keine Rückgabewerte.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></dt>
+<dd><p class="first">Hiermit werden die Werkseinstellungen der Parameter dieses Moduls wieder hergestellt und angewandt („factory reset“). Dies hat keine Auswirkungen auf das Kalibrierergebnis oder auf die während der Kalibrierung gefüllten <code class="docutils literal notranslate"><span class="pre">Slots</span></code>. Es werden lediglich Parameter, wie die Maße des Kalibriermusters oder die Montageart des Sensors, zurückgesetzt.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Der Benutzer muss bedenken, dass beim Aufruf dieses Services die aktuellen Parametereinstellungen unwiderruflich verloren gehen.</p>
+</div>
+<p>Für diesen Service sind keine Argumente nötig.</p>
+<p class="last">Dieser Service liefert keine Rückgabewerte.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">set_pose</span></code></dt>
+<dd><p class="first">Dieser Service setzt die Roboterpose als Kalibrierpose für die Hand-Auge-Kalibrierroutine.</p>
+<p>Für diesen Service sind folgende Argumente nötig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;slot&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Das <code class="docutils literal notranslate"><span class="pre">slot</span></code>-Argument wird verwendet, um den verschiedenen Kalibrierpositionen Ziffern zuzuordnen. Wann immer der Service <code class="docutils literal notranslate"><span class="pre">set_pose</span></code> aufgerufen wird, wird ein Kamerabild aufgezeichnet. Dieser Service schlägt fehl, wenn das Kalibriermuster im aktuellen Bild nicht erkannt werden kann.</p>
+<table border="1" class="last docutils" id="ruckgabewerte-des-set-pose-services">
+<caption><span class="caption-number">Tab. 16 </span><span class="caption-text">Rückgabewerte des  <code class="docutils literal notranslate"><span class="pre">set_pose</span></code>-Services</span><a class="headerlink" href="#ruckgabewerte-des-set-pose-services" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><code class="docutils literal notranslate"><span class="pre">status</span></code></th>
+<th class="head"><code class="docutils literal notranslate"><span class="pre">success</span></code></th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td><code class="docutils literal notranslate"><span class="pre">true</span></code></td>
+<td>Pose erfolgreich gespeichert</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td><code class="docutils literal notranslate"><span class="pre">true</span></code></td>
+<td>Pose erfolgreich gespeichert; es wurden genügend Posen für die Kalibrierung gespeichert, d. h. die Kalibrierung kann durchgeführt werden</td>
+</tr>
+<tr class="row-even"><td>4</td>
+<td><code class="docutils literal notranslate"><span class="pre">false</span></code></td>
+<td>das Kalibriermuster wurde nicht erkannt, z. B. weil es im Kamerabild nicht vollständig sichtbar ist</td>
+</tr>
+<tr class="row-odd"><td>8</td>
+<td><code class="docutils literal notranslate"><span class="pre">false</span></code></td>
+<td>keine Bilddaten verfügbar</td>
+</tr>
+<tr class="row-even"><td>12</td>
+<td><code class="docutils literal notranslate"><span class="pre">false</span></code></td>
+<td>die gegebenen Werte der Orientierung sind ungültig</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">reset_calibration</span></code></dt>
+<dd><p class="first">Hiermit werden alle zuvor aufgenommenen Posen mitsamt der zugehörigen Bilder gelöscht. Das letzte hinterlegte Kalibrierergebnis wird neu geladen. Dieser Service kann verwendet werden, um die Hand-Auge-Kalibrierung (neu) zu starten.</p>
+<p>Für diesen Service sind keine Argumente nötig.</p>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">calibrate</span></code></dt>
+<dd><p class="first">Dieser Service dient dazu, das Ergebnis der Hand-Auge-Kalibrierung auf Grundlage der über den Service <code class="docutils literal notranslate"><span class="pre">set_pose</span></code> konfigurierten Roboterposen zu berechnen und auszugeben.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Zur Berechnung der Transformation der Hand-Auge-Kalibrierung werden mindestens drei Roboterposen benötigt (siehe <code class="docutils literal notranslate"><span class="pre">set_pose</span></code>). Empfohlen wird jedoch die Verwendung von vier Kalibrierposen.</p>
+</div>
+<p>Für diesen Service sind keine Argumente nötig.</p>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;robot_mounted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table border="1" class="last docutils" id="ruckgabewerte-des-calibrate-services">
+<caption><span class="caption-number">Tab. 17 </span><span class="caption-text">Rückgabewerte des  <code class="docutils literal notranslate"><span class="pre">calibrate</span></code>-Services</span><a class="headerlink" href="#ruckgabewerte-des-calibrate-services" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><code class="docutils literal notranslate"><span class="pre">status</span></code></th>
+<th class="head"><code class="docutils literal notranslate"><span class="pre">success</span></code></th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td><code class="docutils literal notranslate"><span class="pre">true</span></code></td>
+<td>Kalibrierung erfolgreich; die resultierende Kalibrierpose wurde zurückgegeben</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td><code class="docutils literal notranslate"><span class="pre">false</span></code></td>
+<td>nicht genügend Posen gespeichert, um die Kalibrierung durchzuführen</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td><code class="docutils literal notranslate"><span class="pre">false</span></code></td>
+<td>das berechnete Ergebnis ist ungültig, bitte prüfen Sie die Eingabewerte</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td><code class="docutils literal notranslate"><span class="pre">false</span></code></td>
+<td>die angegebenen Abmessungen des Kalibriermusters sind ungültig</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">save_calibration</span></code></dt>
+<dd><p class="first">Hiermit wird das Ergebnis der Hand-Auge-Kalibrierung persistent auf dem <em>rc_visard</em> gespeichert und das vorherige Ergebnis überschrieben. Das gespeicherte Ergebnis lässt sich jederzeit über den Service <code class="docutils literal notranslate"><span class="pre">get_calibration</span></code> abrufen.</p>
+<p>Für diesen Service sind keine Argumente nötig.</p>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table border="1" class="last docutils" id="ruckgabewerte-des-save-calibration-services">
+<caption><span class="caption-number">Tab. 18 </span><span class="caption-text">Rückgabewerte des  <code class="docutils literal notranslate"><span class="pre">save_calibration</span></code>-Services</span><a class="headerlink" href="#ruckgabewerte-des-save-calibration-services" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><code class="docutils literal notranslate"><span class="pre">status</span></code></th>
+<th class="head"><code class="docutils literal notranslate"><span class="pre">success</span></code></th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td><code class="docutils literal notranslate"><span class="pre">true</span></code></td>
+<td>die Kalibrierung wurde erfolgreich gespeichert</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td><code class="docutils literal notranslate"><span class="pre">false</span></code></td>
+<td>die Kalibrierung konnte nicht im Dateisystem gespeichert werden</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td><code class="docutils literal notranslate"><span class="pre">false</span></code></td>
+<td>die Kalibrierung ist nicht verfügbar</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">remove_calibration</span></code></dt>
+<dd><p class="first">löscht die persistente Hand-Auge-Kalibrierung auf dem <em>rc_visard</em>. Nach diesem Aufruf gibt der <code class="docutils literal notranslate"><span class="pre">get_calibration</span></code> Service zurück, dass keine Hand-Auge-Kalibrierung vorliegt.</p>
+<p>Für diesen Service sind keine Argumente nötig.</p>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table border="1" class="last docutils" id="ruckgabewerte-des-get-calibration-services">
+<caption><span class="caption-number">Tab. 19 </span><span class="caption-text">Rückgabewerte des  <code class="docutils literal notranslate"><span class="pre">get_calibration</span></code>-Services</span><a class="headerlink" href="#ruckgabewerte-des-get-calibration-services" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><code class="docutils literal notranslate"><span class="pre">status</span></code></th>
+<th class="head"><code class="docutils literal notranslate"><span class="pre">success</span></code></th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td><code class="docutils literal notranslate"><span class="pre">true</span></code></td>
+<td>persistente Kalibrierung gelöscht, Sensor nicht mehr kalibriert</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td><code class="docutils literal notranslate"><span class="pre">true</span></code></td>
+<td>keine persistente Kalibrierung gefunden, Sensor nicht mehr kalibriert</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td><code class="docutils literal notranslate"><span class="pre">false</span></code></td>
+<td>die Kalibrierung konnte nicht gelöscht werden</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">get_calibration</span></code></dt>
+<dd><p class="first">Hiermit wird die derzeit auf dem <em>rc_visard</em> gespeicherte Hand-Auge-Kalibrierung abgerufen.</p>
+<p>Für diesen Service sind keine Argumente nötig.</p>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;robot_mounted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table border="1" class="last docutils" id="id10">
+<caption><span class="caption-number">Tab. 20 </span><span class="caption-text">Rückgabewerte des  <code class="docutils literal notranslate"><span class="pre">get_calibration</span></code>-Services</span><a class="headerlink" href="#id10" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><code class="docutils literal notranslate"><span class="pre">status</span></code></th>
+<th class="head"><code class="docutils literal notranslate"><span class="pre">success</span></code></th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td><code class="docutils literal notranslate"><span class="pre">true</span></code></td>
+<td>eine gültige Kalibrierung wurde zurückgegeben</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td><code class="docutils literal notranslate"><span class="pre">false</span></code></td>
+<td>die Kalibrierung ist nicht verfügbar</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="optional.html" class="btn btn-neutral float-right" title="Optionale Softwaremodule" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="camera_calibration.html" class="btn btn-neutral" title="Kamerakalibrierung" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Optionen</span>
+      de
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Sprachen</dt>
+        
+          
+          <dd><a href="../de/handeye_calibration.html">de</a></dd>
+          
+        
+          
+          <dd><a href="../en/handeye_calibration.html">en</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versionen</dt>
+          
+            <dd><a href="../../v1.1/index.html">v1.1</a></dd>
+          
+            <dd><a href="../../v1.0/index.html">v1.0</a></dd>
+          
+            <dd><a href="../../v1.3/index.html">v1.3</a></dd>
+          
+            <dd><a href="../../v1.2/index.html">v1.2</a></dd>
+          
+            <dd><a href="../../v1.5/index.html">v1.5</a></dd>
+          
+            <dd><a href="../../v1.4/index.html">v1.4</a></dd>
+          
+            <dd><a href="../../v1.7/index.html">v1.7</a></dd>
+          
+            <dd><a href="../../v1.6/index.html">v1.6</a></dd>
+          
+            <dd><a href="../../v1.8/index.html">v1.8</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_manual_de.pdf">PDF (de)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_manual_en.pdf">PDF (en)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.8.1',
+            LANGUAGE:'de',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

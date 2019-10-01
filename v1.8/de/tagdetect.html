@@ -1,0 +1,1125 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="de" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TagDetect &mdash; rc_visard 1.8.1
+ Dokumentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Stichwortverzeichnis"
+              href="genindex.html"/>
+        <link rel="search" title="Suche" href="search.html"/>
+    <link rel="top" title="rc_visard 1.8.1
+ Dokumentation" href="index.html"/>
+        <link rel="up" title="Optionale Softwaremodule" href="optional.html"/>
+        <link rel="next" title="ItemPick und BoxPick" href="itempick.html"/>
+        <link rel="prev" title="IO und Projektor-Kontrolle" href="iocontrol.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.8
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Suche" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Einführung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Überblick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Garantie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Schnittstellen, Zulassungen und Normen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Zulassungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Normen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Sicherheit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">Allgemeine Sicherheitshinweise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Bestimmungsgemäße Verwendung</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware-Spezifikation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Lieferumfang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technische Spezifikation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Umwelt- und Betriebsbedingungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Spezifikationen für die Stromversorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Verkabelung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanische Schnittstelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Koordinatensysteme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-and-configuration">Installation und Konfiguration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Einschalten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Netzwerkkonfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatische Konfiguration (werkseitige Voreinstellung)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manuelle Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rcvisard-devices">Aufspüren von <em>rc_visard</em>-Geräten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Zurücksetzen der Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#web-gui">Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Der <em>rc_visard</em> auf einen Blick</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#stereo-vision">Stereovision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#sensor-dynamics">Sensordynamik</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#calibration-relative-to-a-robot">Kalibrierung zu einem Roboter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="components.html">Softwaremodule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stereo_camera.html">Stereokamera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#image-acquisition">Bilderfassung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#planar-rectification">Planare Rektifizierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_matching.html">Stereo-Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Berechnung von Disparitätsbildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Berechnung von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Konfidenz- und Fehlerbilder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dynamics.html">Sensordynamik</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#coordinate-frames-for-state-estimation">Koordinatensysteme für die Zustandsschätzung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#available-state-estimates">Verfügbare Zustandsschätzungen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#camera-pose-streams-pose-and-pose-ins">Kameraposen-Datenströme (<code class="docutils literal notranslate"><span class="pre">pose</span></code> und <code class="docutils literal notranslate"><span class="pre">pose_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-camera-pose-streams-pose-rt-and-pose-rt-ins">Echtzeit-Datenströme der Kamerapose (<code class="docutils literal notranslate"><span class="pre">pose_rt</span></code> und <code class="docutils literal notranslate"><span class="pre">pose_rt_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-dynamics-streams-dynamics-and-dynamics-ins">Echtzeit-Dynamik-Datenströme (<code class="docutils literal notranslate"><span class="pre">dynamics</span></code> und <code class="docutils literal notranslate"><span class="pre">dynamics_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#imu-data-stream-imu">IMU-Datenstrom (<code class="docutils literal notranslate"><span class="pre">imu</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_visodo.html">Visuelle Odometrie</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_ins.html">Stereo-INS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#parameters">Parameter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="camera_calibration.html">Kamerakalibrierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#calibration-process">Kalibriervorgang</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-1-calibration-settings">Schritt&nbsp;1: Einstellung der Kalibrierparameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-2-verify-calibration">Schritt&nbsp;2: Kalibrierung überprüfen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-3-performing-calibration">Schritt&nbsp;3: Durchführung der Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-4-storing-the-calibration-result">Schritt&nbsp;4: Kalibrierergebnis speichern</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="handeye_calibration.html">Hand-Auge-Kalibrierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Kalibrierschnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#sensor-mounting">Sensormontage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Kalibrierroutine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-1-setting-parameters">Schritt&nbsp;1: Einstellung der Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-2-selecting-and-reporting-robot-calibration-positions">Schritt&nbsp;2: Auswahl und Übertragung der Kalibrierpositionen des Roboters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-3-calculating-and-saving-the-calibration-transformation">Schritt&nbsp;3: Berechnen und Speichern der Kalibriertransformation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="optional.html">Optionale Softwaremodule</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="slam.html">SLAM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#usage">Verwendung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#memory-limitations">Speicherbeschränkungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#parameter-overview">Übersicht über die Parameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iocontrol.html">IO und Projektor-Kontrolle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">TagDetect</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Einführung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#qr-code">QR-Code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apriltag">AprilTag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#comparison">Vergleich</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tag-reading">Markererkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pose-estimation">Posenschätzung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tag-re-identification">Marker-Wiedererkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interfaces">Schnittstellen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parameters-and-status-values">Parameter und Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="itempick.html">ItemPick und BoxPick</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#introduction">Einführung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#data-types">Datentypen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#load-carrier">Load Carrier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#suction-grasp">Greifpunkt für Vakuum-Greifsysteme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#item-model">Objektmodell</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#interaction-with-other-components">Wechselwirkung mit anderen Modulen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#stereo-camera-and-stereo-matching">Stereokamera und Stereo-Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#sensor-dynamics">Sensordynamik</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#io-and-projector-control">IO und Projektor-Kontrolle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#parameters-and-status-values">Parameter und Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#introduction">Einführung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#suitable-objects">Taugliche Objekte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#suitable-scene">Taugliche Szene</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Kalibrierung der Basisebene</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#apriltag-based-base-plane-calibration">AprilTag-basierte Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#stereo-based-base-plane-calibration">Stereo-basierte Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#manual-base-plane-calibration">Manuelle Kalibrierung der Basisebene</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setzen einer Region of Interest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#interaction-with-other-components">Wechselwirkung mit anderen Modulen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#stereo-camera-and-stereo-matching">Stereokamera und Stereo-Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#io-and-projector-control">IO und Projektor-Kontrolle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#parameters-and-status-values">Parameter und Statuswerte</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#services">Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#template-upload">Template Upload</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Schnittstellen</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-visard">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard</em></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#chunk-data">Chunk Daten</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#general-api-structure">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#nodes-parameters-and-services">Module, Parameter und Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#datastreams">Datenströme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api.html#system-and-logs">System und Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#data-type-definitions">Datentyp-Definitionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api.html#swagger-ui">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rc_dynamics.html">Die rc_dynamics-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#starting-stopping-dynamic-state-estimation">Starten/Stoppen der Dynamik-Zustandsschätzungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#configuring-data-streams">Konfiguration von Datenströmen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#data-stream-protocol">Datenstromprotokoll</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Konfiguration der Ethernet-Verbindung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Allgemeine XML-Struktur</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Rückgabecode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Anfrage-XML-Struktur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Antwort-XML-Struktur</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI-XML-Konfigurationsdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Wartung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcvisard">Neustart des <em>rc_visard</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Anschlussset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Verkabelung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet-Anschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Stromanschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Netzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Ersatzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Fehlerbehebung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED-Farben</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Probleme mit der Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Probleme mit der Konnektivität</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Probleme mit den Kamerabildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Probleme mit Tiefen-/Disparitäts-, Fehler- oder Konfidenzbildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#dynamics-issues">Probleme mit der Zustandsschätzung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">Probleme mit GigE&nbsp;Vision/GenICam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Kontakt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Adresse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Anhang</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pose_formats.html">Formate für Posendaten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyzabc-format">XYZABC-Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyz-quaternion-format">XYZ+Quaternion-Format</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Dokumentation</a> &raquo;</li>
+        
+          <li><a href="optional.html">Optionale Softwaremodule</a> &raquo;</li>
+        
+      <li>TagDetect</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tagdetect">
+<span id="sect-tag-detection"></span><h1>TagDetect<a class="headerlink" href="#tagdetect" title="Link zu dieser Überschrift">¶</a></h1>
+<div class="section" id="introduction">
+<span id="index-0"></span><h2>Einführung<a class="headerlink" href="#introduction" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Die TagDetect-Module laufen intern auf dem <em>rc_visard</em> und ermöglichen es, 2D Barcodes und Marker zu erkennen. Derzeit gibt es TagDetect-Module für <cite>QR-Codes</cite> und <cite>AprilTags</cite>. Neben der Erkennung berechnen die Module die Position und Orientierung jedes Markers im 3D-Kamerakoordinatensystem, um diesen beispielsweise mit einem Roboter zu manipulieren oder die Pose der Kamera in Bezug auf den Marker zu berechnen.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Die TagDetect-Module sind optional und benötigen eine separate <a class="reference internal" href="maintenance.html#sect-updating-license"><span class="std std-ref">Lizenz</span></a>.</p>
+</div>
+<p>Die Markererkennung besteht aus drei Schritten:</p>
+<ol class="arabic simple">
+<li>Markererkennung auf dem 2D Bildpaar (siehe <a class="reference internal" href="#sect-tag-reading"><span class="std std-ref">Markererkennung</span></a>).</li>
+<li>Schätzung der Pose jedes Markers (siehe <a class="reference internal" href="#sect-tag-pose-estimation"><span class="std std-ref">Posenschätzung</span></a>).</li>
+<li>Wiedererkennung von bisher gesehenen Markern (siehe <a class="reference internal" href="#sect-tag-re-identification"><span class="std std-ref">Marker-Wiedererkennung</span></a>).</li>
+</ol>
+<p>Im Folgenden werden die zwei unterstützten Markertypen näher beschrieben, gefolgt von einem Vergleich.</p>
+<div class="section" id="qr-code">
+<h3>QR-Code<a class="headerlink" href="#qr-code" title="Link zu dieser Überschrift">¶</a></h3>
+<div class="figure align-center" id="id1">
+<span id="index-1"></span><a class="reference internal image-reference" href="_images/example_qr_code.png"><img alt="_images/example_qr_code.png" src="_images/example_qr_code.png" style="width: 200px;" /></a>
+<p class="caption"><span class="caption-number">Abb. 45 </span><span class="caption-text">Beispiel eines QR-Codes</span></p>
+</div>
+<p>QR-Codes sind zwei-dimensionale Barcodes, welche beliebige, benutzerspezifizierte Daten enthalten können. Viele Alltagsgeräte, wie beispielsweise Smartphones, unterstützen die Erkennung von QR-Codes. Zusätzlich stehen Online- und Offlinetools zur Verfügung, um QR-Codes zu generieren.</p>
+<p>Die „Pixel“ eines QR-Codes werden <cite>Module</cite> genannt. Das Aussehen und die Auflösung von QR-Codes ändert sich mit der Menge der in ihnen gespeicherten Daten. Während die speziellen Muster in den drei Ecken immer 7 Module breit sind, erhöht sich die Anzahl der Module dazwischen, je mehr Daten gespeichert sind. Der am niedrigsten aufgelöste QR-Code besitzt eine Größe von 21x21 Modulen und kann bis zu 152 Bits speichern.</p>
+<p>Auch wenn viele QR-Code-Generatoren speziell designte QR-Codes erzeugen können (bspw. mit einem Logo, mit runden Ecken oder mit Punkten als Module), wird eine zuverlässige Erkennung solcher Marker mit dem TagDetect-Modul nicht garantiert. Gleiches gilt für QR-Codes, welche Zeichen außerhalb des ASCII-Zeichensatzes beinhalten.</p>
+</div>
+<div class="section" id="apriltag">
+<span id="sect-apriltag"></span><h3>AprilTag<a class="headerlink" href="#apriltag" title="Link zu dieser Überschrift">¶</a></h3>
+<div class="figure align-center" id="id2">
+<span id="fig-april-tag-example"></span><span id="index-2"></span><a class="reference internal image-reference" href="_images/apriltag_dim_vis.png"><img alt="_images/apriltag_dim_vis.png" src="_images/apriltag_dim_vis.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">Abb. 46 </span><span class="caption-text">Ein 16h5 Marker (links) und ein 36h11 Marker (rechts). AprilTags bestehen aus einem obligatorischen weißen (a) und schwarzen (b) Rahmen und einer variablen Menge an Datenmodulen (c).</span></p>
+</div>
+<p>AprilTags sind ähnlich zu QR-Codes. Sie wurden allerdings speziell zur robusten Identifikation auf weite Entfernungen entwickelt. Wie bei QR-Codes werden die „Pixel“ <cite>Module</cite> genannt. <a class="reference internal" href="#fig-april-tag-example"><span class="std std-numref">Abb. 46</span></a> veranschaulicht den Aufbau von AprilTags. Sie sind von einem obligatorischen weißen und schwarzen Rahmen umschlossen, welcher jeweils ein Modul breit ist. Innen enthalten sie eine variable Menge an Datenmodulen. Anders als QR-Codes speichern sie keine benutzerdefinierten Informationen, sondern werden durch eine vordefinierte <em>Familie</em> und <em>ID</em> identifiziert. Die Tags in <a class="reference internal" href="#fig-april-tag-example"><span class="std std-numref">Abb. 46</span></a> sind zum Beispiel aus Familie 16h5 bzw. 35h11 und besitzen ID 0 bzw. 11. Alle unterstützten Familien werden in <a class="reference internal" href="#tab-tag-families"><span class="std std-numref">Tab. 26</span></a> aufgelistet.</p>
+<span id="tab-tag-families"></span><table border="1" class="docutils" id="apriltag-familien">
+<caption><span class="caption-number">Tab. 26 </span><span class="caption-text">AprilTag Familien</span><a class="headerlink" href="#apriltag-familien" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="18%" />
+<col width="50%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Familie</th>
+<th class="head">Anzahl IDs</th>
+<th class="head">Empfohlen</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>16h5</td>
+<td>30</td>
+<td>-</td>
+</tr>
+<tr class="row-odd"><td>25h7</td>
+<td>242</td>
+<td>-</td>
+</tr>
+<tr class="row-even"><td>25h9</td>
+<td>35</td>
+<td>o</td>
+</tr>
+<tr class="row-odd"><td>36h10</td>
+<td>2320</td>
+<td>o</td>
+</tr>
+<tr class="row-even"><td>36h11</td>
+<td>587</td>
+<td>+</td>
+</tr>
+</tbody>
+</table>
+<p>Die Zahl vor dem „h“ jeder Familie bezeichnet die Anzahl der Datenmodule, welche im Marker enthalten sind: Während ein 16h5 Marker 16 (4x4) Datenmodule enthält ((c) in <a class="reference internal" href="#fig-april-tag-example"><span class="std std-numref">Abb. 46</span></a>), besteht ein 36h11 Marker aus 36 (6x6) Datenmodulen. Die Zahl hinter dem „h“ bezeichnet den Hamming-Abstand zwischen zwei Markern der Familie. Je höher, desto höher ist die Robustheit, aber desto weniger IDs stehen bei gleicher Anzahl an Datenmodulen zur Verfügung (siehe <a class="reference internal" href="#tab-tag-families"><span class="std std-numref">Tab. 26</span></a>).</p>
+<p>Der Vorteil von Familien mit weniger Datenmodulen (bspw. 16h5 im Vergleich zu 36h11) ist die niedrigere Auflösung der Marker. Jedes Modul ist somit größer, weshalb der Marker auf eine größere Distanz erkannt werden kann. Dies hat allerdings auch Nachteile: Zum einen stehen bei niedrigerer Zahl an Datenmodulen auch weniger IDs zur Verfügung. Wichtiger aber ist, dass die Robustheit der Markererkennung signifikant reduziert wird, da es zu einer höheren Falsch-Positiv-Rate kommt. Dies bedeutet, dass Marker verwechselt werden oder nicht existierende Marker in zufälliger Bildtextur oder im Bildrauschen erkannt werden.</p>
+<p>Aus diesen Gründen empfehlen wir die Verwendung der 36h11 Familie und raten ausdrücklich von den Familien 16h5 und 25h7 ab. Letztgenannte Familien sollten nur benutzt werden, wenn eine große Erkennungsdistanz für die Anwendung unbedingt erforderlich ist. Jedoch ist die maximale Erkennungsdistanz nur ca. 25% größer, wenn anstelle der 36h11 Familie die 16h5 Familie verwendet wird.</p>
+<p>Vorgenerierte AprilTags können von der AprilTag Projektwebseite (<a class="reference external" href="https://april.eecs.umich.edu/software/apriltag.html">https://april.eecs.umich.edu/software/apriltag.html</a>) heruntergeladen werden. Jede Familie besteht aus mehreren PNGs, welche jeweils einen AprilTag enthalten, und einem PDF, welches jeden AprilTag auf einer eigenen Seite enthält. Jedes Pixel im PNG entspricht dabei einem Modul des AprilTags. Beim Drucken der Marker sollte darauf geachtet werden, den weißen Rand um den AprilTag mit einzuschließen – dieser ist sowohl in den PNGs also auch in den PDFs enthalten (siehe (a) in <a class="reference internal" href="#fig-april-tag-example"><span class="std std-numref">Abb. 46</span></a>). Die Marker müssen außerdem ohne Interpolation auf die Druckgröße skaliert werden, sodass die scharfen Kanten erhalten bleiben.</p>
+</div>
+<div class="section" id="comparison">
+<h3>Vergleich<a class="headerlink" href="#comparison" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Sowohl QR-Codes als auch AprilTags haben ihre Vor- und Nachteile. Während QR-Codes die Speicherung von benutzerdefinierten Daten erlauben, sind die Marker bei AprilTags vordefiniert und in ihrer Anzahl limitiert. Andererseits haben AprilTags eine niedrigere Auflösung und können daher auf eine größere Distanz erkannt werden. Zusätzlich hilft die durchgängige weiß-zu-schwarz-Kante um jeden AprilTag bei einer präziseren Posenschätzung.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Falls die Speicherung von benutzerdefinierten Daten nicht benötigt wird, sollten AprilTags QR-Codes vorgezogen werden.</p>
+</div>
+</div>
+</div>
+<div class="section" id="tag-reading">
+<span id="sect-tag-reading"></span><h2>Markererkennung<a class="headerlink" href="#tag-reading" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Der erste Schritt der Markererkennung ist die Detektion der Marker auf dem Stereo-Bildpaar. Dieser Schritt benötigt die meiste Zeit und seine Präzision ist entscheidend für die Präzision der finalen Markerpose. Um die Dauer diese Schritts zu kontrollieren, kann der Parameter <code class="docutils literal notranslate"><span class="pre">quality</span></code> vom Benutzer konfiguriert werden. Er hat ein Herunterskalieren des Stereo-Bildpaares vor der Markererkennung zur Folge. „H“ (<cite>High</cite>) ergibt die höchste maximale Erkennungssdistanz und Präzision, aber auch die längste Dauer der Erkennung. „L“ (<cite>Low</cite>) führt zur kleinsten maximalen Erkennungsdistanz und Präzision, aber benötigt auch nur weniger als die halbe Zeit. „M“ (<cite>Medium</cite>) liegt dazwischen. Es sollte beachtet werden, dass dieser <code class="docutils literal notranslate"><span class="pre">quality</span></code>-Parameter keine Verbindung zum <code class="docutils literal notranslate"><span class="pre">quality</span></code>-Parameter des <a class="reference internal" href="stereo_matching.html#sect-stereo-matching"><span class="std std-ref">Stereo-Matching</span></a> hat.</p>
+<div class="figure align-center" id="id3">
+<span id="fig-tag-sizes"></span><a class="reference internal image-reference" href="_images/tag_sizes_vis.png"><img alt="_images/tag_sizes_vis.png" src="_images/tag_sizes_vis.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">Abb. 47 </span><span class="caption-text">Visualisierung der Modulgröße <span class="math notranslate nohighlight">\(s\)</span>, der Größe eines Markers in Modulen <span class="math notranslate nohighlight">\(r\)</span> und der Größe eines Markers in Metern <span class="math notranslate nohighlight">\(t\)</span> für QR-Codes (links) und AprilTags (rechts)</span></p>
+</div>
+<p>Die maximale Erkennungsdistanz <span class="math notranslate nohighlight">\(z\)</span> für Qualität „H“ kann mit folgenden Formeln angenähert werden:</p>
+<div class="math notranslate nohighlight">
+\[z = \frac{f s}{p},\]</div>
+<div class="math notranslate nohighlight">
+\[s = \frac{t}{r},\]</div>
+<p>wobei <span class="math notranslate nohighlight">\(f\)</span> die <a class="reference internal" href="stereo_camera.html#sect-stereo-camera-rectification"><span class="std std-ref">Brennweite</span></a> in Pixeln und <span class="math notranslate nohighlight">\(s\)</span> die Größe jedes Moduls in Metern bezeichnet. <span class="math notranslate nohighlight">\(s\)</span> kann leicht mit letztgenannter Formel berechnet werden, in welcher <span class="math notranslate nohighlight">\(t\)</span> der Markergröße in Metern und <span class="math notranslate nohighlight">\(r\)</span> der Breite des Markers in Modulen entspricht (bei AprilTags ohne den weißen Rahmen). <a class="reference internal" href="#fig-tag-sizes"><span class="std std-numref">Abb. 47</span></a> veranschaulicht diese Variablen. <span class="math notranslate nohighlight">\(p\)</span> bezeichnet die Zahl der Bildpixel pro Modul, welche für eine Erkennung erforderlich sind. Sie unterscheidet sich zwischen QR-Codes und AprilTags. Auch der Winkel des Markers zur Kamera und die Beleuchtung spielen eine Rolle. Ungefähre Werte für eine robuste Erkennung sind:</p>
+<ul class="simple">
+<li>AprilTag: <span class="math notranslate nohighlight">\(p=5\)</span> Pixel/Modul</li>
+<li>QR-Code: <span class="math notranslate nohighlight">\(p=6\)</span> Pixel/Modul</li>
+</ul>
+<p>Die folgenden Tabellen enthalten Beispiele für die maximale Erkennungsdistanz in unterschiedlichen Situationen. Die Brennweite des <em>rc_visard</em> wird dafür mit 1075 Pixeln, die Qualität mit „H“ angenommen.</p>
+<span id="tab-tag-max-dist-april"></span><table border="1" class="docutils" id="beispiele-zur-maximalen-erkennungsdistanz-fur-qr-codes-mit-einer-breite-von-t-4-cm">
+<caption><span class="caption-number">Tab. 27 </span><span class="caption-text">Beispiele zur maximalen Erkennungsdistanz für QR-Codes mit einer Breite von <span class="math notranslate nohighlight">\(t=4\)</span> cm</span><a class="headerlink" href="#beispiele-zur-maximalen-erkennungsdistanz-fur-qr-codes-mit-einer-breite-von-t-4-cm" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="37%" />
+<col width="33%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">AprilTag Familie</th>
+<th class="head">Markerbreite</th>
+<th class="head">Maximale Distanz</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>36h11 (empfohlen)</td>
+<td>8 Module</td>
+<td>1.1 m</td>
+</tr>
+<tr class="row-odd"><td>16h5</td>
+<td>6 Module</td>
+<td>1.4 m</td>
+</tr>
+</tbody>
+</table>
+<span id="tab-tag-max-dist-qr"></span><table border="1" class="docutils" id="beispiele-zur-maximalen-erkennungsdistanz-fur-qr-codes-mit-einer-breite-von-t-8-cm">
+<caption><span class="caption-number">Tab. 28 </span><span class="caption-text">Beispiele zur maximalen Erkennungsdistanz für QR-Codes mit einer Breite von <span class="math notranslate nohighlight">\(t=8\)</span> cm</span><a class="headerlink" href="#beispiele-zur-maximalen-erkennungsdistanz-fur-qr-codes-mit-einer-breite-von-t-8-cm" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="52%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Markerbreite</th>
+<th class="head">Maximale Distanz</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>29 Module</td>
+<td>0.49 m</td>
+</tr>
+<tr class="row-odd"><td>21 Module</td>
+<td>0.70 m</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="pose-estimation">
+<span id="sect-tag-pose-estimation"></span><h2>Posenschätzung<a class="headerlink" href="#pose-estimation" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-3">Für jeden erkannten Marker wird dessen Pose im Kamerakoordinatensystem geschätzt. Eine Bedingung dafür ist, dass der Marker vollständig im linken und rechten Bild zu sehen ist. Das Koordinatensystem ist wie unten gezeigt am Marker ausgerichtet.</p>
+<div class="figure align-center" id="id4">
+<span id="fig-tag-coord-frames"></span><a class="reference internal image-reference" href="_images/tag_coord_frames.png"><img alt="_images/tag_coord_frames.png" src="_images/tag_coord_frames.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">Abb. 48 </span><span class="caption-text">Koordinatensysteme für AprilTags (links) bzw. QR-Codes (rechts)</span></p>
+</div>
+<p>Die z-Achse zeigt „in“ den Marker. Es ist zu beachten, dass, auch wenn AprilTags den weißen Rand in ihrer Definition enthalten, der Ursprung des Koordinatensystems trotzdem am Übergang des weißen zum schwarzen Rand liegt. Da AprilTags keine offensichtliche Orientierung haben, liegt der Ursprung in der oberen linken Ecke des vorgenerierten AprilTags.</p>
+<p>Während der Posenschätzung wird auch die Größe des Markers geschätzt unter der Annahme, dass der Marker quadratisch ist. Bei QR-Codes bezieht sich die Größe auf den gesamten Marker, bei AprilTags dagegen nur auf den schwarzen Rand, also ohne den äußeren weißen.</p>
+<p>Der Benutzer kann auch die ungefähre Größe (<span class="math notranslate nohighlight">\(\pm 10\%\)</span>) eines Markers angeben. Alle Marker, die dieser Einschränkung nicht entsprechen, werden automatisch ausgefiltert. Weiter hilft diese Information in bestimmten Situationen, Mehrdeutigkeiten in der Posenschätzung aufzulösen, die entstehen können, wenn mehrere Marker mit der selben ID im linken und rechten Bild sichtbar und diese Marker parallel zu den Bildzeilen ausgerichtet sind.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Für beste Ergebnisse der Posenschätzung sollte der Marker sorgfältig gedruckt und auf einem steifen und möglichst ebenen Untergrund angebracht werden. Jegliche Verzerrung des Markers oder Unebenheit der Oberfläche verschlechtert die geschätzte Pose.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Wir empfehlen, die ungefähre Größe der Marker anzugeben. Ansonsten, falls mehrere Marker mit derselben ID im linken oder rechten Bild sichtbar sind, kann es zu einer fehlerhaften Posenschätzung kommen, wenn die Marker gleich orientiert sind und sie ungefähr parallel zu den Bildzeilen angeordnet sind. Auch wenn die Größe nicht angegeben sein sollte, versuchen die TagDetect-Module jedoch, solche Situationen zu erkennen und verwerfen betroffene Marker.</p>
+</div>
+<p>Unten stehende Tabellen enthalten grobe Angaben zur Präzision der geschätzten Posen von AprilTags und QR-Codes. Wir unterscheiden zwischen lateraler Präzision (also in x- und y-Richtung) und Präzision in z-Richtung. Es wird angenommen, dass <code class="docutils literal notranslate"><span class="pre">quality</span></code> auf „H“ gesetzt ist, und dass die Blickrichtung des <em>rc_visard</em> parallel zur Normalen des Markers ist. Die Größe eines Markers hat keinen signifikanten Einfluss auf die Präzision in lateraler und z-Richtung. Im Allgemeinen verbessert ein größerer Marker allerdings die Präzision. Im Bezug auf die Präzision der Rotation, im speziellen um die x- und y-Achsen, übertreffen große Marker kleinere deutlich.</p>
+<span id="tab-tag-precision-april"></span><table border="1" class="docutils" id="ungefahre-prazision-der-pose-von-apriltags">
+<caption><span class="caption-number">Tab. 29 </span><span class="caption-text">Ungefähre Präzision der Pose von AprilTags</span><a class="headerlink" href="#ungefahre-prazision-der-pose-von-apriltags" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="9%" />
+<col width="26%" />
+<col width="19%" />
+<col width="27%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Distanz</th>
+<th class="head"><em>rc_visard</em> 65 - lateral</th>
+<th class="head"><em>rc_visard</em> 65 - z</th>
+<th class="head"><em>rc_visard</em> 160 - lateral</th>
+<th class="head"><em>rc_visard</em> 160 - z</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0.3 m</td>
+<td>0.4 mm</td>
+<td>0.9 mm</td>
+<td>0.4 mm</td>
+<td>0.8 mm</td>
+</tr>
+<tr class="row-odd"><td>1.0 m</td>
+<td>0.7 mm</td>
+<td>3.3 mm</td>
+<td>0.7 mm</td>
+<td>3.3 mm</td>
+</tr>
+</tbody>
+</table>
+<span id="tab-tag-precision-qr"></span><table border="1" class="docutils" id="ungefahre-prazision-der-pose-von-qr-codes">
+<caption><span class="caption-number">Tab. 30 </span><span class="caption-text">Ungefähre Präzision der Pose von QR-Codes</span><a class="headerlink" href="#ungefahre-prazision-der-pose-von-qr-codes" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="9%" />
+<col width="26%" />
+<col width="19%" />
+<col width="27%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Distanz</th>
+<th class="head"><em>rc_visard</em> 65 - lateral</th>
+<th class="head"><em>rc_visard</em> 65 - z</th>
+<th class="head"><em>rc_visard</em> 160 - lateral</th>
+<th class="head"><em>rc_visard</em> 160 - z</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0.3 m</td>
+<td>0.6 mm</td>
+<td>2.0 mm</td>
+<td>0.6 mm</td>
+<td>1.3 mm</td>
+</tr>
+<tr class="row-odd"><td>1.0 m</td>
+<td>2.6 mm</td>
+<td>15 mm</td>
+<td>2.6 mm</td>
+<td>7.9 mm</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="tag-re-identification">
+<span id="sect-tag-re-identification"></span><h2>Marker-Wiedererkennung<a class="headerlink" href="#tag-re-identification" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-4">Jeder Marker besitzt eine ID: bei AprilTags ist dies die <em>Familie</em> zusammen mit der AprilTag <em>ID</em>, bei QR-Codes die enthaltenen Daten. Diese IDs sind jedoch nicht einzigartig, da mehrere Marker mit derselben ID in einer Szene vorkommen können.</p>
+<p>Zur Unterscheidung dieser Marker weisen die TagDetect-Module jedem Marker einen eindeutigen Identifikator zu. Um den Benutzer dabei zu unterstützen, denselben Marker über mehrere Markererkennungsläufe hinweg zu identifizieren, versucht das TagDetect-Modul Marker wiederzuerkennen. Falls erfolgreich, wird einem Marker derselbe Identifikator zugewiesen. Die Marker-Wiedererkennung vergleicht die Positionen der Ecken der Marker in einem statischen Koordinatensystem, um identische Marker wiederzufinden. Marker werden als identisch angenommen, falls sie sich nicht oder nur geringfügig im statischen Koordinatensystem bewegt haben. Damit das statische Koordinatensystem verfügbar ist, muss das <a class="reference internal" href="dynamics.html#sect-dynamics"><span class="std std-ref">Dynamik-Modul</span></a> angeschaltet sein. Falls dies nicht der Fall ist, wird der Sensor als statisch angenommen. Die Marker-Wiedererkennung funktioniert in diesem Fall nicht über Bewegungen des Sensors hinweg.</p>
+<p>Über den <code class="docutils literal notranslate"><span class="pre">max_corner_distance</span></code>-Parameter kann der Benutzer festlegen, wie weit ein Marker sich zwischen zwei Erkennungsläufen bewegen darf, um als identisch zu gelten. Der Parameter definiert die maximale Distanz zwischen den Ecken zweier Marker, was in <a class="reference internal" href="#fig-tag-re-identification"><span class="std std-numref">Abb. 49</span></a> dargestellt ist. Die euklidischen Abstände der vier zusammengehörenden Markerecken in 3D werden berechnet. Falls keiner dieser Abstände den Grenzwert überschreitet, gilt der Marker als wiedererkannt.</p>
+<div class="figure align-center" id="id5">
+<span id="fig-tag-re-identification"></span><a class="reference internal image-reference" href="_images/tag-re-identification.png"><img alt="_images/tag-re-identification.png" src="_images/tag-re-identification.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">Abb. 49 </span><span class="caption-text">Vereinfachte Darstellung der Marker-Wiedererkennung. Die euklidischen Abstände zwischen zusammengehörigen Markerecken in 3D werden berechnet (rote Pfeile).</span></p>
+</div>
+<p>Nach einer bestimmten Anzahl von Markererkennungsläufen werden vorher gesehene Marker verworfen, falls diese in der Zwischenzeit nicht mehr erkannt wurden. Dies kann über den Parameter <code class="docutils literal notranslate"><span class="pre">forget_after_n_detections</span></code> festgelegt werden.</p>
+</div>
+<div class="section" id="interfaces">
+<span id="sect-tag-interfaces"></span><h2>Schnittstellen<a class="headerlink" href="#interfaces" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-5">Es gibt auf dem Sensor zwei getrennte Module für die Markererkennung, eines für AprilTag- und eines für QR-Code-Erkennung: <code class="docutils literal notranslate"><span class="pre">rc_april_tag_detect</span></code> bzw. <code class="docutils literal notranslate"><span class="pre">rc_qr_code_detect</span></code>. Abgesehen vom Modulnamen teilen beide die gleiche Schnittstellendefinition.</p>
+<p>Neben der REST-API stellen die TagDetect-Module außerdem Registerkarten in der Web GUI bereit, über welche sie manuell ausprobiert und konfiguriert werden können.</p>
+<div class="section" id="parameters-and-status-values">
+<h3>Parameter und Statuswerte<a class="headerlink" href="#parameters-and-status-values" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Im Folgenden sind die Parameter und Statuswerte am Beispiel von <code class="docutils literal notranslate"><span class="pre">rc_qr_code_detect</span></code> aufgelistet. Sie gleichen denen von <code class="docutils literal notranslate"><span class="pre">rc_april_tag_detect</span></code>.</p>
+<p>Dieses Softwaremodul bietet folgende Laufzeitparameter.</p>
+<table border="1" class="docutils" id="laufzeitparameter-des-rc-qr-code-detect-moduls">
+<caption><span class="caption-number">Tab. 31 </span><span class="caption-text">Laufzeitparameter des <code class="docutils literal notranslate"><span class="pre">rc_qr_code_detect</span></code>-Moduls</span><a class="headerlink" href="#laufzeitparameter-des-rc-qr-code-detect-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Typ</th>
+<th class="head">Min.</th>
+<th class="head">Max.</th>
+<th class="head">Default</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">detect_inverted_tags</span></code></td>
+<td>bool</td>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+<td>Erkennt Tags bei denen Schwarz und Weiß vertausch ist</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">forget_after_n_detections</span></code></td>
+<td>int32</td>
+<td>1</td>
+<td>1000</td>
+<td>30</td>
+<td>Anzahl an Markererkennungsläufen nach denen ein vorher gesehener Marker während der Marker-Wiedererkennung verworfen wird</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">max_corner_distance</span></code></td>
+<td>float64</td>
+<td>0.001</td>
+<td>0.01</td>
+<td>0.005</td>
+<td>Maximale Distanz zusammengehöriger Ecken zweier Marker während der Marker-Wiedererkennung</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">quality</span></code></td>
+<td>string</td>
+<td>-</td>
+<td>-</td>
+<td>H</td>
+<td>Qualität der Markererkennung (H, M oder L)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">use_cached_images</span></code></td>
+<td>bool</td>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+<td>Benutze das zuletzt empfangene Stereo-Bildpaar anstatt auf ein neues zu warten</td>
+</tr>
+</tbody>
+</table>
+<p>Dieses Modul meldet folgende Statuswerte:</p>
+<table border="1" class="docutils" id="statuswerte-des-rc-qr-code-detect-moduls">
+<caption><span class="caption-number">Tab. 32 </span><span class="caption-text">Statuswerte des <code class="docutils literal notranslate"><span class="pre">rc_qr_code_detect</span></code>-Moduls</span><a class="headerlink" href="#statuswerte-des-rc-qr-code-detect-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">state</span></code></td>
+<td>Der aktuelle Zustand der node</td>
+</tr>
+</tbody>
+</table>
+<p>Der Parameter <code class="docutils literal notranslate"><span class="pre">state</span></code> kann folgende Werte annehmen:</p>
+<span id="tab-rc-tag-detection-states"></span><table border="1" class="docutils" id="mogliche-zustande-der-tagdetect-module">
+<caption><span class="caption-number">Tab. 33 </span><span class="caption-text">Mögliche Zustände der TagDetect-Module</span><a class="headerlink" href="#mogliche-zustande-der-tagdetect-module" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Zustandsname</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>IDLE</td>
+<td>Das Modul ist inaktiv.</td>
+</tr>
+<tr class="row-odd"><td>RUNNING</td>
+<td>Das Modul läuft und ist bereit zur Markererkennung.</td>
+</tr>
+<tr class="row-even"><td>FATAL</td>
+<td>Ein schwerwiegender Fehler ist aufgetreten.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="services">
+<h3>Services<a class="headerlink" href="#services" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Die TagDetect-Module implementieren einen Zustandsautomaten, welcher zum Starten und Stoppen genutzt werden kann. Die eigentliche Markererkennung kann mit <code class="docutils literal notranslate"><span class="pre">detect</span></code> ausgelöst werden.</p>
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">start</span></code></dt>
+<dd><p class="first">startet das Modul durch einen Übergang von <code class="docutils literal notranslate"><span class="pre">IDLE</span></code> nach <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code>.</p>
+<p>Wenn das Modul läuft, empfängt es die Bilder der Stereokamera und ist bereit, Marker zu erkennen. Um Rechenressourcen auf dem Sensor zu sparen, sollte das Modul nur laufen, wenn dies nötig ist.</p>
+<p>Für diesen Service sind keine Argumente nötig.</p>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">stop</span></code></dt>
+<dd><p class="first">stoppt das Modul durch einen Übergang zu <code class="docutils literal notranslate"><span class="pre">IDLE</span></code>.</p>
+<p>Dieser Übergang kann auf dem Zustand <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code> und <code class="docutils literal notranslate"><span class="pre">FATAL</span></code> durchgeführt werden. Alle Marker-Wiedererkennungs-Informationen werden beim Stoppen gelöscht.</p>
+<p>Für diesen Service sind keine Argumente nötig.</p>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">restart</span></code></dt>
+<dd><p class="first">startet das Modul neu. Wenn im Zustand <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code> oder <code class="docutils literal notranslate"><span class="pre">FATAL</span></code>, wird das Modul erst gestoppt und dann wieder gestartet. In <code class="docutils literal notranslate"><span class="pre">IDLE</span></code> wird das Modul nur gestartet.</p>
+<p>Für diesen Service sind keine Argumente nötig.</p>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">detect</span></code></dt>
+<dd><p class="first">löst eine Markererkennung aus. Abhängig vom <code class="docutils literal notranslate"><span class="pre">use_cached_images</span></code>-Parameter arbeitet das Modul auf dem zuletzt empfangenen Bildpaar (wenn <cite>true</cite>) oder wartet auf ein Bildpaar, das nach dem Auslösen des Services aufgenommen wurde (wenn <cite>false</cite>, dies ist das Standardverhalten). Auch wenn der Parameter auf <cite>true</cite> steht, arbeitet die Markererkennung niemals mehrmals auf einem Bildpaar.</p>
+<p>Es wird empfohlen, <code class="docutils literal notranslate"><span class="pre">detect</span></code> nur im Zustand <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code> aufzurufen. Es ist jedoch auch im Zustand <code class="docutils literal notranslate"><span class="pre">IDLE</span></code> möglich, was zu einem Autostart und -stop des Moduls führt. Dies hat allerdings Nachteile: Erstens dauert der Aufruf deutlich länger, zweitens funktioniert die Marker-Wiedererkennung nicht. Es wird daher ausdrücklich empfohlen, das Modul manuell zu starten, bevor <code class="docutils literal notranslate"><span class="pre">detect</span></code> aufgerufen wird.</p>
+<p>Für diesen Service sind folgende Argumente nötig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dieser Service liefert folgenden Rückgabewert:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;instance_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Anfrage:</dt>
+<dd><p class="first"><code class="docutils literal notranslate"><span class="pre">tags</span></code> bezeichnet die Liste der Marker-IDs, welche erkannt werden sollen. Bei QR-Codes ist die ID gleich den enthaltenen Daten. Bei AprilTags ist es <cite>„&lt;Familie&gt;_&lt;ID&gt;“</cite>, also beispielsweise <cite>„36h11_5“</cite> für Familie 36h11 und ID 5. Natürlich kann das AprilTag-Modul nur zur Erkennung von AprilTags und das QR-Code-Modul nur zur Erkennung von QR-Codes genutzt werden.</p>
+<p>Die <code class="docutils literal notranslate"><span class="pre">tags</span></code> Liste kann auch leer gelassen werden. In diesem Fall werden alle erkannten Marker zurückgegeben. Dieses Feature sollte nur während der Entwicklung einer Applikation oder zur Fehlerbehebung benutzt werden. Wann immer möglich sollten die konkreten Marker-IDs aufgelistet werden, zum einen zur Vermeidung von Fehldetektionen, zum anderen auch um die Markererkennung zu beschleunigen, da nicht benötigte Marker aussortiert werden können.</p>
+<p>Bei AprilTags kann der Benutzer nicht nur einzelne Marker, sondern auch eine gesamte Familie spezifizieren, indem die ID auf „&lt;family&gt;“ gesetzt wird, bspw. „36h11“. Dadurch werden alle Marker dieser Familie erkannt. Es ist auch möglich, mehrere Familien oder eine Kombination aus Familien und einzelnen Markern anzugeben. Zum Beispiel kann <code class="docutils literal notranslate"><span class="pre">detect</span></code> mit „36h11“, „25h9_3“ und „36h10“ zur gleichen Zeit aufgerufen werden.</p>
+<p class="last">Zusätzlich zur ID kann auch die ungefähre Größe (<span class="math notranslate nohighlight">\(\pm 10\%\)</span>) eines Markers angegeben werden. Wie in <a class="reference internal" href="#sect-tag-pose-estimation"><span class="std std-ref">Posenschätzung</span></a> erklärt, verhilft dies Mehrdeutigkeiten aufzulösen, die in bestimmten Situationen auftreten können.</p>
+</dd>
+<dt>Antwort:</dt>
+<dd><p class="first"><code class="docutils literal notranslate"><span class="pre">timestamp</span></code> wird auf den Zeitstempel des Bildpaares gesetzt, auf dem die Markererkennung gearbeitet hat.</p>
+<p><code class="docutils literal notranslate"><span class="pre">tags</span></code> enthält alle erkannten Marker. <code class="docutils literal notranslate"><span class="pre">id</span></code> ist die ID des Markers, vergleichbar zur <code class="docutils literal notranslate"><span class="pre">id</span></code> in der Anfrage. <code class="docutils literal notranslate"><span class="pre">instance_id</span></code> ist der zufällige, eindeutige Identifikator eines Markers, welcher von der Marker-Wiedererkennung zugewiesen wird. <code class="docutils literal notranslate"><span class="pre">pose</span></code> enthält <code class="docutils literal notranslate"><span class="pre">position</span></code> und <code class="docutils literal notranslate"><span class="pre">orientation</span></code>. Die Orientierung ist im Quaternionen-Format angegeben. <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> bezeichnet das Koordinatensystem, auf welches obige Pose bezogen ist. Es wird immer auf <code class="docutils literal notranslate"><span class="pre">camera</span></code> gesetzt sein. <code class="docutils literal notranslate"><span class="pre">size</span></code> wird auf die geschätzte Markergröße gesetzt. Bei AprilTags ist hier der weiße Rahmen nicht enthalten.</p>
+<p><code class="docutils literal notranslate"><span class="pre">return_code</span></code> beinhaltet in <code class="docutils literal notranslate"><span class="pre">value</span></code> mögliche Warnungen oder Fehlercodes, welche von einem Wert größer bzw. kleiner als 0 repräsentiert werden. Die zugehörige Fehlermeldung kann in <code class="docutils literal notranslate"><span class="pre">message</span></code> gefunden werden. Die folgende Tabelle enthält eine Liste von üblichen Codes:</p>
+<table border="1" class="last docutils">
+<colgroup>
+<col width="7%" />
+<col width="93%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Code</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>Erfolgreich</td>
+</tr>
+<tr class="row-odd"><td>-1</td>
+<td>Ein ungültiges Argument wurde übergeben</td>
+</tr>
+<tr class="row-even"><td>-4</td>
+<td>Die maximale Wartezeit auf ein Stereo-Bildpaar wurde überschritten</td>
+</tr>
+<tr class="row-odd"><td>-9</td>
+<td>Die Lizenz ist ungültig</td>
+</tr>
+<tr class="row-even"><td>-101</td>
+<td>Interner Fehler</td>
+</tr>
+<tr class="row-odd"><td>-102</td>
+<td>Ein Rückwärtssprung der Systemzeit trat auf</td>
+</tr>
+<tr class="row-even"><td>-200</td>
+<td>Ein fataler interner Fehler trat auf</td>
+</tr>
+<tr class="row-odd"><td>101</td>
+<td>Eine Warnung trat während der Markererkennung auf</td>
+</tr>
+<tr class="row-even"><td>102</td>
+<td>Eine Warnung trat während der Posenschätzung auf</td>
+</tr>
+<tr class="row-odd"><td>200</td>
+<td>Mehrere Warnungen traten auf. Siehe die Auflistung in <code class="docutils literal notranslate"><span class="pre">message</span></code></td>
+</tr>
+<tr class="row-even"><td>201</td>
+<td>Das Modul war nicht im Zustand <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>Marker können vom <code class="docutils literal notranslate"><span class="pre">detect</span></code>-Ergebnis aus mehreren Gründen ausgeschlossen werden, z.B. falls ein Marker nur in einem der Kamerabilder sichtbar war, oder falls die Posenschätzung fehlschlug. Diese herausgefilterten Marker werden im Log aufgelistet, auf welches wie in <a class="reference internal" href="maintenance.html#sect-downloading-log-files"><span class="std std-ref">Download der Logdateien</span></a> beschrieben zugegriffen werden kann.</p>
+<p>Auf den Registerkarten der TagDetect-Module wird eine Visualisierung der letzten Markererkennung bereitgestellt. Diese Visualisierung wird allerdings erst angezeigt, sobald die Markererkennung mindestens einmal ausgeführt wurde. In der Web GUI kann die Markererkennung außerdem manuell ausprobiert werden, indem die <cite>Detektieren</cite>-Schaltfläche betätigt wird.</p>
+<p class="last">Aufgrund von Änderungen der Systemzeit auf dem Sensor können Zeitsprünge auftreten, sowohl vorwärts als auch rückwärts (siehe <a class="reference internal" href="time_sync.html#sect-time-sync"><span class="std std-ref">Zeitsynchronisierung</span></a>). Während Vorwärtssprünge keinen Einfluss auf die TagDetect-Module haben, invalidieren Rücksprünge die bereits empfangenen Bilder. Deshalb wird, wenn ein Rücksprung erkannt wird, Fehler -102 beim nächsten <code class="docutils literal notranslate"><span class="pre">detect</span></code> Aufruf zurückgegeben. Dies geschieht auch, um den Benutzer darauf hinzuweisen, dass die Zeitstempel in der <code class="docutils literal notranslate"><span class="pre">detect</span></code> Antwort ebenso zurückspringen werden.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></dt>
+<dd>Beim Aufruf dieses Services werden die aktuellen Parametereinstellungen des TagDetect-Moduls auf dem <em>rc_visard</em> gespeichert. Das bedeutet, dass diese Werte selbst nach einem Neustart angewandt werden.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></dt>
+<dd>Hiermit werden die Werkseinstellungen der Parameter dieses Moduls wiederhergestellt und angewandt („factory reset“).</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="itempick.html" class="btn btn-neutral float-right" title="ItemPick und BoxPick" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="iocontrol.html" class="btn btn-neutral" title="IO und Projektor-Kontrolle" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Optionen</span>
+      de
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Sprachen</dt>
+        
+          
+          <dd><a href="../de/tagdetect.html">de</a></dd>
+          
+        
+          
+          <dd><a href="../en/tagdetect.html">en</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versionen</dt>
+          
+            <dd><a href="../../v1.1/index.html">v1.1</a></dd>
+          
+            <dd><a href="../../v1.0/index.html">v1.0</a></dd>
+          
+            <dd><a href="../../v1.3/index.html">v1.3</a></dd>
+          
+            <dd><a href="../../v1.2/index.html">v1.2</a></dd>
+          
+            <dd><a href="../../v1.5/index.html">v1.5</a></dd>
+          
+            <dd><a href="../../v1.4/index.html">v1.4</a></dd>
+          
+            <dd><a href="../../v1.7/index.html">v1.7</a></dd>
+          
+            <dd><a href="../../v1.6/index.html">v1.6</a></dd>
+          
+            <dd><a href="../../v1.8/index.html">v1.8</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_manual_de.pdf">PDF (de)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_manual_en.pdf">PDF (en)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.8.1',
+            LANGUAGE:'de',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

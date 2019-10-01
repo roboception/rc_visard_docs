@@ -1,0 +1,532 @@
+.. include:: global_rst.glb
+
+.. _sect-silhouettematch:
+
+SilhouetteMatch
+===============
+
+.. index:: ! SilhouetteMatch
+   single: object detection
+   single: silhouette
+
+.. |silm| replace:: SilhouetteMatch
+
+Introduction
+------------
+
+The |silm| component is an optional on-board component of the |rc_visard|, which
+detects objects by matching a predefined silhouette (“template”) to edges in an image.
+
+.. Note::
+
+   This component is optional and requires a separate |silm| :ref:`license<sect-updating-license>`
+   :latex:`(Section \ref{maintenance:sect-updating-license})` to be purchased.
+
+For the |silm| component to work, special object templates are required for each type of object to
+be detected. Roboception offers a template generation service on their 
+`website <https://roboception.com/en/template-request/>`_:latex:`\:(\url{https://roboception.com/en/template-request/})`, 
+where the user can upload CAD files or recorded data of the objects and request object templates for the |silm| component.
+
+The object templates consist of significant edges of each object. These template edges are matched to the  
+edges detected in the left and right camera images, considering the
+actual size of the objects and their distance from the |rc_visard|. The poses of the detected objects are
+returned and can be used for grasping, for example.
+
+Suitable objects
+................
+
+The |silm| component is intended for objects which have significant edges on a common plane that is 
+parallel to the base plane on which the objects are placed. This applies to flat, nontransparent 
+objects, such as routed, laser-cut or water-cut 2D parts and flat-machined parts. More complex
+parts can also be detected if there are significant edges on a common plane, e.g. a special 
+pattern printed on a flat surface. 
+
+The |silm| component works best for objects on a texture-free base plane. The color of the base plane should
+be chosen such that a clear contrast between the objects and the base plane appears in the intensity image.
+
+Suitable scene
+..............
+
+The scene must meet the following conditions to be suitable for the |silm| component:
+
+- The objects to be detected must be suitable for the |silm| component as described above.
+- Only objects belonging to one specific template are visible at a time (unmixed scenario). In case other objects are visible as well, a proper region of interest (ROI) must be set.
+- All visible objects are lying on a common base plane, which has to be calibrated.
+- The offset between the base plane normal and the line of sight of the |rc_visard| does not exceed 10 degrees.
+- The objects are not partially or fully occluded.
+- All visible objects are right side up (no flipped objects).
+- The object edges to be matched are visible in both, left and right camera images.
+
+
+.. _sect-silhouettematch-base-plane-calib:
+
+Base-plane calibration
+----------------------
+
+.. index::
+   pair: SilhouetteMatch; base-plane calibration
+   pair: SilhouetteMatch; base-plane
+
+Before objects can be detected, a base-plane calibration must be performed. 
+Thereby, the distance and angle of the plane on which the objects are 
+placed is measured and stored persistently on the |rc_visard|.
+
+Separating the detection of the base plane from the actual object detection
+renders scenarios possible in which the base plane is temporarily occluded.
+Moreover, it increases performance of the object detection for scenarios where
+the base plane is fixed for a certain time; thus, it is not necessary
+to continuously re-detect the base plane.
+
+The base-plane calibration can be performed in three different ways, 
+which will be explained in more detail further down:
+
+- AprilTag based
+- Stereo based
+- Manual
+
+The base-plane calibration is successful if the normal vector of the estimated base plane is at most 
+10 degrees offset to the line of sight of the |rc_visard|. If the base-plane calibration
+is successful, it will be stored persistently on the |rc_visard| until it is removed or a new base-plane
+calibration is performed.
+
+In scenarios where the base plane is not accessible for calibration, a plane parallel to the base-plane can be calibrated.
+Then an ``offset`` parameter can be used to shift the estimated plane onto the actual base plane where
+the objects are placed. The ``offset`` parameter gives the distance in meters by which the estimated plane 
+is shifted towards to |rc_visard|.
+
+In the |restapi|, a plane is defined by a ``normal`` and a ``distance``.
+``normal`` is a normalized 3-vector, specifying the normal of the plane.
+The normal points away from the camera.
+``distance`` represents the distance of the plane from the camera along the normal.
+Normal and distance can also be interpreted as :math:`a`, :math:`b`, :math:`c`, and :math:`d` components
+of the plane equation, respectively:
+
+.. math::
+   ax + by + cz + d = 0
+
+
+.. Note::
+
+   To avoid privacy issues, the image of the persistently stored base-plane calibration will
+   appear blurred after rebooting the |rc_visard|.
+
+AprilTag based base-plane calibration
+.....................................
+
+AprilTag detection (ref. :doc:`tagdetect`:latex:`, Section \ref{tagdetect:sect-tag-detection}`) 
+is used to find AprilTags 
+in the scene and fit a plane through them. At least three AprilTags must be placed on the base 
+plane so that they are visible in the left and right camera images. The tags should be placed 
+such that they are spanning a triangle that is as large as possible. The larger the triangle, 
+the more accurate is the resulting base-plane estimate.
+Use this method if the base plane is untextured and no external random dot projector is available.
+This calibration mode is available via the |rest-api| and the |webgui|.
+
+Stereo based base-plane calibration
+...................................
+
+The 3D point cloud computed by SGM onboard the |rc_visard| is used to find the plane which is 
+farthest away from the |rc_visard|. Therefore, the region of interest (ROI) for this method must 
+be set such that only the relevant base plane is included. The base plane must not be completely 
+occluded by objects.
+Use this method if the base plane is well textured or you can
+make use of a random dot projector to project texture on the base plane.
+This calibration mode is available via the |rest-api| and the |webgui|.
+
+Manual base-plane calibration
+...................................
+
+The base plane can be set manually if its parameters are known, e.g. from previous
+calibrations. This calibration mode is only available via the |rest-api| and not the |webgui|.
+
+.. _sect-silhouettematch-roi:
+
+Setting a region of interest
+----------------------------
+
+If objects are to be detected only in part of the camera’s field of view, 
+a region of interest (ROI) can be set accordingly. This ROI is defined as a rectangular part
+of the left camera image, and can be set via the |rest-api| or in the |webgui|.
+The |webgui| offers an easy-to-use selection tool. 
+Up to 10 ROIs can be set and stored persistently on the |rc_visard|.
+Each ROI must have a unique name to address a specific ROI in the base-plane calibration or
+object detection process.
+
+In the |restapi|, a 2D ROI is defined by the following values:
+
+- ``id``: Unique name of the region of interest
+- ``offset_x``, ``offset_y``: offset in pixels along the x-axis and y-axis from the top-left corner of the image, respectively
+- ``width``, ``height``: width and height in pixels
+
+.. _sect-silhouettematch-detect:
+
+Detection of objects
+--------------------
+
+.. index::
+   single: SilhouetteMatch; detection of objects
+
+Objects can only be detected after a successful base-plane calibration. 
+It must be ensured that the position and orientation of the base plane 
+does not change before the detection of objects.
+Otherwise, the base-plane calibration must be renewed.
+
+
+For triggering the object detection, in general, the following information 
+must be provided to the |silm| component:
+
+- The template of the object to be detected in the scene. 
+- The coordinate frame in which the poses of the detected objects shall be returned 
+  (ref. :ref:`sect-silhouettematch-hand-eye-calib`).
+
+Optionally, further information can be given to the |silm| component:
+
+- An offset in case the objects are lying not on the base plane but on a plane parallel 
+  to it. The offset is the distance between both planes 
+  given in the direction towards the camera. If omitted, an offset of 0 is assumed.
+- The region of interest in which the objects should be detected. If omitted, objects
+  are matched in the whole image.
+- The current robot pose in case the chosen coordinate frame for the poses is ``external`` and
+  the |rc_visard| is mounted on the robot (possible only via the |restapi|).
+
+On the |webgui| the detection can be tested in the "Try Out" section of the |silm| component's tab.
+The result is visualized as shown in figure :numref:`fig-silm-result-images`.
+
+   .. _fig-silm-result-images:
+   .. figure:: images/silhouetteMatchResults.*
+      :width: 100 %
+      :align: center
+
+      Result image of the |silm| component as shown in the |webgui|
+
+The right image shows the calibrated base plane in blue and the template 
+to be matched in green. The template is warped to the size and tilt matching
+objects on the calibrated base plane would have.
+
+The left image shows the detection result. The shaded blue area on the 
+left is the region of the left camera image which does not overlap with 
+the right image, and in which no objects can be detected. The chosen 
+region of interest is shown as bold petrol rectangle. The detected edges 
+in the image are shown in light blue and the matches with the template 
+are shown in green. The red circles are the origins of the detected 
+objects as defined in the template. The poses of the object origins in the chosen
+coordinate frame are returned as results. In case the objects are rotationally
+symmetric, all returned poses will have the same orientation. For rotationally
+non-symmetric objects, the orientation of the detected objects is aligned with
+the normal of the base plane.
+
+The detection results and runtimes are affected by several run-time parameters which are listed
+and explained further down. Improper parameters can lead to time-outs of the |silm| component's
+detection process.
+
+
+Interaction with other components
+---------------------------------
+
+Internally, the |silm| component depends on, and interacts with other on-board
+components as listed below.
+
+.. Note::
+  All changes and configuration updates to these components will affect
+  the performance of the |silm| component.
+
+.. _sect-silhouettematch-stereo-camera-matching:
+
+Stereo camera and stereo matching
+.................................
+
+The |silm| component makes internally use of the rectified images from the 
+:doc:`stereo_camera` component (``rc_stereocamera``:latex:`, Section \ref{stereo_camera:sect-stereo-camera}`).
+Thus, the exposure time should be set properly to achieve the optimal performance of the component.
+
+For base-plane calibration in stereo mode the disparity images from the :doc:`stereo_matching` component
+(``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`) are used. Apart from that,
+the stereo-matching component should not be run in parallel to the |silm| component, because the detection runtime increases.
+
+For best results it is recommended to enable 
+:ref:`smoothing<expl-depth-smooth>` :latex:`(Section \ref{stereo_matching:expl-depth-smooth})`
+for :doc:`stereo_matching`.
+
+IO and Projector Control
+........................
+
+In case the |rc_visard| is used in conjunction with an external random dot projector and
+the :doc:`iocontrol` component (``rc_iocontrol``:latex:`, Section \ref{iocontrol:sect-iocontrol}`),
+the projector should be used for the stereo-based base-plane calibration.
+
+The projected pattern must not be visible in the left and right camera images during object detection
+as it interferes with the matching process.
+Therefore, it must either be switched off or operated in ``ExposureAlternateActive`` mode.
+
+.. _sect-silhouettematch-hand-eye-calib:
+
+Hand-eye calibration
+....................
+
+In case the |rc_visard| has been calibrated to a robot, the |silm| component can automatically provide
+poses in the robot coordinate frame.
+For the |silm| node's :ref:`sect-silhouettematch-services`, the frame of the
+input and output poses and plane coordinates can be controlled with the ``pose_frame``
+argument.
+
+Two different ``pose_frame`` values can be chosen:
+
+1. **Camera frame** (``camera``).
+   All poses and plane coordinates provided to and by the component are in the camera frame.
+
+2. **External frame** (``external``).
+   All poses and plane coordinates provided to and by the component are in the external frame,
+   configured by the user during the hand-eye calibration process.
+   The component relies on the on-board :doc:`Hand-eye calibration component<handeye_calibration>`
+   to retrieve the sensor mounting (static or robot mounted) and
+   the hand-eye transformation.
+
+All ``pose_frame`` values that are not ``camera`` or ``external`` are rejected.
+
+.. Note::
+   If no hand-eye calibration is available, all ``pose_frame`` values should be set to ``camera``.
+
+.. Note::
+   If the hand-eye calibration has changed after base-plane calibration,
+   the base-plane calibration will be marked as invalid and must be renewed.
+
+Depending on the value of ``pose_frame``, it is necessary to additionally provide the current
+robot pose (``robot_pose``) to the |silm| component:
+
+- If ``pose_frame`` is set to ``external``, providing the robot pose is obligatory.
+- If ``pose_frame`` is set to ``camera``, providing the robot pose is optional.
+
+If the current robot pose is provided during calibration, it is stored persistently on the sensor.
+If the updated robot pose is later provided during ``get_base_plane_calibration`` or ``detect_object``
+as well, the base-plane calibration will be transformed automatically to this new robot pose.
+This enables the user to change the robot pose (and thus sensor position)
+between base-plane calibration and object detection.
+
+.. Note::
+   Object detection can only be performed if the limit of 10 degrees angle offset between
+   the base plane normal and the line of sight of the |rc_visard| is not exceeded.
+
+Parameters and status values
+----------------------------
+
+.. index::
+  single: SilhouetteMatch; parameters
+  single: SilhouetteMatch; status
+
+The |silm| software component is called ``rc_silhouettematch`` in the |rest-api|.
+The user can explore and configure the ``rc_silhouettematch``
+component's run-time parameters, e.g. for development and testing, using the |rc_visard|
+:ref:`sect-web-gui`:latex:`\:(Section \ref{installation:sect-web-gui})` or
+:ref:`sect-swagger-ui`:latex:`\ (Section \ref{rest_api:sect-swagger-ui})`.
+
+Parameter overview
+..................
+
+.. include:: _gen/nodes/params/rc_silhouettematch.txt
+
+Description of run-time parameters
+..................................
+
+Each run-time parameter is represented by a row on the |webgui|'s |silm| Module tab. 
+The name in the |webgui| is given in brackets behind the parameter name and the parameters are 
+listed in the order they appear in the |webgui|:
+
+``quality`` (*Quality*)
+    Object detection can be performed on images with different resolutions:
+    high (1280 x 960), medium (640 x 480) and low (320 x 240). The lower
+    the resolution, the lower the detection time, but the fewer details of the objects
+    are visible.
+
+``max_number_of_detected_objects`` (*Maximum Object Number*)
+    This parameter gives the maximum number of objects to detect in the scene. If more than
+    the given number of objects can be detected in the scene, only the objects with the highest
+    matching results are returned.
+
+``match_max_distance`` (*Maximum Matching Distance*)
+    This parameter gives the maximum allowed pixel distance of an image edge pixel from the object
+    edge pixel in the template to be still considered as matching. If the object is not perfectly 
+    represented in the template, it might not be detected when this parameter is low. High values, 
+    however, might lead to false detections in case of a cluttered scene or the presence of similar 
+    objects, and also increase runtime.
+
+``match_percentile`` (*Matching Percentile*)
+    This parameter indicates how strict the matching process should be. The matching percentile is 
+    the ratio of template pixels that must be within the Maximum Matching Distance to successfully match the template.
+    The higher this number, the more accurate the match must be to be considered as valid.
+
+``edge_sensitivity`` (*Edge Sensitivity*)
+    This parameter influences how many edges are detected in the camera images. The higher this number, the
+    more edges are found in the intensity image. That means, for lower numbers, only the most significant edges
+    are considered for template matching. A large number of edges in the image might increase the detection time.
+
+.. _sect-silhouettematch-services:
+
+Services
+--------
+
+.. index::
+  single: SilhouetteMatch; services
+
+The user can explore and call the ``rc_silhouettematch`` component's services,
+e.g. for development and testing, using
+:ref:`sect-swagger-ui`:latex:`\ (Section \ref{rest_api:sect-swagger-ui})` or
+the |rc_visard|
+:ref:`sect-web-gui`:latex:`\:(Section \ref{installation:sect-web-gui})`.
+
+Each service component provides a ``return_code``,
+which consists of a value plus an optional message.
+
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+
+.. tabularcolumns:: |c|L|
+.. _tab-silhouettematch-return-codes:
+.. csv-table:: Return codes of the |silm| component services
+    :header:  Code, Description
+
+    "0",    "Success"
+    "-1",   "An invalid argument was provided"
+    "-3",   "An internal timeout occurred, e.g. during object detection"
+    "-4",   "Data acquisition took longer than the maximum allowed time of 3.0 seconds"
+    "-7",   "Data could not be read or written to persistent storage"
+    "-100", "An internal error occurred"
+    "-101", "Detection of the base plane failed"
+    "-102", "The hand-eye calibration changed since the last base-plane calibration"
+    "-103", "The maximum number of regions of interest has been reached"
+    "-104", "Offset between the base plane normal and the line of sight of the |rc_visard| exceeds 10 degrees"
+    "101",  "An existing region of interest was overwritten"
+    "102",  "The provided robot pose was ignored"
+    "103",  "The base plane was not transformed to the current sensor pose, e.g. because no robot pose was provided during base-plane calibration"
+
+The |silm| component offers the following services.
+
+.. _expl-silhouettematch-srv-calib:
+
+``calibrate_base_plane``
+   Triggers the calibration of the base plane, see :ref:`sect-silhouettematch-base-plane-calib`.
+   A successful base-plane calibration is stored persistently on the |rc_visard| and returned by this service.
+   The base-plane calibration is persistent over firmware updates and rollbacks.
+
+   All images used by the service are guaranteed to be newer than the service trigger time.
+
+   .. include:: _gen/nodes/services/rc_silhouettematch_calibrate_base_plane.txt
+
+   Required arguments:
+
+    ``plane_estimation_method``: method to use for base-plane calibration. Valid values are ``STEREO``, ``APRILTAG``, ``MANUAL``.
+
+    ``pose_frame``: see :ref:`sect-silhouettematch-hand-eye-calib`.
+      
+   Potentially required arguments:
+
+    ``plane`` if ``plane_estimation_method`` is ``MANUAL``: plane that will be set as base-plane calibration.
+
+    ``robot_pose``: see :ref:`sect-silhouettematch-hand-eye-calib`.
+
+   Optional arguments:
+
+    ``offset``: offset in meters by which the estimated plane will be shifted towards the camera.
+
+.. _expl-silhouettematch-srv-get-calib:
+
+``get_base_plane_calibration``
+   Returns the configured base-plane calibration.
+
+   .. include:: _gen/nodes/services/rc_silhouettematch_get_base_plane_calibration.txt
+
+   Required arguments:
+
+    ``pose_frame``: see :ref:`sect-silhouettematch-hand-eye-calib`.
+
+   Potentially required arguments:
+
+    ``robot_pose``: see :ref:`sect-silhouettematch-hand-eye-calib`.
+
+.. _expl-silhouettematch-srv-delete-calib:
+
+``delete_base_plane_calibration``
+   Deletes the configured base-plane calibration.
+
+   .. include:: _gen/nodes/services/rc_silhouettematch_delete_base_plane_calibration.txt
+
+.. _expl-silhouettematch-srv-set-roi:
+
+``set_region_of_interest_2d``
+   Persistently stores a 2D region of interest on the |rc_visard|. All configured 2D regions
+   of interest are persistent over firmware updates and rollbacks.
+
+   See :ref:`sect-silhouettematch-roi` for the definition of the 2D region of interest type.
+
+   .. include:: _gen/nodes/services/rc_silhouettematch_set_region_of_interest_2d.txt
+
+.. _expl-silhouettematch-srv-get-rois:
+
+``get_regions_of_interest_2d``
+   Returns the configured 2D regions of interest with the requested ``region_of_interest_2d_ids``.
+   If no ``region_of_interest_2d_ids`` are provided, all configured 2D regions of interest are
+   returned.
+
+   .. include:: _gen/nodes/services/rc_silhouettematch_get_regions_of_interest_2d.txt
+
+.. _expl-silhouettematch-srv-delete-rois:
+
+``delete_regions_of_interest_2d``
+   Deletes the configured 2D regions of interest with the requested ``region_of_interest_2d_ids``.
+   All 2D regions of interest to be deleted must be explicitly specified in ``region_of_interest_2d_ids``.
+
+   .. include:: _gen/nodes/services/rc_silhouettematch_delete_regions_of_interest_2d.txt
+
+.. _expl-silhouettematch-srv-detect-objects:
+
+``detect_object``
+   Triggers an object detection and returns the pose of all found object instances.
+   The maximum number of returned instances can be controlled with the ``max_number_of_detected_objects``
+   parameter.
+
+   All images used by the service are guaranteed to be newer than the service trigger time.
+
+   See :ref:`sect-silhouettematch-detect` for more details about the object detection.
+
+   .. include:: _gen/nodes/services/rc_silhouettematch_detect_object.txt
+
+   Required arguments:
+
+    ``object_id`` in ``object_to_detect``: ID of the template which should be detected.
+
+    ``pose_frame``: see :ref:`sect-silhouettematch-hand-eye-calib`.
+
+   Potentially required arguments:
+
+    ``robot_pose``: see :ref:`sect-silhouettematch-hand-eye-calib`.
+
+   Optional arguments:
+
+    ``offset``: offset in meters by which the base-plane calibration will be shifted towards the camera.
+
+.. _expl-silhouettematch-srv-save-params:
+
+``save_parameters``  (*Save*)
+   This service saves the currently set parameters persistently.
+   Thereby, the same parameters will still apply after a reboot of
+   the sensor.
+   The node parameters are not persistent over firmware updates and rollbacks.
+
+.. _expl-silhouettematch-srv-reset-params:
+
+``reset_to_defaults``  (*Reset*)
+   This service resets all parameters of the component to its default values,
+   as listed in above table.
+   The reset does not apply to regions of interest and base-plane calibration.  
+
+
+Template Upload
+---------------
+
+.. index::
+  single: SilhouetteMatch; template api
+
+For template upload, download and listing, special |rest-api| endpoints are provided.
+Up to 50 templates can be stored persistently on the |rc_visard|.
+
+.. include:: _gen/swagger/templates.txt

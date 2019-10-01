@@ -1,0 +1,386 @@
+Installation
+
+Warnung: Vor Installation des Gerätes müssen die Hinweise zur
+
+  Sicherheit
+
+   des
+
+  rc_visard
+
+   gelesen und verstanden werden.
+
+Installation und Konfiguration
+
+Für den Anschluss an ein Computernetzwerk verfügt der
+
+rc_visard
+
+ über eine Gigabit-Ethernet-Schnittstelle. Die gesamte Kommunikation
+mit dem Gerät wird über diese Schnittstelle abgewickelt. Der
+
+rc_visard
+
+ besitzt zudem eine eigene Prozessierungseinheit welche nach dem
+Starten des Geräts eine gewisse Zeit für den Boot-Vorgang benötigt.
+
+Einschalten
+
+Bemerkung: Vergewissern Sie sich,
+
+  bevor
+
+   Sie die Stromzufuhr einschalten, dass der M12-Stromanschluss am
+
+  rc_visard
+
+   sicher befestigt ist.
+
+Sobald der
+
+rc_visard
+
+ an den Strom angeschlossen ist, schaltet sich die LED an der
+Gerätefront ein. Während des Boot-Vorgangs ändert sich die Farbe der
+LED, bis sie schließlich grün leuchtet. Dies bedeutet, dass alle
+Prozesse laufen und der
+
+rc_visard
+
+ einsatzbereit ist.
+
+Ist kein Netzwerkkabel angeschlossen bzw. das Netzwerk nicht
+ordnungsgemäß konfiguriert, blinkt die LED alle fünf Sekunden rot. In
+diesem Fall muss die Netzwerkkonfiguration des Geräts überprüft
+werden. Für nähere Informationen zu den LED-Farbcodes siehe
+
+LED-Farben
+
+.
+
+Netzwerkkonfiguration
+
+Für die Kommunikation mit anderen Netzwerkgeräten muss dem
+
+rc_visard
+
+ eine Internet-Protokoll-Adresse (
+
+IP
+
+) zugewiesen werden. Jede IP-Adresse darf innerhalb des lokalen
+Netzwerks nur einmal vergeben werden. Sie kann entweder automatisch
+oder manuell zugewiesen werden.
+
+
+Automatische Konfiguration (werkseitige Voreinstellung)
+
+Für die Zuweisung von IP-Adressen wird bevorzugt auf
+
+DHCP
+
+ zugegriffen. Ist DHCP (werkseitige Voreinstellung auf dem
+
+rc_visard
+
+) aktiviert, versucht das Gerät, wann immer das Netzwerkkabel
+eingesteckt wird, einen DHCP-Server zu kontaktieren. Ist ein DHCP-
+Server im Netzwerk verfügbar, wird die IP-Adresse automatisch
+konfiguriert.
+
+In einigen Netzwerken ist der DHCP-Server so konfiguriert, dass
+lediglich bekannte Geräte akzeptiert werden. In diesem Fall muss die
+auf dem Sensor aufgedruckte „Media Access Control“-Adresse, kurz
+
+MAC-Adresse
+
+, im DHCP-Server konfiguriert werden. Zudem ist der ebenfalls
+aufgedruckte Host-Name des Sensors im Domain Name Server
+
+DNS
+
+ einzustellen. Der Host-Name im Format "rc-visard-<serial number>" ist
+ebenfalls auf den Sensor aufgedruckt. Sowohl die MAC-Adresse als auch
+der Host-Name sind zu Konfigurationszwecken an den
+Netzwerkadministrator zu übermitteln.
+
+Kann der
+
+rc_visard
+
+ nicht innerhalb von 15 Sekunden nach dem Einschalten bzw. dem
+Einstecken des Netzwerkkabels Kontakt zu einem DHCP-Server aufbauen,
+versucht er, sich selbst eine eindeutige IP-Adresse zuzuweisen. Dieser
+Prozess heißt
+
+Link Local
+
+. Diese Option ist besonders nützlich, wenn der
+
+rc_visard
+
+ direkt an einen Computer angeschlossen werden soll. In diesem Fall
+muss auch der Computer mit einer Link-Local-Adresse konfiguriert sein.
+Bei manchen Betriebssystemen wie Windows 10 ist Link Local bereits
+standardmäßig als Fallback eingestellt. Bei der Arbeit mit anderen
+Betriebssystemen, wie z. B. Linux, muss die Link-Local-Adresse direkt
+im Netzwerkmanager konfiguriert werden.
+
+Manuelle Konfiguration
+
+In einigen Fällen kann es nützlich sein, manuell eine feste IP-Adresse
+zu vergeben. Dies wird über die Standard
+
+GigE Vision
+
+® 2.0 Schnittstelle des Sensors vorgenommen und erfordert ein
+Konfigurationstool, welches auf dem Host-Computer zu installieren ist.
+Wir empfehlen hierfür IpConfigTool, das Teil des
+
+Baumer GAPI SDK
+
+ ist. Für Windows und Linux kann das entsprechende
+
+SDK
+
+ kostenlos von folgender Seite heruntergeladen werden:
+
+http://www.baumer.com
+
+.
+
+Nach dem Start des Konfigurationstools wird das Netzwerk nach allen
+verfügbaren GigE Vision®-Sensoren durchsucht. Alle
+
+rc_visard
+
+-Geräte können über ihre Seriennummer und MAC-Adresse, die beide auf
+dem Gerät aufgedruckt sind, eindeutig identifiziert werden. Lässt sich
+das Gerät nicht finden, kann es für die Konfiguration auch direkt an
+den Computer angeschlossen werden (siehe
+
+Automatische Konfiguration (werkseitige Voreinstellung)
+
+).
+
+Warnung: Die IP-Adresse muss eindeutig sein und innerhalb des
+  Gültigkeitsbereichs des lokalen Netzwerks liegen. Zudem muss die
+  Subnetz-Maske dem lokalen Netzwerk entsprechen, da anderenfalls
+  möglicherweise nicht auf den
+
+  rc_visard
+
+   zugegriffen werden kann. Dieses Problem lässt sich vermeiden, indem
+  die unter
+
+  Automatische Konfiguration (werkseitige Voreinstellung)
+
+   beschriebene automatische Konfiguration genutzt wird.
+
+Aufspüren von rc_visard-Geräten
+
+Alle Geräte, die eingeschaltet und mit dem lokalen Netzwerk oder
+direkt mit einem Computer verbunden sind (siehe
+
+Netzwerkkonfiguration
+
+) können über den Discover-Mechanismus von GigE Vision® ausfindig
+gemacht werden. Das Open-Source-Tool "rcdiscover-gui" kann für Windows
+und Linux kostenlos von der Roboception-Homepage heruntergeladen
+werden:
+
+http://www.roboception.com/download
+
+. Dieses Tool besteht für Windows 7 und Windows 10 aus einer einzigen
+ausführbaren Daten, die ohne Installation direkt ausgeführt werden
+kann. Für Linux ist ein Installationspaket für Ubuntu 14.04 und 16.04
+erhältlich. Nach dem Start wird jeder verfügbare
+
+rc_visard
+
+ mit seinem Namen, seiner Seriennummer, der aktuellen IP-Adresse und
+der eindeutigen MAC-Adresse aufgelistet. Das Discovery-Tool findet
+alle Geräte, die sich über globale Broadcasts erreichen lassen. Es
+kann vorkommen, dass falsch konfigurierte Geräte aufgeführt werden,
+die anderen Subnetzen als der Computer angehören. Ein Symbol im
+Discovery-Tool gibt an, ob ein Gerät richtig konfiguriert und damit
+auch über einen Webbrowser erreichbar ist.
+
+
+Wurde das Gerät erfolgreich gefunden, öffnet sich nach einem
+Doppelklick auf den Geräteeintrag die
+
+Web GUI
+
+ des Geräts im Standard-Browser des Betriebssystems. Wir empfehlen,
+Mozilla Firefox als Webbrowser zu verwenden.
+
+Zurücksetzen der Konfiguration
+
+Ein falsch konfiguriertes Gerät lässt sich über die Schaltfläche
+
+Reset rc_visard
+
+ im Discovery-Tool zurücksetzen. Der Rücksetzmechanismus ist jedoch
+nur in den ersten beiden Minuten nach dem Gerätestart verfügbar. Daher
+kann es sein, dass der
+
+rc_visard
+
+ neu gestartet werden muss, um seine Konfiguration zurückzusetzen.
+
+
+Wird ein
+
+rc_visard
+
+ trotz falscher Konfiguration vom Discovery-Mechanismus erkannt, kann
+er aus der
+
+rc_visard
+
+-Drop-down-Liste gewählt werden. Anderenfalls kann die auf dem
+
+rc_visard
+
+ aufgedruckte MAC-Adresse manuell im vorgesehenen Feld eingegeben
+werden.
+
+Nach Eingabe der MAC-Adresse kann aus vier Optionen gewählt werden:
+
+Reset Parameters: Setzt alle Parameter des rc_visard, die über die Web
+GUI\ (Abschnitt \ref{installation:sect-web-gui}) konfiguriert werden
+können (z. B. Bildwiederholrate), zurück.
+
+Reset Network: Setzt die Netzwerkeinstellungen und den
+benutzerdefinierten Namen zurück.
+
+Reset All: Setzt sowohl die rc_visard-Parameter als auch die
+Netzwerkeinstellungen und den benutzerdefinierten Namen zurück.
+
+Switch Partitions: Ermöglicht es, einen Rollback vorzunehmen, siehe
+Wiederherstellung der vorherigen Firmware-Version\:(Abschnitt
+\ref{maintenance:sect-restoring-the-previous-firmware-version}).
+
+Wird die LED weiß und das Gerät neu gestartet, war der Reset
+erfolgreich. Ist keine Reaktion erkennbar, war möglicherweise das
+zweiminütige Zeitfenster abgelaufen, sodass das Gerät neu gestartet
+werden muss.
+
+Bemerkung: Der Rücksetzmechanismus ist nur in den ersten beiden
+  Minuten nach dem Gerätestart verfügbar.
+
+Web GUI
+
+Die Web GUI des
+
+rc_visard
+
+ dient dazu, das Gerät zu testen, zu kalibrieren und seine On-Board-
+Verarbeitung zu konfigurieren. Auf die Web GUI kann über die IP-
+Adresse des Sensors von jedem Webbrowser aus zugegriffen werden, z. B.
+Firefox, Google Chrome oder Microsoft Edge. Am einfachsten lässt sich
+die Web GUI über die "rcdiscover-gui" aufrufen, wenn, wie in
+
+Aufspüren von rc_visard-Geräten
+
+ beschrieben, ein Doppelklick auf das gewünschte Gerät vorgenommen
+wird.
+
+Alternativ konfigurieren einige Netzwerkumgebungen den eindeutigen
+Host-Namen des
+
+rc_visard
+
+ automatisch in ihrem Domain Name Server (
+
+DNS
+
+). In diesem Fall kann die Web GUI auch direkt über folgende
+
+URL
+
+ aufgerufen werden: "http://rc-visard-<serial-number>", wobei der
+Platzhalter "<serial-number>" gegen die auf dem Gerät aufgedruckte
+Seriennummer auszutauschen ist.
+
+Für Linux und macOS funktioniert das ohne DNS über das Multicast-DNS-
+Protokoll (
+
+mDNS
+
+), das automatisch aktiviert wird, wenn ".local" zum Host-Namen
+hinzugefügt wird. So wird die URL einfach zu: "http://rc-visard
+-<serial-number>.local".
+
+Die Überblicksseite der Web GUI enthält die wichtigsten Informationen
+zur On-Board-Verarbeitung.
+
+
+Über Registerkarten im oberen Abschnitt der Seite kann auf einzelne
+
+rc_visard
+
+-Module zugegriffen werden:
+
+Kamera zeigt einen Live-Stream der rektifizierten linken und rechten
+Kamerabilder. Die Bildwiederholrate lässt sich reduzieren, um
+Bandbreite zu sparen, wenn über einen GigE Vision®-Client gestreamt
+wird. Außerdem lässt sich die Belichtung manuell oder automatisch
+einstellen. Für nähere Informationen siehe Parameter\:(Abschnitt
+\ref{stereo_camera:sect-cam-params}).
+
+Tiefenbild bietet einen Live-Stream der rektifizierten Bilder der
+linken Kamera sowie Tiefen- und Konfidenzbilder. Auf der Seite lassen
+sich verschiedene Einstellungen zur Berechnung und Filterung von
+Tiefenbildern vornehmen. Für nähere Informationen siehe
+Parameter\:(Abschnitt \ref{stereo_matching:sect-disp-image-
+parameters}).
+
+Dynamik zeigt die für die Schätzung der Eigenbewegung des rc_visard
+relevante Position und Bewegung visueller Merkmale. Über entsprechende
+Einstellungen lässt sich u. a. die Anzahl der zu dieser Schätzung
+herangezogenen Merkmale anpassen. Für nähere Informationen siehe
+Parameter\:(Abschnitt \ref{stereo_visodo:sect-vo-parameters}).
+
+Kamerakalibrierung dient dazu, die Kalibrierung der Kamera zu
+überprüfen. In seltenen Fällen kann es vorkommen, dass die Kamera
+nicht mehr ausreichend kalibriert ist. Dann kann die Kalibrierung über
+dieses Modul vorgenommen werden. Für nähere Informationen siehe
+Kamerakalibrierung\:(Abschnitt \ref{camera_calibration:sect-camera-
+calibration}).
+
+Hand-Auge-Kalibrierung ermöglicht es, die statische Transformation
+zwischen dem rc_visard und einem im Robotersystem bekannten
+Koordinatensystem zu berechnen. Bei letzterem kann es sich um das
+Flansch-Koordinatensystem eines Roboterarms oder ein beliebiges
+statisches Koordinatensystem im Arbeitsraum des Roboters handeln, je
+nachdem, ob der rc_visard am Flansch oder statisch im Roboterumfeld
+installiert ist. Für nähere Informationen siehe Hand-Auge-
+Kalibrierung\:(Abschnitt \ref{handeye_calibration:sect-handeye-
+calibration}).
+
+Über Logs kann auf die Logdateien des rc_visard zugegriffen werden.
+Die Logdateien werden in der Regel überprüft, wenn Fehler vermutet
+werden.
+
+System erlaubt es, die Firmware oder Lizenzdatei zu aktualisieren, und
+bietet einige allgemeine Hinweise zum Gerät.
+
+An Parametern vorgenommene Änderungen werden nicht dauerhaft
+übernommen und gehen verloren, wenn der
+
+rc_visard
+
+ neu gestartet wird, es sei denn, die Schaltfläche
+
+Speichern
+
+ wird betätigt, bevor die entsprechende Seite verlassen wird.
+
+Weitere Informationen zu den einzelnen Parametern der Web GUI lassen
+sich über die jeweils daneben angezeigte Schaltfläche
+
+Info
+
+ aufrufen.
