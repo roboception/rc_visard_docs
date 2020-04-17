@@ -1,0 +1,1996 @@
+ItemPick und BoxPick
+
+Einführung
+
+Die ItemPick- und BoxPick-Module sind optional erhältliche Module,
+welche intern auf dem
+
+rc_visard
+
+ laufen.
+
+Bemerkung: Die Module sind optional und benötigen gesonderte
+  ItemPick- bzw. BoxPick-
+
+  Lizenzen
+
+   .
+
+Die Module liefern eine gebrauchsfertige, modellfreie
+Perzeptionslösung, um robotische Pick-and-Place-Anwendungen für
+Vakuum-Greifsysteme zu realisieren. Dazu analysieren die Module die
+sichtbare 3D-Szene, extrahieren mittels Clustering-Verfahren ebene
+Greifflächen und berechnen daraus mögliche 3D-Greifposen für die
+Positionierung des Sauggreifers.
+
+Darüber hinaus bieten beide Module:
+
+eine intuitiv gestaltete Bedienoberfläche für Inbetriebnahme,
+Konfiguration und Test auf der rc_visard Web GUI\:(Abschnitt
+\ref{installation:sect-web-gui})
+
+die Möglichkeit, sogenannte Regions of Interest (ROIs) zu definieren,
+um relevante Teilbereiche der Szene auszuwählen
+
+eine integrierte Behältererkennung, um in Bin-Picking-Anwendungen
+("Griff in die Kiste") Greifpunkte nur für Objekte in dem erkannten
+Behälter zu berechnen
+
+die Unterstützung von Behältern mit Fächern, sodass Greifpunkte für
+Objekte nur in einem definierten Teilvolumen des Behälters berechnet
+werden
+
+die Unterstützung von sowohl statisch montierten als auch
+robotergeführten Kameras. Optional kann es mit der Hand-Auge-
+Kalibrierung (Abschnitt \ref{handeye_calibration:sect-handeye-
+calibration}) kombiniert werden, um Greifposen in einem
+benutzerdefinierten externen Koordinatensystem zu liefern
+
+einen Qualitätswert für jeden vorgeschlagenen Greifpunkt, der die
+Ebenheit der für das Greifen verfügbaren Oberfläche bewertet
+
+die Sortierung der berechneten Greifpunkte anhand des
+Gravitationsvektors und der Größe, sodass bei gestapelten Objekten
+zuerst die oberen gegriffen werden.
+
+Bemerkung: In diesem Kapitel werden die Begriffe Cluster und
+  Oberfläche synonym verwendet und bezeichnen eine Menge von Punkten
+  (oder Pixeln) mit ähnlichen geometrischen Eigenschaften.
+
+Bemerkung: In diesem Kapitel werden die Begriffe Load Carrier und
+  Behälter synonym verwendet und bezeichnen einen Behälter mit vier
+  Wänden, einem Boden und einem rechteckigen Rand.
+
+Setzen einer Region of Interest
+
+Eine sogenannte Region of Interest (ROI) definiert ein abgegrenztes,
+für eine spezifische Anwendung relevantes Raumvolumen. Eine ROI kann
+das Volumen, in dem ein Load Carrier gesucht wird, einschränken, oder
+ein Volumen definieren, das nur die zu greifenden Objekte enthält.
+
+Aktuell unterstützen die ItemPick- und BoxPick-Module folgende
+unterschiedliche Arten von ROIs:
+
+   BOX, für quaderförmige ROIs mit den Abmessungen box.x, box.y,
+   box.z.
+
+   SPHERE, für kugelförmige ROIs mit dem  Radius sphere.radius.
+
+Die Pose "pose" einer ROI kann entweder relativ zum
+
+Kamera
+
+-Koordinatensystem "camera" oder mithilfe der Hand-Auge-Kalibrierung
+im
+
+externen
+
+ Koordinatesystem "external" angegeben werden (siehe
+
+Hand-Auge-Kalibrierung
+
+).
+
+Beide Module erlauben das Speichern von jeweils bis zu 50
+verschiedenen ROIs, von denen jede mit einer "id" versehen ist. Die
+Konfiguration von ROIs kann mithilfe der
+
+rc_visard
+
+ Web GUI oder der
+
+REST-API-Schnittstelle
+
+ vorgenommen werden.
+
+Bemerkung: Die erstellten ROIs sind persistent auf dem
+
+  rc_visard
+
+   gespeichert und -- im Gegensatz zu den Laufzeitparametern des
+  Moduls -- auch nach Firmware-Updates und -Wiederherstellungen
+  verfügbar.
+
+Erkennung von Load Carriern
+
+Ein sogenannter Load Carrier ist ein Behälter mit vier Wänden, einem
+Boden und einem rechteckigen Rand. Seine Geometrie ist durch die
+inneren und äußeren Abmessungen ("inner_dimensions" und
+"outer_dimensions") definiert. Die maximalen "outer_dimensions"
+betragen 2.0 m in allen Dimensionen.
+
+Bemerkung: Die Innen- und Außenmaße eines Behälters sind
+  typischerweise in den Angaben des jeweiligen Herstellers
+  spezifiziert, und können im Produktblatt oder auf der Produktseite
+  nachgeschlagen werden.
+
+Die Module erlauben das Speichern von jeweils bis zu 50 verschiedenen
+Behältern, von denen jeder mit einer "id" versehen ist. Die für eine
+spezifische Anwendung relevanten Behälter können mithilfe der
+
+rc_visard
+
+ Web GUI oder der
+
+REST-API-Schnittstelle
+
+ konfiguriert werden.
+
+Bemerkung: Die konfigurierten Behälter sind persistent auf dem
+
+  rc_visard
+
+   gespeichert und -- im Gegensatz zu den Laufzeitparametern des
+  Moduls -- auch nach Firmware-Updates und -Wiederherstellungen
+  verfügbar.
+
+Der Erkennungsalgorithmus basiert auf der Erkennung des oberen,
+rechteckigen Randes (engl. rim) des Behälters. Für Standardbehälter
+wird dessen Stärke "rim_thickness" aus der Differenz von
+"inner_dimensions" und "outer_dimensions" berechnet. Für Nicht-
+Standardbehälter kann dieser Wert alternativ vom Nutzer explizit
+gesetzt werden.
+
+Das Referenzkoordinatensystem für Load Carrier ist so definiert, dass
+dessen Urprung im Zentrum des durch die Außenmaße definierten Quaders
+liegt. Dabei zeigt die z-Achse senkrecht aus dem Behälter hinaus. Die
+Module ermitteln auch, ob der Load Carrier überfüllt ("overfilled")
+ist.
+
+
+Um Mehrdeutigkeiten bei der Lageschätzung der Behältererkennung zu
+umgehen, kann eine grobe Vorgabe für die Pose "pose" des Behälters
+spezifiziert werden. Wird keine angegeben, sucht der Algorithmus
+standardmäßig nach Behältern, die horizontal zum Gravitationsvektor
+stehen.
+
+Füllstandserkennung
+
+Die ItemPick- und BoxPick-Module bieten den Service
+"detect_filling_level", um den Füllstand eines erkannten Load Carriers
+zu berechnen.
+
+Der Load Carrier ist in eine konfigurierbare Anzahl von Zellen
+unterteilt, welche in einem 2D-Raster angeordnet sind. Die maximale
+Anzahl der Zellen beträgt 10x10. Für jede Zelle werden folgende Werte
+ermittelt:
+
+level_in_percent: Minimum, Maximum und Mittelwert des Füllstands vom
+Boden in Prozent. Diese Werte können größer als 100% sein, falls die
+Zelle überfüllt ist.
+
+level_free_in_meters: Minimum, Maximum und Mittelwert in Metern des
+freien Teils der Zelle vom Rand des Load Carriers gemessen. Diese
+Werte können negativ sein, falls die Zelle überfüllt ist.
+
+cell_size: Abmessungen der 2D-Zelle in Metern.
+
+cell_position: Position des Mittelpunkts der Zelle in Metern (entweder
+im Koordinatensystem camera oder external, siehe Hand-Auge-
+Kalibrierung, Abschnitt \ref{itempick:sect-itempick-hand-eye-dep}).
+Die z-Koordinate liegt auf der Ebene des Load Carrier Randes.
+
+coverage: Anteil der gültigen Pixel in dieser Zelle. Dieser Wert
+reicht von 0 bis 1 in Schritten von 0.1. Ein niedriger Wert besagt,
+dass die Zelle fehlende Daten beinhaltet (d.h. nur wenige Punkte
+konnten in der Zelle gemessen werden).
+
+Diese Werte werden auch für den gesamten Load Carrier berechnet. Falls
+keine Zellunterteilung angegeben ist, wird nur der Gesamtfüllstand
+("overall_filling_level") berechnet.
+
+
+Erkennung von Rechtecken (BoxPick)
+
+Das BoxPick-Modul unterstützt die Erkennung von mehreren
+Objektmodellen ("item_models") vom Typ ("type") Rechteck
+("RECTANGLE"). Jedes Rechteck ist durch seine minimale und maximale
+Größe definiert, wobei die minimale Größe kleiner als die maximale
+Größe sein muss. Die Abmessungen sollten relativ genau angegeben
+werden, um Fehldetektionen zu verhindern, jedoch eine gewisse Toleranz
+beinhalten, um Messunsicherheiten und mögliche Produktionsabweichungen
+zu berücksichtigen.
+
+Optional können dem BoxPick-Modul folgende Informationen übergeben
+werden:
+
+Die ID des Load Carriers, welcher die Objekte enthält.
+
+Ein Teilbereich innerhalb eines Behälters, in dem Objekte detektiert
+werden sollen.
+
+Die ID der Region of Interest, innerhalb der nach dem Load Carrier
+gesucht wird, oder -- falls kein Load Carrier angegeben ist -- die
+Region of Interest, in der nach Objekten gesucht wird.
+
+Die zurückgegebenen Objektposen sind relativ zum Mittelpunkt des
+Rechtecks definiert. Die z-Achse zeigt in Richtung der Kamera. Jedes
+erkannte Rechteck beinhaltet eine "uuid" (Universally Unique
+Identifier) und den Zeitstempel "timestamp" des ältesten Bildes, das
+für die Erkennung benutzt wurde.
+
+Berechnung der Greifpunkte
+
+Die ItemPick- und BoxPick-Module bieten einen Service, um Greifpunkte
+für Sauggreifer zu berechnen. Der Sauggreifer ist durch die Länge und
+Breite der Greiffläche definiert.
+
+Das ItemPick-Modul identifiziert ebene Flächen in der Szene und
+unterstützt flexible und/oder deformierbare Objekte. Der Typ ("type")
+dieser Objektmodelle ("item_models") ist als unbekannt ("UNKNOWN")
+definiert, da sie keine gebräuchliche geometrische Form aufweisen
+müssen. Optional kann eine minimale und maximale Größe angegeben
+werden.
+
+Bei BoxPick werden die Greifpunkte auf den erkannten Rechtecken
+berechnet (siehe
+
+Erkennung von Rechtecken (BoxPick)
+
+).
+
+Optional können den Modulen zu einer Greifpunktberechnung weitere
+Informationen übergeben werden:
+
+Die ID des Load Carriers, welcher die zu greifenden Objekte enthält.
+
+Ein Unterabteil (load_carrier_compartment) innerhalb eines Behälters,
+in dem Greifpunkte berechnet werden sollen. Es ist durch einen Quader
+definiert, dessen Pose pose relativ zum Referenzkoordinatensystem des
+Behälters angegeben wird.
+
+
+Die ID der Region of Interest, innerhalb der nach dem Load Carrier
+gesucht wird, oder -- falls kein Load Carrier angegeben ist -- die
+Region of Interest, innerhalb der Greifpunkte berechnet werden.
+
+Informationen für die Kollisionsprüfung: Die ID des Greifers, um die
+Kollisionsprüfung zu aktivieren, und optional ein Greif-Offset, der
+die Vorgreifposition definiert. Die Kollisionsprüfung benötigt eine
+gesonderte CollisionCheck-Lizenz (Abschnitt \ref{maintenance:sect-
+updating-license}). Details zur Kollisionsprüfung sind in
+CollisionCheck (Abschnitt \ref{itempick:sect-itempick-collision-check-
+dep}) gegeben.
+
+Ein vom ItemPick- oder BoxPick-Modul ermittelter Greifpunkt
+repräsentiert die empfohlene Pose des TCP (Tool Center Point) des
+Sauggreifers. Der Greifpunkt "type" ist immer auf "SUCTION" gesetzt.
+Für jeden Greifpunkt liegt der Ursprung der Greifpose "pose" im
+Mittelpunkt der größten von der jeweiligen Greiffläche umschlossenen
+Ellipse. Die Orientierung des Greifpunkts ist ein rechtshändiges
+Koordinatensystem, sodass die z-Achse orthogonal zur Greiffläche in
+das zu greifende Objekt zeigt und die x-Achse entlang der längsten
+Ausdehnung ausgerichtet ist.
+
+
+Zusätzlich enthält jeder Greifpunkt die Abmessungen der maximal
+verfügbaren Greiffläche, die als Ellipse mit den Achslängen
+"max_suction_surface_length" und "max_suction_surface_width"
+beschrieben wird. Der Nutzer kann Greifpunkte mit zu kleinen
+Greifflächen herausfiltern, indem die minimalen Abmessungen der
+Greiffläche, die vom Sauggreifer benötigt wird, angegeben werden.
+
+Im BoxPick-Modul entspricht der Greifpunkt dem Zentrum des
+detektierten Rechtecks, wobei die Achslängen der Greiffläche durch
+Länge und Breite des Rechtecks gegeben sind. Falls mehr als 15% der
+Rechtecksfläche ungültige Datenpunkte enthält oder durch andere
+Objekte verdeckt ist, wird dem Rechteck kein Greifpunkt zugeordnet.
+
+Jeder Greifpunkt enthält auch einen Qualitätswert ("quality"), der
+einen Hinweis auf die Ebenheit der Greiffläche gibt. Dieser Wert
+reicht von 0 bis 1, wobei höhere Werte für eine ebenere rekonstruierte
+Oberfläche stehen.
+
+Jeder berechnete Greifpunkt lässt sich anhand einer "uuid"
+(Universally Unique Identifier) eindeutig identifizieren und enthält
+zusätzlich den Zeitstempel der ältesten Bildaufnahme, auf der die
+Greifpunktberechnung durchgeführt wurde.
+
+Wechselwirkung mit anderen Modulen
+
+Die folgenden, intern auf dem
+
+rc_visard
+
+ laufenden Module liefern Daten für das ItemPick- und BoxPick-Modul
+oder haben Einfluss auf die Datenverarbeitung.
+
+Bemerkung: Jede Konfigurationsänderung dieser Module kann direkte
+  Auswirkungen auf die Qualität oder das Leistungsverhalten der
+  ItemPick- und Boxpick-Module haben.
+
+Stereokamera und Stereo-Matching
+
+Folgende Daten werden vom ItemPick- und BoxPick-Modul verarbeitet:
+
+Die rektifizierten Bilder des Stereokamera-Moduls (rc_stereocamera,
+Abschnitt \ref{stereo_camera:sect-stereo-camera});
+
+Die Disparitäts-, Konfidenz- und Fehlerbilder des Stereo-Matching-
+Moduls (rc_stereomatching, Abschnitt \ref{stereo_matching:sect-stereo-
+matching}).
+
+Für alle genutzten Bilder ist garantiert, dass diese nach dem Auslösen
+des Services aufgenommen wurden.
+
+Schätzung der Gravitationsrichtung
+
+Jedes Mal, wenn eine Behältererkennung oder Greifpunktberechnung
+durchgeführt wird, schätzt das ItemPick- bzw. BoxPick-Modul die
+Gravitationsrichtung basierend auf den IMU-Daten des
+
+rc_visard
+
+.
+
+Bemerkung: Die Richtung des Gravitationsvektors wird durch Messungen
+  der linearen Beschleunigung der IMU bestimmt. Für eine korrekte
+  Schätzung des Gravitationsvektors muss der
+
+  rc_visard
+
+   stillstehen.
+
+IOControl und Projektor-Kontrolle
+
+Für den Anwendungsfall, dass der
+
+rc_visard
+
+ zusammen mit einem externen Musterprojektor und dem Modul für
+
+IOControl und Projektor-Kontrolle
+
+ ("rc_iocontrol") betrieben wird, sollte der entsprechende digitale
+Ausgang in den Betriebsmodus "ExposureAlternateActive" geschaltet
+werden (siehe
+
+Beschreibung der Laufzeitparameter
+
+).
+
+Darüber hinaus sind keine weiteren Änderungen für diesen
+Anwendungsfall notwendig.
+
+Hand-Auge-Kalibrierung
+
+Falls die Kamera zu einem Roboter kalibriert wurde, können die
+ItemPick- und BoxPick-Module automatisch Posen im
+Roboterkoordinatensystem ausgeben. Für die
+
+Services
+
+ kann das Koordinatensystem der berechneten Posen mit dem Argument
+"pose_frame" spezifiziert werden.
+
+Zwei verschiedene Werte für "pose_frame" können gewählt werden:
+
+Kamera-Koordinatensystem (camera): Alle Posen sind im Kamera-
+Koordinatensystem angegeben und es ist kein zusätzliches Wissen über
+die Lage der Kamera in seiner Umgebung notwendig. Das bedeutet
+insbesondere, dass sich ROIs oder Load Carrier, welche in diesem
+Koordinatensystem angegeben sind, mit der Kamera bewegen. Es liegt
+daher in der Verantwortung des Anwenders, in solchen Fällen die
+entsprechenden Posen der Situation entsprechend zu aktualisieren
+(beispielsweise für den Anwendungsfall einer robotergeführten Kamera).
+
+Benutzerdefiniertes externes Koordinatensystem (external): Alle Posen
+sind im sogenannten externen Koordinatensystem angegeben, welches vom
+Nutzer während der Hand-Auge-Kalibrierung gewählt wurde. In diesem
+Fall bezieht das ItemPick- oder BoxPick-Modul alle notwendigen
+Informationen über die Kameramontage und die kalibrierte Hand-Auge-
+Transformation automatisch vom Modul Hand-Auge-
+Kalibrierung\:(Abschnitt \ref{handeye_calibration:sect-handeye-
+calibration}). Für den Fall einer robotergeführten Kamera ist vom
+Nutzer zusätzlich die jeweils aktuelle Roboterpose robot_pose
+anzugeben.
+
+Bemerkung: Wenn keine Hand-Auge-Kalibrierung durchgeführt wurde bzw.
+  zur Verfügung steht, muss als Referenzkoordinatensystem "pose_frame"
+  immer "camera" angegeben werden.
+
+Zulässige Werte zur Angabe des Referenzkoordinatensystems sind
+"camera" und "external". Andere Werte werden als ungültig
+zurückgewiesen.
+
+CollisionCheck
+
+Falls eine CollisionCheck-Lizenz verfügbar ist, kann die
+Kollisionsprüfung einfach für die Greifpunktberechnung der ItemPick-
+und BoxPick-Module aktiviert werden. Dazu muss ein Greifer im
+CollisionCheck-Modul definiert werden (siehe
+
+Erstellen eines Greifers
+
+). Wenn die ID des Greifers dem Service "compute_grasps" übergeben
+wird, werden alle Greifpunkte auf Kollisionen der Greifergeometrie mit
+dem Load Carrier überprüft und nur kollisionsfreie Greifpunkte
+zurückgegeben. Jedoch werden in den Visualisierungen auf der
+
+BoxPick
+
+- und
+
+ItemPick
+
+-Seite der Web GUI kollidierende Greifpunkte als schwarze Ellipsen
+dargestellt.
+
+Warnung: Es werden nur Kollisionen zwischen dem Load Carrier und dem
+  Greifer geprüft, aber nicht Kollisionen mit dem Roboter, dem
+  Flansch, anderen Objekten oder dem Objekt im Greifer.
+
+Die Laufzeitparameter des CollisionCheck-Moduls beeinflussen die
+Kollisionserkennung wie in
+
+CollisionCheck-Parameter
+
+ beschrieben.
+
+Optional kann ein Greif-Offset zwischen dem Greifpunkt und der
+Vorgreifposition für die Kollisionsprüfung spezifiziert werden. Der
+Greif-Offset ist der Offset zur Vorgreifposition im Koordinatensystem
+des Greifpunkts. Wird der Greif-Offset angegeben, werden Griffe als
+Kollisionen markiert, wenn der Greifer an einem beliebigen Punkt
+entlang der linearen Trajektorie zwischen Vorgreifposition und
+Greifposition in Kollision mit dem Load Carrier geraten würde, wie in
+
+Abb. 60
+
+ dargestellt.
+
+Parameter
+
+Die ItemPick- und BoxPick-Module werden in der REST-API als
+"rc_itempick" und "rc_boxpick" bezeichnet und in der
+
+Web GUI
+
+ auf den Seiten
+
+BoxPick
+
+ bzw.
+
+ItemPick
+
+ (unter der Seite
+
+Module
+
+) dargestellt. Der Benutzer kann die Parameter entweder dort oder über
+die
+
+REST-API-Schnittstelle
+
+ ändern.
+
+Übersicht über die Parameter
+
+Diese Softwaremodule bieten folgende Laufzeitparameter:
+
+Applikationsspezifische Laufzeitparameter der rc_itempick und
+rc_boxpick Module              Name  Typ  Min  Max  Default
+Beschreibung  max_grasps  int32  1  20  5  Maximale Anzahl von
+bereitgestellten Greifpunkten
+
+Laufzeitparameter der rc_itempick und rc_boxpick Module für die
+Behältererkennung              Name  Typ  Min  Max  Default
+Beschreibung  load_carrier_crop_distance  float64  0.0  0.02  0.005
+Sicherheitsspielraum für die Behälterinnenmaße in Metern
+load_carrier_model_tolerance  float64  0.003  0.025  0.008  Toleranz
+für die Behältererkennung in Metern
+
+Laufzeitparameter der rc_itempick und rc_boxpick Module für das
+Clustering-Verfahren              Name  Typ  Min  Max  Default
+Beschreibung  cluster_max_dimension  float64  0.05  0.8  0.3  Nur für
+rc_itempick. Größenbeschränkung für mögliche Greifflächen in Metern.
+cluster_max_curvature  float64  0.005  0.5  0.11  Maximal erlaubte
+Krümmung für Greifflächen  clustering_patch_size  int32  3  10  4  Nur
+für rc_itempick. Pixelgröße der Patches für die Unterteilung des
+Tiefenbildes im ersten Clustering-Schritt  clustering_max_surface_rmse
+float64  0.0005  0.01  0.004  Maximal erlaubte Abweichung (Root Mean
+Square Error, RMSE) von Punkten zur Greiffläche in Metern
+clustering_discontinuity_factor  float64  0.5  5.0  1.0  Erlaubte
+Unebenheit von Greifflächen
+
+Beschreibung der Laufzeitparameter
+
+Die Laufzeitparameter werden zeilenweise auf den
+
+ItemPick
+
+- bzw.
+
+BoxPick
+
+-Seiten in der Web GUI dargestellt. Im folgenden wird der Name des
+Parameters in der Web GUI in Klammern hinter dem eigentlichen
+Parameternamen angegeben. Die Parameter sind in derselben Reihenfolge
+wie in der Web GUI aufgelistet:
+
+"max_grasps" (
+Anzahl Greifpunkte
+
+)
+   ist die maximale Anzahl von bereitgestellten Greifpunkten.
+
+"load_carrier_model_tolerance" (
+Modelltoleranz
+
+)
+   ist die maximal zulässige Abweichung zwischen den geschätzten
+   Abmessungen eines detektierten Load Carriers und den vom Nutzer
+   definierten Abmessungen des jeweiligen Behälter-Modells in Metern.
+   Behälter, deren Abmessungen stärker abweichen, werden nicht als
+   solche erkannt.
+
+"load_carrier_crop_distance" (
+Cropping
+
+)
+   setzt den Sicherheitsspielraum in Metern, um den die inneren
+   Abmesssungen eines detektierten Load Carriers verringert werden,
+   bevor sie als interne ROI für die nachfolgende Greifpunktberechnung
+   gesetzt werden.
+
+"cluster_max_dimension" (
+Nur für ItemPick
+
+,
+Maximale Größe
+
+)
+   setzt eine Größenbeschränkung für mögliche Greifflächen in Metern.
+   Flächen, die nicht durch einen Kreis dieses Durchmessers
+   umschrieben werden können, werden aussortiert.
+
+"cluster_max_curvature" (
+Maximale Krümmung
+
+)
+   ist die maximal erlaubte Krümmung für Greifflächen. Je kleiner
+   dieser Wert ist, desto mehr mögliche Greifflächen werden in
+   kleinere Flächen mit weniger Krümmung aufgeteilt.
+
+"clustering_patch_size" (
+Nur für ItemPick
+
+,
+Patchgröße
+
+)
+   ist die Pixelgröße der Patches für die Unterteilung des
+   Tiefenbildes im ersten Clustering-Schritt.
+
+"clustering_discontinuity_factor" (
+Unstetigkeitsfaktor
+
+)
+   beschreibt die erlaubte Unebenheit von Greifflächen. Je kleiner
+   dieser Wert ist, umso mehr werden mögliche Greifflächen in kleinere
+   Flächen mit weniger Unebenheiten aufgeteilt.
+
+"clustering_max_surface_rmse" (
+Maximaler RMSE
+
+)
+   ist die maximal erlaubte Abweichung (Root Mean Square Error, RMSE)
+   von Punkten zur Greiffläche in Metern.
+
+Statuswerte
+
+Statuswerte der "rc_itempick" und "rc_boxpick" Module:
+
+Statuswerte der rc_itempick und rc_boxpick Module      Name
+Beschreibung  data_acquisition_time  Zeit in Sekunden, für die beim
+letzten Aufruf auf Bilddaten gewartet werden musste. Normalerweise
+sollte dieser Wert zwischen 0.5 und 0.6 Sekunden bei Tiefenbildern der
+Auflösung High liegen.  grasp_computation_time  Laufzeit für die
+Greifpunktberechnung beim letzten Aufruf in Sekunden
+last_timestamp_processed  Zeitstempel des letzten verarbeiteten
+Bilddatensatzes  load_carrier_detection_time  Laufzeit für die letzte
+Behältererkennung in Sekunden  state  Aktueller Zustand des ItemPick-
+bzw. BoxPick-Moduls
+
+Folgende "state"-Werte werden gemeldet.
+
+Mögliche Werte für den Zustand der ItemPick und BoxPick Module
+Zustand  Beschreibung  IDLE  Das Modul ist inaktiv.  RUNNING  Das
+Modul wurde gestartet und ist bereit, Behälter zu erkennen und
+Greifpunkte zu berechnen.  FATAL  Ein schwerwiegender Fehler ist
+aufgetreten.
+
+Services
+
+Die angebotenen Services von "rc_itempick" bzw. "rc_boxpick" können
+mithilfe der
+
+REST-API-Schnittstelle
+
+ oder der
+
+rc_visard
+
+
+Web GUI
+
+ ausprobiert und getestet werden.
+
+Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen
+sogenannten "return_code" bestehend aus einem Integer-Wert und einer
+optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden
+mit einem Wert von "0" quittiert. Positive Werte bedeuten, dass die
+Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche
+Informationen zur Verfügung stehen. Negative Werte bedeuten, dass
+Fehler aufgetreten sind. Für den Fall, dass mehrere Rückgabewerte
+zutreffend wären, wird der kleinste zurückgegeben, und die
+entsprechenden Textnachrichten werden in "return_code.message"
+akkumuliert.
+
+Die folgende Tabelle führt die möglichen Rückgabe-Codes an:
+
+Rückgabecodes der Services des ItemPick- bzw. BoxPick-Moduls      Code
+Beschreibung  0  Erfolgreich  -1  Ungültige(s) Argument(e)  -4  Die
+maximal erlaubte Zeitspanne von 5.0 Sekunden für die interne Akquise
+der Bilddaten wurde überschritten.  -10  Das neue Element konnte nicht
+hinzugefügt werden, da die maximal speicherbare Anzahl an Load
+Carriern oder ROIs überschritten wurde.  -301  Für die Anfrage zur
+Greifpunktberechnung compute_grasps wurden mehrere Objektmodelle
+(item_models) vom Typ UNKNOWN übergeben.  -302  Mehr als ein Behälter
+wurde für die Anfrage detect_load_carriers oder detect_filling_level
+angegeben. Momentan wird nur ein Behälter gleichzeitig unterstützt.
+10  Die maximal speicherbare Anzahl an Load Carriern oder ROIs wurde
+erreicht.  100  Die angefragten Behälter wurden in der Szene nicht
+gefunden.  101  Es wurden keine gültigen Greifflächen in der Szene
+gefunden.  102  Der detektierte Behälter ist leer.  103  Alle
+berechneten Greifpunkte sind in Kollision mit dem Load Carrier.  200
+Das Modul ist im Zustand IDLE.  300  Ein gültiges robot_pose-Argument
+wurde angegeben, ist aber nicht erforderlich.  400  Der Serviceanfrage
+compute_grasps wurden keine Objektmodelle (item_models) als Argumente
+mitgegeben.  500  Während des Aufrufs von set_region_of_interest
+konnten keine entsprechenden Visualisierungen erzeugt werden.  600
+Mit dem Aufruf von set_load_carrier oder set_region_of_interest wurde
+ein bereits existierendes Objekt mit derselben id überschrieben.
+
+Das ItemPick- bzw. BoxPick-Modul stellt folgende Services zur
+Verfügung.
+
+start
+
+   versetzt das ItemPick-Modul in den Zustand "RUNNING". Es kann
+   vorkommen, dass der Zustandsübergang noch nicht vollständig
+   abgeschlossen ist, wenn die Serviceantwort generiert wird. In
+   diesem Fall liefert diese den entsprechenden, sich von "RUNNING"
+   unterscheidenden Zustand zurück.
+
+   Dieser Service hat keine Argumente.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+stop
+
+   stoppt das Modul und versetzt es in den Zustand "IDLE". Es kann
+   vorkommen, dass der Zustandsübergang noch nicht vollständig
+   abgeschlossen ist, wenn die Serviceantwort generiert wird. In
+   diesem Fall liefert diese den entsprechenden, sich von "IDLE"
+   unterscheidenden Zustand zurück.
+
+   Dieser Service hat keine Argumente.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "accepted": "bool",
+        "current_state": "string"
+      }
+
+set_region_of_interest
+
+   konfiguriert und speichert eine Region of Interest (ROI) auf dem
+
+   rc_visard
+
+   . Alle ROIs sind dauerhaft gespeichert, auch über Firmware-Updates
+   und -Wiederherstellungen hinweg.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "region_of_interest": {
+          "box": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "id": "string",
+          "pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "pose_frame": "string",
+          "sphere": {
+            "radius": "float64"
+          },
+          "type": "string"
+        },
+        "robot_pose": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "position": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          }
+        }
+      }
+
+   Details über den "region_of_interest"-Datentyp werden in
+
+   Setzen einer Region of Interest
+
+    gegeben.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+get_regions_of_interest
+
+   gibt die mit "region_of_interest_ids" spezifizierten, gespeicherten
+   Regions of Interest (ROIs) zurück. Werden keine
+   "region_of_interest_ids" angegeben, enthält die Serviceantwort alle
+   gespeicherten ROIs.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "region_of_interest_ids": [
+          "string"
+        ]
+      }
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "regions_of_interest": [
+          {
+            "box": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "id": "string",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "sphere": {
+              "radius": "float64"
+            },
+            "type": "string"
+          }
+        ],
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+delete_regions_of_interest
+
+   löscht die mit "region_of_interest_ids" spezifizierten,
+   gespeicherten ROIs. Alle zu löschenden ROIs müssen explizit
+   angegeben werden.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "region_of_interest_ids": [
+          "string"
+        ]
+      }
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+set_load_carrier
+
+   konfiguriert und speichert einen Load Carrier (Behälter) auf dem
+
+   rc_visard
+
+   . Alle Behälter sind dauerhaft -- auch über Firmware-Updates und
+   -Wiederherstellungen hinweg -- gespeichert.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "load_carrier": {
+          "id": "string",
+          "inner_dimensions": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "outer_dimensions": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "pose_frame": "string",
+          "rim_thickness": {
+            "x": "float64",
+            "y": "float64"
+          }
+        }
+      }
+
+   Details über den "load_carrier"-Datentyp werden in
+
+   Erkennung von Load Carriern
+
+    gegeben.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+get_load_carriers
+
+   gibt die mit "load_carrier_ids" spezifizierten, gespeicherten Load
+   Carriers (Behälter) zurück. Werden keine "load_carrier_ids"
+   angegeben, enthält die Serviceantwort alle gespeicherten Behälter.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "load_carrier_ids": [
+          "string"
+        ]
+      }
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "load_carriers": [
+          {
+            "id": "string",
+            "inner_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "outer_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "rim_thickness": {
+              "x": "float64",
+              "y": "float64"
+            }
+          }
+        ],
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+delete_load_carriers
+
+   löscht die mit "load_carrier_ids" spezifizierten, gespeicherten
+   Load Carriers (Behälter). Alle zu löschenden Behälter müssen
+   explizit angegeben werden.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "load_carrier_ids": [
+          "string"
+        ]
+      }
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+detect_load_carriers
+
+   löst eine Behältererkennung aus, wie in
+
+   Erkennung von Load Carriern
+
+    beschrieben.
+
+   Request:
+
+      Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+      ist:
+
+         {
+           "load_carrier_ids": [
+             "string"
+           ],
+           "pose_frame": "string",
+           "region_of_interest_id": "string",
+           "robot_pose": {
+             "orientation": {
+               "w": "float64",
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             },
+             "position": {
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             }
+           }
+         }
+
+      Obligatorische Serviceargumente:
+
+         "pose_frame": siehe
+
+         Hand-Auge-Kalibrierung
+
+         .
+
+         "load_carrier_id": IDs der zu erkennenden Load Carrier.
+
+      Möglicherweise benötigte Serviceargumente:
+
+         "robot_pose": siehe
+
+         Hand-Auge-Kalibrierung
+
+         .
+
+      Optionale Serviceargumente:
+
+         "region_of_interest_id": ID der Region of Interest, innerhalb
+         welcher nach Load Carriern gesucht werden soll.
+
+   Response:
+
+      Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+         {
+           "load_carriers": [
+             {
+               "id": "string",
+               "inner_dimensions": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "outer_dimensions": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "overfilled": "bool",
+               "pose": {
+                 "orientation": {
+                   "w": "float64",
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "position": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 }
+               },
+               "pose_frame": "string",
+               "rim_thickness": {
+                 "x": "float64",
+                 "y": "float64"
+               }
+             }
+           ],
+           "return_code": {
+             "message": "string",
+             "value": "int16"
+           },
+           "timestamp": {
+             "nsec": "int32",
+             "sec": "int32"
+           }
+         }
+
+      "load_carriers": Liste der erkannten Load Carrier (Behälter).
+
+      "timestamp": Zeitstempel des Bildes, auf dem die Erkennung
+      durchgeführt wurde.
+
+      "return_code": enthält mögliche Warnungen oder Fehlercodes und
+      Nachrichten.
+
+detect_filling_level
+
+   löst eine Behälter-Füllstandserkennung aus, wie in
+
+   Füllstandserkennung
+
+    beschrieben.
+
+   Request:
+
+      Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+      ist:
+
+         {
+           "filling_level_cell_count": {
+             "x": "uint32",
+             "y": "uint32"
+           },
+           "load_carrier_ids": [
+             "string"
+           ],
+           "pose_frame": "string",
+           "region_of_interest_id": "string",
+           "robot_pose": {
+             "orientation": {
+               "w": "float64",
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             },
+             "position": {
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             }
+           }
+         }
+
+      Obligatorische Serviceargumente:
+
+         "pose_frame": siehe
+
+         Hand-Auge-Kalibrierung
+
+         .
+
+         "load_carrier_id": IDs der zu erkennenden Load Carrier.
+
+      Möglicherweise benötigte Serviceargumente:
+
+         "robot_pose": siehe
+
+         Hand-Auge-Kalibrierung
+
+         .
+
+      Optionale Serviceargumente:
+
+         "region_of_interest_id": ID der Region of Interest, innerhalb
+         welcher nach Load Carriern gesucht werden soll.
+
+         "filling_level_cell_count": Anzahl der Zellen im
+         Füllstandsraster.
+
+   Response:
+
+      Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+         {
+           "load_carriers": [
+             {
+               "cells_filling_levels": [
+                 {
+                   "cell_position": {
+                     "x": "float64",
+                     "y": "float64",
+                     "z": "float64"
+                   },
+                   "cell_size": {
+                     "x": "float64",
+                     "y": "float64"
+                   },
+                   "coverage": "float64",
+                   "level_free_in_meters": {
+                     "max": "float64",
+                     "mean": "float64",
+                     "min": "float64"
+                   },
+                   "level_in_percent": {
+                     "max": "float64",
+                     "mean": "float64",
+                     "min": "float64"
+                   }
+                 }
+               ],
+               "filling_level_cell_count": {
+                 "x": "uint32",
+                 "y": "uint32"
+               },
+               "id": "string",
+               "inner_dimensions": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "outer_dimensions": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "overall_filling_level": {
+                 "cell_position": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "cell_size": {
+                   "x": "float64",
+                   "y": "float64"
+                 },
+                 "coverage": "float64",
+                 "level_free_in_meters": {
+                   "max": "float64",
+                   "mean": "float64",
+                   "min": "float64"
+                 },
+                 "level_in_percent": {
+                   "max": "float64",
+                   "mean": "float64",
+                   "min": "float64"
+                 }
+               },
+               "overfilled": "bool",
+               "pose": {
+                 "orientation": {
+                   "w": "float64",
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "position": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 }
+               },
+               "pose_frame": "string",
+               "rim_thickness": {
+                 "x": "float64",
+                 "y": "float64"
+               }
+             }
+           ],
+           "return_code": {
+             "message": "string",
+             "value": "int16"
+           },
+           "timestamp": {
+             "nsec": "int32",
+             "sec": "int32"
+           }
+         }
+
+      "load_carriers": Liste an erkannten Load Carriern und deren
+      Füllstand.
+
+      "timestamp": Zeitstempel des Bildes, auf dem die Erkennung
+      durchgeführt wurde.
+
+      "return_code": enthält mögliche Warnungen oder Fehlercodes und
+      Nachrichten.
+
+detect_items (nur BoxPick)
+
+   löst die Erkennung von Rechtecken aus,  wie in
+
+   Erkennung von Rechtecken (BoxPick)
+
+    beschrieben.
+
+   Request:
+
+      Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+      ist:
+
+         {
+           "item_models": [
+             {
+               "rectangle": {
+                 "max_dimensions": {
+                   "x": "float64",
+                   "y": "float64"
+                 },
+                 "min_dimensions": {
+                   "x": "float64",
+                   "y": "float64"
+                 }
+               },
+               "type": "string"
+             }
+           ],
+           "load_carrier_compartment": {
+             "box": {
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             },
+             "pose": {
+               "orientation": {
+                 "w": "float64",
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "position": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               }
+             }
+           },
+           "load_carrier_id": "string",
+           "pose_frame": "string",
+           "region_of_interest_id": "string",
+           "robot_pose": {
+             "orientation": {
+               "w": "float64",
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             },
+             "position": {
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             }
+           }
+         }
+
+      Obligatorische Serviceargumente:
+
+         "pose_frame": siehe
+
+         Hand-Auge-Kalibrierung
+
+         .
+
+         "item_models": Liste von Rechtecken mit minimaler und
+         maximaler Größe, wobei die minimale Größe kleiner als die
+         maximale Größe sein muss. Die Abmessungen sollten relativ
+         genau angegeben werden, um Fehldetektionen zu verhindern,
+         jedoch eine gewisse Toleranz beinhalten, um
+         Messunsicherheiten und mögliche Produktionsabweichungen zu
+         berücksichtigen.
+
+      Möglicherweise benötigte Serviceargumente:
+
+         "robot_pose": siehe
+
+         Hand-Auge-Kalibrierung
+
+         .
+
+      Optionale Serviceargumente:
+
+         "load_carrier_id": ID des Load Carriers, welcher die zu
+         erkennenden Objekte enthält.
+
+         "load_carrier_compartment": Teilvolumen (Fach oder Abteil) in
+         einem zu detektierenden Load Carrier (Behälter), in dem
+         Objekte erkannt werden sollen.
+
+         "region_of_interest_id": Falls "load_carrier_id" gesetzt ist,
+         die ID der Region of Interest, innerhalb welcher nach dem
+         Load Carrier gesucht wird. Andernfalls die ID der Region of
+         Interest, in der nach Objekten gesucht wird.
+
+   Response:
+
+      Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+         {
+           "items": [
+             {
+               "pose": {
+                 "orientation": {
+                   "w": "float64",
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "position": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 }
+               },
+               "pose_frame": "string",
+               "rectangle": {
+                 "x": "float64",
+                 "y": "float64"
+               },
+               "timestamp": {
+                 "nsec": "int32",
+                 "sec": "int32"
+               },
+               "type": "string",
+               "uuid": "string"
+             }
+           ],
+           "load_carriers": [
+             {
+               "id": "string",
+               "inner_dimensions": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "outer_dimensions": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "overfilled": "bool",
+               "pose": {
+                 "orientation": {
+                   "w": "float64",
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "position": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 }
+               },
+               "pose_frame": "string",
+               "rim_thickness": {
+                 "x": "float64",
+                 "y": "float64"
+               }
+             }
+           ],
+           "return_code": {
+             "message": "string",
+             "value": "int16"
+           },
+           "timestamp": {
+             "nsec": "int32",
+             "sec": "int32"
+           }
+         }
+
+      "load_carriers": Liste der erkannten Load Carrier (Behälter).
+
+      "items": Liste an erkannten Rechtecken.
+
+      "timestamp": Zeitstempel des Bildes, auf dem die Erkennung
+      durchgeführt wurde.
+
+      "return_code": enthält mögliche Warnungen oder Fehlercodes und
+      Nachrichten.
+
+compute_grasps (für ItemPick)
+
+   löst die Erkennung von Greifpunkten für einen Sauggreifer aus,  wie
+   in
+
+   Berechnung der Greifpunkte
+
+    beschrieben.
+
+   Request:
+
+      Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+      ist:
+
+         {
+           "collision_detection": {
+             "gripper_id": "string",
+             "pre_grasp_offset": {
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             }
+           },
+           "item_models": [
+             {
+               "type": "string",
+               "unknown": {
+                 "max_dimensions": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "min_dimensions": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 }
+               }
+             }
+           ],
+           "load_carrier_compartment": {
+             "box": {
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             },
+             "pose": {
+               "orientation": {
+                 "w": "float64",
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "position": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               }
+             }
+           },
+           "load_carrier_id": "string",
+           "pose_frame": "string",
+           "region_of_interest_id": "string",
+           "robot_pose": {
+             "orientation": {
+               "w": "float64",
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             },
+             "position": {
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             }
+           },
+           "suction_surface_length": "float64",
+           "suction_surface_width": "float64"
+         }
+
+      Obligatorische Serviceargumente:
+
+         "pose_frame": siehe
+
+         Hand-Auge-Kalibrierung
+
+         .
+
+         "suction_surface_length": Länge der Greiffläche des
+         verwendeten Vakuum-Greifsystems.
+
+         "suction_surface_width": Breite der Greiffläche des
+         verwendeten Vakuum-Greifsystems.
+
+      Möglicherweise benötigte Serviceargumente:
+
+         "robot_pose": siehe
+
+         Hand-Auge-Kalibrierung
+
+         .
+
+      Optionale Serviceargumente:
+
+         "load_carrier_id": ID des Load Carriers, welcher die zu
+         greifenden Objekte enthält.
+
+         "load_carrier_compartment": Teilvolumen (Fach oder Abteil) in
+         einem zu detektierenden Load Carrier (Behälter), in dem
+         Greifpunkte berechnet werden sollen.
+
+         "region_of_interest_id": Falls "load_carrier_id" gesetzt ist,
+         die ID der Region of Interest, innerhalb welcher nach dem
+         Load Carrier gesucht wird. Andernfalls die ID der Region of
+         Interest, innerhalb der Greifpunkte berechnet werden.
+
+         "item_models": Liste von unbekannten Objekten mit minimaler
+         und maximaler Größe, wobei die minimale Größe kleiner als die
+         maximale Größe sein muss. Nur ein Objekt "item_model" vom Typ
+         "UNKNOWN" wird aktuell unterstützt.
+
+         "collision_detection": enthält die "gripper_id" des Greifers,
+         um die Kollisionsprüfung der berechneten Greifpunkte mit dem
+         Load Carrier zu aktivieren. Optional kann der
+         "pre_grasp_offset" benutzt werden, um eine Vorgreifposition
+         zu setzen und zu prüfen, ob der Greifer an einem beliebigen
+         Punkt entlang der linearen Trajektorie zwischen
+         Vorgreifposition und Greifposition in Kollision mit dem Load
+         Carrier geraten würde. Die Kollisionsprüfung benötigt eine
+         gesonderte CollisionCheck-
+
+         Lizenz
+
+          .
+
+   Response:
+
+      Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+         {
+           "grasps": [
+             {
+               "item_uuid": "string",
+               "max_suction_surface_length": "float64",
+               "max_suction_surface_width": "float64",
+               "pose": {
+                 "orientation": {
+                   "w": "float64",
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "position": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 }
+               },
+               "pose_frame": "string",
+               "quality": "float64",
+               "timestamp": {
+                 "nsec": "int32",
+                 "sec": "int32"
+               },
+               "type": "string",
+               "uuid": "string"
+             }
+           ],
+           "load_carriers": [
+             {
+               "id": "string",
+               "inner_dimensions": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "outer_dimensions": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "overfilled": "bool",
+               "pose": {
+                 "orientation": {
+                   "w": "float64",
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "position": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 }
+               },
+               "pose_frame": "string",
+               "rim_thickness": {
+                 "x": "float64",
+                 "y": "float64"
+               }
+             }
+           ],
+           "return_code": {
+             "message": "string",
+             "value": "int16"
+           },
+           "timestamp": {
+             "nsec": "int32",
+             "sec": "int32"
+           }
+         }
+
+      "load_carriers": Liste der erkannten Load Carrier (Behälter).
+
+      "grasps": sortierte Liste an Sauggreifpunkten.
+
+      "timestamp": Zeitstempel des Bildes, auf dem die Erkennung
+      durchgeführt wurde.
+
+      "return_code": enthält mögliche Warnungen oder Fehlercodes und
+      Nachrichten.
+
+compute_grasps (für BoxPick)
+
+   löst die Erkennung von Rechtecken und Berechnung von Greifposen für
+   diese Rechtecke aus, wie in
+
+   Berechnung der Greifpunkte
+
+    beschrieben.
+
+   Request:
+
+      Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+      ist:
+
+         {
+           "collision_detection": {
+             "gripper_id": "string",
+             "pre_grasp_offset": {
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             }
+           },
+           "item_models": [
+             {
+               "rectangle": {
+                 "max_dimensions": {
+                   "x": "float64",
+                   "y": "float64"
+                 },
+                 "min_dimensions": {
+                   "x": "float64",
+                   "y": "float64"
+                 }
+               },
+               "type": "string"
+             }
+           ],
+           "load_carrier_compartment": {
+             "box": {
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             },
+             "pose": {
+               "orientation": {
+                 "w": "float64",
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "position": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               }
+             }
+           },
+           "load_carrier_id": "string",
+           "pose_frame": "string",
+           "region_of_interest_id": "string",
+           "robot_pose": {
+             "orientation": {
+               "w": "float64",
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             },
+             "position": {
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             }
+           },
+           "suction_surface_length": "float64",
+           "suction_surface_width": "float64"
+         }
+
+      Obligatorische Serviceargumente:
+
+         "pose_frame": siehe
+
+         Hand-Auge-Kalibrierung
+
+         .
+
+         "item_models": Liste von Rechtecken mit minimaler und
+         maximaler Größe, wobei die minimale Größe kleiner als die
+         maximale Größe sein muss. Die Abmessungen sollten relativ
+         genau angegeben werden, um Fehldetektionen zu verhindern,
+         jedoch eine gewisse Toleranz beinhalten, um
+         Messunsicherheiten und mögliche Produktionsabweichungen zu
+         berücksichtigen.
+
+         "suction_surface_length": Länge der Greiffläche des
+         verwendeten Vakuum-Greifsystems.
+
+         "suction_surface_width": Breite der Greiffläche des
+         verwendeten Vakuum-Greifsystems.
+
+      Möglicherweise benötigte Serviceargumente:
+
+         "robot_pose": siehe
+
+         Hand-Auge-Kalibrierung
+
+         .
+
+      Optionale Serviceargumente:
+
+         "load_carrier_id": ID des Load Carriers, welcher die zu
+         greifenden Objekte enthält.
+
+         "load_carrier_compartment": Teilvolumen (Fach oder Abteil) in
+         einem zu detektierenden Load Carrier (Behälter), in dem
+         Greifpunkte berechnet werden sollen.
+
+         "region_of_interest_id": Falls "load_carrier_id" gesetzt ist,
+         die ID der Region of Interest, innerhalb welcher nach dem
+         Load Carrier gesucht wird. Andernfalls die ID der Region of
+         Interest, innerhalb der Greifpunkte berechnet werden.
+
+         "collision_detection": enthält die "gripper_id" des Greifers,
+         um die Kollisionsprüfung der berechneten Greifpunkte mit dem
+         Load Carrier zu aktivieren. Optional kann der
+         "pre_grasp_offset" benutzt werden, um eine Vorgreifposition
+         zu setzen und zu prüfen, ob der Greifer an einem beliebigen
+         Punkt entlang der linearen Trajektorie zwischen
+         Vorgreifposition und Greifposition in Kollision mit dem Load
+         Carrier geraten würde. Die Kollisionsprüfung benötigt eine
+         gesonderte CollisionCheck-
+
+         Lizenz
+
+          .
+
+   Response:
+
+      Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+         {
+           "grasps": [
+             {
+               "item_uuid": "string",
+               "max_suction_surface_length": "float64",
+               "max_suction_surface_width": "float64",
+               "pose": {
+                 "orientation": {
+                   "w": "float64",
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "position": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 }
+               },
+               "pose_frame": "string",
+               "quality": "float64",
+               "timestamp": {
+                 "nsec": "int32",
+                 "sec": "int32"
+               },
+               "type": "string",
+               "uuid": "string"
+             }
+           ],
+           "items": [
+             {
+               "grasp_uuids": [
+                 "string"
+               ],
+               "pose": {
+                 "orientation": {
+                   "w": "float64",
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "position": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 }
+               },
+               "pose_frame": "string",
+               "rectangle": {
+                 "x": "float64",
+                 "y": "float64"
+               },
+               "timestamp": {
+                 "nsec": "int32",
+                 "sec": "int32"
+               },
+               "type": "string",
+               "uuid": "string"
+             }
+           ],
+           "load_carriers": [
+             {
+               "id": "string",
+               "inner_dimensions": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "outer_dimensions": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "overfilled": "bool",
+               "pose": {
+                 "orientation": {
+                   "w": "float64",
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "position": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 }
+               },
+               "pose_frame": "string",
+               "rim_thickness": {
+                 "x": "float64",
+                 "y": "float64"
+               }
+             }
+           ],
+           "return_code": {
+             "message": "string",
+             "value": "int16"
+           },
+           "timestamp": {
+             "nsec": "int32",
+             "sec": "int32"
+           }
+         }
+
+      "load_carriers": Liste der erkannten Load Carrier (Behälter).
+
+      "items": sortierte Liste von Sauggreifpunkten auf den erkannten
+      Rechtecken.
+
+      "grasps": sortierte Liste an Sauggreifpunkten.
+
+      "timestamp": Zeitstempel des Bildes, auf dem die Erkennung
+      durchgeführt wurde.
+
+      "return_code": enthält mögliche Warnungen oder Fehlercodes und
+      Nachrichten.
+
+save_parameters
+
+   Beim Aufruf dieses Services werden die aktuellen
+   Parametereinstellungen des ItemPick- oder BoxPick-Moduls auf dem
+
+   rc_visard
+
+    gespeichert. Das bedeutet, dass diese Werte selbst nach einem
+   Neustart angewandt werden. Bei Firmware-Updates oder
+   -Wiederherstellungen werden sie jedoch wieder auf den Standardwert
+   gesetzt.
+
+   Dieser Service hat keine Argumente.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+reset_defaults
+
+   Hiermit werden die Werkseinstellungen der Parameter dieses Moduls
+   wiederhergestellt und angewandt ("factory reset"). Dies betrifft
+   nicht die konfigurierten ROIs und Load Carrier.
+
+   Dieser Service hat keine Argumente.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }

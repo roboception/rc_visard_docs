@@ -1,0 +1,255 @@
+IOControl und Projektor-Kontrolle
+
+Das IOControl-Modul ermöglicht das Lesen der digitalen Eingänge und
+die Kontrolle der digitalen Ausgänge (GPIOs) des
+
+rc_visard
+
+. Die Ausgänge können auf *aus* (LOW) oder *an* (HIGH) gesetzt werden.
+Sie können auch so konfiguriert werden, dass sie genau für die
+Belichtungszeit jedes Bildes, oder auch nur jedes zweiten Bildes, *an*
+sind.
+
+Das IOControl-Modul dient der Ansteuerung einer externen Lichtquelle
+oder eines Projektors, der an einen der GPIO-Ausgänge des
+
+rc_visard
+
+ angeschlossen wird, und der mit der Bildaufnahme synchronisiert ist.
+Für den Fall, dass ein Musterprojektor für die Verbesserung des
+Stereo-Matchings verwendet wird, ist das projizierte Muster auch in
+den Intensitätsbildern sichtbar. Das kann für Bildverarbeitungs-
+Anwendungen, die auf dem Intensitätsbild basieren (z.B.
+Kantendetektion), von Nachteil sein. Aus diesem Grund erlaubt das
+IOControl-Modul auch das Setzen der Ausgänge für nur jedes zweite
+Kamerabild. Somit sind auch Intensitätsbilder ohne projiziertes Muster
+verfügbar.
+
+Bemerkung: Details über die GPIOs des
+
+  rc_visard
+
+   werden in
+
+  Verkabelung
+
+   gegeben.
+
+Bemerkung: Das IOControl-Modul ist optional und benötigt eine eigene
+
+  Lizenz
+
+  , welche erworben werden muss.
+
+Parameter
+
+Das IOControl-Modul wird in der REST-API als "rc_iocontrol" bezeichnet
+und in der
+
+Web GUI
+
+ auf der Seite
+
+IOControl
+
+ (unter der Seite
+
+Module
+
+) dargestellt. Der Benutzer kann die Parameter über die Web GUI, die
+REST-API (
+
+REST-API-Schnittstelle
+
+), oder die GenICam-Schnittstelle mit den DigitalIOControl-Parametern
+"LineSelector" und "LineSource" ändern (
+
+GigE Vision 2.0/GenICam-Schnittstelle
+
+).
+
+Übersicht über die Parameter
+
+Dieses Softwaremodul bietet folgende Laufzeitparameter:
+
+Laufzeitparameter des rc_iocontrol-Moduls              Name  Typ  Min.
+Max.  Default  Beschreibung  out1_mode  string  -  -  ExposureActive
+Low, High, ExposureActive, ExposureAlternateActive  out2_mode  string
+-  -  Low  Low, High, ExposureActive, ExposureAlternateActive
+
+Beschreibung der Laufzeitparameter
+
+"out1_mode" und "out2_mode" (
+Out1
+
+ und
+Out2
+
+)
+   Die Betriebsarten für GPIO-Ausgang 1 und GPIO-Ausgang 2 können
+   individuell gesetzt werden:
+
+   "Low" schaltet den GPIO-Ausgang permanent *aus* (LOW). Das ist die
+   Standardeinstellung für den Ausgang 2.
+
+   "High" schaltet den GPIO-Ausgang permanent *an* (HIGH).
+
+   "ExposureActive" schaltet den GPIO-Ausgang für die Belichtungszeit
+   jedes Bildes *an* (HIGH). Das ist die Standardeinstellung für GPIO-
+   Ausgang 1.
+
+   "ExposureAlternateActive" schaltet den GPIO-Ausgang für die
+   Belichtungszeit jedes zweiten Bildes *an* (HIGH).
+
+Bemerkung: Die Parameter können nur verändert werden, wenn eine
+  IOControl- Lizenz auf dem
+
+  rc_visard
+
+   verfügbar ist. Sonst gelten die Voreinstellungen für die Parameter,
+  d.h. "out1_mode" = "ExposureActive" und "out2_mode" = "Low".
+
+Abb. 46
+
+ zeigt, welche Bilder für das Stereo-Matching und die GigE Vision-
+Übertragung in der Betriebsart "ExposureActive" mit einer
+benutzerdefinierten Bildwiederholrate von 8 Hz benutzt werden.
+
+
+Die Betriebsart "ExposureAlternateActive" ist gedacht, um einen
+externen Musterprojektor anzusteuern, der am GPIO-Ausgang 1 des
+
+rc_visard
+
+ angeschlossen ist. In diesem Fall nutzt das
+
+Stereo-Matching-Modul
+
+ nur Bilder, bei denen GPIO-Ausgang 1 *an* (HIGH) ist, d.h. der
+Projektor ist an. Die maximale Bildwiederholrate, welche für das
+Stereo-Matching genutzt wird, ist hierbei die halbe vom Benutzer
+konfigurierte Bildwiederholrate (siehe
+
+FPS
+
+). Alle Module, die Intensitätsbilder benutzen, wie z.B.
+
+TagDetect
+
+ und
+
+ItemPick
+
+, benutzen die Intensitätsbilder, bei denen der GPIO-Ausgang 1 *aus*
+(LOW) ist, d.h. der Projektor ist aus.
+
+Abb. 47
+
+ zeigt ein Beispiel.
+
+
+Bemerkung: In der Betriebsart "ExposureAlternateActive" gibt es zu
+  einem Intensitätsbild mit angeschaltetem GPIO-Ausgang 1 (HIGH), d.h.
+  mit projiziertem Muster, immer in 40 ms Abstand ein Intensitätsbild
+  mit ausgeschaltetem GPIO-Ausgang 1 (LOW), d.h. ohne projiziertes
+  Muster. Dies ist unabhängig von der benutzerdefinierten
+  Bildwiederholrate und sollte in dieser speziellen Betriebsart für
+  die Synchronisierung von Disparitäts- und projektionsfreien
+  Kamerabildern berücksichtigt werden.
+
+Die Funktionalität kann auch über die DigitalIOControl-Parameter der
+GenICam Schnittstelle kontrolliert werden (
+
+GigE Vision 2.0/GenICam-Schnittstelle
+
+).
+
+Services
+
+Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen
+sogenannten "return_code" bestehend aus einem Integer-Wert und einer
+optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden
+mit einem Wert von 0 quittiert. Positive Werte bedeuten, dass die
+Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche
+Informationen zur Verfügung stehen. Negative Werte bedeuten, dass
+Fehler aufgetreten sind.
+
+Dieses Softwaremodul bietet folgende Services.
+
+get_io_values
+
+   Mit diesem Aufruf kann der aktuelle Zustand der Ein- und Ausgänge
+   (GPIOs) des
+
+   rc_visard
+
+    abgefragt werden.
+
+   Dieser Service hat keine Argumente.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "in1": "bool",
+        "in2": "bool",
+        "out1": "bool",
+        "out2": "bool",
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        },
+        "timestamp": {
+          "nsec": "int32",
+          "sec": "int32"
+        }
+      }
+
+   Das Feld "timestamp" ist der Zeitpunkt der Messung.
+
+   Das Feld "return_code" enthält mögliche Warnungen oder Fehlercodes
+   und Nachrichten. Mögliche Werte für "return_code" sind in der
+   Tabelle unten angegeben.
+
+       Code  Beschreibung  0  Erfolgreich  -2  Interner Fehler  -9
+   Lizenz für IOControl ist nicht verfügbar
+
+save_parameters
+
+   Beim Aufruf dieses Services werden die aktuellen
+   Parametereinstellungen des Moduls auf dem
+
+   rc_visard
+
+    gespeichert. Das bedeutet, dass diese Werte selbst nach einem
+   Neustart angewandt werden.
+
+   Dieser Service hat keine Argumente.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+reset_defaults
+
+   Hiermit werden die Werkseinstellungen der Parameter dieses Moduls
+   wiederhergestellt und angewandt („factory reset“).
+
+   Dieser Service hat keine Argumente.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+   Warnung: Der Benutzer muss bedenken, dass beim Aufruf dieses
+     Services die aktuellen Parametereinstellungen für das IOControl-
+     Modul unwiderruflich verloren gehen.

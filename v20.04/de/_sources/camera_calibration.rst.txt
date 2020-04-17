@@ -1,0 +1,330 @@
+Kamerakalibrierung
+
+Um die Stereokamera als Messinstrument zu verwenden, müssen die
+Kameraparameter, wie die Brennweite, die Objektivverzeichnung und die
+Lage der Kameras zueinander, genau bekannt sein. Diese Parameter
+werden durch Kalibrierung bestimmt und für die Rektifizierung der
+Bilder, die Grundlage für alle anderen Bildverarbeitungsmodule ist,
+verwendet (siehe
+
+Planare Rektifizierung
+
+). Der
+
+rc_visard
+
+ ist bereits ab Werk kalibriert. Nichtsdestotrotz kann es vorkommen,
+dass die Kalibrierung überprüft und neu durchgeführt werden muss, wenn
+der
+
+rc_visard
+
+ einer starken mechanischen Beanspruchung ausgesetzt war. Mit diesem
+Modul lassen sich die Kalibrierungsüberprüfung und Neukalibrierung
+vornehmen.
+
+Selbstkalibrierung
+
+Im Kamerakalibrierungsmodul läuft im Hintergrund automatisch der
+Selbstkalibriermodus mit niedriger Frequenz. In diesem Modus überwacht
+der
+
+rc_visard
+
+ die Ausrichtung der Bildzeilen beider rektifizierten Bilder. Wirken
+mechanische Kräfte auf den
+
+rc_visard
+
+ ein, wird er beispielsweise fallen gelassen, kann dies zu einer
+Fehlausrichtung führen. Kommt es zu einem erheblichen
+Ausrichtungsfehler, wird dieser automatisch korrigiert. Nach einem
+Neustart und einer Korrektur wird der aktuelle Kalibrierungsversatz in
+der Logdatei des Kameramoduls erfasst (siehe
+
+Download der Logdateien
+
+):
+
+   "rc_stereocalib: Current self-calibration offset is 0.00, update
+   counter is 0"
+
+Der Aktualisierungszähler (update counter) wird nach jeder
+automatischen Korrektur um eins erhöht. Nach einer manuellen
+Neukalibrierung des
+
+rc_visard
+
+ wird der Zähler auf 0 zurückgesetzt.
+
+Unter normalen Umständen, wenn der
+
+rc_visard
+
+ keiner mechanischen Belastung ausgesetzt ist, dürfte die
+Selbstkalibrierung des
+
+rc_visard
+
+ nicht auftreten. Die Selbstkalibrierung erlaubt dem
+
+rc_visard
+
+, auch nach Erkennung einer falschen Ausrichtung normal zu arbeiten,
+da diese automatisch korrigiert wird. Dessen ungeachtet wird
+empfohlen, die Kamera manuell neu zu kalibrieren, wenn der
+Aktualisierungszähler nicht auf 0 steht.
+
+Kalibriervorgang
+
+Die manuelle Kalibrierung kann über die Seite
+
+Kamera-Kalibrierung
+
+ der Web GUI vorgenommen werden. Diese Seite bietet einen Assistenten,
+der den Benutzer durch den Kalibriervorgang führt.
+
+Bemerkung: Da der
+
+  rc_visard
+
+   bereits ab Werk kalibriert ist, ist in aller Regel keine
+  Neukalibrierung der Kameras nötig. Eine Neukalibrierung ist nur
+  erforderlich, wenn das Gerät einer starken mechanischen Belastung
+  ausgesetzt war, wenn es beispielsweise fallen gelassen wurde.
+
+Schritt 1: Einstellung der Kalibrierparameter
+
+Die Qualität der Kamerakalibrierung hängt stark von der Qualität des
+Kalibriermusters ab. Kalibriermuster für den
+
+rc_visard
+
+ können von Roboception bezogen werden.
+
+
+Um die Kalibrierung der Kamera überprüfen bzw. neu durchführen zu
+können, muss in der
+
+Web GUI
+
+ das Modul
+
+Kamera-Kalibrierung
+
+ ausgewählt werden. Dafür sind im ersten Schritt, wie im Screenshot
+oben gezeigt, die Breite und Höhe des Kalibriermusters anzugeben. Mit
+Klick auf
+
+Weiter
+
+ gelangt der Benutzer zum nächsten Schritt.
+
+Schritt 2: Kalibrierung überprüfen
+
+Im zweiten Schritt kann die aktuelle Kalibrierung überprüft werden. Um
+diese Prüfung vorzunehmen, muss das Muster so gehalten werden, dass es
+sich gleichzeitig im Sichtfeld beider Kameras befindet. Alle schwarzen
+Quadrate des Musters müssen komplett sichtbar und dürfen nicht
+verdeckt sein. Jedes korrekt erkannte Quadrat wird mit einem grünen
+Haken belegt. Das Muster kann nur dann korrekt erkannt werden, wenn
+alle schwarzen Quadrate erkannt werden. Nachdem das Muster vollständig
+erkannt wurde, wird der Kalibrierfehler automatisch berechnet und das
+Ergebnis auf dem Bildschirm angegeben.
+
+
+Werden einige der Quadrate nicht oder nur für kurze Zeit erkannt, so
+kann dies an schlechten Lichtverhältnissen oder einem beschädigten
+Kalibriermuster liegen.
+
+Bemerkung: Um einen aussagekräftigen Kalibrierfehler berechnen zu
+  können, muss das Muster so nah wie möglich an die Kameras gehalten
+  werden. Bedeckt das Muster lediglich einen kleinen Bereich der
+  Kamerabilder, ist der Kalibrierfehler grundsätzlich geringer als
+  wenn das Muster das gesamte Bild ausfüllt.
+
+Der typische Kalibrierfehler beläuft sich auf unter 0,2 Pixel. Liegt
+der Fehler in diesem Bereich, kann der Kalibriervorgang übersprungen
+werden. Ist der errechnete Kalibrierfehler jedoch größer, sollte eine
+Neukalibrierung vorgenommen werden, um sicherzustellen, dass der
+Sensor volle Leistung erbringt. Mit Klick auf
+
+Weiter
+
+ gelangt der Benutzer zum nächsten Schritt.
+
+Warnung: Große Kalibrierfehler können durch falsch kalibrierte
+  Kameras, ein unpräzises Kalibriermuster oder eine falsch
+  eingetragene Musterbreite oder Musterhöhe verursacht werden. Der
+  Benutzer muss sich daher vergewissern, dass das Muster präzise und
+  die erfassten Breiten- und Höhendaten korrekt sind. Anderenfalls
+  kann die manuelle Kalibrierung sogar dazu führen, dass die Kameras
+  dekalibriert werden!
+
+Schritt 3: Durchführung der Kalibrierung
+
+Bevor die Kalibrierung vorgenommen wird, sollte die Belichtungszeit
+der Kamera richtig eingestellt werden. Um ein gutes Kalibrierergebnis
+zu erzielen, sollten die Bilder gut belichtet und Bildrauschen
+vermieden werden. Die maximale Belichtungszeit im automatischen Modus
+sollte groß genug sein, um einen sehr kleinen Verstärkungsfaktor zu
+erzielen, idealerweise 0,0 dB. Die Verstärkung wird, wie in
+
+Abb. 29
+
+ gezeigt, unter den Kamerabildern angegeben.
+
+
+Zur Kalibrierung muss das Kalibriermuster in verschiedenen
+Ausrichtungen vor die Kamera gehalten werden. Die Pfeile, die von den
+Ecken des Musters bis zu den grünen Bildschirmbereichen führen, geben
+an, dass alle Musterecken innerhalb der grünen Rechtecke platziert
+werden müssen. Diese grünen Rechtecke sind sensible Bereiche. Mit dem
+Schieberegler
+
+Größe der sensiblen Bereiche
+
+ lässt sich, wie im Screenshot in
+
+Abb. 29
+
+ gezeigt, die Größe der Rechtecke einstellen, um die Kalibrierung zu
+vereinfachen. Es ist jedoch zu bedenken, dass die Größe nicht zu stark
+erhöht werden darf, da dies auf Kosten der Kalibriergenauigkeit gehen
+kann.
+
+Häufig wird der Fehler begangen, das Muster bei der Kalibrierung
+falsch herum zu halten. Dieser Fehler lässt sich leicht erkennen, da
+sich die von den Musterecken zu den grünen Rechtecken verlaufenden
+Linien in diesem Fall kreuzen (siehe
+
+Abb. 30
+
+).
+
+
+Bemerkung: Die Kalibrierung mag umständlich erscheinen, da das
+  Muster hierfür in bestimmten vordefinierten Stellungen gehalten
+  werden muss. Dieses Vorgehen ist jedoch notwendig um ein qualitativ
+  hochwertiges Kalibrierergebnis zu erreichen.
+
+Monokalibrierung
+
+Um den
+
+rc_visard
+
+ vollständig zu kalibrieren, müssen zunächst beide Kameras einzeln
+intrinsisch kalibriert werden (Monokalibrierung). Anschließend wird
+durch die Stereokalibrierung die Ausrichtung der beiden Kameras
+zueinander bestimmt. In den meisten Fällen wird die intrinsische
+Kalibrierung der beiden Kameras nicht beeinträchtigt. Daher sollte die
+Option
+
+Monokalibrierung überspringen
+
+ auf der Registerkarte
+
+Kalibrieren
+
+ ausgewählt werden, um die Monokalibrierung bei der ersten
+Neukalibrierung zu überspringen. Anschließend sind die im nächsten
+Abschnitt
+
+Stereokalibrierung
+
+ angegebenen Schritte zu befolgen. Führt die Stereokalibrierung nicht
+zu einem akzeptablen Kalibrierfehler, sollte die Kalibrierung erneut
+vorgenommen werden, jedoch ohne die Monokalibrierung zu überspringen.
+
+Für den Prozess der Monokalibrierung ist das Kalibriermuster für beide
+Kameras in den in
+
+Abb. 31
+
+ angegebenen Stellungen zu halten.
+
+
+Nachdem die Ecken oder Seiten des Kalibriermusters auf die sensiblen
+Bereiche ausgerichtet wurden, zeigt der Kalibriervorgang automatisch
+die nächste Stellung an. Sobald der Prozess für die linke Kamera
+abgeschlossen ist, ist er ebenso für die rechte Kamera zu wiederholen.
+
+Stereokalibrierung
+
+Nachdem die Monokalibrierung abgeschlossen ist bzw. wenn sie
+übersprungen wurde, beginnt der Prozess der Stereokalibrierung. Bei
+der Stereokalibrierung wird die relative Rotation und Translation der
+Kameras zueinander ermittelt.
+
+Zunächst sollte das Muster in einem Abstand von weniger als 40 cm vor
+den Sensor gehalten werden. Es muss auf beiden Bildern vollständig
+sichtbar sein und die Blickrichtung der Kameras sollte senkrecht zum
+Muster stehen. Ist im Bild eine grüne Umrandung zu sehen, so bedeutet
+dies, dass die Bilder für die Kalibrierung akzeptiert wurden.
+
+
+Danach sollte das Muster wenigstens 1 m von den Kameras entfernt
+gehalten werden. Das kleine Kreuz in der Mitte der Bilder sollte sich
+innerhalb des Musters befinden und die Blickrichtung der Kameras
+sollte senkrecht zum Muster stehen. Ist im Bild eine grüne Umrandung
+zu sehen, so bedeutet dies, dass die Bilder für die Kalibrierung
+akzeptiert wurden.
+
+
+Bemerkung: Falls alle Häkchen auf dem Kalibriermuster verschwinden,
+  liegt dies daran, dass die Kamerablickrichtung nicht senkrecht zum
+  Muster steht, das grüne Kreuz sich nicht innerhalb des Musters
+  befindet oder das Muster zu weit von der Kamera entfernt ist.
+
+Schritt 4: Kalibrierergebnis speichern
+
+Mit Klick auf die Schaltfläche
+
+Kalibrierung berechnen
+
+ wird der Kalibriervorgang beendet und das Endergebnis angezeigt. Der
+eingeblendete Wert ist der mittlere Reprojektionsfehler aller
+Kalibrierpunkte. Er ist in Pixeln angegeben und beläuft sich
+typischerweise auf einen Wert von unter 0,2.
+
+Mit Klick auf
+
+Kalibrierung speichern
+
+ wird das Kalibrierergebnis übernommen und auf dem Sensor gespeichert.
+
+Bemerkung: Das eingeblendete Ergebnis ist der nach der Kalibrierung
+  bestehende Mindestfehler. Der reale Fehler liegt auf keinen Fall
+  darunter, könnte theoretisch jedoch höher sein. Dies gilt für jeden
+  Algorithmus zur Kamerakalibrierung und ist der Grund dafür, warum
+  das Kalibriermuster in verschiedenen Positionen vor den Sensor zu
+  halten ist. So ist sichergestellt, dass der reale Kalibrierfehler
+  den errechneten Fehler nicht signifikant überschreitet.
+
+Warnung: War vor der Durchführung der Kamerakalibrierung eine Hand-
+  Auge- Kalibrierung auf dem
+
+  rc_visard
+
+   gespeichert, so sind die Werte der Hand-Auge-Kalibrierung
+  möglicherweise ungültig geworden. Daher ist das Hand-Auge-
+  Kalibrierverfahren zu wiederholen.
+
+Parameter
+
+Dieses Modul wird in der REST-API als "rc_stereocalib" bezeichnet.
+
+Bemerkung: Die verfügbaren Parameter und die Statuswerte des Moduls
+  zur Kamerakalibrierung sind nur für den internen Gebrauch bestimmt
+  und können ohne vorherige Ankündigung Änderungen unterzogen werden.
+  Die Kalibrierung sollte gemäß den vorstehenden Anweisungen und
+  ausschließlich in der Web GUI vorgenommen werden.
+
+Services
+
+Bemerkung: Die verfügbaren Services des Moduls zur
+  Kamerakalibrierung sind lediglich für den internen Gebrauch bestimmt
+  und können ohne vorherige Ankündigung Änderungen unterzogen werden.
+  Die Kalibrierung sollte gemäß den vorstehenden Anweisungen und
+  ausschließlich in der Web GUI vorgenommen werden.

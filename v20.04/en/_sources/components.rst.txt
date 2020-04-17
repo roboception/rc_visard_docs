@@ -1,0 +1,106 @@
+Software components
+
+The
+
+rc_visard
+
+ comes with several on-board software components, each of which
+corresponds to a certain functionality and can be interfaced via its
+respective
+
+node
+
+ in the
+
+REST-API interface
+
+.
+
+The
+
+Stereo camera
+
+ and the
+
+Stereo matching
+
+ components, which acquire stereo image pairs and compute 3D depth
+information such as disparity, error, and confidence images, are also
+accessible via the
+
+rc_visard
+
+'s
+
+GigE Vision/GenICam interface
+
+.
+
+Fig. 19
+
+ gives an overview of the relationships between the different software
+components and the data they provide via
+
+rc_visard
+
+'s various
+
+interfaces
+
+.
+
+
+Note: Components marked as
+
+  optional
+
+   extend the
+
+  rc_visard
+
+  's features. Customers can extend the license to purchase additional
+  components.
+
+The
+
+rc_visard
+
+'s base software consists of the following components:
+
+Stereo camera (rc_stereocamera, Section \ref{stereo_camera:sect-
+stereo-camera})  acquires stereo image pairs and performs planar
+rectification for using the stereo camera as a measurement device.
+Images are provided both for further internal processing by other
+components and for external use as GenICam image streams.
+
+Stereo matching (rc_stereomatching, Section \ref{stereo_matching:sect-
+stereo-matching})  uses the rectified stereo image pairs to compute 3D
+depth information such as disparity, error, and confidence images.
+These are provided as GenICam streams, too.
+
+Sensor dynamics (rc_dynamics, Section \ref{dynamics:sect-dynamics}.)
+provides estimates of rc_visard's dynamic state such as its pose,
+velocity, and acceleration. These states are transmitted as continuous
+data streams via the rc_dynamics interface. For this purpose, the
+dynamics component manages and fuses data from the following
+individual subcomponents:  Visual odometry (rc_stereovisodo, Section
+\ref{stereo_visodo:sect-visual-odometry})  estimates the motion of the
+rc_visard device based on the motion of characteristic visual features
+in the left camera images.  Stereo INS (rc_stereo_ins, Section
+\ref{stereo_ins:sect-stereo-ins})  combines visual odometry
+measurements with readings from the on-board Inertial Measurement Unit
+(IMU) to provide accurate and high-frequency state estimates in real
+time.
+
+Camera calibration (rc_stereocalib, Section \ref{camera_calibration
+:sect-camera-calibration})  automatically checks and performs the
+self-calibration of the rc_visard's stereo camera in case it has been
+decalibrated. It furthermore enables the user to check and perform
+recalibration manually via the WEB GUI\:(Section \ref{installation
+:sect-web-gui}).
+
+Hand-eye calibration (rc_hand_eye_calibration, Section
+\ref{handeye_calibration:sect-handeye-calibration})  enables the user
+to calibrate the camera with respect to a robot, either via the Web
+GUI or the REST-API.
+

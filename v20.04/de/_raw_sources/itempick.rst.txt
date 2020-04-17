@@ -1,0 +1,945 @@
+
+.. include:: global_rst.glb
+
+.. _sect-itempick:
+
+ItemPick and BoxPick
+====================
+
+.. index:: ! ItemPick
+   single: bin picking
+   single: grasp computation
+
+.. index:: ! BoxPick
+
+Introduction
+------------
+
+.. Short description and functionalities
+
+The ItemPick and BoxPick components are optional on-board components of the |rc_xxx|.
+
+.. Note::
+
+   The components are optional and require separate ItemPick or BoxPick :ref:`licenses<sect-updating-license>`
+   :latex:`(Section \ref{maintenance:sect-updating-license})` to be purchased.
+
+The components provide out-of-the-box perception solutions for robotic pick-and-place
+applications. ItemPick targets the detection of flat surfaces of unknown objects for picking
+with a suction gripper. BoxPick detects rectangular surfaces and determines their position,
+orientation and size for grasping. The interface of both components is very similar. Therefore
+both components are described together in this chapter.
+
+In addition, both components offer:
+
+- a dedicated page on the |rc_xxx| :ref:`sect-web-gui`:latex:`\:(Section \ref{installation:sect-web-gui})`
+  for easy setup, configuration, testing, and application tuning
+- the definition of regions of interest to select relevant volumes in the scene
+- a load carrier detection functionality for bin-picking applications,
+  to provide grasps for items inside a bin only
+- the definition of compartments inside a load carrier to provide grasps
+  for specific volumes of the bin only
+- support for static and robot-mounted cameras and
+  optional integration with the :doc:`handeye_calibration`
+  :latex:`(Section \ref{handeye_calibration:sect-handeye-calibration})` component,
+  to provide grasps in the user-configured external reference frame
+- a quality value associated to each suggested grasp and related to the flatness of the grasping surface
+- sorting of grasps according to gravity and size so that items on top of a pile are grasped first.
+
+.. Note::
+
+  In this chapter, cluster and surface are used as synonyms and identify a set of
+  points (or pixels) with defined geometrical properties.
+
+.. Note::
+
+  In this chapter, load carrier and bin are used as synonyms and identify a
+  container with four walls, a floor and a rectangular rim.
+
+.. _sect-itempick-roi:
+
+Setting a region of interest
+----------------------------
+
+.. index::
+   single: BoxPick; region of interest
+   single: ItemPick; region of interest
+
+A region of interest (ROI) defines a volume in space which is of interest for
+a specific user-application.
+A ROI can narrow the volume where a load carrier is searched, or select a volume
+which only contains items to be grasped.
+Processing times can significantly decrease when using a ROI.
+
+The ItemPick and BoxPick components currently support regions of interest of the following types:
+
+ - ``BOX``, with dimensions ``box.x``, ``box.y``, ``box.z``.
+ - ``SPHERE``, with radius ``sphere.radius``.
+
+The user can specify the region of interest ``pose`` in the ``camera`` or the ``external``
+coordinate system (see :ref:`sect-itempick-hand-eye-dep`:latex:`, Section \ref{itempick:sect-itempick-hand-eye-dep}`).
+
+Both components can persistently store up to 50 different regions of interest,
+each one identified by a different ``id``.
+The configuration of regions of interest is normally performed offline, during
+the set up of the desired application.
+This can be done via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or in the |rcxxx| |webgui|.
+
+.. Note::
+  As opposed to the component parameters, the configured regions of interest
+  are persistent even over firmware updates and rollbacks.
+
+.. _sect-itempick-detect-lc:
+
+Detection of load carriers
+--------------------------
+
+.. index::
+   pair: BoxPick; load carrier
+   pair: ItemPick; load carrier
+
+A load carrier (bin) is a container with four walls, a floor and a rectangular rim.
+It is defined by its ``outer_dimensions`` and ``inner_dimensions``.
+The maximum ``outer_dimensions`` are 2.0 meters in every dimension.
+
+.. Note::
+  Typically, outer and inner dimensions of a load carrier are available in the
+  specifications of the load carrier manufacturer.
+
+.. The ``outer_dimensions`` identify the load carrier outer box and
+.. are the dimensions of the load carrier bounding box.
+.. The ``inner_dimensions`` identify the load carrier inner box and
+.. are the dimension of the maximum box that can be completely
+.. contained within the load carrier.
+.. While the ``rim_thickness`` value is optionally used for detecting the load carrier,
+.. the ``inner_dimensions`` are required to filter the load carrier
+.. and keep only its content.
+
+The ItemPick and BoxPick components can persistently store up to 50 different
+load carrier models, each one identified by a different ``id``.
+The configuration of a load carrier model is normally performed offline,
+during the set up the desired application.
+This can be done via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or in the |rcxxx| |webgui|.
+
+.. Note::
+  As opposed to the component parameters, the configured load carrier models
+  are persistent even over firmware updates and rollbacks.
+
+The load carrier detection algorithm is based on the detection of the load carrier
+rectangular rim. By default, the rectangular ``rim_thickness`` is computed from the
+outer and inner dimensions. As an alternative, its value can also
+be explicitly specified by the user.
+
+The origin of a detected load carrier is in the center of the load carrier
+outer box and its z axis is perpendicular to the load carrier floor.
+The components also determine if the detected load carrier is ``overfilled``.
+
+.. _fig-itempick-load-carrier:
+.. figure:: images/itempick_load_carrier_reference_rim_sidebyside.*
+   :width: 100%
+   :align: center
+
+   Load carrier models and reference frame.
+
+The user can optionally specify a prior for the load carrier ``pose``.
+The detected load carrier pose is guaranteed to have the minimum rotation
+with respect to the load carrier prior pose.
+If no prior is specified, the algorithm searches for a load carrier whose floor
+is perpendicular to the estimated gravity vector.
+
+.. Because of the symmetry of the load carrier model, there is an ambiguity
+.. in the definition of the x axis sense.
+.. :numref:`fig-itempick-load-carrier-orientation` visualizes how the sense of
+.. the load carrier x axis is defined for rectangular load carriers.
+..
+.. .. _fig-itempick-load-carrier-orientation:
+.. .. figure:: images/itempick_load_carrier_orientation.png
+..    :width: 600 px
+..    :align: center
+..
+..    Disambiguation of the coordinate system for a rectangular load carrier.
+..    All load carrier are viewed from the left eye of the |rc_visard|.
+..    The dashed line represents the orientation where the x axis flips
+..    (-45 degrees on the image plane).
+
+.. _sect-itempick-detect-filling-level:
+
+Detection of filling level
+--------------------------
+
+.. index::
+   single: BoxPick; filling level
+   single: ItemPick; filling level
+
+The ItemPick and BoxPick components offer the ``detect_filling_level``
+service to compute the filling level of a detected load carrier.
+
+The load carrier is subdivided in a configurable number of cells in a 2D grid.
+The maximum number of cells is 10x10.
+For each cell, the following values are reported:
+
+- ``level_in_percent``: minimum, maximum and mean cell filling level in percent
+  from the load carrier floor.
+  These values can be larger than 100% if the cell is overfilled.
+- ``level_free_in_meters``: minimum, maximum and mean cell free level in meters
+  from the load carrier rim. These values can be negative if the cell is overfilled.
+- ``cell_size``: dimensions of the 2D cell in meters.
+- ``cell_position``: position of the cell center in meters
+  (either in ``camera`` or ``external`` frame, see :ref:`sect-itempick-hand-eye-dep`:latex:`, Section \ref{itempick:sect-itempick-hand-eye-dep}`).
+  The z-coordinate is on the level of the load carrier rim.
+- ``coverage``: represents the proportion of valid pixels in this cell.
+  It varies between 0 and 1 with steps of 0.1.
+  A low coverage indicates that the cell contains several missing data
+  (i.e. only a few points were actually measured in this cell).
+
+These values are also calculated for the whole load carrier itself.
+If no cell subdivision is specified, only the overall filling level is computed.
+
+.. _fig-itempick-lc-filling-level:
+.. figure:: images/itempick_lc_filling_level.png
+   :width: 100%
+   :align: center
+
+   Visualizations of the load carrier filling level: overall filling level without
+   grid (left), 4x3 grid (center), 8x8 grid (right).
+   The load carrier content is shown in a green gradient from white
+   (on the load carrier floor) to dark green.
+   The overfilled regions are visualized in red. Numbers indicate cell IDs.
+
+.. _sect-itempick-detect-items:
+
+Detection of items (BoxPick)
+----------------------------
+
+.. index::
+   single: BoxPick; item model
+
+The BoxPick component supports the detection of multiple ``item_models`` of
+``type`` ``RECTANGLE``.
+Each item model is defined by its minimum and maximum size, with the
+minimum dimensions strictly smaller than the maximum dimensions.
+The dimensions should be given fairly accurately to avoid misdetections, 
+while still considering a certain tolerance to account for possible production variations 
+and measurement inaccuracies. 
+
+Optionally, further information can be given to the BoxPick component:
+
+- The ID of the load carrier which contains the items to be detected.
+- A compartment inside the load carrier where to detect items.
+- The ID of the region of interest where to search for the load carriers, if a
+  load carrier is set.
+  Otherwise, the ID of the region of interest where to search for the items.
+
+The detected ``item`` poses are given relative to the centers of the rectangles,
+with the z axis pointing towards the camera.
+Each detected item includes a ``uuid`` (Universally Unique Identifier) and the
+``timestamp`` of the oldest image that was used to detect it.
+
+.. _sect-itempick-compute-grasps:
+
+Computation of grasps
+---------------------
+
+.. index::
+   single: BoxPick; grasp
+   single: ItemPick; grasp
+
+The ItemPick and BoxPick components offer a service for computing grasps for
+suction grippers. The gripper is defined by its suction surface length and width.
+
+The ItemPick component identifies flat surfaces in the scene and supports
+flexible and/or deformable items. The ``type`` of these ``item_models`` is
+called ``UNKNOWN`` since they don't need to have a standard geometrical shape.
+Optionally, the user can also specify the minimum and maximum size of the item.
+
+For BoxPick, the grasps are computed on the detected rectangular ``items``
+(see :ref:`sect-itempick-detect-items`:latex:`, Section \ref{itempick:sect-itempick-detect-items}`).
+
+Optionally, further information can be given to the components in a grasp
+computation request:
+
+- The ID of the load carrier which contains the items to be grasped.
+- A compartment inside the load carrier where to compute grasps.
+  The ``load_carrier_compartment`` is a box whose ``pose`` is defined with respect
+  to the load carrier reference frame.
+
+.. _fig-itempick-compartment:
+.. figure:: images/itempick_load_carrier_compartment.*
+   :width: 100%
+   :align: center
+
+   Compartment inside a load carrier.
+
+- The ID of the region of interest where to search for the load carriers, if a
+  load carrier is set.
+  Otherwise, the ID of the region of interest where to compute grasps.
+- Collision detection information: The ID of the gripper to enable collision checking and optionally
+  a pre-grasp offset to define a pre-grasp position.
+  The collision check requires a separate CollisionCheck :ref:`license<sect-updating-license>`
+  :latex:`(Section \ref{maintenance:sect-updating-license})` to be purchased. Details on collision
+  checking are given below in :ref:`sect-itempick-collision-check-dep`
+  :latex:`(Section \ref{itempick:sect-itempick-collision-check-dep})`.
+
+
+A grasp provided by the ItemPick and BoxPick components represents the recommended
+pose of the TCP (Tool Center Point) of the suction gripper.
+The grasp ``type`` is always set to ``SUCTION``.
+The computed grasp pose is the center of the biggest ellipse that can be inscribed in
+each surface.
+The grasp orientation is a right-handed coordinate system and is defined such
+that its z axis is normal to the surface pointing inside the object at the grasp position and
+its x axis is directed along the maximum elongation of the ellipse.
+
+.. _fig-itempick-grasp-surface:
+.. figure:: images/itempick_grasp_surface.png
+   :width: 300 px
+   :align: center
+
+   Illustration of suction grasp with coordinate system and ellipse representing
+   the maximum suction surface.
+
+Each grasp includes the dimensions of the maximum suction surface available,
+modelled as an ellipse of axes ``max_suction_surface_length`` and
+``max_suction_surface_width``. The user is enabled to filter grasps by specifying
+the minimum suction surface required by the suction device in use.
+
+In the BoxPick component, the grasp position corresponds to the center of the detected
+rectangle and the dimensions of the maximum suction surface available matches the estimated
+rectangle dimensions. Detected rectangles with missing data or occlusions by other objects for more
+than 15% of their surface do not get an associated grasp.
+
+Each grasp also includes a ``quality`` value, which gives an
+indication of the flatness of the grasping surface.
+The ``quality`` value varies between 0 and 1, where higher numbers correspond to a
+flatter reconstructed surface.
+
+.. In case of multi-cup suction devices, the suction surface
+.. is expected to cover all suction elements.
+
+The grasp definition is complemented by a ``uuid`` (Universally Unique Identifier)
+and the ``timestamp`` of the oldest image that was used to compute the grasp.
+
+.. _sect-itempick-dependencies:
+
+Interaction with other components
+---------------------------------
+
+Internally, the ItemPick and BoxPick components depend on, and interact with other on-board
+components as listed below.
+
+.. Note::
+  All changes and configuration updates to these components will affect
+  the performance of the ItemPick and BoxPick components.
+
+.. For each load carrier detection and grasp computation, the ItemPick component
+.. acquires datasets of synchronized images and estimates the gravity vector.
+.. The data acquisition step normally takes between 500 ms and 600 ms
+.. with "High" depth image quality.
+
+.. _sect-itempick-stereo-camera-matching:
+
+Stereo camera and Stereo matching
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ItemPick and BoxPick components make internally use of the following data:
+
+- Rectified images from the :doc:`stereo_camera` component
+  (``rc_stereocamera``:latex:`, Section \ref{stereo_camera:sect-stereo-camera}`);
+
+- Disparity, error, and confidence images from the :doc:`stereo_matching` component
+  (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`).
+
+All processed images are guaranteed to be captured after the component trigger time.
+
+.. _sect-itempick-dynamics:
+
+Estimation of gravity vector
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For each load carrier detection and grasp computation, the components
+estimate the gravity vector by subscribing to the |rc_visard|'s IMU data stream.
+
+.. Note::
+   The gravity vector is estimated from linear acceleration readings from the on-board IMU.
+   For this reason, the ItemPick and BoxPick components require the |rc_visard| to remain
+   still while the gravity vector is being estimated.
+
+.. _sect-itempick-iocontrol-dep:
+
+IO and Projector Control
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+In case the |rc_xxx| is used in conjunction with an external random dot projector and
+the :doc:`iocontrol` component (``rc_iocontrol``:latex:`, Section \ref{iocontrol:sect-iocontrol}`),
+the output mode for the GPIO output in use should be set to ``ExposureAlternateActive``, as
+explained in the :ref:`sect-iocontrol-params`:latex:`\:(Section \ref{iocontrol:sect-iocontrol-params})`
+of the :doc:`iocontrol` component.
+
+No additional changes are required to use the ItemPick and BoxPick components
+in combination with a random dot projector.
+
+.. _sect-itempick-hand-eye-dep:
+
+Hand-eye calibration
+^^^^^^^^^^^^^^^^^^^^
+
+In case the camera has been calibrated to a robot, the ItemPick and BoxPick components
+can automatically provide poses in the robot coordinate frame.
+For the ItemPick and BoxPick nodes' :ref:`sect-itempick-services`:latex:`\:(Section \ref{itempick:sect-itempick-services})`, the frame of the
+output poses can be controlled with the ``pose_frame`` argument.
+
+Two different ``pose_frame`` values can be chosen:
+
+1. **Camera frame** (``camera``).
+   All poses provided by the components are in the camera frame,
+   and no prior knowledge about the pose of the camera in the environment is required.
+   This means that the configured regions of interest and load carriers move with the camera.
+   It is the user's responsibility to update the configured poses
+   if the camera frame moves (e.g. with a robot-mounted camera).
+
+2. **External frame** (``external``).
+   All poses provided by the components are in the external frame,
+   configured by the user during the hand-eye calibration process.
+   The component relies on the on-board 
+   :doc:`Hand-eye calibration component<handeye_calibration>`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})`
+   to retrieve the sensor mounting (static or robot mounted) and
+   the hand-eye transformation.
+   If the mounting is static, no further information is needed.
+   If the sensor is robot-mounted, the ``robot_pose`` is required
+   to transform poses to and from the ``external`` frame.
+
+.. Note::
+   If no hand-eye calibration is available, all ``pose_frame`` values should be set to ``camera``.
+
+All ``pose_frame`` values that are not ``camera`` or ``external`` are rejected.
+
+
+.. _sect-itempick-collision-check-dep:
+
+CollisionCheck
+^^^^^^^^^^^^^^
+
+In case a CollisionCheck license is available, the collision checking can be easily enabled for
+grasp computation of the ItemPick and BoxPick components. For this, a gripper has to be
+defined in the CollisionCheck component
+(see :ref:`sect-collisioncheck-gripper`:latex:`\:(Section \ref{collisioncheck:sect-collisioncheck-gripper})`).
+The ID of this gripper can then be passed to the ``compute_grasps`` service call.
+Then all detected grasp points are checked for collisions between the gripper geometry and the load carrier.
+Only grasps which are collision free will be returned. However, the visualization images on the *ItemPick* or *BoxPick*
+tab of the |webgui| also show colliding grasp points as black ellipses.
+
+.. Warning::
+
+   Collisions are checked only between the load carrier and the gripper, not the robot itself, the flange, other objects or
+   the item located in the robot gripper.
+
+The CollisionCheck module's run-time parameters affect the collision detection as described in
+:ref:`CollisionCheck Parameters<sect-collisioncheck-parameters>`:latex:`\:(Section \ref{collisioncheck:sect-collisioncheck-parameters})`.
+
+Optionally, a pre-grasp offset between the grasp point and the pre-grasp position
+can be specified for collision checking. The pre-grasp offset is the offset from the grasp point to the pre-grasp
+position in the grasp's coordinate frame.
+If the pre-grasp offset is defined, the grasp will be detected as colliding
+if the gripper is in collision with the load carriers at any point
+during motion from the pre-grasp position to the grasp position (assuming
+a linear movement) as shown in :numref:`fig-collision-check-pre-grasp-offset`:latex:`\:(Section \ref{collisioncheck:sect-collision-check-pre-grasp-offset})`.
+
+.. _sect-itempick-parameters:
+
+Parameters
+----------
+
+.. index::
+   single: BoxPick; parameters
+   single: ItemPick; parameters
+
+The ItemPick and BoxPick components are called ``rc_itempick`` and ``rc_boxpick``
+in the |rest-api| and are represented by the *ItemPick* and *BoxPick* pages in the *Modules* tab of the
+:ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{installation:sect-web-gui})`. 
+The user can explore and configure the ``rc_itempick`` and ``rc_boxpick``
+component's run-time parameters, e.g. for development and testing, using the |webgui| or the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. include:: _gen/nodes/params/rc_itempick_split.txt
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each run-time parameter is represented by a row on the |webgui|'s *ItemPick* or *BoxPick* page in the *Modules* tab.
+The name in the |webgui| is given in brackets behind the parameter name and the parameters are
+listed in the order they appear in the |webgui|:
+
+``max_grasps`` (*Maximum Grasps*)
+    sets the maximum number of provided grasps.
+
+``load_carrier_model_tolerance`` (*Model Tolerance*)
+    indicates how much the estimated load carrier dimensions are allowed to differ from the load carrier model dimensions in meters.
+
+``load_carrier_crop_distance`` (*Crop Distance*)
+    sets the safety margin in meters by which the load carrier's inner dimensions are
+    reduced to define the region of interest for grasp computation.
+
+``cluster_max_dimension`` (**Only for ItemPick**, *Cluster Maximum Dimension*)
+    sets the diameter of the largest circle enclosing each 
+    cluster in meters. Clusters larger than this value are filtered out 
+    before grasp computation.
+
+``cluster_max_curvature`` (*Cluster Maximum Curvature*)
+    is the maximum curvature allowed within one cluster. The smaller this value, the more clusters will be split apart.
+
+``clustering_patch_size`` (**Only for ItemPick**, *Patch Size*)
+    is the size of the square patches the depth map is subdivided into during the first clustering step in pixels.
+
+``clustering_discontinuity_factor`` (*Discontinuity Factor*)
+    is the factor used to discriminate depth discontinuities within a patch. The smaller this value, the more clusters will be split apart.
+
+``clustering_max_surface_rmse`` (*Maximum Surface RMSE*)
+    is the maximum root-mean-square error (RMSE) in meters of points belonging to a surface.
+
+.. _sect-itempick-status-values:
+
+Status values
+-------------
+
+.. index::
+   single: BoxPick; status
+   single: ItemPick; status
+
+The ``rc_itempick`` and ``rc_boxpick`` components report the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_itempick`` and ``rc_boxpick`` components status values
+	:header:  Name, Description
+
+	"``data_acquisition_time``","Time in seconds required by the last active service to acquire images. Standard values are between 0.5 s and 0.6 s with High depth image quality."
+	"``grasp_computation_time``","Processing time of the last grasp computation in seconds"
+	"``last_timestamp_processed``","The timestamp of the last processed dataset"
+	"``load_carrier_detection_time``","Processing time of the last load carrier detection in seconds"
+	"``state``","The current state of the rc_itempick and rc_boxpick node"
+
+The reported ``state`` can take one of the following values.
+
+.. tabularcolumns:: |l|l|
+.. _tab-itempick-states:
+.. csv-table:: Possible states of the ItemPick and BoxPick components
+	:header:  State name, Description
+
+	"IDLE", "The component is idle."
+	"RUNNING", "The component is running and ready for load carrier detection and grasp computation."
+	"FATAL", "A fatal error has occurred."
+
+.. _sect-itempick-services:
+
+Services
+--------
+
+.. index::
+   single: BoxPick; services
+   single: ItemPick; services
+
+The user can explore and call the ``rc_itempick`` and ``rc_boxpick`` component's services,
+e.g. for development and testing, using the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or
+the |rc_xxx|
+:ref:`sect-web-gui`:latex:`\:(Section \ref{installation:sect-web-gui})`.
+
+Each service response contains a ``return_code``,
+which consists of a ``value`` plus an optional ``message``.
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+The smaller value is selected in case a service has multiple ``return_code`` values,
+but all messages are appended in the ``return_code`` message.
+
+The following table contains a list of common codes:
+
+.. tabularcolumns:: |c|L|
+.. _tab-itempick-return-codes:
+.. csv-table:: Return codes of the ItemPick and BoxPick services
+    :header:  Code, Description
+
+    "0",    "Success"
+    "-1",   "An invalid argument was provided"
+    "-4",   "Data acquisition took longer than the maximum allowed time of 5.0 seconds"
+    "-10",  "New element could not be added as the maximum storage capacity of load carriers or regions of interest has been exceeded"
+    "-301", "More than one item model of type ``UNKNOWN`` provided to the ``compute_grasps`` service"
+    "-302", "More than one load carrier provided to the ``detect_load_carriers`` or ``detect_filling_level`` services, but only one is supported"
+    "10",   "The maximum storage capacity of load carriers or regions of interest has been reached"
+    "100",  "The requested load carriers were not detected in the scene"
+    "101",  "No valid surfaces or grasps were found in the scene"
+    "102",  "The detected load carrier is empty"
+    "103",  "All computed grasps are in collision with the load carrier"
+    "200",  "The component is in state ``IDLE``"
+    "300",  "A valid ``robot_pose`` was provided as argument but it is not required"
+    "400",  "No ``item_models`` were provided to the ``compute_grasps`` service request"
+    "500",  "The region of interest visualization images could not be generated during the call to ``set_region_of_interest``"
+    "600",  "An existent persistent model was overwritten by the call to ``set_load_carrier`` or ``set_region_of_interest``"
+
+
+The ItemPick and BoxPick components offer the following services.
+
+.. _expl-itempick-srv-start:
+
+``start``
+^^^^^^^^^
+
+   Starts the component. If the command is accepted, the component moves to state ``RUNNING``.
+   The ``current_state`` value in the service response may differ from ``RUNNING`` if
+   the state transition is still in process when the service returns.
+
+   .. include:: _gen/nodes/services/rc_itempick_start.txt
+
+.. _expl-itempick-srv-stop:
+
+``stop``
+^^^^^^^^
+
+   Stops the component. If the command is accepted, the component moves to state ``IDLE``.
+   The ``current_state`` value in the service response may differ from ``IDLE`` if
+   the state transition is still in process when the service returns.
+
+   .. include:: _gen/nodes/services/rc_itempick_stop.txt
+
+.. _expl-itempick-srv-set-roi:
+
+``set_region_of_interest``
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores a region of interest on the |rc_xxx|.
+   All configured regions of interest are persistent over firmware updates and rollbacks.
+
+   .. include:: _gen/nodes/services/rc_itempick_set_region_of_interest_request.txt
+
+   Details for the definition of the ``region _of_interest`` type are given in 
+   :ref:`sect-itempick-roi`:latex:`\:(Section \ref{itempick:sect-itempick-roi})`.
+
+   .. include:: _gen/nodes/services/rc_itempick_set_region_of_interest_response.txt
+
+.. _expl-itempick-srv-get-roi:
+
+``get_regions_of_interest``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the configured regions of interest with the requested ``region_of_interest_ids``.
+   If no ``region_of_interest_ids`` are provided, all configured regions of interest are returned.
+
+   .. include:: _gen/nodes/services/rc_itempick_get_regions_of_interest.txt
+
+.. _expl-itempick-srv-delete-roi:
+
+``delete_regions_of_interest``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured regions of interest with the requested ``region_of_interest_ids``.
+   All regions of interest to be deleted must be explicitly stated in ``region_of_interest_ids``.
+
+   .. include:: _gen/nodes/services/rc_itempick_delete_regions_of_interest.txt
+
+.. _expl-itempick-srv-set-lc:
+
+``set_load_carrier``
+^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores a load carrier on the |rc_xxx|.
+   All configured load carriers are persistent over firmware updates and rollbacks.
+
+   .. include:: _gen/nodes/services/rc_itempick_set_load_carrier_request.txt
+
+   Details for the definition of the ``load_carrier`` type are given in 
+   :ref:`sect-itempick-detect-lc`:latex:`\:(Section \ref{itempick:sect-itempick-detect-lc})`.
+
+   .. include:: _gen/nodes/services/rc_itempick_set_load_carrier_response.txt
+
+.. _expl-itempick-srv-get-lc:
+
+``get_load_carriers``
+^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the configured load carriers with the requested ``load_carrier_ids``.
+   If no ``load_carrier_ids`` are provided, all configured load carriers are returned.
+
+   .. include:: _gen/nodes/services/rc_itempick_get_load_carriers.txt
+
+.. _expl-itempick-srv-delete-lc:
+
+``delete_load_carriers``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured load carriers with the requested ``load_carrier_ids``.
+   All load carriers to be deleted must be explicitly stated in ``load_carrier_ids``.
+
+   .. include:: _gen/nodes/services/rc_itempick_delete_load_carriers.txt
+
+.. _expl-itempick-srv-detect-lc:
+
+``detect_load_carriers``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Triggers a load carrier detection as described in 
+   :ref:`sect-itempick-detect-lc`:latex:`\:(Section \ref{itempick:sect-itempick-detect-lc})`.
+
+   **Request:**
+
+    .. include:: _gen/nodes/services/rc_itempick_detect_load_carriers_request.txt
+
+    Required arguments:
+
+      ``pose_frame``: see :ref:`sect-itempick-hand-eye-dep`:latex:`\:(Section \ref{itempick:sect-itempick-hand-eye-dep})`.
+
+      ``load_carrier_ids``: IDs of the load carriers which should be detected.
+
+    Potentially required arguments:
+
+      ``robot_pose``: see :ref:`sect-itempick-hand-eye-dep`:latex:`\:(Section \ref{itempick:sect-itempick-hand-eye-dep})`.
+
+    Optional arguments:
+
+      ``region_of_interest_id``: ID of the region of interest where to search for the load carriers.
+
+   **Response:**
+
+    .. include:: _gen/nodes/services/rc_itempick_detect_load_carriers_response.txt
+
+    ``load_carriers``: list of detected load carriers.
+
+    ``timestamp``: timestamp of the image set the detection ran on.
+
+    ``return_code``: holds possible warnings or error codes and messages.
+
+
+
+.. _expl-itempick-srv-detect-filling-level:
+
+``detect_filling_level``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Triggers a load carrier filling level detection as described in 
+   :ref:`sect-itempick-detect-filling-level`:latex:`\:(Section \ref{itempick:sect-itempick-detect-filling-level})`.
+
+   **Request:**
+
+    .. include:: _gen/nodes/services/rc_itempick_detect_filling_level_request.txt
+
+    Required arguments:
+
+      ``pose_frame``: see :ref:`sect-itempick-hand-eye-dep`:latex:`\:(Section \ref{itempick:sect-itempick-hand-eye-dep})`.
+
+      ``load_carrier_id``: IDs of the load carriers which should be detected.
+
+    Potentially required arguments:
+
+      ``robot_pose``: see :ref:`sect-itempick-hand-eye-dep`:latex:`\:(Section \ref{itempick:sect-itempick-hand-eye-dep})`.
+
+    Optional arguments:
+
+      ``region_of_interest_id``: ID of the region of interest where to search for the load carriers.
+
+      ``filling_level_cell_count``: Number of cells in the filling level grid.
+
+   **Response:**
+
+    .. include:: _gen/nodes/services/rc_itempick_detect_filling_level_response.txt
+
+    ``load_carriers``: list of detected load carriers and their filling level.
+
+    ``timestamp``: timestamp of the image set the detection ran on.
+
+    ``return_code``: holds possible warnings or error codes and messages.
+
+
+.. _expl-itempick-srv-detect-items:
+
+``detect_items`` (BoxPick only)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Triggers the detection of rectangles as described in 
+   :ref:`sect-itempick-detect-items`:latex:`\:(Section \ref{itempick:sect-itempick-detect-items})`.
+
+   **Request:**
+
+    .. include:: _gen/nodes/services/rc_boxpick_detect_items_request.txt
+
+    Required arguments:
+
+      ``pose_frame``: see :ref:`sect-itempick-hand-eye-dep`:latex:`\:(Section \ref{itempick:sect-itempick-hand-eye-dep})`.
+
+      ``item_models``: list of rectangles with minimum and maximum size, with the
+      minimum dimensions strictly smaller than the maximum dimensions.
+      The dimensions should be given fairly accurately to avoid misdetections, 
+      while still considering a certain tolerance to account for possible production variations 
+      and measurement inaccuracies. 
+
+    Potentially required arguments:
+
+      ``robot_pose``: see :ref:`sect-itempick-hand-eye-dep`:latex:`\:(Section \ref{itempick:sect-itempick-hand-eye-dep})`.
+
+    Optional arguments:
+
+      ``load_carrier_id``: ID of the load carrier which contains the items to be detected.
+
+      ``load_carrier_compartment``: compartment inside the load carrier where to detect items.
+
+      ``region_of_interest_id``: if ``load_carrier_id`` is set,
+      ID of the region of interest where to search for the load carriers.
+      Otherwise, ID of the region of interest where to search for the items.
+
+   **Response:**
+
+    .. include:: _gen/nodes/services/rc_boxpick_detect_items_response.txt
+
+    ``load_carriers``: list of detected load carriers.
+
+    ``items``: list of detected rectangles.
+
+    ``timestamp``: timestamp of the image set the detection ran on.
+
+    ``return_code``: holds possible warnings or error codes and messages.
+
+.. _expl-itempick-srv-compute-grasps:
+
+``compute_grasps`` (for ItemPick)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Triggers the computation of grasping poses for a suction device as described in 
+   :ref:`sect-itempick-compute-grasps`:latex:`\:(Section \ref{itempick:sect-itempick-compute-grasps})`.
+
+   **Request:**
+
+     .. include:: _gen/nodes/services/rc_itempick_compute_grasps_request.txt
+
+     Required arguments:
+
+       ``pose_frame``: see :ref:`sect-itempick-hand-eye-dep`:latex:`\:(Section \ref{itempick:sect-itempick-hand-eye-dep})`.
+
+       ``suction_surface_length``: length of the suction device grasping surface.
+
+       ``suction_surface_width``: width of the suction device grasping surface.
+
+     Potentially required arguments:
+
+       ``robot_pose``: see :ref:`sect-itempick-hand-eye-dep`:latex:`\:(Section \ref{itempick:sect-itempick-hand-eye-dep})`.
+
+     Optional arguments:
+
+       ``load_carrier_id``: ID of the load carrier which contains the items to be grasped.
+
+       ``load_carrier_compartment``: compartment inside the load carrier where to compute grasps.
+
+       ``region_of_interest_id``: if ``load_carrier_id`` is set,
+       ID of the region of interest where to search for the load carriers.
+       Otherwise, ID of the region of interest where to compute grasps.
+
+       ``item_models``: list of unknown items with minimum and maximum dimensions, with the
+       minimum dimensions strictly smaller than the maximum dimensions.
+       Only one ``item_model`` of type ``UNKNOWN`` is currently supported.
+
+       ``collision_detection``: contains the ``gripper_id`` of the gripper to enable
+       collision checking of the computed grasps with the load carrier. Optionally,
+       the ``pre_grasp_offset`` can be used to set a pre-grasp position and enable
+       collision checking between the gripper and the load carrier along the linear
+       trajectory from the pre-grasp position to the grasp point.
+       The collision check requires a separate CollisionCheck :ref:`license<sect-updating-license>`
+       :latex:`(Section \ref{maintenance:sect-updating-license})` to be purchased.
+
+   **Response:**
+
+     .. include:: _gen/nodes/services/rc_itempick_compute_grasps_response.txt
+
+     ``load_carriers``: list of detected load carriers.
+
+     ``grasps``: sorted list of suction grasps.
+
+     ``timestamp``: timestamp of the image set the detection ran on.
+
+     ``return_code``: holds possible warnings or error codes and messages.
+
+
+.. _expl-itempick-srv-compute-grasps-boxpick:
+
+``compute_grasps`` (for BoxPick)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Triggers the detection of rectangles and the computation of grasping poses
+   for the detected rectangles as described in 
+   :ref:`sect-itempick-compute-grasps`:latex:`\:(Section \ref{itempick:sect-itempick-compute-grasps})`.
+
+   **Request:**
+
+     .. include:: _gen/nodes/services/rc_boxpick_compute_grasps_request.txt
+
+     Required arguments:
+
+       ``pose_frame``: see :ref:`sect-itempick-hand-eye-dep`:latex:`\:(Section \ref{itempick:sect-itempick-hand-eye-dep})`.
+
+       ``item_models``: list of rectangles with minimum and maximum size, with the
+       minimum dimensions strictly smaller than the maximum dimensions.
+       The dimensions should be given fairly accurately to avoid misdetections, 
+       while still considering a certain tolerance to account for possible production variations 
+       and measurement inaccuracies. 
+
+       ``suction_surface_length``: length of the suction device grasping surface.
+
+       ``suction_surface_width``: width of the suction device grasping surface.
+
+     Potentially required arguments:
+
+       ``robot_pose``: see :ref:`sect-itempick-hand-eye-dep`:latex:`\:(Section \ref{itempick:sect-itempick-hand-eye-dep})`.
+
+     Optional arguments:
+
+       ``load_carrier_id``: ID of the load carrier which contains the items to be grasped.
+
+       ``load_carrier_compartment``: compartment inside the load carrier where to compute grasps.
+
+       ``region_of_interest_id``: if ``load_carrier_id`` is set,
+       ID of the region of interest where to search for the load carriers.
+       Otherwise, ID of the region of interest where to compute grasps.
+
+       ``collision_detection``: contains the ``gripper_id`` of the gripper to enable
+       collision checking of the computed grasps with the load carrier. Optionally,
+       the ``pre_grasp_offset`` can be used to set a pre-grasp position and enable
+       collision checking between the gripper and the load carrier along the linear
+       trajectory from the pre-grasp position to the grasp point.
+       The collision check requires a separate CollisionCheck :ref:`license<sect-updating-license>`
+       :latex:`(Section \ref{maintenance:sect-updating-license})` to be purchased.
+
+   **Response:**
+
+     .. include:: _gen/nodes/services/rc_boxpick_compute_grasps_response.txt
+
+     ``load_carriers``: list of detected load carriers.
+
+     ``items``: sorted list of suction grasps on the detected rectangles.
+
+     ``grasps``: sorted list of suction grasps.
+
+     ``timestamp``: timestamp of the image set the detection ran on.
+
+     ``return_code``: holds possible warnings or error codes and messages.
+
+
+.. _expl-itempick-srv-save-params:
+
+``save_parameters``
+^^^^^^^^^^^^^^^^^^^
+
+   This service saves the currently set parameters persistently.
+   Thereby, the same parameters will still apply after a reboot of
+   the |rc_xxx|.
+   The node parameters are not persistent over firmware updates and rollbacks.
+
+   .. include:: _gen/nodes/services/rc_itempick_save_parameters.txt
+
+.. _expl-itempick-srv-reset-params:
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   This service resets all parameters of the component to its default values,
+   as listed in above table.
+   The reset does not apply to regions of interest and load carriers.
+
+   .. include:: _gen/nodes/services/rc_itempick_reset_defaults.txt

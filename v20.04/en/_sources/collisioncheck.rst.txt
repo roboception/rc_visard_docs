@@ -1,0 +1,786 @@
+CollisionCheck
+
+Introduction
+
+The CollisionCheck component is an optional on-board component of the
+
+rc_visard
+
+.
+
+Note: The component is optional and requires a separate
+  CollisionCheck
+
+  license
+
+    to be purchased.
+
+The component provides an easy way to check if a gripper is in
+collision with a load carrier. It is integrated with the
+
+ItemPick and BoxPick
+
+ modules, but can be used as standalone product. This section of the
+manual covers only the setup and usage of CollisionCheck as a
+standalone module. The details of using CollisionCheck with ItemPick
+and BoxPick can be found in the respective sections of this manual.
+
+Warning: Collisions are checked only between the load carrier and
+  the gripper, not the robot itself, the flange, other items, or the
+  item located in the robot gripper.
+
+Setting a gripper
+
+The gripper is a collision geometry used to determine whether the
+grasp is in collision with the load carrier. The gripper consists of
+up to 15 elements connected to each other.
+
+At this point, the gripper can be built of elements of the following
+types:
+
+   BOX, with dimensions box.x, box.y, box.z.
+
+   CYLINDER, with radius cylinder.radius and height cylinder.height.
+
+Additionally, for each gripper the flange radius, and information
+about the Tool Center Point (TCP) have to be defined.
+
+The configuration of the gripper is normally performed offline during
+the setup of the desired application. This can be done via the
+
+REST-API interface
+
+ or the
+
+rc_visard
+
+
+Web GUI
+
+.
+
+Robot flange radius
+
+Collisions are checked only between the gripper and the load carrier.
+The robot body is not considered. As a safety feature, to prevent
+collisions between the load carrier and the robot, all grasps having
+any part of the robot's flange inside the load carrier can be
+designated as colliding (see
+
+Fig. 58
+
+). This check is based on the defined gripper geometry and the flange
+radius value. It is optional to use this functionality, and it can be
+turned on and off with the run-time parameter "check_flange" as
+described in
+
+Parameter overview
+
+.
+
+
+Creating a gripper via the REST-API
+
+When creating a gripper via the
+
+REST-API interface
+
+, each element of the gripper has a *parent* element, which defines
+how they are connected. The gripper is always built in the direction
+from the robot flange to the TCP, and at least one element must have
+'flange' as parent. The elements' IDs must be unique and must not be
+'tcp' or 'flange'. The pose of the child element has to be given in
+the coordinate frame of the parent element. In the REST-API
+representation, the coordinate frame of an element is always in its
+geometric center. Accordingly, for a child element to be exactly below
+the parent element, the position of the child element must be computed
+from the heights of both parent and child element (see
+
+Fig. 59
+
+).
+
+
+The reference frame for the first element for the gripper creation is
+always the center of the robot's flange with the z axis pointing
+outwards. Via the REST-API it is possible to create a gripper with a
+tree structure, corresponding to multiple elements having the same
+parent element, as long as they are all connected.
+
+Creating a gripper in the Web GUI
+
+The tab
+
+CollisionCheck
+
+ on the
+
+rc_visard
+
+
+Web GUI
+
+ offers a simplified interface to create grippers. It is possible to
+select the type, the size, as well as the position of each element. In
+the Web GUI representation the position of each element originates
+from the bottom of the parent element. Therefore, a child element with
+position (0, 0, 0) will always be placed exactly below its parent
+element, irrespective of the elements' heights. Grippers which have a
+tree structure or which have rotated elements cannot be created via
+the Web GUI.
+
+Calculated TCP position
+
+After gripper creation via the "set_gripper" service call, the TCP
+position in the flange coordinate system is calculated and returned as
+"tcp_pose_flange". It is important to check if this value is the same
+as the robot's true TCP position.
+
+Creating rotationally asymmetric grippers
+
+For grippers which are not rotationally symmetric around the z axis,
+it is crucial to ensure that the gripper is properly mounted, so that
+the representation stored in the CollisionCheck module corresponds to
+reality.
+
+Collision checking
+
+The "check_collision" service call triggers collision checking between
+the chosen gripper and the provided load carriers for each of the
+provided grasps. The CollisionCheck module checks if the chosen
+gripper is in collision with at least one of the load carriers, when
+the TCP of the gripper is positioned in the grasp position. It is
+possible to check the collision with multiple load carriers
+simultaneously. The grasps which are in collision with any of the
+defined load carriers will be returned as colliding.
+
+The "pre_grasp_offset" can be used for additional collision checking.
+The pre-grasp offset P_{off} is the offset  between the grasp point
+P_{grasp} and the pre-grasp position P_{pre} in the grasp's coordinate
+frame (see
+
+Fig. 60
+
+). If the pre-grasp offset is defined, the grasp will be detected as
+colliding if the gripper is in collision with the load carrier at any
+point during motion from the pre-grasp position to the grasp position
+(assuming a linear movement).
+
+
+The collision-check results are affected by run-time parameters, which
+are listed and explained further below.
+
+Parameters
+
+The CollisionCheck component is called "rc_collision_check" in the
+REST-API and is represented by the
+
+CollisionCheck
+
+ page in the
+
+Modules
+
+ tab of the
+
+Web GUI
+
+. The user can explore and configure the "rc_collision_check"
+component's run-time parameters, e.g. for development and testing,
+using the Web GUI or the
+
+REST-API interface
+
+.
+
+Parameter overview
+
+This component offers the following run-time parameters:
+
+The rc_collision_check component's run-time parameters
+Name  Type  Min  Max  Default  Description  check_bottom  bool  false
+true  true  Check collisions with the bottom of the load carrier
+check_flange  bool  false  true  true  Position is in collision if
+robot flange is inside the load carrier  collision_dist  float64  0.0
+0.1  0.01  Minimal distance in meters between any part of the gripper
+and any of the load carrier's walls for grasp to be considered
+collision free
+
+Description of run-time parameters
+
+Each run-time parameter is represented by a row on the Web GUI's
+Module tab. The name in the Web GUI is given in brackets behind the
+parameter name:
+
+"collision_dist" (
+Collision Distance
+
+)
+   Minimal distance in meters between any part of the gripper and any
+   of the load carrier's walls for a grasp to be considered collision
+   free.
+
+"check_flange" (
+Check Flange
+
+)
+   Performs an additional safety check as described in
+
+   Robot flange radius
+
+   . If this parameter is set, all positions in which any part of the
+   robot's flange is inside the load carrier are marked as colliding.
+
+"check_bottom" (
+Check Bottom
+
+)
+   When this check is enabled the collisions will be checked not only
+   with the side walls of the load carrier but also with its bottom.
+   It might be necessary to disable this check if the TCP is inside
+   the collision geometry (e.g. is defined inside a suction cup).
+
+Status values
+
+The "rc_collision_check" component reports the following status
+values:
+
+The rc_collision_check component status values      Name  Description
+last_evaluated_grasps  Number of evaluated grasps
+last_collision_free_grasps  Number of collision-free grasps
+
+Services
+
+The user can explore and call the "rc_collision_check" component's
+services, e.g. for development and testing, using
+
+REST-API interface
+
+ or the
+
+rc_visard
+
+
+Web GUI
+
+.
+
+Each service response contains a "return_code", which consists of a
+"value" plus an optional "message". A successful service returns with
+a "return_code" value of "0". Negative "return_code" values indicate
+that the service failed. Positive "return_code" values indicate that
+the service succeeded with additional information. The smaller value
+is selected in case a service has multiple "return_code" values, but
+all messages are appended in the "return_code" message.
+
+The following table contains a list of common codes:
+
+Return codes of the CollisionCheck services      Code  Description  0
+Success  -1  An invalid argument was provided  -3  An internal timeout
+occurred, e.g. during object detection  -7  Data could not be read or
+written to persistent storage  -9  No valid license for the module
+-10  New gripper could not be added as the maximum storage capacity of
+grippers has been exceeded  10  The maximum storage capacity of
+grippers has been reached  101  Existing gripper was overwritten
+
+The CollisionCheck component offers the following services.
+
+set_gripper
+
+   Persistently stores a gripper on the
+
+   rc_visard
+
+   . All configured grippers are persistent over firmware updates and
+   rollbacks.
+
+   Request:
+
+      The definition for the request arguments with corresponding
+      datatypes is:
+
+         {
+           "elements": [
+             {
+               "box": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "cylinder": {
+                 "height": "float64",
+                 "radius": "float64"
+               },
+               "id": "string",
+               "parent_id": "string",
+               "pose": {
+                 "orientation": {
+                   "w": "float64",
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "position": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 }
+               },
+               "type": "string"
+             }
+           ],
+           "flange_radius": "float64",
+           "id": "string",
+           "tcp_parent_id": "string",
+           "tcp_pose_parent": {
+             "orientation": {
+               "w": "float64",
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             },
+             "position": {
+               "x": "float64",
+               "y": "float64",
+               "z": "float64"
+             }
+           }
+         }
+
+      Required arguments:
+
+         "elements": list of geometric elements for the gripper. Each
+         element must be of "type" 'CYLINDER' or 'BOX' with the
+         corresponding dimensions in the "cylinder" or "box" field.
+         The pose of each element must be given in the coordinate
+         frame of the parent element (see
+
+         Setting a gripper
+
+          for an explanation of the coordinate frames). The element's
+         "id" must be unique and must not be 'tcp' or 'flange'. The
+         "parent_id" is the ID of the parent element. It can either be
+         'flange' or it must correspond to another element in list.
+
+         "flange_radius": radius of the flange used in case the
+         "check_flange" run-time parameter is active.
+
+         "id": unique name of the gripper
+
+         "tcp_parent_id": ID of the element on which the TCP is
+         defined
+
+         "tcp_pose_parent": The pose of the TCP with respect to the
+         coordinate frame of the element specified in "tcp_parent_id".
+
+   Response:
+
+      The definition for the response with corresponding datatypes is:
+
+         {
+           "gripper": {
+             "elements": [
+               {
+                 "box": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "cylinder": {
+                   "height": "float64",
+                   "radius": "float64"
+                 },
+                 "id": "string",
+                 "parent_id": "string",
+                 "pose": {
+                   "orientation": {
+                     "w": "float64",
+                     "x": "float64",
+                     "y": "float64",
+                     "z": "float64"
+                   },
+                   "position": {
+                     "x": "float64",
+                     "y": "float64",
+                     "z": "float64"
+                   }
+                 },
+                 "type": "string"
+               }
+             ],
+             "flange_radius": "float64",
+             "id": "string",
+             "tcp_parent_id": "string",
+             "tcp_pose_flange": {
+               "orientation": {
+                 "w": "float64",
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "position": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               }
+             },
+             "tcp_pose_parent": {
+               "orientation": {
+                 "w": "float64",
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "position": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               }
+             },
+             "type": "string"
+           },
+           "return_code": {
+             "message": "string",
+             "value": "int16"
+           }
+         }
+
+      "gripper": returns the gripper as defined in the request with an
+      additional field "tcp_pose_flange". This gives the coordinates
+      of the TCP in the flange coordinate frame for comparison with
+      the true settings of the robot's TCP.
+
+      "return_code": holds possible warnings or error codes and
+      messages.
+
+get_grippers
+
+   Returns the configured grippers with the requested "gripper_ids".
+   If no "gripper_ids" are provided, all configured grippers are
+   returned.
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "gripper_ids": [
+          "string"
+        ]
+      }
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "grippers": [
+          {
+            "elements": [
+              {
+                "box": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "cylinder": {
+                  "height": "float64",
+                  "radius": "float64"
+                },
+                "id": "string",
+                "parent_id": "string",
+                "pose": {
+                  "orientation": {
+                    "w": "float64",
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  },
+                  "position": {
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  }
+                },
+                "type": "string"
+              }
+            ],
+            "flange_radius": "float64",
+            "id": "string",
+            "tcp_parent_id": "string",
+            "tcp_pose_flange": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "tcp_pose_parent": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "type": "string"
+          }
+        ],
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+delete_grippers
+
+   Deletes the configured grippers with the requested "gripper_ids".
+   All grippers to be deleted must be explicitly stated in
+   "gripper_ids".
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "gripper_ids": [
+          "string"
+        ]
+      }
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+check_collision
+
+   Triggers a collision check.
+
+   Request:
+
+      The definition for the request arguments with corresponding
+      datatypes is:
+
+         {
+           "grasps": [
+             {
+               "item_uuid": "string",
+               "max_suction_surface_length": "float64",
+               "max_suction_surface_width": "float64",
+               "pose": {
+                 "orientation": {
+                   "w": "float64",
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "position": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 }
+               },
+               "pose_frame": "string",
+               "quality": "float64",
+               "timestamp": {
+                 "nsec": "int32",
+                 "sec": "int32"
+               },
+               "type": "string",
+               "uuid": "string"
+             }
+           ],
+           "gripper_id": "string",
+           "load_carriers": [
+             {
+               "id": "string",
+               "inner_dimensions": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "outer_dimensions": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "pose": {
+                 "orientation": {
+                   "w": "float64",
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "position": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 }
+               },
+               "pose_frame": "string",
+               "rim_thickness": {
+                 "x": "float64",
+                 "y": "float64"
+               }
+             }
+           ],
+           "pre_grasp_offset": {
+             "x": "float64",
+             "y": "float64",
+             "z": "float64"
+           }
+         }
+
+      Required arguments:
+
+         "grasps": list of grasps that should be checked. These grasps
+         follow the same definition as in
+
+         Computation of grasps
+
+         . However, only the "pose" and "pose_frame" are required.
+
+         "load_carriers": list of load carriers against which the
+         collision should be checked. The fields of the load carrier
+         definition are described in
+
+         Detection of load carriers
+
+         . The position frame of the grasps and load carriers has to
+         be the same.
+
+         "gripper_id": the id of the gripper that is used to check the
+         collisions. The gripper has to be configured beforehand.
+
+      Optional arguments:
+
+         "pre_grasp_offset": the offset in meters from the grasp
+         position to the pre-grasp position in the grasp frame. If
+         this argument is set, the collisions will not only be checked
+         in the grasp point, but also on the path from the pre-grasp
+         position to the grasp position (assuming a linear movement).
+
+   Response:
+
+      The definition for the response with corresponding datatypes is:
+
+         {
+           "colliding_grasps": [
+             {
+               "item_uuid": "string",
+               "max_suction_surface_length": "float64",
+               "max_suction_surface_width": "float64",
+               "pose": {
+                 "orientation": {
+                   "w": "float64",
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "position": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 }
+               },
+               "pose_frame": "string",
+               "quality": "float64",
+               "timestamp": {
+                 "nsec": "int32",
+                 "sec": "int32"
+               },
+               "type": "string",
+               "uuid": "string"
+             }
+           ],
+           "collision_free_grasps": [
+             {
+               "item_uuid": "string",
+               "max_suction_surface_length": "float64",
+               "max_suction_surface_width": "float64",
+               "pose": {
+                 "orientation": {
+                   "w": "float64",
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "position": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 }
+               },
+               "pose_frame": "string",
+               "quality": "float64",
+               "timestamp": {
+                 "nsec": "int32",
+                 "sec": "int32"
+               },
+               "type": "string",
+               "uuid": "string"
+             }
+           ],
+           "return_code": {
+             "message": "string",
+             "value": "int16"
+           }
+         }
+
+      "colliding_grasps": list of grasps in collision with one or more
+      load carriers.
+
+      "collision_free_grasps": list of collision-free grasps.
+
+      "return_code": holds possible warnings or error codes and
+      messages.
+
+save_parameters
+
+   This service saves the currently set parameters persistently.
+   Thereby, the same parameters will still apply after a reboot of the
+
+   rc_visard
+
+   . The node parameters are not persistent over firmware updates and
+   rollbacks.
+
+   This service has no arguments.
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+reset_defaults
+
+   This service resets all parameters of the component to its default
+   values, as listed in above table. The reset does not apply to
+   grippers.
+
+   This service has no arguments.
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }

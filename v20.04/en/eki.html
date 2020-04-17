@@ -1,0 +1,1585 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>KUKA Ethernet KRL Interface &mdash; rc_visard 20.04.3
+ documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="rc_visard 20.04.3
+ documentation" href="index.html"/>
+        <link rel="up" title="Interfaces" href="interfaces.html"/>
+        <link rel="next" title="Time synchronization" href="time_sync.html"/>
+        <link rel="prev" title="The rc_dynamics interface" href="rc_dynamics.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.04
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Warranty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Applicable standards</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Approvals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Safety</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">General warnings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Intended use</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Scope of delivery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technical specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Environmental and operating conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Power-supply specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Wiring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanical interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-and-configuration">Installation and configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#software-license">Software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Power up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rc-xxx-devices">Discovery of <em>rc_visard</em> devices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Resetting configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Network configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#host-name">Host name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatic configuration (factory default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manual configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#web-gui">Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Measurement principles</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concept_stereo.html">Stereo vision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concept_dynamics.html">Sensor dynamics</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="components.html">Software components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stereo_camera.html">Stereo camera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#image-acquisition">Image acquisition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#planar-rectification">Planar rectification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#accessing-images">Accessing Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_matching.html">Stereo matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Computing disparity images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Computing depth images and point clouds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Confidence and error images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#acquisition-trigger"><code class="docutils literal notranslate"><span class="pre">acquisition_trigger</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dynamics.html">Sensor dynamics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#coordinate-frames-for-state-estimation">Coordinate frames for state estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#available-state-estimates">Available state estimates</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#camera-pose-streams-pose-and-pose-ins">Camera-pose streams (<code class="docutils literal notranslate"><span class="pre">pose</span></code> and <code class="docutils literal notranslate"><span class="pre">pose_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-camera-pose-streams-pose-rt-and-pose-rt-ins">Real-time camera-pose streams (<code class="docutils literal notranslate"><span class="pre">pose_rt</span></code> and <code class="docutils literal notranslate"><span class="pre">pose_rt_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-dynamics-streams-dynamics-and-dynamics-ins">Real-time dynamics streams (<code class="docutils literal notranslate"><span class="pre">dynamics</span></code> and <code class="docutils literal notranslate"><span class="pre">dynamics_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#imu-data-stream-imu">IMU data stream (<code class="docutils literal notranslate"><span class="pre">imu</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#start"><code class="docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#start-slam"><code class="docutils literal notranslate"><span class="pre">start_slam</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#stop-slam"><code class="docutils literal notranslate"><span class="pre">stop_slam</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#restart"><code class="docutils literal notranslate"><span class="pre">restart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#restart-slam"><code class="docutils literal notranslate"><span class="pre">restart_slam</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#get-cam2imu-transform"><code class="docutils literal notranslate"><span class="pre">get_cam2imu_transform</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_visodo.html">Visual odometry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_ins.html">Stereo INS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#self-calibration">Self-Calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#status-values">Status values</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="camera_calibration.html">Camera calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#self-calibration">Self-calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#calibration-process">Calibration process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-1-calibration-settings">Step 1: Calibration settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-2-verify-calibration">Step 2: Verify calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-3-performing-calibration">Step 3: Performing calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#monocalibration">Monocalibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#stereo-calibration">Stereo calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-4-storing-the-calibration-result">Step 4: Storing the calibration result</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="handeye_calibration.html">Hand-eye calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Calibration interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#camera-mounting">Camera mounting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Calibration routine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-1-setting-parameters">Step 1: Setting parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-2-selecting-and-reporting-robot-calibration-positions">Step 2:  Selecting and reporting robot calibration positions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-3-calculating-and-saving-the-calibration-transformation">Step 3: Calculating and saving the calibration transformation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#reset-calibration"><code class="docutils literal notranslate"><span class="pre">reset_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#set-pose"><code class="docutils literal notranslate"><span class="pre">set_pose</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibrate"><code class="docutils literal notranslate"><span class="pre">calibrate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#set-calibration"><code class="docutils literal notranslate"><span class="pre">set_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#save-calibration"><code class="docutils literal notranslate"><span class="pre">save_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#remove-calibration"><code class="docutils literal notranslate"><span class="pre">remove_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#get-calibration"><code class="docutils literal notranslate"><span class="pre">get_calibration</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="optional.html">Optional software components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="slam.html">SLAM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#memory-limitations">Memory limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#parameter-overview">Parameter overview</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#reset"><code class="docutils literal notranslate"><span class="pre">reset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#get-trajectory"><code class="docutils literal notranslate"><span class="pre">get_trajectory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#save-map"><code class="docutils literal notranslate"><span class="pre">save_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#load-map"><code class="docutils literal notranslate"><span class="pre">load_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#remove-map"><code class="docutils literal notranslate"><span class="pre">remove_map</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iocontrol.html">IO and Projector Control</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#get-io-values"><code class="docutils literal notranslate"><span class="pre">get_io_values</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#qr-code">QR code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#apriltag">AprilTag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#comparison">Comparison</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-reading">Tag reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#pose-estimation">Pose estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag re-identification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#hand-eye-calibration">Hand-eye calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#start"><code class="docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#restart"><code class="docutils literal notranslate"><span class="pre">restart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#detect"><code class="docutils literal notranslate"><span class="pre">detect</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="itempick.html">ItemPick and BoxPick</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#setting-a-region-of-interest">Setting a region of interest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#detection-of-load-carriers">Detection of load carriers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#detection-of-filling-level">Detection of filling level</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#detection-of-items-boxpick">Detection of items (BoxPick)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#computation-of-grasps">Computation of grasps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#interaction-with-other-components">Interaction with other components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#stereo-camera-and-stereo-matching">Stereo camera and Stereo matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#estimation-of-gravity-vector">Estimation of gravity vector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#io-and-projector-control">IO and Projector Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#hand-eye-calibration">Hand-eye calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#collisioncheck">CollisionCheck</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#start"><code class="docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#set-region-of-interest"><code class="docutils literal notranslate"><span class="pre">set_region_of_interest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#get-regions-of-interest"><code class="docutils literal notranslate"><span class="pre">get_regions_of_interest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#delete-regions-of-interest"><code class="docutils literal notranslate"><span class="pre">delete_regions_of_interest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#set-load-carrier"><code class="docutils literal notranslate"><span class="pre">set_load_carrier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#get-load-carriers"><code class="docutils literal notranslate"><span class="pre">get_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#delete-load-carriers"><code class="docutils literal notranslate"><span class="pre">delete_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detect-load-carriers"><code class="docutils literal notranslate"><span class="pre">detect_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detect-filling-level"><code class="docutils literal notranslate"><span class="pre">detect_filling_level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detect-items-boxpick-only"><code class="docutils literal notranslate"><span class="pre">detect_items</span></code> (BoxPick only)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#compute-grasps-for-itempick"><code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> (for ItemPick)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#compute-grasps-for-boxpick"><code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> (for BoxPick)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#suitable-objects">Suitable objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#suitable-scene">Suitable scene</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Base-plane calibration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#apriltag-based-base-plane-calibration">AprilTag based base-plane calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#stereo-based-base-plane-calibration">Stereo based base-plane calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#manual-base-plane-calibration">Manual base-plane calibration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setting a region of interest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Detection of objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#interaction-with-other-components">Interaction with other components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#stereo-camera-and-stereo-matching">Stereo camera and stereo matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#io-and-projector-control">IO and Projector Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#hand-eye-calibration">Hand-eye calibration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#calibrate-base-plane"><code class="docutils literal notranslate"><span class="pre">calibrate_base_plane</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-base-plane-calibration"><code class="docutils literal notranslate"><span class="pre">get_base_plane_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#delete-base-plane-calibration"><code class="docutils literal notranslate"><span class="pre">delete_base_plane_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#set-region-of-interest-2d"><code class="docutils literal notranslate"><span class="pre">set_region_of_interest_2d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-regions-of-interest-2d"><code class="docutils literal notranslate"><span class="pre">get_regions_of_interest_2d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#delete-regions-of-interest-2d"><code class="docutils literal notranslate"><span class="pre">delete_regions_of_interest_2d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detect-object"><code class="docutils literal notranslate"><span class="pre">detect_object</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#template-upload">Template Upload</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="collisioncheck.html">CollisionCheck</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#setting-a-gripper">Setting a gripper</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#robot-flange-radius">Robot flange radius</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#creating-a-gripper-via-the-rest-api">Creating a gripper via the REST-API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#creating-a-gripper-in-the-webgui">Creating a gripper in the Web GUI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#calculated-tcp-position">Calculated TCP position</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#creating-rotationally-asymmetric-grippers">Creating rotationally asymmetric grippers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#collision-checking">Collision checking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#set-gripper"><code class="docutils literal notranslate"><span class="pre">set_gripper</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#get-grippers"><code class="docutils literal notranslate"><span class="pre">get_grippers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#delete-grippers"><code class="docutils literal notranslate"><span class="pre">delete_grippers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#check-collision"><code class="docutils literal notranslate"><span class="pre">check_collision</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="interfaces.html">Interfaces</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id3">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">General API structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Available resources and requests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_nodes.html">Nodes, parameters, and services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_datastreams.html">Datastreams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_syslogs.html">System and logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_datamodel.html">Data type definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_swagger_ui.html">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rc_dynamics.html">The rc_dynamics interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#starting-stopping-dynamic-state-estimation">Starting/stopping dynamic-state estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#configuring-data-streams">Configuring data streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#data-stream-protocol">Data-stream protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#rc-dynamics-api">rc_dynamics_api</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">KUKA Ethernet KRL Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethernet-connection-configuration">Ethernet connection configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generic-xml-structure">Generic XML structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#return-code">Return code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#request-xml-structure">Request XML structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#response-xml-structure">Response XML structure</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#eki-xml-configuration-files">EKI XML configuration files</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Maintenance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Lens cleaning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Camera calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Updating the firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Rebooting the <em>rc_visard</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Connectivity kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Wiring</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Power connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Power supplies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Spare parts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED colors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Hardware issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Connectivity issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Camera-image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Depth/Disparity, error, and confidence image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#dynamics-issues">Dynamics issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">GigE Vision/GenICam issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Address</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pose_formats.html">Pose formats</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyzabc-format">XYZABC format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyz-quaternion-format">XYZ+quaternion format</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="interfaces.html">Interfaces</a> &raquo;</li>
+        
+      <li>KUKA Ethernet KRL Interface</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="kuka-ethernet-krl-interface">
+<span id="sect-eki"></span><h1>KUKA Ethernet KRL Interface<a class="headerlink" href="#kuka-ethernet-krl-interface" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">The <em>rc_visard</em> provides an Ethernet KRL Interface (EKI Bridge),
+which allows communicating with the <em>rc_visard</em> from KUKA KRL via
+KUKA.EthernetKRL XML.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The component is optional and requires a separate Roboception’s EKIBridge
+<a class="reference internal" href="maintenance.html#sect-updating-license"><span class="std std-ref">license</span></a> 
+to be purchased.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The KUKA.EthernetKRL add-on software package version 2.2 or newer must be
+activated on the robot controller to use this component.</p>
+</div>
+<p>The EKI Bridge can be used to programmatically</p>
+<ul class="simple">
+<li>do service calls, e.g. to start and stop individual computational nodes,
+or to use offered services such as the hand-eye calibration or the
+computation of grasp poses;</li>
+<li>set and get run-time parameters of computation nodes,
+e.g. of the camera, or disparity calculation.</li>
+</ul>
+<div class="section" id="ethernet-connection-configuration">
+<h2>Ethernet connection configuration<a class="headerlink" href="#ethernet-connection-configuration" title="Permalink to this headline">¶</a></h2>
+<p>The EKI Bridge listens on port 7000 for EKI XML messages and transparently
+bridges the <em>rc_visard</em>’s <a class="reference internal" href="rest_api.html"><span class="doc">REST-API</span></a>.
+The received EKI messages are transformed to JSON and forwarded to the
+<em>rc_visard</em>’s REST-API.
+The response from the REST-API is transformed back to EKI XML.</p>
+<p>The EKI Bridge gives access to run-time parameters and offered services
+of all computational nodes described in
+<a class="reference internal" href="components.html"><span class="doc">Software components</span></a>
+and
+<a class="reference internal" href="optional.html"><span class="doc">Optional software components</span></a>.</p>
+<p>The Ethernet connection to the <em>rc_visard</em> on the robot controller is configured
+using XML configuration files.
+The EKI XML configuration files of all nodes running on the <em>rc_visard</em> are
+listed at <a class="reference internal" href="#sect-eki-configs"><span class="std std-ref">EKI XML configuration files</span></a>.</p>
+<p>Each node offering run-time parameters has an XML configuration file
+for setting and getting its parameters.
+These are named following the scheme <code class="docutils literal notranslate"><span class="pre">&lt;node_name&gt;-parameters.xml</span></code>.
+Each node’s service has its own XML configuration file.
+These are named following the scheme <code class="docutils literal notranslate"><span class="pre">&lt;node_name&gt;-&lt;service_name&gt;.xml</span></code>.</p>
+<p>All elements in the XML files are preset, except for the IP of the
+<em>rc_visard</em> in the network.</p>
+<p>These files must be stored in the directory
+<code class="docutils literal notranslate"><span class="pre">C:\KRC\ROBOTER\Config\User\Common\EthernetKRL</span></code>
+of the robot controller and they are read in when a connection is initialized.</p>
+<p>As an example, an Ethernet connection to configure the <code class="docutils literal notranslate"><span class="pre">rc_stereomatching</span></code>
+parameters is established with the following KRL code.</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">DECL</span> <span class="n">EKI_Status</span> <span class="n">RET</span>
+<span class="n">RET</span> <span class="o">=</span> <span class="n">EKI_INIT</span><span class="p">(</span><span class="s">&quot;rc_stereomatching-parameters&quot;</span><span class="p">)</span>
+<span class="n">RET</span> <span class="o">=</span> <span class="n">EKI_Open</span><span class="p">(</span><span class="s">&quot;rc_stereomatching-parameters&quot;</span><span class="p">)</span>
+
+<span class="p">;</span> <span class="o">-----------</span> <span class="n">Desired</span> <span class="n">operation</span> <span class="o">-----------</span>
+
+<span class="n">RET</span> <span class="o">=</span> <span class="n">EKI_Close</span><span class="p">(</span><span class="s">&quot;rc_stereomatching-parameters&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The EKI Bridge automatically terminates the connection to the client
+if the received XML telegram is invalid.</p>
+</div>
+</div>
+<div class="section" id="generic-xml-structure">
+<h2>Generic XML structure<a class="headerlink" href="#generic-xml-structure" title="Permalink to this headline">¶</a></h2>
+<p>For data transmission, the EKI Bridge uses <code class="docutils literal notranslate"><span class="pre">&lt;req&gt;</span></code> as root XML element
+(short for request).</p>
+<p>The root tag always includes the following elements.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">&lt;node&gt;</span></code>. This includes a child XML element used by the EKI Bridge
+to identify the target node.
+The node name is already included in the XML configuration file.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&lt;end_of_request&gt;</span></code>. End of request flag that triggers the request.</li>
+</ul>
+<p>The following listing shows the generic XML structure for data transmission.</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;SEND&gt;</span>
+  <span class="nt">&lt;XML&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;req/node/&lt;node_name&gt;&quot;</span> <span class="na">Type=</span><span class="s">&quot;STRING&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;req/end_of_request&quot;</span> <span class="na">Type=</span><span class="s">&quot;BOOL&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/XML&gt;</span>
+<span class="nt">&lt;/SEND&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>For data reception, the EKI Bridge uses <code class="docutils literal notranslate"><span class="pre">&lt;res&gt;</span></code> as root XML element
+(short for response).
+The root tag always includes a <code class="docutils literal notranslate"><span class="pre">&lt;return_code&gt;</span></code> child element.</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;RECEIVE&gt;</span>
+  <span class="nt">&lt;XML&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/return_code/@value&quot;</span> <span class="na">Type=</span><span class="s">&quot;INT&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/return_code/@message&quot;</span> <span class="na">Type=</span><span class="s">&quot;STRING&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res&quot;</span> <span class="na">Set_Flag=</span><span class="s">&quot;998&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/XML&gt;</span>
+<span class="nt">&lt;/RECEIVE&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">By default the XML configuration files uses 998 as flag to notify KRL
+that the response data record has been received. If this value is already
+in use, it should be changed in the corresponding XML configuration file.</p>
+</div>
+<div class="section" id="return-code">
+<h3>Return code<a class="headerlink" href="#return-code" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;return_code&gt;</span></code> element consists of a <code class="docutils literal notranslate"><span class="pre">value</span></code> and a <code class="docutils literal notranslate"><span class="pre">message</span></code> attribute.</p>
+<p>As for all other components, a successful request returns with a
+<code class="docutils literal notranslate"><span class="pre">res/return_code/&#64;value</span></code> of 0.
+Negative values indicate that the request failed.
+The error message is contained in <code class="docutils literal notranslate"><span class="pre">res/return_code/&#64;message</span></code>.
+Positive values indicate that the request succeeded with additional information,
+contained in <code class="docutils literal notranslate"><span class="pre">res/return_code/&#64;message</span></code> as well.</p>
+<p>The following codes can be issued by the EKI Bridge component.</p>
+<span id="tab-eki-return-codes"></span><table border="1" class="docutils" id="id1">
+<caption><span class="caption-number">Table 50 </span><span class="caption-text">Return codes of the EKI Bridge component</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>Success</td>
+</tr>
+<tr class="row-odd"><td>-1</td>
+<td>Parsing error in the conversion from XML to JSON</td>
+</tr>
+<tr class="row-even"><td>-2</td>
+<td>Internal error</td>
+</tr>
+<tr class="row-odd"><td>-9</td>
+<td>Missing or invalid license for EKI Bridge component</td>
+</tr>
+<tr class="row-even"><td>-11</td>
+<td>Connection error from the REST-API</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The EKI Bridge can also return return code values specific
+to individual nodes. They are documented in the respective
+<a class="reference internal" href="components.html#sect-software-components"><span class="std std-ref">software component</span></a>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Due to limitations in KRL, the maximum length of a string returned
+by the EKI Bridge is 512 characters. All messages larger than this value
+are truncated.</p>
+</div>
+</div>
+</div>
+<div class="section" id="services">
+<h2>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h2>
+<p>For the nodes’ services, the XML schema is generated from the service’s
+arguments and response in JavaScript Object Notation (JSON) described in
+<a class="reference internal" href="components.html"><span class="doc">Software components</span></a>
+and
+<a class="reference internal" href="optional.html"><span class="doc">Optional software components</span></a>.
+The conversion is done transparently, except for the conversion rules
+described below.</p>
+<p>Conversions of poses:</p>
+<blockquote>
+<div><p>A pose is a JSON object that includes <code class="docutils literal notranslate"><span class="pre">position</span></code> and <code class="docutils literal notranslate"><span class="pre">orientation</span></code> keys.</p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>This JSON object is converted to a KRL <code class="docutils literal notranslate"><span class="pre">FRAME</span></code> in the XML message.</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;pose</span> <span class="na">X=</span><span class="s">&quot;...&quot;</span> <span class="na">Y=</span><span class="s">&quot;...&quot;</span> <span class="na">Z=</span><span class="s">&quot;...&quot;</span> <span class="na">A=</span><span class="s">&quot;...&quot;</span> <span class="na">B=</span><span class="s">&quot;...&quot;</span> <span class="na">C=</span><span class="s">&quot;...&quot;</span><span class="nt">&gt;&lt;/pose&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Positions are converted from meters to millimeters and orientations are
+converted from quaternions to KUKA ABC (in degrees).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">No other unit conversions are included in the EKI Bridge.
+All dimensions and 3D coordinates that don’t belong to a pose are
+expected and returned in meters.</p>
+</div>
+</div></blockquote>
+<p>Arrays:</p>
+<blockquote>
+<div><p>Arrays are identified by adding the child element <code class="docutils literal notranslate"><span class="pre">&lt;le&gt;</span></code>
+(short for list element) to the list name. As an example, the JSON object</p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;rectangles&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>is converted to the XML fragment</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;rectangles&gt;</span>
+  <span class="nt">&lt;le&gt;</span>
+    <span class="nt">&lt;x&gt;</span>...<span class="nt">&lt;/x&gt;</span>
+    <span class="nt">&lt;y&gt;</span>...<span class="nt">&lt;/y&gt;</span>
+  <span class="nt">&lt;/le&gt;</span>
+<span class="nt">&lt;/rectangles&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div></blockquote>
+<p>Use of XML attributes:</p>
+<blockquote>
+<div><p>All JSON keys whose values are a primitive data type and don’t belong to an
+array are stored in attributes. As an example, the JSON object</p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;item&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;rectangle&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>is converted to the XML fragment</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;item</span> <span class="na">uuid=</span><span class="s">&quot;...&quot;</span> <span class="na">confidence=</span><span class="s">&quot;...&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;rectangle</span> <span class="na">x=</span><span class="s">&quot;...&quot;</span> <span class="na">y=</span><span class="s">&quot;...&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/rectangle&gt;</span>
+<span class="nt">&lt;/item&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div></blockquote>
+<div class="section" id="request-xml-structure">
+<h3>Request XML structure<a class="headerlink" href="#request-xml-structure" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;SEND&gt;</span></code> element in the XML configuration file for a generic
+service follows the specification below.</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;SEND&gt;</span>
+  <span class="nt">&lt;XML&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;req/node/&lt;node_name&gt;&quot;</span> <span class="na">Type=</span><span class="s">&quot;STRING&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;req/service/&lt;service_name&gt;&quot;</span> <span class="na">Type=</span><span class="s">&quot;STRING&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;req/args/&lt;argX&gt;&quot;</span> <span class="na">Type=</span><span class="s">&quot;&lt;argX_type&gt;&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;req/end_of_request&quot;</span> <span class="na">Type=</span><span class="s">&quot;BOOL&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/XML&gt;</span>
+<span class="nt">&lt;/SEND&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;service&gt;</span></code> element includes a child XML element that is used by the
+EKI Bridge to identify the target service from the XML telegram.
+The service name is already included in the configuration file.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;args&gt;</span></code> element includes the service arguments and should be configured
+with <code class="docutils literal notranslate"><span class="pre">EKI_Set&lt;Type&gt;</span></code> KRL instructions.</p>
+<p>As an example, the <code class="docutils literal notranslate"><span class="pre">&lt;SEND&gt;</span></code> element of the <code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code>’s
+<code class="docutils literal notranslate"><span class="pre">get_load_carriers</span></code> service
+(see <a class="reference internal" href="itempick.html#sect-itempick"><span class="std std-ref">ItemPick and BoxPick</span></a>) is:</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;SEND&gt;</span>
+  <span class="nt">&lt;XML&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;req/node/rc_itempick&quot;</span> <span class="na">Type=</span><span class="s">&quot;STRING&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;req/service/get_load_carriers&quot;</span> <span class="na">Type=</span><span class="s">&quot;STRING&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;req/args/load_carrier_ids/le&quot;</span> <span class="na">Type=</span><span class="s">&quot;STRING&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;req/end_of_request&quot;</span> <span class="na">Type=</span><span class="s">&quot;BOOL&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/XML&gt;</span>
+<span class="nt">&lt;/SEND&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;end_of_request&gt;</span></code> element allows to have arrays in the request.
+For configuring an array, the request is split into as many
+packages as the size of the array.
+The last telegram contains all tags, including the <code class="docutils literal notranslate"><span class="pre">&lt;end_of_request&gt;</span></code>
+flag, while all other telegrams contain one array element each.</p>
+<p>As an example, for requesting two load carrier models to the <code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code>’s
+<code class="docutils literal notranslate"><span class="pre">get_load_carriers</span></code> service, the user needs to send two XML messages.
+The first XML telegram is:</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;req&gt;</span>
+  <span class="nt">&lt;args&gt;</span>
+    <span class="nt">&lt;load_carrier_ids&gt;</span>
+      <span class="nt">&lt;le&gt;</span>load_carrier1<span class="nt">&lt;/le&gt;</span>
+    <span class="nt">&lt;/load_carrier_ids&gt;</span>
+  <span class="nt">&lt;/args&gt;</span>
+<span class="nt">&lt;/req&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>This telegram can be sent from KRL with the <code class="docutils literal notranslate"><span class="pre">EKI_Send</span></code> command,
+by specifying the list element as path:</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">DECL</span> <span class="n">EKI_STATUS</span> <span class="n">RET</span>
+<span class="n">RET</span> <span class="o">=</span> <span class="n">EKI_SetString</span><span class="p">(</span><span class="s">&quot;rc_itempick-get_load_carriers&quot;</span><span class="p">,</span> <span class="s">&quot;req/args/load_carrier_ids/le&quot;</span><span class="p">,</span> <span class="s">&quot;load_carrier1&quot;</span><span class="p">)</span>
+<span class="n">RET</span> <span class="o">=</span> <span class="n">EKI_Send</span><span class="p">(</span><span class="s">&quot;rc_itempick-get_load_carriers&quot;</span><span class="p">,</span> <span class="s">&quot;req/args/load_carrier_ids/le&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The second telegram includes all tags and triggers the request to the
+<code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code> node:</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;req&gt;</span>
+  <span class="nt">&lt;node&gt;</span>
+    <span class="nt">&lt;rc_itempick&gt;&lt;/rc_itempick&gt;</span>
+  <span class="nt">&lt;/node&gt;</span>
+  <span class="nt">&lt;service&gt;</span>
+    <span class="nt">&lt;get_load_carriers&gt;&lt;/get_load_carriers&gt;</span>
+  <span class="nt">&lt;/service&gt;</span>
+  <span class="nt">&lt;args&gt;</span>
+    <span class="nt">&lt;load_carrier_ids&gt;</span>
+      <span class="nt">&lt;le&gt;</span>load_carrier2<span class="nt">&lt;/le&gt;</span>
+    <span class="nt">&lt;/load_carrier_ids&gt;</span>
+  <span class="nt">&lt;/args&gt;</span>
+  <span class="nt">&lt;end_of_request&gt;&lt;/end_of_request&gt;</span>
+<span class="nt">&lt;/req&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>This telegram can be sent from KRL by specifying <code class="docutils literal notranslate"><span class="pre">req</span></code> as path for <code class="docutils literal notranslate"><span class="pre">EKI_Send</span></code>:</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">DECL</span> <span class="n">EKI_STATUS</span> <span class="n">RET</span>
+<span class="n">RET</span> <span class="o">=</span> <span class="n">EKI_SetString</span><span class="p">(</span><span class="s">&quot;rc_itempick-get_load_carriers&quot;</span><span class="p">,</span> <span class="s">&quot;req/args/load_carrier_ids/le&quot;</span><span class="p">,</span> <span class="s">&quot;load_carrier2&quot;</span><span class="p">)</span>
+<span class="n">RET</span> <span class="o">=</span> <span class="n">EKI_Send</span><span class="p">(</span><span class="s">&quot;rc_itempick-get_load_carriers&quot;</span><span class="p">,</span> <span class="s">&quot;req&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="response-xml-structure">
+<h3>Response XML structure<a class="headerlink" href="#response-xml-structure" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;RECEIVE&gt;</span></code> element in the XML configuration file for a generic
+service follows the specification below:</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;RECEIVE&gt;</span>
+  <span class="nt">&lt;XML&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/&lt;resX&gt;&quot;</span> <span class="na">Type=</span><span class="s">&quot;&lt;resX_type&gt;&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/return_code/@value&quot;</span> <span class="na">Type=</span><span class="s">&quot;INT&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/return_code/@message&quot;</span> <span class="na">Type=</span><span class="s">&quot;STRING&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res&quot;</span> <span class="na">Set_Flag=</span><span class="s">&quot;998&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/XML&gt;</span>
+<span class="nt">&lt;/RECEIVE&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>As an example, the <code class="docutils literal notranslate"><span class="pre">&lt;RECEIVE&gt;</span></code> element of the <code class="docutils literal notranslate"><span class="pre">rc_april_tag_detect</span></code>’s
+<code class="docutils literal notranslate"><span class="pre">detect</span></code> service
+(see <a class="reference internal" href="tagdetect.html#sect-tag-detection"><span class="std std-ref">TagDetect</span></a>) is:</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;RECEIVE&gt;</span>
+  <span class="nt">&lt;XML&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/timestamp/@sec&quot;</span> <span class="na">Type=</span><span class="s">&quot;INT&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/timestamp/@nsec&quot;</span> <span class="na">Type=</span><span class="s">&quot;INT&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/return_code/@message&quot;</span> <span class="na">Type=</span><span class="s">&quot;STRING&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/return_code/@value&quot;</span> <span class="na">Type=</span><span class="s">&quot;INT&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/tags/le/pose_frame&quot;</span> <span class="na">Type=</span><span class="s">&quot;STRING&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/tags/le/timestamp/@sec&quot;</span> <span class="na">Type=</span><span class="s">&quot;INT&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/tags/le/timestamp/@nsec&quot;</span> <span class="na">Type=</span><span class="s">&quot;INT&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/tags/le/pose/@X&quot;</span> <span class="na">Type=</span><span class="s">&quot;REAL&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/tags/le/pose/@Y&quot;</span> <span class="na">Type=</span><span class="s">&quot;REAL&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/tags/le/pose/@Z&quot;</span> <span class="na">Type=</span><span class="s">&quot;REAL&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/tags/le/pose/@A&quot;</span> <span class="na">Type=</span><span class="s">&quot;REAL&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/tags/le/pose/@B&quot;</span> <span class="na">Type=</span><span class="s">&quot;REAL&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/tags/le/pose/@C&quot;</span> <span class="na">Type=</span><span class="s">&quot;REAL&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/tags/le/instance_id&quot;</span> <span class="na">Type=</span><span class="s">&quot;STRING&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/tags/le/id&quot;</span> <span class="na">Type=</span><span class="s">&quot;STRING&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/tags/le/size&quot;</span> <span class="na">Type=</span><span class="s">&quot;REAL&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res&quot;</span> <span class="na">Set_Flag=</span><span class="s">&quot;998&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/XML&gt;</span>
+<span class="nt">&lt;/RECEIVE&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>For arrays, the response includes multiple instances of the same XML element.
+Each element is written into a separate buffer within EKI and can be read
+from the buffer with KRL instructions.
+The number of instances can be requested with <code class="docutils literal notranslate"><span class="pre">EKI_CheckBuffer</span></code> and each
+instance can then be read by calling <code class="docutils literal notranslate"><span class="pre">EKI_Get&lt;Type&gt;</span></code>.</p>
+<p>As an example, the tag poses received after a call to the
+<code class="docutils literal notranslate"><span class="pre">rc_april_tag_detect</span></code>’s <code class="docutils literal notranslate"><span class="pre">detect</span></code> service can be read in KRL using the
+following code:</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">DECL</span> <span class="n">EKI_STATUS</span> <span class="n">RET</span>
+<span class="n">DECL</span> <span class="n">INT</span> <span class="n">i</span>
+<span class="n">DECL</span> <span class="n">INT</span> <span class="n">num_instances</span>
+<span class="n">DECL</span> <span class="n">FRAME</span> <span class="n">poses</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span>
+
+<span class="n">DECL</span> <span class="n">FRAME</span> <span class="n">pose</span> <span class="o">=</span> <span class="p">{</span><span class="n">X</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">Y</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">Z</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">A</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">B</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">C</span> <span class="mf">0.0</span><span class="p">}</span>
+
+<span class="n">RET</span> <span class="o">=</span> <span class="n">EKI_CheckBuffer</span><span class="p">(</span><span class="s">&quot;rc_april_tag_detect-detect&quot;</span><span class="p">,</span> <span class="s">&quot;res/tags/le/pose&quot;</span><span class="p">)</span>
+<span class="n">num_instances</span> <span class="o">=</span> <span class="n">RET</span><span class="p">.</span><span class="n">Buff</span>
+<span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span> <span class="n">to</span> <span class="n">num_instances</span>
+  <span class="n">RET</span> <span class="o">=</span> <span class="n">EKI_GetFrame</span><span class="p">(</span><span class="s">&quot;rc_april_tag_detect-detect&quot;</span><span class="p">,</span> <span class="s">&quot;res/tags/le/pose&quot;</span><span class="p">,</span> <span class="n">pose</span><span class="p">)</span>
+  <span class="n">poses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pose</span>
+<span class="n">endfor</span>
+<span class="n">RET</span> <span class="o">=</span> <span class="n">EKI_ClearBuffer</span><span class="p">(</span><span class="s">&quot;rc_april_tag_detect-detect&quot;</span><span class="p">,</span> <span class="s">&quot;res&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Before each request from EKI to the <em>rc_visard</em>, all buffers should
+be cleared in order to store only the current response in the EKI buffers.</p>
+</div>
+</div>
+</div>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<p>All nodes’ parameters can be set and queried from the EKI Bridge.
+The XML configuration file for a generic node follows the specification below:</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;SEND&gt;</span>
+  <span class="nt">&lt;XML&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;req/node/&lt;node_name&gt;&quot;</span> <span class="na">Type=</span><span class="s">&quot;STRING&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;req/parameters/&lt;parameter_x&gt;/@value&quot;</span> <span class="na">Type=</span><span class="s">&quot;INT&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;req/parameters/&lt;parameter_y&gt;/@value&quot;</span> <span class="na">Type=</span><span class="s">&quot;STRING&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;req/end_of_request&quot;</span> <span class="na">Type=</span><span class="s">&quot;BOOL&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/XML&gt;</span>
+<span class="nt">&lt;/SEND&gt;</span>
+<span class="nt">&lt;RECEIVE&gt;</span>
+  <span class="nt">&lt;XML&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/parameters/&lt;parameter_x&gt;/@value&quot;</span> <span class="na">Type=</span><span class="s">&quot;INT&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/parameters/&lt;parameter_x&gt;/@default&quot;</span> <span class="na">Type=</span><span class="s">&quot;INT&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/parameters/&lt;parameter_x&gt;/@min&quot;</span> <span class="na">Type=</span><span class="s">&quot;INT&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/parameters/&lt;parameter_x&gt;/@max&quot;</span> <span class="na">Type=</span><span class="s">&quot;INT&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/parameters/&lt;parameter_y&gt;/@value&quot;</span> <span class="na">Type=</span><span class="s">&quot;REAL&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/parameters/&lt;parameter_y&gt;/@default&quot;</span> <span class="na">Type=</span><span class="s">&quot;REAL&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/parameters/&lt;parameter_y&gt;/@min&quot;</span> <span class="na">Type=</span><span class="s">&quot;REAL&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/parameters/&lt;parameter_y&gt;/@max&quot;</span> <span class="na">Type=</span><span class="s">&quot;REAL&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/return_code/@value&quot;</span> <span class="na">Type=</span><span class="s">&quot;INT&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res/return_code/@message&quot;</span> <span class="na">Type=</span><span class="s">&quot;STRING&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;ELEMENT</span> <span class="na">Tag=</span><span class="s">&quot;res&quot;</span> <span class="na">Set_Flag=</span><span class="s">&quot;998&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/XML&gt;</span>
+<span class="nt">&lt;/RECEIVE&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The request is interpreted as a <em>get</em> request if all parameter’s
+<code class="docutils literal notranslate"><span class="pre">value</span></code> attributes are empty.
+If any <code class="docutils literal notranslate"><span class="pre">value</span></code> attribute is non-empty, it is interpreted as <em>set</em> request
+of the non-empty parameters.</p>
+<p>As an example, the current value of all parameters of <code class="docutils literal notranslate"><span class="pre">rc_stereomatching</span></code>
+can be queried using the XML telegram:</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;req&gt;</span>
+  <span class="nt">&lt;node&gt;</span>
+    <span class="nt">&lt;rc_stereomatching&gt;&lt;/rc_stereomatching&gt;</span>
+  <span class="nt">&lt;/node&gt;</span>
+  <span class="nt">&lt;parameters&gt;&lt;/parameters&gt;</span>
+  <span class="nt">&lt;end_of_request&gt;&lt;/end_of_request&gt;</span>
+<span class="nt">&lt;/req&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>This XML telegram can be sent out with Ethernet KRL using:</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">DECL</span> <span class="n">EKI_STATUS</span> <span class="n">RET</span>
+<span class="n">RET</span> <span class="o">=</span> <span class="n">EKI_Send</span><span class="p">(</span><span class="s">&quot;rc_stereomatching-parameters&quot;</span><span class="p">,</span> <span class="s">&quot;req&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The response from the EKI Bridge contains all parameters:</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;res&gt;</span>
+  <span class="nt">&lt;parameters&gt;</span>
+    <span class="nt">&lt;acquisition_mode</span> <span class="na">default=</span><span class="s">&quot;Continuous&quot;</span> <span class="na">max=</span><span class="s">&quot;&quot;</span> <span class="na">min=</span><span class="s">&quot;&quot;</span> <span class="na">value=</span><span class="s">&quot;Continuous&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;quality</span> <span class="na">default=</span><span class="s">&quot;High&quot;</span> <span class="na">max=</span><span class="s">&quot;&quot;</span> <span class="na">min=</span><span class="s">&quot;&quot;</span> <span class="na">value=</span><span class="s">&quot;High&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;static_scene</span> <span class="na">default=</span><span class="s">&quot;0&quot;</span> <span class="na">max=</span><span class="s">&quot;1&quot;</span> <span class="na">min=</span><span class="s">&quot;0&quot;</span> <span class="na">value=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;disprange</span> <span class="na">default=</span><span class="s">&quot;256&quot;</span> <span class="na">max=</span><span class="s">&quot;512&quot;</span> <span class="na">min=</span><span class="s">&quot;32&quot;</span> <span class="na">value=</span><span class="s">&quot;256&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;seg</span> <span class="na">default=</span><span class="s">&quot;200&quot;</span> <span class="na">max=</span><span class="s">&quot;4000&quot;</span> <span class="na">min=</span><span class="s">&quot;0&quot;</span> <span class="na">value=</span><span class="s">&quot;200&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;smooth</span> <span class="na">default=</span><span class="s">&quot;1&quot;</span> <span class="na">max=</span><span class="s">&quot;1&quot;</span> <span class="na">min=</span><span class="s">&quot;0&quot;</span> <span class="na">value=</span><span class="s">&quot;1&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;median</span> <span class="na">default=</span><span class="s">&quot;1&quot;</span> <span class="na">max=</span><span class="s">&quot;5&quot;</span> <span class="na">min=</span><span class="s">&quot;1&quot;</span> <span class="na">value=</span><span class="s">&quot;1&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;fill</span> <span class="na">default=</span><span class="s">&quot;3&quot;</span> <span class="na">max=</span><span class="s">&quot;4&quot;</span> <span class="na">min=</span><span class="s">&quot;0&quot;</span> <span class="na">value=</span><span class="s">&quot;3&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;minconf</span> <span class="na">default=</span><span class="s">&quot;0.5&quot;</span> <span class="na">max=</span><span class="s">&quot;1.0&quot;</span> <span class="na">min=</span><span class="s">&quot;0.5&quot;</span> <span class="na">value=</span><span class="s">&quot;0.5&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;mindepth</span> <span class="na">default=</span><span class="s">&quot;0.1&quot;</span> <span class="na">max=</span><span class="s">&quot;100.0&quot;</span> <span class="na">min=</span><span class="s">&quot;0.1&quot;</span> <span class="na">value=</span><span class="s">&quot;0.1&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;maxdepth</span> <span class="na">default=</span><span class="s">&quot;100.0&quot;</span> <span class="na">max=</span><span class="s">&quot;100.0&quot;</span> <span class="na">min=</span><span class="s">&quot;0.1&quot;</span> <span class="na">value=</span><span class="s">&quot;100.0&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;maxdeptherr</span> <span class="na">default=</span><span class="s">&quot;100.0&quot;</span> <span class="na">max=</span><span class="s">&quot;100.0&quot;</span> <span class="na">min=</span><span class="s">&quot;0.01&quot;</span> <span class="na">value=</span><span class="s">&quot;100.0&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/parameters&gt;</span>
+  <span class="nt">&lt;return_code</span> <span class="na">message=</span><span class="s">&quot;&quot;</span> <span class="na">value=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/res&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The <code class="docutils literal notranslate"><span class="pre">quality</span></code> parameter of <code class="docutils literal notranslate"><span class="pre">rc_stereomatching</span></code> can be set to <code class="docutils literal notranslate"><span class="pre">Low</span></code>
+by the XML telegram:</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;req&gt;</span>
+    <span class="nt">&lt;node&gt;</span>
+      <span class="nt">&lt;rc_stereomatching&gt;&lt;/rc_stereomatching&gt;</span>
+    <span class="nt">&lt;/node&gt;</span>
+    <span class="nt">&lt;parameters&gt;</span>
+      <span class="nt">&lt;quality</span> <span class="na">value=</span><span class="s">&quot;L&quot;</span><span class="nt">&gt;&lt;/quality&gt;</span>
+    <span class="nt">&lt;/parameters&gt;</span>
+    <span class="nt">&lt;end_of_request&gt;&lt;/end_of_request&gt;</span>
+<span class="nt">&lt;/req&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>This XML telegram can be sent out with Ethernet KRL using:</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">DECL</span> <span class="n">EKI_STATUS</span> <span class="n">RET</span>
+<span class="n">RET</span> <span class="o">=</span> <span class="n">EKI_SetString</span><span class="p">(</span><span class="s">&quot;rc_stereomatching-parameters&quot;</span><span class="p">,</span> <span class="s">&quot;req/parameters/quality/@value&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">)</span>
+<span class="n">RET</span> <span class="o">=</span> <span class="n">EKI_Send</span><span class="p">(</span><span class="s">&quot;rc_stereomatching-parameters&quot;</span><span class="p">,</span> <span class="s">&quot;req&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>In this case, only the applied value of <code class="docutils literal notranslate"><span class="pre">quality</span></code> is returned by the
+EKI Bridge:</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;res&gt;</span>
+  <span class="nt">&lt;parameters&gt;</span>
+    <span class="nt">&lt;quality</span> <span class="na">default=</span><span class="s">&quot;High&quot;</span> <span class="na">max=</span><span class="s">&quot;&quot;</span> <span class="na">min=</span><span class="s">&quot;&quot;</span> <span class="na">value=</span><span class="s">&quot;Low&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/parameters&gt;</span>
+  <span class="nt">&lt;return_code</span> <span class="na">message=</span><span class="s">&quot;&quot;</span> <span class="na">value=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/res&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="eki-xml-configuration-files">
+<span id="sect-eki-configs"></span><h2>EKI XML configuration files<a class="headerlink" href="#eki-xml-configuration-files" title="Permalink to this headline">¶</a></h2>
+<p>This section contains EKI XML configuration files for all
+nodes running on the <em>rc_visard</em>. They are also available
+for download in this
+<a class="reference download internal" download="" href="_downloads/1ed83f6f05ee038f7de87a711e1ad732/rc_visard_eki_xml_config_files.zip"><code class="xref download docutils literal notranslate"><span class="pre">ZIP</span> <span class="pre">archive</span></code></a>.</p>
+<p>rc_april_tag_detect</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><a class="reference download internal" download="" href="_downloads/b61e02c6141ebaeadd2e2b7b74f4603e/rc_april_tag_detect-parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">Parameters</span></code></a></p>
+</li>
+<li><p class="first">Services:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference download internal" download="" href="_downloads/e201d73a0e005b5727ef647bad9d2438/rc_april_tag_detect-detect.xml"><code class="xref download docutils literal notranslate"><span class="pre">detect</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/4d958884bad2898fe94b286914748936/rc_april_tag_detect-reset_defaults.xml"><code class="xref download docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/06071f92a4a6d6bdf21c65a1e730f701/rc_april_tag_detect-restart.xml"><code class="xref download docutils literal notranslate"><span class="pre">restart</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/510a81ad15e473e83d247d02d0692edb/rc_april_tag_detect-save_parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/9ac324771d00d84e9a34d9f52c445668/rc_april_tag_detect-start.xml"><code class="xref download docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/151220c4e23d3523425120468846e8a8/rc_april_tag_detect-stop.xml"><code class="xref download docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>rc_boxpick</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><a class="reference download internal" download="" href="_downloads/1be09b3e3e0863f13b0ac4c4f631272a/rc_boxpick-parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">Parameters</span></code></a></p>
+</li>
+<li><p class="first">Services:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference download internal" download="" href="_downloads/ec76d81a6f1d54b08910151d306ec157/rc_boxpick-compute_grasps.xml"><code class="xref download docutils literal notranslate"><span class="pre">compute_grasps</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/1b68d6e4fa0f83c494748a24cb491fce/rc_boxpick-delete_load_carriers.xml"><code class="xref download docutils literal notranslate"><span class="pre">delete_load_carriers</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/f688d6ada667f24479efced114b5f742/rc_boxpick-delete_regions_of_interest.xml"><code class="xref download docutils literal notranslate"><span class="pre">delete_regions_of_interest</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/d7e0f8c28a32a03c2fabab01dd494f6c/rc_boxpick-detect_filling_level.xml"><code class="xref download docutils literal notranslate"><span class="pre">detect_filling_level</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/01c8d825b767e3ae9be15fb6b24c767c/rc_boxpick-detect_items.xml"><code class="xref download docutils literal notranslate"><span class="pre">detect_items</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/b104336a0411fc5bbbc7bef4f47f49c0/rc_boxpick-detect_load_carriers.xml"><code class="xref download docutils literal notranslate"><span class="pre">detect_load_carriers</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/b55fa7a299eed0cdaa4c7b8445374f4b/rc_boxpick-get_load_carriers.xml"><code class="xref download docutils literal notranslate"><span class="pre">get_load_carriers</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/7eb1ec10b734f8029a5d488b8c1a860a/rc_boxpick-get_regions_of_interest.xml"><code class="xref download docutils literal notranslate"><span class="pre">get_regions_of_interest</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/bc7ec1f1bd5309547492573c321de436/rc_boxpick-reset_defaults.xml"><code class="xref download docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/47d0e2a2a592971ddaaad0b67209ec95/rc_boxpick-save_parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/b3fc7a04610a39b73a9ba0b753603771/rc_boxpick-set_load_carrier.xml"><code class="xref download docutils literal notranslate"><span class="pre">set_load_carrier</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/17013a71e68864183bf6246094819d15/rc_boxpick-set_region_of_interest.xml"><code class="xref download docutils literal notranslate"><span class="pre">set_region_of_interest</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/7dbe69577b29063bb843b84af41775fa/rc_boxpick-start.xml"><code class="xref download docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/71086bfb9d61aab69ca272f265f9cf1d/rc_boxpick-stop.xml"><code class="xref download docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/9b48aa3b275295f772aedb845b98a107/rc_boxpick-update_region_of_interest_vis.xml"><code class="xref download docutils literal notranslate"><span class="pre">update_region_of_interest_vis</span></code></a></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>rc_collision_check</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><a class="reference download internal" download="" href="_downloads/3ac028619e296065557804d8ca9feacb/rc_collision_check-parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">Parameters</span></code></a></p>
+</li>
+<li><p class="first">Services:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference download internal" download="" href="_downloads/f0426f45375980edf56dfe8e6fb2c7d8/rc_collision_check-check_collisions.xml"><code class="xref download docutils literal notranslate"><span class="pre">check_collisions</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/a22e1fb56e2901260d2ee59527cce693/rc_collision_check-delete_grippers.xml"><code class="xref download docutils literal notranslate"><span class="pre">delete_grippers</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/49f4b944c3980cfd62f10feb9dac61f6/rc_collision_check-get_grippers.xml"><code class="xref download docutils literal notranslate"><span class="pre">get_grippers</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/c726f6b848612a07c98528054e3f9059/rc_collision_check-get_grippers_schmalz_vac.xml"><code class="xref download docutils literal notranslate"><span class="pre">get_grippers_schmalz_vac</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/f12453a54db962c8d5b7b77bb97b49c6/rc_collision_check-reset_defaults.xml"><code class="xref download docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/3a32b535b10c3dec75b961eaca7cc009/rc_collision_check-save_parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/b7e78d66b2b16612096be77d6cd9a87c/rc_collision_check-set_gripper.xml"><code class="xref download docutils literal notranslate"><span class="pre">set_gripper</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/4e833fd907cfc1f94455bb0da5fb0a09/rc_collision_check-set_gripper_schmalz_vac.xml"><code class="xref download docutils literal notranslate"><span class="pre">set_gripper_schmalz_vac</span></code></a></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>rc_dynamics</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Services:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference download internal" download="" href="_downloads/363b28bb68f99dc7940df60d953bde9a/rc_dynamics-get_cam2imu_transform.xml"><code class="xref download docutils literal notranslate"><span class="pre">get_cam2imu_transform</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/dc0d26527411eb6a97bdd46173be6077/rc_dynamics-restart.xml"><code class="xref download docutils literal notranslate"><span class="pre">restart</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/b8b463ab058bca648e3edd7c09d7a027/rc_dynamics-restart_slam.xml"><code class="xref download docutils literal notranslate"><span class="pre">restart_slam</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/dddce3c2d9376ea679f453a3db75da1d/rc_dynamics-start.xml"><code class="xref download docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/ce1a8712488270fdeb6bc3d2e47080c1/rc_dynamics-start_slam.xml"><code class="xref download docutils literal notranslate"><span class="pre">start_slam</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/6e18c5e0d08691458ac874907537ce61/rc_dynamics-stop.xml"><code class="xref download docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/173e74a8d52a2138a67b1373f3e85061/rc_dynamics-stop_slam.xml"><code class="xref download docutils literal notranslate"><span class="pre">stop_slam</span></code></a></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>rc_hand_eye_calibration</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><a class="reference download internal" download="" href="_downloads/c221ee3e98d531a6a7dc5e2b4ed0c53f/rc_hand_eye_calibration-parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">Parameters</span></code></a></p>
+</li>
+<li><p class="first">Services:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference download internal" download="" href="_downloads/bc2bf5127cabdef7bb4e39107b601121/rc_hand_eye_calibration-calibrate.xml"><code class="xref download docutils literal notranslate"><span class="pre">calibrate</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/b3179f152184449939ca0ad76b29966f/rc_hand_eye_calibration-get_calibration.xml"><code class="xref download docutils literal notranslate"><span class="pre">get_calibration</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/86f10e0836556b3f09904aef0ea62691/rc_hand_eye_calibration-remove_calibration.xml"><code class="xref download docutils literal notranslate"><span class="pre">remove_calibration</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/6b57c570bc5a589fb58677f3748b88ad/rc_hand_eye_calibration-reset_calibration.xml"><code class="xref download docutils literal notranslate"><span class="pre">reset_calibration</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/c321faf2c1da20abdfa171c2cb805d01/rc_hand_eye_calibration-reset_defaults.xml"><code class="xref download docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/10297c48db218998d460fe53c994136a/rc_hand_eye_calibration-save_calibration.xml"><code class="xref download docutils literal notranslate"><span class="pre">save_calibration</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/64237f7bab8e49b808ca01cfccb45bfb/rc_hand_eye_calibration-save_parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/f09a9a1cc2fcc3008091e3f151e7cde8/rc_hand_eye_calibration-set_calibration.xml"><code class="xref download docutils literal notranslate"><span class="pre">set_calibration</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/3da5ed01716355488d22a211a4e373e0/rc_hand_eye_calibration-set_pose.xml"><code class="xref download docutils literal notranslate"><span class="pre">set_pose</span></code></a></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>rc_iocontrol</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><a class="reference download internal" download="" href="_downloads/a367ce5a21cf73369ea87f6a89bf64ec/rc_iocontrol-parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">Parameters</span></code></a></p>
+</li>
+<li><p class="first">Services:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference download internal" download="" href="_downloads/c15b3088c4f0a8f498e93228959c5b25/rc_iocontrol-get_io_values.xml"><code class="xref download docutils literal notranslate"><span class="pre">get_io_values</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/e8cfc96e03122b6a0ce2dfce6144ad29/rc_iocontrol-reset_defaults.xml"><code class="xref download docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/b5afe8066b8c431d3524d1638967c316/rc_iocontrol-save_parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>rc_itempick</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><a class="reference download internal" download="" href="_downloads/2f77acd86f7c0bba1f078e3af48f2ee0/rc_itempick-parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">Parameters</span></code></a></p>
+</li>
+<li><p class="first">Services:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference download internal" download="" href="_downloads/caf60378453a34245774d30997b553bc/rc_itempick-compute_grasps.xml"><code class="xref download docutils literal notranslate"><span class="pre">compute_grasps</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/a2b5fdae97a9ab2d8c88c4f05caa5ee0/rc_itempick-delete_load_carriers.xml"><code class="xref download docutils literal notranslate"><span class="pre">delete_load_carriers</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/515d666be8f127ad6860ff692e68d143/rc_itempick-delete_regions_of_interest.xml"><code class="xref download docutils literal notranslate"><span class="pre">delete_regions_of_interest</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/6eea6347d5fa08b19d8b1ca0022f770d/rc_itempick-detect_filling_level.xml"><code class="xref download docutils literal notranslate"><span class="pre">detect_filling_level</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/b0d252c0c0c4e74b6ed70a4efc8598a2/rc_itempick-detect_load_carriers.xml"><code class="xref download docutils literal notranslate"><span class="pre">detect_load_carriers</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/e8057b215af4c0112894051c7665b150/rc_itempick-get_load_carriers.xml"><code class="xref download docutils literal notranslate"><span class="pre">get_load_carriers</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/631c0038459de927bf463874985c2bdb/rc_itempick-get_regions_of_interest.xml"><code class="xref download docutils literal notranslate"><span class="pre">get_regions_of_interest</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/821f5a3c7203226338876892eaeebcaf/rc_itempick-reset_defaults.xml"><code class="xref download docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/8448aec3141242d909394b7b8baecfff/rc_itempick-save_parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/fe8cb2d894904e91817b56d81fa9d3bf/rc_itempick-set_load_carrier.xml"><code class="xref download docutils literal notranslate"><span class="pre">set_load_carrier</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/5907b6526cd05ce8ee8a7c909eaba123/rc_itempick-set_region_of_interest.xml"><code class="xref download docutils literal notranslate"><span class="pre">set_region_of_interest</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/7b51ef080ebc6c1d19f0ad735cbebe8a/rc_itempick-start.xml"><code class="xref download docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/3bf93e207d41df1c2cf37da1827d9739/rc_itempick-stop.xml"><code class="xref download docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/b25d0d78856db30d68d66a9cf23f46cc/rc_itempick-update_region_of_interest_vis.xml"><code class="xref download docutils literal notranslate"><span class="pre">update_region_of_interest_vis</span></code></a></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>rc_qr_code_detect</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><a class="reference download internal" download="" href="_downloads/4f267597794edb6eb1231dcc9d8a1b3f/rc_qr_code_detect-parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">Parameters</span></code></a></p>
+</li>
+<li><p class="first">Services:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference download internal" download="" href="_downloads/356e23d054bed7129af7a744803649da/rc_qr_code_detect-detect.xml"><code class="xref download docutils literal notranslate"><span class="pre">detect</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/8713e50182a5d37c3dec7a2839bb9328/rc_qr_code_detect-reset_defaults.xml"><code class="xref download docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/3e41a96329efa821286f7ffb5d1fed48/rc_qr_code_detect-restart.xml"><code class="xref download docutils literal notranslate"><span class="pre">restart</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/cfbb7e91792c852a6b97717960d59e99/rc_qr_code_detect-save_parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/e9b423d3ee94c255a259539ff236730e/rc_qr_code_detect-start.xml"><code class="xref download docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/d794296e97e92aabaaa6842cea235e4d/rc_qr_code_detect-stop.xml"><code class="xref download docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>rc_silhouettematch</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><a class="reference download internal" download="" href="_downloads/75e58d57a019b26d8b4144e9a74ade94/rc_silhouettematch-parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">Parameters</span></code></a></p>
+</li>
+<li><p class="first">Services:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference download internal" download="" href="_downloads/4711a424d08e33c4b8194fc33f9bfbf8/rc_silhouettematch-calibrate_base_plane.xml"><code class="xref download docutils literal notranslate"><span class="pre">calibrate_base_plane</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/e781714be953fa82068ac22986d881ba/rc_silhouettematch-delete_base_plane_calibration.xml"><code class="xref download docutils literal notranslate"><span class="pre">delete_base_plane_calibration</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/1c67c37eaaea50fc4a88994932189f30/rc_silhouettematch-delete_regions_of_interest_2d.xml"><code class="xref download docutils literal notranslate"><span class="pre">delete_regions_of_interest_2d</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/d8b03a3c3db86f9f1f93677cfc38b590/rc_silhouettematch-detect_object.xml"><code class="xref download docutils literal notranslate"><span class="pre">detect_object</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/7d0bf119c3ed79e48d5e55cd3eee3d6b/rc_silhouettematch-get_base_plane_calibration.xml"><code class="xref download docutils literal notranslate"><span class="pre">get_base_plane_calibration</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/312b812e8db763f19f48c7ec240dc283/rc_silhouettematch-get_regions_of_interest_2d.xml"><code class="xref download docutils literal notranslate"><span class="pre">get_regions_of_interest_2d</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/15ce9ff76a66990f0b092b57ab2d1c11/rc_silhouettematch-reset_defaults.xml"><code class="xref download docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/0d696f7fd3189f4d729429823afea64a/rc_silhouettematch-save_parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/53f62b8666cf43c6175447bc6e28aa70/rc_silhouettematch-set_region_of_interest_2d.xml"><code class="xref download docutils literal notranslate"><span class="pre">set_region_of_interest_2d</span></code></a></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>rc_slam</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><a class="reference download internal" download="" href="_downloads/ce659cfbbc15d76ebc59e8c4bfacf0ed/rc_slam-parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">Parameters</span></code></a></p>
+</li>
+<li><p class="first">Services:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference download internal" download="" href="_downloads/a638d22e8792c10e87b9978deede46ac/rc_slam-get_trajectory.xml"><code class="xref download docutils literal notranslate"><span class="pre">get_trajectory</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/94d8f0c28ae17aec381f9752d7dc9e8f/rc_slam-load_map.xml"><code class="xref download docutils literal notranslate"><span class="pre">load_map</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/1e9c84cf47f6651e2a5851b3c2bdee68/rc_slam-remove_map.xml"><code class="xref download docutils literal notranslate"><span class="pre">remove_map</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/f3617459c6120f1126a4bb61e9f04ae0/rc_slam-reset.xml"><code class="xref download docutils literal notranslate"><span class="pre">reset</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/3d406cc1d8a6464d2dfe7646f6cb48fa/rc_slam-reset_defaults.xml"><code class="xref download docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/0cc69e3459e63437c1b308aa021b147d/rc_slam-save_map.xml"><code class="xref download docutils literal notranslate"><span class="pre">save_map</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/e3a1b2c2473fd1ac0e1a0d589ad0804d/rc_slam-save_parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>rc_stereocalib</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><a class="reference download internal" download="" href="_downloads/6bf4ca6e394d40de8d31bc105b7a9726/rc_stereocalib-parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">Parameters</span></code></a></p>
+</li>
+<li><p class="first">Services:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference download internal" download="" href="_downloads/cca670d1c6d712428b0ef3be1eb2e2fe/rc_stereocalib-change_state.xml"><code class="xref download docutils literal notranslate"><span class="pre">change_state</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/05d12ccc5b82d2fd62e8142f278d2964/rc_stereocalib-reset_defaults.xml"><code class="xref download docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/fa79cbe2b721fceb0cb3449516a07a8d/rc_stereocalib-save_parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>rc_stereocamera</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><a class="reference download internal" download="" href="_downloads/cfccca170e6f0a8ef0330eae0e3a5d48/rc_stereocamera-parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">Parameters</span></code></a></p>
+</li>
+<li><p class="first">Services:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference download internal" download="" href="_downloads/a261d0e93851adfd7ccf91799430de80/rc_stereocamera-reset_defaults.xml"><code class="xref download docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/69eb2729f7fd0d83330cac53b5dfe89e/rc_stereocamera-save_parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>rc_stereomatching</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><a class="reference download internal" download="" href="_downloads/dfed10b855ed88d8865c06318c0d383b/rc_stereomatching-parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">Parameters</span></code></a></p>
+</li>
+<li><p class="first">Services:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference download internal" download="" href="_downloads/cc16da8cd17d37400b8f2d5a965d9410/rc_stereomatching-acquisition_trigger.xml"><code class="xref download docutils literal notranslate"><span class="pre">acquisition_trigger</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/fc080535d297667f2874906cc5dc9b4c/rc_stereomatching-reset_defaults.xml"><code class="xref download docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/2441adb12b2b97fa70bb9ed138912e2d/rc_stereomatching-save_parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>rc_stereovisodo</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><a class="reference download internal" download="" href="_downloads/f23cd32f610853c9a7d0573050600e06/rc_stereovisodo-parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">Parameters</span></code></a></p>
+</li>
+<li><p class="first">Services:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference download internal" download="" href="_downloads/2ec6aad70efd9497c58847ab531212dc/rc_stereovisodo-reset_defaults.xml"><code class="xref download docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li><a class="reference download internal" download="" href="_downloads/a7f4b00fc27efd4d7e0ce06d504039a3/rc_stereovisodo-save_parameters.xml"><code class="xref download docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="time_sync.html" class="btn btn-neutral float-right" title="Time synchronization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rc_dynamics.html" class="btn btn-neutral" title="The rc_dynamics interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Options</span>
+      en
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Languages</dt>
+        
+          
+          <dd><a href="../en/eki.html">en</a></dd>
+          
+        
+          
+          <dd><a href="../de/eki.html">de</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versions</dt>
+          
+            <dd><a href="../../v1.0/index.html">v1.0</a></dd>
+          
+            <dd><a href="../../v1.1/index.html">v1.1</a></dd>
+          
+            <dd><a href="../../v1.2/index.html">v1.2</a></dd>
+          
+            <dd><a href="../../v1.3/index.html">v1.3</a></dd>
+          
+            <dd><a href="../../v1.4/index.html">v1.4</a></dd>
+          
+            <dd><a href="../../v1.5/index.html">v1.5</a></dd>
+          
+            <dd><a href="../../v1.6/index.html">v1.6</a></dd>
+          
+            <dd><a href="../../v1.7/index.html">v1.7</a></dd>
+          
+            <dd><a href="../../v1.8/index.html">v1.8</a></dd>
+          
+            <dd><a href="../../v20.04/index.html">v20.04</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_manual_en.pdf">PDF (en)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_manual_de.pdf">PDF (de)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'20.04.3',
+            LANGUAGE:'en',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

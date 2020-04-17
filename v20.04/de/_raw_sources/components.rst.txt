@@ -1,0 +1,85 @@
+.. include:: global_rst.glb
+
+.. _sect-software-components:
+
+Software components
+===================
+
+The |rc_xxx| comes with several on-board software components, each of which
+corresponds to a certain functionality and can be interfaced via its respective
+*node* in the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+The :doc:`stereo_camera` and the :doc:`stereo_matching` components, which
+acquire stereo image pairs and compute 3D depth information such as disparity,
+error, and confidence images, are also accessible via the |rc_xxx|'s
+:doc:`GigE Vision/GenICam interface<gigevision>`.
+
+.. only:: rc_visard
+
+      :numref:`fig-component-flowchart` gives an overview of the relationships between the different software
+      components and the data they provide via |rc_xxx|'s various
+      :ref:`interfaces <sect-interfaces>`:latex:`\:(Section
+      \ref{interfaces:sect-interfaces})`.
+
+      .. _fig-component-flowchart:
+      .. figure:: images/component_flowchart_v3.*
+         :width: 100 %
+         :align: center
+
+         Flowchart of the software components with their node names and the most important outputs
+
+      .. Note:: Components marked as *optional* extend the |rc_visard|'s features.
+         Customers can extend the license to purchase additional components.
+
+The |rc_xxx|'s base software consists of the following components:
+
+- :doc:`stereo_camera` (``rc_stereocamera``:latex:`, Section \ref{stereo_camera:sect-stereo-camera}`)
+   acquires stereo image pairs and performs planar rectification for using the
+   stereo camera as a measurement device.
+   Images are provided both for further internal processing by other components
+   and for external use as :ref:`GenICam image streams <sect-genicam>`.
+
+- :doc:`stereo_matching` (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`)
+   uses the rectified stereo image pairs to compute 3D depth
+   information such as disparity, error, and confidence images.
+   These are provided as GenICam streams, too.
+
+.. only:: rc_visard
+
+      - :doc:`dynamics` (``rc_dynamics``:latex:`, Section \ref{dynamics:sect-dynamics}.`)
+         provides estimates of |rc_visard|'s dynamic state such as its pose,
+         velocity, and acceleration. These states are transmitted
+         as continuous data streams via the :doc:`rc_dynamics interface<rc_dynamics>`.
+         For this purpose, the dynamics component manages and fuses data from the following individual
+         subcomponents:
+
+         - :doc:`stereo_visodo` (``rc_stereovisodo``:latex:`, Section \ref{stereo_visodo:sect-visual-odometry}`)
+            estimates the motion of the |rc_visard| device based on the motion of characteristic
+            visual features in the left camera images.
+
+         - :doc:`stereo_ins` (``rc_stereo_ins``:latex:`, Section \ref{stereo_ins:sect-stereo-ins}`)
+            combines visual odometry measurements with readings from the on-board
+            Inertial Measurement Unit (IMU) to provide
+            accurate and high-frequency state estimates in real time.
+
+      - :doc:`camera_calibration` (``rc_stereocalib``:latex:`, Section \ref{camera_calibration:sect-camera-calibration}`)
+         automatically checks and performs the self-calibration of the |rc_visard|'s
+         stereo camera in case it has been decalibrated. It furthermore
+         enables the user to check and perform recalibration manually via the
+         :ref:`WEB GUI<sect-web-gui>`:latex:`\:(Section \ref{installation:sect-web-gui})`.
+
+- :doc:`handeye_calibration` (``rc_hand_eye_calibration``:latex:`, Section \ref{handeye_calibration:sect-handeye-calibration}`)
+   enables the user to calibrate the camera with respect to a robot,
+   either via the |webgui| or the |restapi|.
+
+.. toctree-filt::
+   :maxdepth: 2
+   :hidden:
+
+   stereo_camera
+   stereo_matching
+   :rc_cube_exclude:dynamics
+   :rc_cube_exclude:stereo_visodo
+   :rc_cube_exclude:stereo_ins
+   :rc_cube_exclude:camera_calibration
+   handeye_calibration

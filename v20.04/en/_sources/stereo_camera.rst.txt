@@ -1,0 +1,415 @@
+Stereo camera
+
+The stereo camera component contains functionality for acquiring
+stereo image pairs and performing planar rectification needed to use
+the stereo camera as a measurement device.
+
+Image acquisition
+
+Acquiring stereo image pairs is the first step toward stereo vision.
+Since both cameras are equipped with global shutters and their chips
+are hardware-synchronized, all pixels of both camera images are always
+exposed at exactly the same time. The time at the middle of the image
+exposure is attached to the images as a timestamp. This timestamp
+becomes important for dynamic applications in which the cameras or the
+scene moves.
+
+Note: The period during which the shutter is open is signaled via
+  the
+
+  rc_visard
+
+  's
+
+  GPIO out 1
+
+  .
+
+Exposure time can be set manually to a fixed value. This is useful in
+an environment where lighting is controlled so that it is always at
+the same intensity. The camera is set to auto exposure by default. In
+this mode, the exposure time is chosen automatically, up to a user
+defined maximum. The permitted maximum is meant to limit the motion
+blur that occurs when taking images while the camera or the scene is
+moving. The maximum exposure time thus depends on the application. If
+the maximum exposure time is reached, the auto-exposure algorithm uses
+the gain to increase image brightness. However, larger gain factors
+also amplify image noise. Thus, the maximum exposure time trades
+motion blur off against image noise under weak-light conditions.
+
+Planar rectification
+
+Camera parameters such as focal length, lens distortion, and the
+relationship of the cameras to each other must be exactly known to use
+the stereo camera as a measuring instrument. The
+
+rc_visard
+
+ is already calibrated at production time and normally requires no
+recalibration. The camera parameters describe with great precision all
+of the stereo-camera system's geometric properties, but the resulting
+model is complex and difficult to use.
+
+Rectification is the process of remapping the images according to an
+ideal stereo-camera model. Lens distortion is removed and the images
+are aligned so that an object point is always projected onto the same
+image row in both images. The cameras' optical axes become exactly
+parallel. This means that points at infinite distance are projected
+onto the same image column in both images. The closer an object point
+is, the larger is the difference between its image columns in the
+right and left images. This difference is called disparity.
+
+Mathematically, the object point P=(P_x, P_y, P_z) is projected onto
+image point p_l=(p_{lx}, p_{ly}, 1) in the left rectified image and
+onto p_r=(p_{rx}, p_{ry}, 1) in the right rectified image by
+
+   A &= \left(\begin{array}{ccc} f & 0 & \frac{w}{2}\\
+   0 & f & \frac{h}{2}\\                         0 & 0 & 1
+   \end{array}\right), \qquad T_s = \left(\begin{array}{c}t\\
+   0\\                         0 \end{array}\right),  s_1 p_l &= AP,
+   \\ s_2 p_r &= A(P-T_s).
+
+The focal length f is the distance between the common image plane and
+the optical centers of the left and right cameras. It is measured in
+pixels. The baseline t is the distance between the optical centers of
+the two cameras. The image width w and height h are measured in
+pixels, too. s_1 and s_2 are scale factors ensuring that the third
+coordinates of the image points p_l and p_r are equal to 1.
+
+Note: The
+
+  rc_visard
+
+   reports a focal length factor via its various interfaces. It
+  relates to the image width for supporting different image
+  resolutions. The focal length f in pixels can be easily obtained by
+  multiplying the focal length factor by the image width in pixels.
+
+Accessing Images
+
+The
+
+rc_visard
+
+ provides the time-stamped, rectified left and right images over the
+GenICam interface (see
+
+Provided image streams
+
+). Live streams of the images are provided with reduced quality in the
+
+Web GUI
+
+.
+
+The
+
+Web GUI
+
+ also provides the opportunity to download a snapshot of the current
+scene as a .tar.gz file by clicking on the camera icon below the image
+live streams on the
+
+Camera
+
+ tab. This snapshot contains:
+
+the rectified left and right camera images in full resolution as .png
+files,
+
+a camera parameter file containing the camera matrix, image
+dimensions, exposure time, gain value and the stereo baseline,
+
+the current IMU readings as imu.csv file,
+
+a nodes.json file containing information about all nodes running on
+the rc_visard,
+
+a system_info.json file containing system information about the
+rc_visard.
+
+Parameters
+
+The stereo-camera software component is called "rc_stereocamera" and
+is represented by the
+
+Camera
+
+ tab in the
+
+Web GUI
+
+. The user can change the camera parameters there, or directly via the
+REST-API (
+
+REST-API interface
+
+) or GigE Vision (
+
+GigE Vision 2.0/GenICam image interface
+
+).
+
+Note: Camera parameters cannot be changed via the Web GUI or REST-
+  API if
+
+  rc_visard
+
+   is used via GigE Vision.
+
+Parameter overview
+
+This component offers the following run-time parameters:
+
+The rc_stereocamera component's run-time parameters              Name
+Type  Min  Max  Default  Description  exp_auto  bool  false  true
+true  Switching between auto and manual exposure  exp_auto_mode
+string  -  -  Normal  Auto-exposure mode, i.e. Normal or AdaptiveOut1
+exp_height  int32  0  959  0  Height of auto exposure region. 0 for
+whole image.  exp_max  float64  6.6e-05  0.018  0.007  Maximum
+exposure time in seconds if exp_auto is true  exp_offset_x  int32  0
+1279  0  First column of auto exposure region  exp_offset_y  int32  0
+959  0  First row of auto exposure region  exp_value  float64  6.6e-05
+0.018  0.005  Manual exposure time in seconds if exp_auto is false
+exp_width  int32  0  1279  0  Width of auto exposure region. 0 for
+whole image.  fps  float64  1.0  25.0  25.0  Frames per second in
+Hertz  gain_value  float64  0.0  18.0  0.0  Manual gain value in
+decibel if exp_auto is false  wb_auto  bool  false  true  true
+Switching white balance on and off (only for color camera)
+wb_ratio_blue  float64  0.125  8.0  2.4  Blue to green balance ratio
+if wb_auto is false (only for color camera)  wb_ratio_red  float64
+0.125  8.0  1.2  Red to green balance ratio if wb_auto is false (only
+for color camera)
+
+Description of run-time parameters
+
+
+"fps" (
+FPS
+
+)
+   This value is the cameras' frame rate (fps, frames per second),
+   which determines the upper frequency at which depth images can be
+   computed. This is also the frequency at which the
+
+   rc_visard
+
+    delivers images via GigE Vision. Reducing this frequency also
+   reduces the network bandwidth required to transmit the images.
+
+   The camera always runs with 25 Hz to ensure proper working of
+   internal modules such as visual odometry that need a constant frame
+   rate. The user frame rate setting is implemented by excluding
+   frames for stereo matching and transmission via GigE Vision to
+   reduce bandwidth as shown in figure
+
+   Fig. 21
+
+   .
+
+
+"exp_auto" (
+Exposure Auto
+
+ or
+Manual
+
+)
+   This value can be set to *true* for auto-exposure mode, or to
+   *false* for manual exposure mode. In manual exposure mode, the
+   chosen exposure time is kept, even if the images are overexposed or
+   underexposed. In auto-exposure mode, the exposure time and gain
+   factor is chosen automatically to correctly expose the image. The
+   last automatically determined exposure and gain values are set into
+   "exp_value" and "gain_value" when switching auto-exposure off.
+
+"exp_auto_mode" (
+Auto Exposure Mode
+
+)
+   The auto exposure mode can be set to *Normal* or *AdaptiveOut1*.
+   These modes are relevant when the
+
+   rc_visard
+
+    is used with an external light source or projector connected to
+   the
+
+   rc_visard
+
+   's GPIO Out1, which can be controlled by the optional IOControl
+   component (
+
+   IO and Projector Control
+
+   ).
+
+   *Normal*: All images are considered for exposure control, except if
+   the IOControl mode for GPIO Out1 is *ExposureAlternateActive*: then
+   only images where GPIO Out1 is HIGH will be considered, since these
+   images may be brighter in case GPIO Out1 is used to trigger an
+   external light source.
+
+   *AdaptiveOut1*: This exposure mode optimizes the exposure time for
+   GPIO Out1 being HIGH. This mode is recommended for using the
+   "acquisition_mode" *O* (SingleFrame+Out1) in the stereo matching
+   component as described in
+
+   Stereo Matching Parameters
+
+    and having an external projector connected to GPIO Out1. The
+   exposure difference between images with GPIO Out1 LOW and HIGH is
+   tracked. While the IOControl mode for GPIO Out1 is LOW, the images
+   are under-exposed by this amount to avoid over-exposure for when
+   GPIO Out1 triggers an external projector.
+
+"exp_max" (
+Max Exposure
+
+)
+   This value is the maximal exposure time in auto-exposure mode in
+   seconds. The actual exposure time is adjusted automatically so that
+   the images are exposed correctly. If the maximum exposure time is
+   reached, but the images are still underexposed, the
+
+   rc_visard
+
+    stepwise increases the gain to increase the images' brightness.
+   Limiting the exposure time is useful for avoiding or reducing
+   motion blur during fast movements. However, higher gain introduces
+   noise into the image. The best trade-off depends on the
+   application.
+
+"exp_offset_x", "exp_offset_y", "exp_width", "exp_height" (
+Exposure Region
+
+)
+   These values define a rectangular region in the left rectified
+   image for limiting the area used for computing the auto exposure.
+   The exposure time and gain factor of both images are chosen to
+   optimally expose the defined region. This can lead to over- or
+   underexposure of image parts outside the defined region. If either
+   the width or height is 0, then the whole left and right images are
+   considered by the auto exposure function. This is the default.
+
+   The region is visualized in the Web GUI by a rectangle in the left
+   rectified image. It can be defined using the sliders or by
+   selecting it in the image after pressing the button "Select Region
+   in Image".
+
+"exp_value" (
+Exposure
+
+)
+   This value is the exposure time in manual exposure mode in seconds.
+   This exposure time is kept constant even if the images are
+   underexposed.
+
+"gain_value" (
+Gain
+
+)
+   This value is the gain factor in decibel that can be set in manual
+   exposure mode. Higher gain factors reduce the required exposure
+   time but introduce noise.
+
+"wb_auto" (
+White Balance Auto
+
+ or
+Manual
+
+)
+   This value can be set to *true* for automatic white balancing or
+   *false* for manually setting the ratio between the colors using
+   "wb_ratio_red" and "wb_ratio_blue". The last automatically
+   determined ratios are set into "wb_ratio_red" and "wb_ratio_blue"
+   when switching automatic white balancing off. White balancing is
+   without function for monochrome cameras and will not be displayed
+   in the Web GUI in this case.
+
+"wb_ratio_blue" and "wb_ratio_red" (
+Blue | Green
+
+ and
+Red | Green
+
+)
+   These values are used to set blue to green and red to green ratios
+   for manual white balance. White balancing is without function for
+   monochrome cameras and will not be displayed in the Web GUI in this
+   case.
+
+These parameters are also available over the GenICam interface with
+slightly different names and partly with different units or data types
+(see
+
+GigE Vision 2.0/GenICam image interface
+
+).
+
+Status values
+
+This component reports the following status values:
+
+The rc_stereocamera component's status values      Name  Description
+adaptive_out1_reduction  Fraction of reduction (0.0 - 1.0) of exposure
+time for images with GPIO Out1=Low in exp_auto_mode=AdaptiveOut1
+baseline  Stereo baseline t in meters  color  0 for monochrome
+cameras, 1 for color cameras  exp  Actual exposure time in seconds.
+This value is shown below the image preview in the Web GUI as Exposure
+(ms).  focal  Focal length factor normalized to an image width of 1
+fps  Actual frame rate of the camera images in Hertz. This value is
+shown in the Web GUI below the image preview as FPS (Hz).  gain
+Actual gain factor in decibel. This value is shown in the Web GUI
+below the image preview as Gain (dB).  height  Height of the camera
+image in pixels  temp_left  Temperature of the left camera sensor in
+degrees Celsius  temp_right  Temperature of the right camera sensor in
+degrees Celsius  test  0 for live images and 1 for test images  time
+Processing time for image grabbing in seconds  width  Width of the
+camera image in pixels
+
+Services
+
+The stereo camera component offers the following services for
+persisting and restoring parameter settings.
+
+save_parameters
+
+   With this service call, the stereo camera component's current
+   parameter settings will be made persistent to the
+
+   rc_visard
+
+   . That means, these values are applied even after reboot.
+
+   This service has no arguments.
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+reset_defaults
+
+   Restores and applies the default values for this component's
+   parameters ("factory reset").
+
+   Warning: The user must be aware that by calling this service, the
+     current parameter settings for the camera component are
+     irrecoverably lost.
+
+   This service has no arguments.
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
