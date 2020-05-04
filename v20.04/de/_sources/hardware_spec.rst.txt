@@ -85,10 +85,11 @@ Gemeinsame technische Spezifikation für beide rc_visard Basisabstände.
 rc_visard 65 / rc_visard 160  Bildauflösung  1280 x 960 Pixel, farbig
 oder monochrom  Sichtfeld  4 mm Objektiv: Horizontal: 61°, Vertikal:
 48°  6 mm Objektiv: Horizontal: 43°, Vertikal: 33°  IR Filter  650 nm
-Tiefenbild (Auflösung)  640 x 480 Pixel (High) bei 3 Hz  320 x 240
-Pixel (Medium) bei 15 Hz  214 x 160 Pixel (Low) bei 25 Hz
-Eigenbewegung  200 Hz, geringe Latenz  GPU/CPU  Nvidia Tegra K1
-Stromversorgung  18–30 V  Kühlung  Passiv
+Tiefenbild (Auflösung)  1280 x 960 pixel (Full) bei 0.7 Hz  (mit
+StereoPlus-Lizenz)  640 x 480 Pixel (High) bei 3 Hz  320 x 240 Pixel
+(Medium) bei 15 Hz  214 x 160 Pixel (Low) bei 25 Hz  Eigenbewegung
+200 Hz, geringe Latenz  GPU/CPU  Nvidia Tegra K1  Stromversorgung
+18–30 V  Kühlung  Passiv
 
 Der
 

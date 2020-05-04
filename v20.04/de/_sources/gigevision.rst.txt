@@ -723,7 +723,7 @@ Disparitätswert in der Spalte i und Zeile k eines Disparitätsbildes
 handelt, ist der Fließkomma-Disparitätswert in Pixeln d_{ik} gegeben
 durch
 
-   d_{ik}&=d16_{ik} \cdot \mathrm{Scan3dCoordinateScale}
+   d_{ik}=d16_{ik} \cdot \mathrm{Scan3dCoordinateScale}
 
 Die 3D-Rekonstruktion (in Metern) kann wie folgt mit den GenICam-
 Parametern durchgeführt werden:

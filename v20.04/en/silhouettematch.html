@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>SilhouetteMatch &mdash; rc_visard 20.04.3
+  <title>SilhouetteMatch &mdash; rc_visard 20.04.4-1-gfc547f5
  documentation</title>
   
 
@@ -44,7 +44,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rc_visard 20.04.3
+    <link rel="top" title="rc_visard 20.04.4-1-gfc547f5
  documentation" href="index.html"/>
         <link rel="up" title="Optional software components" href="optional.html"/>
         <link rel="next" title="CollisionCheck" href="collisioncheck.html"/>
@@ -846,7 +846,10 @@ configured by the user during the hand-eye calibration process.
 The component relies on the on-board
 <a class="reference internal" href="handeye_calibration.html"><span class="doc">Hand-eye calibration component</span></a>
 to retrieve the camera mounting (static or robot mounted) and
-the hand-eye transformation.</li>
+the hand-eye transformation.
+If the sensor mounting is static, no further information is needed.
+If the sensor is robot-mounted, the <code class="docutils literal notranslate"><span class="pre">robot_pose</span></code> is required
+to transform poses to and from the <code class="docutils literal notranslate"><span class="pre">external</span></code> frame.</li>
 </ol>
 <p>All <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> values that are not <code class="docutils literal notranslate"><span class="pre">camera</span></code> or <code class="docutils literal notranslate"><span class="pre">external</span></code> are rejected.</p>
 <div class="admonition note">
@@ -858,8 +861,7 @@ the hand-eye transformation.</li>
 <p class="last">If the hand-eye calibration has changed after base-plane calibration,
 the base-plane calibration will be marked as invalid and must be renewed.</p>
 </div>
-<p>Depending on the value of <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code>, it is necessary to additionally provide the current
-robot pose (<code class="docutils literal notranslate"><span class="pre">robot_pose</span></code>) to the SilhouetteMatch component:</p>
+<p>If the sensor is robot-mounted, the current <code class="docutils literal notranslate"><span class="pre">robot_pose</span></code> has to be provided depending on the value of <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code>:</p>
 <ul class="simple">
 <li>If <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> is set to <code class="docutils literal notranslate"><span class="pre">external</span></code>, providing the robot pose is obligatory.</li>
 <li>If <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> is set to <code class="docutils literal notranslate"><span class="pre">camera</span></code>, providing the robot pose is optional.</li>
@@ -940,7 +942,7 @@ component’s run-time parameters, e.g. for development and testing, using the W
 <td>-</td>
 <td>-</td>
 <td>High</td>
-<td>H(igh), M(edium), or L(ow)</td>
+<td>High, Medium, or Low</td>
 </tr>
 </tbody>
 </table>
@@ -953,7 +955,7 @@ listed in the order they appear in the Web GUI:</p>
 <dl class="docutils">
 <dt><code class="docutils literal notranslate"><span class="pre">quality</span></code> (<em>Quality</em>)</dt>
 <dd>Object detection can be performed on images with different resolutions:
-high (1280 x 960), medium (640 x 480) and low (320 x 240). The lower
+<code class="docutils literal notranslate"><span class="pre">High</span></code> (1280 x 960), <code class="docutils literal notranslate"><span class="pre">Medium</span></code> (640 x 480) and <code class="docutils literal notranslate"><span class="pre">Low</span></code> (320 x 240). The lower
 the resolution, the lower the detection time, but the fewer details of the objects
 are visible.</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">max_number_of_detected_objects</span></code> (<em>Maximum Object Number</em>)</dt>
@@ -1766,7 +1768,7 @@ Up to 50 templates can be stored persistently on the <em>rc_visard</em>.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'20.04.3',
+            VERSION:'20.04.4-1-gfc547f5',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

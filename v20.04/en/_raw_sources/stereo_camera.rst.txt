@@ -229,7 +229,7 @@ Description of run-time parameters
    considered, since these images may be brighter in case GPIO Out1 is used to trigger an external light source.
 
    `AdaptiveOut1`: This exposure mode optimizes the exposure time for GPIO Out1 being HIGH.
-   This mode is recommended for using the ``acquisition_mode`` `O` (SingleFrame+Out1) in the stereo matching component
+   This mode is recommended for using the ``acquisition_mode`` ``SingleFrameOut1`` in the stereo matching component
    as described in :ref:`Stereo Matching Parameters<sect-disp-image-parameters>`:latex:`\:(Section \ref{stereo_matching:sect-disp-image-parameters})`
    and having an
    external projector connected to GPIO Out1. The exposure difference between images with GPIO Out1 

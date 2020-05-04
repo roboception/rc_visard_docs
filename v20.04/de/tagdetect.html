@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>TagDetect &mdash; rc_visard 20.04.3
+  <title>TagDetect &mdash; rc_visard 20.04.4-1-gfc547f5
  Dokumentation</title>
   
 
@@ -44,7 +44,7 @@
         <link rel="index" title="Stichwortverzeichnis"
               href="genindex.html"/>
         <link rel="search" title="Suche" href="search.html"/>
-    <link rel="top" title="rc_visard 20.04.3
+    <link rel="top" title="rc_visard 20.04.4-1-gfc547f5
  Dokumentation" href="index.html"/>
         <link rel="up" title="Optionale Softwaremodule" href="optional.html"/>
         <link rel="next" title="ItemPick und BoxPick" href="itempick.html"/>
@@ -703,12 +703,12 @@
 </div>
 <div class="section" id="tag-reading">
 <span id="sect-tag-reading"></span><h2>Markererkennung<a class="headerlink" href="#tag-reading" title="Link zu dieser Überschrift">¶</a></h2>
-<p>Der erste Schritt der Markererkennung ist die Detektion der Marker auf dem Stereo-Bildpaar. Dieser Schritt benötigt die meiste Zeit und seine Präzision ist entscheidend für die Präzision der finalen Markerpose. Um die Dauer dieses Schritts zu kontrollieren, kann der Parameter <code class="docutils literal notranslate"><span class="pre">quality</span></code> vom Benutzer konfiguriert werden. Er hat ein Herunterskalieren des Stereo-Bildpaares vor der Markererkennung zur Folge. „H“ (<cite>Hoch</cite>) ergibt die höchste maximale Erkennungssdistanz und Präzision, aber auch die längste Dauer der Erkennung. „L“ (<cite>Niedrig</cite>) führt zur kleinsten maximalen Erkennungsdistanz und Präzision, aber benötigt auch nur weniger als die halbe Zeit. „M“ (<cite>Mittel</cite>) liegt dazwischen. Es sollte beachtet werden, dass dieser <code class="docutils literal notranslate"><span class="pre">quality</span></code>-Parameter keine Verbindung zum <code class="docutils literal notranslate"><span class="pre">quality</span></code>-Parameter des <a class="reference internal" href="stereo_matching.html#sect-stereo-matching"><span class="std std-ref">Stereo-Matching</span></a> hat.</p>
+<p>Der erste Schritt der Markererkennung ist die Detektion der Marker auf dem Stereo-Bildpaar. Dieser Schritt benötigt die meiste Zeit und seine Präzision ist entscheidend für die Präzision der finalen Markerpose. Um die Dauer dieses Schritts zu kontrollieren, kann der Parameter <code class="docutils literal notranslate"><span class="pre">quality</span></code> vom Benutzer konfiguriert werden. Er hat ein Herunterskalieren des Stereo-Bildpaares vor der Markererkennung zur Folge. <em>Hoch</em> (<code class="docutils literal notranslate"><span class="pre">High</span></code>) ergibt die höchste maximale Erkennungssdistanz und Präzision, aber auch die längste Dauer der Erkennung. <em>Niedrig</em> (<code class="docutils literal notranslate"><span class="pre">Low</span></code>) führt zur kleinsten maximalen Erkennungsdistanz und Präzision, aber benötigt auch nur weniger als die halbe Zeit. <em>Mittel</em> (<code class="docutils literal notranslate"><span class="pre">Medium</span></code>) liegt dazwischen. Es sollte beachtet werden, dass dieser <code class="docutils literal notranslate"><span class="pre">quality</span></code>-Parameter keine Verbindung zum <code class="docutils literal notranslate"><span class="pre">quality</span></code>-Parameter des <a class="reference internal" href="stereo_matching.html#sect-stereo-matching"><span class="std std-ref">Stereo-Matching</span></a> hat.</p>
 <div class="figure align-center" id="id3">
 <span id="fig-tag-sizes"></span><a class="reference internal image-reference" href="_images/tag_sizes_vis.png"><img alt="_images/tag_sizes_vis.png" src="_images/tag_sizes_vis.png" style="width: 400px;" /></a>
 <p class="caption"><span class="caption-number">Abb. 50 </span><span class="caption-text">Visualisierung der Modulgröße <span class="math notranslate nohighlight">\(s\)</span>, der Größe eines Markers in Modulen <span class="math notranslate nohighlight">\(r\)</span> und der Größe eines Markers in Metern <span class="math notranslate nohighlight">\(t\)</span> für QR-Codes (links) und AprilTags (rechts)</span></p>
 </div>
-<p>Die maximale Erkennungsdistanz <span class="math notranslate nohighlight">\(z\)</span> für Qualität „H“ kann mit folgenden Formeln angenähert werden:</p>
+<p>Die maximale Erkennungsdistanz <span class="math notranslate nohighlight">\(z\)</span> für Qualität <em>Hoch</em> (<code class="docutils literal notranslate"><span class="pre">High</span></code>) kann mit folgenden Formeln angenähert werden:</p>
 <div class="math notranslate nohighlight">
 \[z = \frac{f s}{p},\]</div>
 <div class="math notranslate nohighlight">
@@ -718,7 +718,7 @@
 <li>AprilTag: <span class="math notranslate nohighlight">\(p=5\)</span> Pixel/Modul</li>
 <li>QR-Code: <span class="math notranslate nohighlight">\(p=6\)</span> Pixel/Modul</li>
 </ul>
-<p>Die folgenden Tabellen enthalten Beispiele für die maximale Erkennungsdistanz in unterschiedlichen Situationen. Die Brennweite des <em>rc_visard</em> wird dafür mit 1075 Pixeln, die Qualität mit „H“ angenommen.</p>
+<p>Die folgenden Tabellen enthalten Beispiele für die maximale Erkennungsdistanz in unterschiedlichen Situationen. Die Brennweite des <em>rc_visard</em> wird dafür mit 1075 Pixeln, die Qualität mit <code class="docutils literal notranslate"><span class="pre">High</span></code> angenommen.</p>
 <span id="tab-tag-max-dist-april"></span><table border="1" class="docutils" id="beispiele-zur-maximalen-erkennungsdistanz-fur-qr-codes-mit-einer-breite-von-t-4-cm">
 <caption><span class="caption-number">Tab. 29 </span><span class="caption-text">Beispiele zur maximalen Erkennungsdistanz für QR-Codes mit einer Breite von <span class="math notranslate nohighlight">\(t=4\)</span> cm</span><a class="headerlink" href="#beispiele-zur-maximalen-erkennungsdistanz-fur-qr-codes-mit-einer-breite-von-t-4-cm" title="Link zu dieser Tabelle">¶</a></caption>
 <colgroup>
@@ -782,7 +782,7 @@
 <p class="first admonition-title">Warnung</p>
 <p class="last">Wir empfehlen, die ungefähre Größe der Marker anzugeben. Ansonsten, falls mehrere Marker mit derselben ID im linken oder rechten Bild sichtbar sind, kann es zu einer fehlerhaften Posenschätzung kommen, wenn die Marker gleich orientiert sind und sie ungefähr parallel zu den Bildzeilen angeordnet sind. Auch wenn die Größe nicht angegeben sein sollte, versuchen die TagDetect-Module jedoch, solche Situationen zu erkennen und verwerfen betroffene Marker.</p>
 </div>
-<p>Unten stehende Tabellen enthalten grobe Angaben zur Präzision der geschätzten Posen von AprilTags und QR-Codes. Wir unterscheiden zwischen lateraler Präzision (also in x- und y-Richtung) und Präzision in z-Richtung. Es wird angenommen, dass <code class="docutils literal notranslate"><span class="pre">quality</span></code> auf „H“ gesetzt ist, und dass die Blickrichtung der Kamera parallel zur Normalen des Markers ist. Die Größe eines Markers hat keinen signifikanten Einfluss auf die Präzision in lateraler und z-Richtung. Im Allgemeinen verbessert ein größerer Marker allerdings die Präzision. Im Bezug auf die Präzision der Rotation, im speziellen um die x- und y-Achsen, übertreffen große Marker kleinere deutlich.</p>
+<p>Unten stehende Tabellen enthalten grobe Angaben zur Präzision der geschätzten Posen von AprilTags und QR-Codes. Wir unterscheiden zwischen lateraler Präzision (also in x- und y-Richtung) und Präzision in z-Richtung. Es wird angenommen, dass <code class="docutils literal notranslate"><span class="pre">quality</span></code> auf <code class="docutils literal notranslate"><span class="pre">High</span></code> gesetzt ist, und dass die Blickrichtung der Kamera parallel zur Normalen des Markers ist. Die Größe eines Markers hat keinen signifikanten Einfluss auf die Präzision in lateraler und z-Richtung. Im Allgemeinen verbessert ein größerer Marker allerdings die Präzision. Im Bezug auf die Präzision der Rotation, im speziellen um die x- und y-Achsen, übertreffen große Marker kleinere deutlich.</p>
 <span id="tab-tag-precision-april"></span><table border="1" class="docutils" id="ungefahre-prazision-der-pose-von-apriltags">
 <caption><span class="caption-number">Tab. 31 </span><span class="caption-text">Ungefähre Präzision der Pose von AprilTags</span><a class="headerlink" href="#ungefahre-prazision-der-pose-von-apriltags" title="Link zu dieser Tabelle">¶</a></caption>
 <colgroup>
@@ -921,8 +921,8 @@
 <td>string</td>
 <td>-</td>
 <td>-</td>
-<td>H</td>
-<td>Qualität der Markererkennung (H, M oder L)</td>
+<td>High</td>
+<td>Qualität der Markererkennung (High, Medium oder Low)</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">use_cached_images</span></code></td>
 <td>bool</td>
@@ -1315,7 +1315,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'20.04.3',
+            VERSION:'20.04.4-1-gfc547f5',
             LANGUAGE:'de',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

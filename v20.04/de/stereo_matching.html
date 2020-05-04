@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Stereo-Matching &mdash; rc_visard 20.04.3
+  <title>Stereo-Matching &mdash; rc_visard 20.04.4-1-gfc547f5
  Dokumentation</title>
   
 
@@ -44,7 +44,7 @@
         <link rel="index" title="Stichwortverzeichnis"
               href="genindex.html"/>
         <link rel="search" title="Suche" href="search.html"/>
-    <link rel="top" title="rc_visard 20.04.3
+    <link rel="top" title="rc_visard 20.04.4-1-gfc547f5
  Dokumentation" href="index.html"/>
         <link rel="up" title="Softwaremodule" href="components.html"/>
         <link rel="next" title="Sensordynamik" href="dynamics.html"/>
@@ -703,7 +703,7 @@ P_z&amp;=\frac{f \cdot t}{d},\end{split}\]</div>
 <td>-</td>
 <td>-</td>
 <td>Continuous</td>
-<td>S (Einzelbild), O (Einzelbild+Out1) oder C (Kontinuierlich)</td>
+<td>SingleFrame (Einzelbild), SingleFrameOut1 (Einzelbild+Out1) oder Continuous (Kontinuierlich)</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">disprange</span></code></td>
 <td>int32</td>
@@ -759,7 +759,7 @@ P_z&amp;=\frac{f \cdot t}{d},\end{split}\]</div>
 <td>-</td>
 <td>-</td>
 <td>High</td>
-<td>F (Voll), H (Hoch), M (Mittel), oder L (Niedrig). F (Voll) benötigt eine ‚StereoPlus‘-Lizenz.</td>
+<td>Full (Voll), High (Hoch), Medium (Mittel), oder Low (Niedrig). Full benötigt eine ‚StereoPlus‘-Lizenz.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">seg</span></code></td>
 <td>int32</td>
@@ -794,15 +794,15 @@ P_z&amp;=\frac{f \cdot t}{d},\end{split}\]</div>
 </div>
 <dl class="docutils" id="index-8">
 <dt><code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> (<em>Aufnahmemodus</em>)</dt>
-<dd><p class="first">Der Aufnahmemodus kann auf <cite>Kontinuierlich</cite> (C), <cite>Einzelbild</cite> (S) oder <cite>Einzelbild + Out1</cite> (O) eingestellt werden. <cite>Kontinuierlich</cite> ist die Standardeinstellung, bei der das Stereo-Matching kontinuierlich mit der vom Benutzer eingestellten Bildwiederholrate, entsprechend der verfügbaren Rechenressourcen, durchgeführt wird. Bei den beiden anderen Modi wird das Stereo-Matching bei jedem Drücken des <em>Aufnehmen</em>-Knopfes durchgeführt. Der <cite>Einzelbild + Out1</cite> Modus kontrolliert zusätzlich einen externen Projektor, falls dieser an GPIO-Ausgang 1 angeschlossen ist (<a class="reference internal" href="iocontrol.html#sect-iocontrol"><span class="std std-ref">IOControl und Projektor-Kontrolle</span></a>). In diesem Modus wird <code class="docutils literal notranslate"><span class="pre">out1_mode</span></code> des IOControl-Moduls automatisch bei jedem Trigger auf <code class="docutils literal notranslate"><span class="pre">ExposureAlternateActive</span></code> und nach dem Aufnehmen der Bilder für das Stereo-Matching auf <code class="docutils literal notranslate"><span class="pre">Low</span></code> gesetzt.</p>
+<dd><p class="first">Der Aufnahmemodus kann auf <code class="docutils literal notranslate"><span class="pre">Continuous</span></code> (<em>Kontinuierlich</em>), <code class="docutils literal notranslate"><span class="pre">SingleFrame</span></code> (<em>Einzelbild</em>) oder <code class="docutils literal notranslate"><span class="pre">SingleFrameOut1</span></code> (<em>Einzelbild + Out1</em>) eingestellt werden. <cite>Kontinuierlich</cite> ist die Standardeinstellung, bei der das Stereo-Matching kontinuierlich mit der vom Benutzer eingestellten Bildwiederholrate, entsprechend der verfügbaren Rechenressourcen, durchgeführt wird. Bei den beiden anderen Modi wird das Stereo-Matching bei jedem Drücken des <em>Aufnehmen</em>-Knopfes durchgeführt. Der <cite>Einzelbild + Out1</cite> Modus kontrolliert zusätzlich einen externen Projektor, falls dieser an GPIO-Ausgang 1 angeschlossen ist (<a class="reference internal" href="iocontrol.html#sect-iocontrol"><span class="std std-ref">IOControl und Projektor-Kontrolle</span></a>). In diesem Modus wird <code class="docutils literal notranslate"><span class="pre">out1_mode</span></code> des IOControl-Moduls automatisch bei jedem Trigger auf <code class="docutils literal notranslate"><span class="pre">ExposureAlternateActive</span></code> und nach dem Aufnehmen der Bilder für das Stereo-Matching auf <code class="docutils literal notranslate"><span class="pre">Low</span></code> gesetzt.</p>
 <div class="last admonition note">
 <p class="first admonition-title">Bemerkung</p>
 <p class="last">Der <cite>Einzelbild + Out1</cite> Modus kann nur dann über <code class="docutils literal notranslate"><span class="pre">out1_mode</span></code> einen Projektor steuern, wenn die IOControl-Lizenz auf dem <em>rc_visard</em> verfügbar ist.</p>
 </div>
 </dd>
 <dt id="expl-depth-quality"><span id="index-9"></span><code class="docutils literal notranslate"><span class="pre">quality</span></code> (<em>Qualität</em>)</dt>
-<dd><p class="first">Disparitätsbilder lassen sich in verschiedenen Auflösungen berechnen: Hoch (H, 640&nbsp;x&nbsp;480 Pixel), Mittel (M, 320&nbsp;x&nbsp;240 Pixel) und Niedrig (L, 214&nbsp;x&nbsp;160 Pixel). Je niedriger die Auflösung, desto höher die Bildwiederholrate des Disparitätsbilds. Eine Bildwiederholrate von 25&nbsp;Hz lässt sich nur bei niedriger Auflösung erreichen. Es ist zu beachten, dass die Bildwiederholrate der Disparitäts-, Konfidenz- und Fehlerbilder immer höchstens der Bildwiederholrate der Kamera entspricht.</p>
-<p>Zusätzlich steht mit einer gültigen StereoPlus-Lizenz das Stereo-Matching mit der vollen Auflösung (F) von 1280 x 960 Pixeln zur Verfügung.</p>
+<dd><p class="first">Disparitätsbilder lassen sich in verschiedenen Auflösungen berechnen: <code class="docutils literal notranslate"><span class="pre">High</span></code> (<em>Hoch</em>, 640&nbsp;x&nbsp;480 Pixel), <code class="docutils literal notranslate"><span class="pre">Medium</span></code> (<em>Mittel</em>, 320&nbsp;x&nbsp;240 Pixel) und <code class="docutils literal notranslate"><span class="pre">Low</span></code> (<em>Niedrig</em>, 214&nbsp;x&nbsp;160 Pixel). Je niedriger die Auflösung, desto höher die Bildwiederholrate des Disparitätsbilds. Eine Bildwiederholrate von 25&nbsp;Hz lässt sich nur bei niedriger Auflösung erreichen. Es ist zu beachten, dass die Bildwiederholrate der Disparitäts-, Konfidenz- und Fehlerbilder immer höchstens der Bildwiederholrate der Kamera entspricht.</p>
+<p>Zusätzlich steht mit einer gültigen StereoPlus-Lizenz das Stereo-Matching mit der vollen Auflösung (<code class="docutils literal notranslate"><span class="pre">Full</span></code>) von 1280 x 960 Pixeln zur Verfügung.</p>
 <p class="last">Bei voller Auflösung wird der Disparitätsbereich aufgrund von internen Speicherlimitierungen auf 128 beschränkt. Aus diesem Grund wird es auch nicht empfohlen, bei voller Auflösung gleichzeitig das <a class="reference internal" href="slam.html"><span class="doc">SLAM</span></a>-Modul zu verwenden.</p>
 </dd>
 <dt id="expl-depth-static"><span id="index-10"></span><code class="docutils literal notranslate"><span class="pre">static_scene</span></code> (<em>Statisch</em>)</dt>
@@ -868,7 +868,7 @@ P_z&amp;=\frac{f \cdot t}{d},\end{split}\]</div>
 <div class="section" id="acquisition-trigger">
 <h3><code class="docutils literal notranslate"><span class="pre">acquisition_trigger</span></code><a class="headerlink" href="#acquisition-trigger" title="Link zu dieser Überschrift">¶</a></h3>
 <blockquote>
-<div><p>Der Aufruf signalisiert dem Modul, das Stereo-Matching auf den nächsten Stereobildern durchzuführen, falls <code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> auf S (<cite>Einzelbild</cite>) oder O (<cite>Einzelbild+Out1</cite>) eingestellt ist. Es wird ein Fehler zurückgegeben, falls <code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> auf C (<cite>Kontinuierlich</cite>) eingestellt ist.</p>
+<div><p>Der Aufruf signalisiert dem Modul, das Stereo-Matching auf den nächsten Stereobildern durchzuführen, falls <code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> auf <code class="docutils literal notranslate"><span class="pre">SingleFrame</span></code> (<cite>Einzelbild</cite>) oder <code class="docutils literal notranslate"><span class="pre">SingleFrameOut1</span></code> (<cite>Einzelbild+Out1</cite>) eingestellt ist. Es wird ein Fehler zurückgegeben, falls <code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> auf <code class="docutils literal notranslate"><span class="pre">Continuous</span></code> (<cite>Kontinuierlich</cite>) eingestellt ist.</p>
 <p>Dieser Service hat keine Argumente.</p>
 <p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -1048,7 +1048,7 @@ P_z&amp;=\frac{f \cdot t}{d},\end{split}\]</div>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'20.04.3',
+            VERSION:'20.04.4-1-gfc547f5',
             LANGUAGE:'de',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

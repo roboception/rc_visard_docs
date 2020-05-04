@@ -508,14 +508,14 @@ Die Antwort der EKI-Bridge enthält alle Parameter:
       </res>
 
 Der "quality"-Parameter von "rc_stereomatching" kann mit folgender
-XML-Nachricht auf "L" ("Low") gesetzt werden:
+XML-Nachricht auf "Low" gesetzt werden:
 
       <req>
           <node>
             <rc_stereomatching></rc_stereomatching>
           </node>
           <parameters>
-            <quality value="L"></quality>
+            <quality value="Low"></quality>
           </parameters>
           <end_of_request></end_of_request>
       </req>
@@ -523,7 +523,7 @@ XML-Nachricht auf "L" ("Low") gesetzt werden:
 Diese XML-Nachricht kann folgendermaßen über KRL gesendet werden:
 
       DECL EKI_STATUS RET
-      RET = EKI_SetString("rc_stereomatching-parameters", "req/parameters/quality/@value", "L")
+      RET = EKI_SetString("rc_stereomatching-parameters", "req/parameters/quality/@value", "Low")
       RET = EKI_Send("rc_stereomatching-parameters", "req")
 
 In diesem Fall wird nur der gesetzte Wert von "quality" zurückgegeben:

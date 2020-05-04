@@ -158,20 +158,20 @@ the 2D image pair. This step takes most of the processing time and its
 precision is crucial for the precision of the resulting tag pose. To
 control the speed of this step, the "quality" parameter can be set by
 the user. It results in a downscaling of the image pair before reading
-the tags. "H" (*High*) yields the largest maximum detection distance
-and highest precision, but also the highest processing time. "L"
-(*Low*) results in the smallest maximum detection distance and lowest
-precision, but processing requires less than half of the time. "M"
-(*Medium*) lies in between. Please note that this quality parameter
-has no relation to the quality parameter of
+the tags. "High" yields the largest maximum detection distance and
+highest precision, but also the highest processing time. "Low" results
+in the smallest maximum detection distance and lowest precision, but
+processing requires less than half of the time. "Medium" lies in
+between. Please note that this quality parameter has no relation to
+the quality parameter of
 
 Stereo matching
 
 .
 
 
-The maximum detection distance z at quality "H" can be approximated by
-using the following formulae,
+The maximum detection distance z at quality "High" can be approximated
+by using the following formulae,
 
    z = \frac{f s}{p},
 
@@ -199,7 +199,7 @@ QR code: p=6 pixels/module
 
 The following tables give sample maximum distances for different
 situations, assuming a focal length of 1075 pixels and the parameter
-"quality" to be set to "H".
+"quality" to be set to "High".
 
 Maximum detection distance examples for AprilTags with a width
 of t=4 cm        AprilTag family  Tag width  Maximum distance  36h11
@@ -252,7 +252,7 @@ Warning: It is highly recommended to set the approximate size of a
 Below tables give approximate precisions of the estimated poses of
 AprilTags and QR codes. We distinguish between lateral precision
 (i.e., in x and y direction) and precision in z direction. It is
-assumed that "quality" is set to "H" and that the camera's viewing
+assumed that "quality" is set to "High" and that the camera's viewing
 direction is roughly parallel to the tag's normal. The size of a tag
 does not have a significant effect on the lateral or z precision;
 however, in general, larger tags improve precision. With respect to
@@ -374,9 +374,10 @@ forget_after_n_detections  int32  1  1000  30  Number of detection
 runs after which to forget about a previous tag during tag re-
 identification  max_corner_distance  float64  0.001  0.01  0.005
 Maximum distance of corresponding tag corners in meters during tag re-
-identification  quality  string  -  -  H  Quality of tag detection (H,
-M or L)  use_cached_images  bool  false  true  false  Use most
-recently received image pair instead of waiting for a new pair
+identification  quality  string  -  -  High  Quality of tag detection
+(High, Medium or Low)  use_cached_images  bool  false  true  false
+Use most recently received image pair instead of waiting for a new
+pair
 
 Status values
 

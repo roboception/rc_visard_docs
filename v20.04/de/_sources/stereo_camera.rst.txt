@@ -271,7 +271,11 @@ Modus Belichtungsautomatik
    *AdaptiveOut1*: Dieser Modus optimiert die Belichtungszeit für alle
    Bilder, bei denen der GPIO-Ausgang 1 HIGH ist. Dieser Modus wird
    empfohlen, wenn im Stereo-Matching-Modul der Parameter
-   "acquisition_mode" auf *O* (Einzelbild+Out1) gesetzt ist (
+   "acquisition_mode" auf "SingleFrameOut1" (
+
+   Einzelbild+Out1
+
+   ) gesetzt ist (
 
    Parameter des Stereo-Matching-Moduls
 

@@ -232,7 +232,7 @@ This component offers the following run-time parameters:
 
 The rc_stereomatching component's run-time parameters
 Name  Type  Min  Max  Default  Description  acquisition_mode  string
--  -  Continuous  S(ingleFrame), (SingleFrame)O(ut1) or C(ontinuous)
+-  -  Continuous  SingleFrame, SingleFrameOut1 or Continuous
 disprange  int32  32  512  256  Disparity range in pixels  fill  int32
 0  4  3  Disparity tolerance for hole filling in pixels  maxdepth
 float64  0.1  100.0  100.0  Maximum depth in meters  maxdeptherr
@@ -240,12 +240,11 @@ float64  0.01  100.0  100.0  Maximum depth error in meters  median
 int32  1  5  1  Window size for median filtering in pixels  minconf
 float64  0.5  1.0  0.5  Minimum confidence  mindepth  float64  0.1
 100.0  0.1  Minimum depth in meters  quality  string  -  -  High
-F(ull), H(igh), M(edium), or L(ow). Full requires 'stereo_plus'
-license.  seg  int32  0  4000  200  Minimum size of valid disparity
-segments in pixels  smooth  bool  false  true  true  Smoothing of
-disparity image (requires 'stereo_plus' license)  static_scene  bool
-false  true  false  Accumulation of images in static scenes to reduce
-noise
+Full, High, Medium, or Low. Full requires 'stereo_plus' license.  seg
+int32  0  4000  200  Minimum size of valid disparity segments in
+pixels  smooth  bool  false  true  true  Smoothing of disparity image
+(requires 'stereo_plus' license)  static_scene  bool  false  true
+false  Accumulation of images in static scenes to reduce noise
 
 Description of run-time parameters
 
@@ -262,11 +261,18 @@ in the Web GUI:
 Acquisition Mode
 
 )
-   The acquisition mode can be set to *Continuous* (C), *Single* (S)
-   or *Single + Out1* (O). The first one is the default, which
-   performs stereo matching continuously according to the user defined
-   frame rate and the available computation resources. The two other
-   modes perform stereo matching upon each click of the
+   The acquisition mode can be set to "Continuous", "SingleFrame" (
+
+   Single
+
+   ) or "SingleFrameOut1" (
+
+   Single + Out1
+
+   ). The first one is the default, which performs stereo matching
+   continuously according to the user defined frame rate and the
+   available computation resources. The two other modes perform stereo
+   matching upon each click of the
 
    Acquire
 
@@ -290,15 +296,16 @@ Acquisition Mode
 Quality
 
 )
-   Disparity images can be computed in different resolutions: high
-   (640 x 480), medium (320 x 240) and low (214 x 160). The lower the
-   resolution, the higher the frame rate of the disparity image. A 25
-   Hz frame rate can be achieved only at the lowest resolution. Please
-   note that the frame rate of the disparity, confidence, and error
-   images will always be less than or equal to the camera frame rate.
+   Disparity images can be computed in different resolutions: "High"
+   (640 x 480), "Medium" (320 x 240) and "Low" (214 x 160). The lower
+   the resolution, the higher the frame rate of the disparity image. A
+   25 Hz frame rate can be achieved only at the lowest resolution.
+   Please note that the frame rate of the disparity, confidence, and
+   error images will always be less than or equal to the camera frame
+   rate.
 
-   Additionally, full resolution matching with 1280 x 960 pixel is
-   possible with a valid StereoPlus license.
+   Additionally, full resolution matching ("Full") with 1280 x 960
+   pixel is possible with a valid StereoPlus license.
 
    If full resolution is selected, the disparity range is internally
    limited to 128, due to limited on-board memory resources. Due to
@@ -461,9 +468,9 @@ persisting and restoring parameter settings.
 acquisition_trigger
 
    This call signals the module to perform stereo matching of the next
-   available images, if the parameter "acquisition_mode" is set to S
-   (*SingleFrame*) or O (*SingleFrame+Out1*). An error is returned if
-   the "acquisition_mode" is set to C (*Continuous*).
+   available images, if the parameter "acquisition_mode" is set to
+   "SingleFrame" or "SingleFrameOut1". An error is returned if the
+   "acquisition_mode" is set to "Continuous".
 
    This service has no arguments.
 

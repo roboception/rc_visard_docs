@@ -526,7 +526,7 @@ by the XML telegram:
           <rc_stereomatching></rc_stereomatching>
         </node>
         <parameters>
-          <quality value="L"></quality>
+          <quality value="Low"></quality>
         </parameters>
         <end_of_request></end_of_request>
     </req>
@@ -536,7 +536,7 @@ This XML telegram can be sent out with Ethernet KRL using:
   .. code-block:: c
 
     DECL EKI_STATUS RET
-    RET = EKI_SetString("rc_stereomatching-parameters", "req/parameters/quality/@value", "L")
+    RET = EKI_SetString("rc_stereomatching-parameters", "req/parameters/quality/@value", "Low")
     RET = EKI_Send("rc_stereomatching-parameters", "req")
 
 

@@ -132,9 +132,9 @@ Category: AcquisitionControl
 ``ExposureAuto``
   - type: Enumeration, one of ``Continuous``, ``AdaptiveOut1`` or ``Off``
   - default: ``Continuous``
-  - description: Can be set to ``Off`` for manual exposure mode, to ``Continuous`` or ``AdaptiveOut1`` for 
+  - description: Can be set to ``Off`` for manual exposure mode, to ``Continuous`` or ``AdaptiveOut1`` for
     :ref:`auto exposure <expl-exp-auto>`:latex:`\:(Section \ref{stereo_camera:expl-exp-auto})`.
-    The value ``Continuous`` maps to the value `Normal` of the ``exp_auto_mode`` 
+    The value ``Continuous`` maps to the value `Normal` of the ``exp_auto_mode``
     (:ref:`auto exposure mode <expl-exp-auto-mode>`:latex:`, Section \ref{stereo_camera:expl-exp-auto-mode}`)
     and ``AdaptiveOut1`` to the mode of the same name.
 
@@ -698,7 +698,7 @@ of a disparity image, the float disparity in pixels :math:`d_{ik}` is given by
 
 .. math::
 
-  d_{ik}&=d16_{ik} \cdot \mathrm{Scan3dCoordinateScale}
+  d_{ik}=d16_{ik} \cdot \mathrm{Scan3dCoordinateScale}
 
 The 3D reconstruction in meters can be written with the GenICam parameters as:
 

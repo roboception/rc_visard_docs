@@ -120,7 +120,7 @@ plane so that they are visible in the left and right camera images. The tags sho
 such that they are spanning a triangle that is as large as possible. The larger the triangle,
 the more accurate is the resulting base-plane estimate.
 Use this method if the base plane is untextured and no external random dot projector is available.
-This calibration mode is available via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` 
+This calibration mode is available via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
 and the |rcxxx| |webgui|.
 
 Stereo based base-plane calibration
@@ -136,14 +136,14 @@ Selecting the closest plane can be used in scenarios where the base plane is
 completely occluded by objects or not accessible for calibration.
 Use this method if the base plane is well textured or you can
 make use of a random dot projector to project texture on the base plane.
-This calibration mode is available via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` 
+This calibration mode is available via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
 and the |rcxxx| |webgui|.
 
 Manual base-plane calibration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The base plane can be set manually if its parameters are known, e.g. from previous
-calibrations. This calibration mode is only available via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` 
+calibrations. This calibration mode is only available via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
 and not the |rcxxx| |webgui|.
 
 .. _sect-silhouettematch-roi:
@@ -153,7 +153,7 @@ Setting a region of interest
 
 If objects are to be detected only in part of the camera’s field of view,
 a region of interest (ROI) can be set accordingly. This ROI is defined as a rectangular part
-of the left camera image, and can be set via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` 
+of the left camera image, and can be set via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
 or the |rcxxx| |webgui|.
 The |webgui| offers an easy-to-use selection tool.
 Up to 50 ROIs can be set and stored persistently on the |rc_xxx|.
@@ -285,10 +285,13 @@ Two different ``pose_frame`` values can be chosen:
 2. **External frame** (``external``).
    All poses and plane coordinates provided to and by the component are in the external frame,
    configured by the user during the hand-eye calibration process.
-   The component relies on the on-board 
+   The component relies on the on-board
    :doc:`Hand-eye calibration component<handeye_calibration>`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})`
    to retrieve the camera mounting (static or robot mounted) and
    the hand-eye transformation.
+   If the sensor mounting is static, no further information is needed.
+   If the sensor is robot-mounted, the ``robot_pose`` is required
+   to transform poses to and from the ``external`` frame.
 
 All ``pose_frame`` values that are not ``camera`` or ``external`` are rejected.
 
@@ -299,8 +302,7 @@ All ``pose_frame`` values that are not ``camera`` or ``external`` are rejected.
    If the hand-eye calibration has changed after base-plane calibration,
    the base-plane calibration will be marked as invalid and must be renewed.
 
-Depending on the value of ``pose_frame``, it is necessary to additionally provide the current
-robot pose (``robot_pose``) to the |silm| component:
+If the sensor is robot-mounted, the current ``robot_pose`` has to be provided depending on the value of ``pose_frame``:
 
 - If ``pose_frame`` is set to ``external``, providing the robot pose is obligatory.
 - If ``pose_frame`` is set to ``camera``, providing the robot pose is optional.
@@ -321,7 +323,7 @@ Parameters
 .. index::
   single: SilhouetteMatch; parameters
 
-The |silm| software component is called ``rc_silhouettematch`` in the |rest-api| and is represented by the 
+The |silm| software component is called ``rc_silhouettematch`` in the |rest-api| and is represented by the
 *SilhouetteMatch* page in the *Modules* tab of the
 :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{installation:sect-web-gui})`.
 The user can explore and configure the ``rc_silhouettematch``
@@ -342,7 +344,7 @@ listed in the order they appear in the |webgui|:
 
 ``quality`` (*Quality*)
     Object detection can be performed on images with different resolutions:
-    high (1280 x 960), medium (640 x 480) and low (320 x 240). The lower
+    ``High`` (1280 x 960), ``Medium`` (640 x 480) and ``Low`` (320 x 240). The lower
     the resolution, the lower the detection time, but the fewer details of the objects
     are visible.
 
@@ -551,7 +553,7 @@ The |silm| component offers the following services.
 ``detect_object``
 ^^^^^^^^^^^^^^^^^
 
-   Triggers an object detection as described in 
+   Triggers an object detection as described in
    :ref:`sect-silhouettematch-detect`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch-detect})`
    and returns the pose of all found object instances.
    The maximum number of returned instances can be controlled with the ``max_number_of_detected_objects``

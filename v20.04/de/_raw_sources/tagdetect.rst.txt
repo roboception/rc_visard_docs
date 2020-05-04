@@ -180,11 +180,11 @@ for the precision of the resulting tag pose.
 To control the speed of this step, the ``quality`` parameter
 can be set by the user.
 It results in a downscaling of the image pair before reading the tags.
-"H" (`High`) yields the largest maximum detection distance and highest
+``High`` yields the largest maximum detection distance and highest
 precision, but also the highest processing time.
-"L" (`Low`) results in the smallest maximum detection distance and
+``Low`` results in the smallest maximum detection distance and
 lowest precision, but processing requires less than half of the time.
-"M" (`Medium`) lies in between.
+``Medium`` lies in between.
 Please note that this quality parameter has no relation to the quality
 parameter of
 :ref:`sect-stereo-matching`:latex:`\:(Section \ref{stereo_matching:sect-stereo-matching})`.
@@ -198,7 +198,7 @@ parameter of
    modules :math:`r`, and size of a tag in meters :math:`t`
    for AprilTags (left) and QR codes (right)
 
-The maximum detection distance :math:`z` at quality "H" can be
+The maximum detection distance :math:`z` at quality ``High`` can be
 approximated by using the following formulae,
 
 .. math::
@@ -226,7 +226,7 @@ Approximate values for robust detection are:
 
 The following tables give sample maximum distances for
 different situations, assuming a focal length of
-1075 pixels and the parameter ``quality`` to be set to "H".
+1075 pixels and the parameter ``quality`` to be set to ``High``.
 
 .. tabularcolumns:: |l|l|l|l|
 
@@ -321,7 +321,7 @@ Below tables give approximate precisions of the estimated poses of AprilTags and
 QR codes.
 We distinguish between lateral precision (i.e., in x and y direction) and
 precision in z direction.
-It is assumed that ``quality`` is set to "H" and that the camera's
+It is assumed that ``quality`` is set to ``High`` and that the camera's
 viewing direction is roughly parallel to the tag's normal.
 The size of a tag does not have a significant effect on the lateral or z
 precision; however, in general, larger tags improve precision.

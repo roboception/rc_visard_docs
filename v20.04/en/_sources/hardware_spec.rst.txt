@@ -86,8 +86,9 @@ Common technical specifications for both rc_visard baselines
 rc_visard 65 / rc_visard 160  Image resolution  1280 x 960 pixel,
 color or monochrome  Field of view  4 mm lens: Horizontal: 61°,
 Vertical: 48°  6 mm lens: Horizontal: 43°, Vertical: 33°  IR Cutoff
-650 nm  Depth image  640 x 480 pixel (high) @ 3 Hz  320 x 240 pixel
-(medium) @ 15 Hz  214 x 160 pixel (low) @ 25 Hz  Egomotion  200 Hz,
+650 nm  Depth image  1280 x 960 pixel (Full) @ 0.7 Hz  (with
+StereoPlus license)  640 x 480 pixel (High) @ 3 Hz  320 x 240 pixel
+(Medium) @ 15 Hz  214 x 160 pixel (Low) @ 25 Hz  Egomotion  200 Hz,
 low latency  Computing unit  Nvidia Tegra K1  Power supply  18 V to 30
 V  Cooling  Passive
 

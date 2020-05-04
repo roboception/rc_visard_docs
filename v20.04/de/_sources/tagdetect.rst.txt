@@ -166,20 +166,33 @@ Präzision ist entscheidend für die Präzision der finalen Markerpose.
 Um die Dauer dieses Schritts zu kontrollieren, kann der Parameter
 "quality" vom Benutzer konfiguriert werden. Er hat ein
 Herunterskalieren des Stereo-Bildpaares vor der Markererkennung zur
-Folge. "H" (*Hoch*) ergibt die höchste maximale Erkennungssdistanz und
-Präzision, aber auch die längste Dauer der Erkennung. "L" (*Niedrig*)
-führt zur kleinsten maximalen Erkennungsdistanz und Präzision, aber
-benötigt auch nur weniger als die halbe Zeit. "M" (*Mittel*) liegt
-dazwischen. Es sollte beachtet werden, dass dieser "quality"-Parameter
-keine Verbindung zum "quality"-Parameter des
+Folge.
+
+Hoch
+
+ ("High") ergibt die höchste maximale Erkennungssdistanz und
+Präzision, aber auch die längste Dauer der Erkennung.
+
+Niedrig
+
+ ("Low") führt zur kleinsten maximalen Erkennungsdistanz und
+Präzision, aber benötigt auch nur weniger als die halbe Zeit.
+
+Mittel
+
+ ("Medium") liegt dazwischen. Es sollte beachtet werden, dass dieser
+"quality"-Parameter keine Verbindung zum "quality"-Parameter des
 
 Stereo-Matching
 
  hat.
 
 
-Die maximale Erkennungsdistanz z für Qualität "H" kann mit folgenden
-Formeln angenähert werden:
+Die maximale Erkennungsdistanz z für Qualität
+
+Hoch
+
+ ("High") kann mit folgenden Formeln angenähert werden:
 
    z = \frac{f s}{p},
 
@@ -211,7 +224,7 @@ Erkennungsdistanz in unterschiedlichen Situationen. Die Brennweite des
 
 rc_visard
 
- wird dafür mit 1075 Pixeln, die Qualität mit "H" angenommen.
+ wird dafür mit 1075 Pixeln, die Qualität mit "High" angenommen.
 
 Beispiele zur maximalen Erkennungsdistanz für QR-Codes mit einer
 Breite von t=4 cm        AprilTag-Familie  Markerbreite  Maximale
@@ -266,8 +279,8 @@ Warnung: Wir empfehlen, die ungefähre Größe der Marker anzugeben.
 Unten stehende Tabellen enthalten grobe Angaben zur Präzision der
 geschätzten Posen von AprilTags und QR-Codes. Wir unterscheiden
 zwischen lateraler Präzision (also in x- und y-Richtung) und Präzision
-in z-Richtung. Es wird angenommen, dass "quality" auf "H" gesetzt ist,
-und dass die Blickrichtung der Kamera parallel zur Normalen des
+in z-Richtung. Es wird angenommen, dass "quality" auf "High" gesetzt
+ist, und dass die Blickrichtung der Kamera parallel zur Normalen des
 Markers ist. Die Größe eines Markers hat keinen signifikanten Einfluss
 auf die Präzision in lateraler und z-Richtung. Im Allgemeinen
 verbessert ein größerer Marker allerdings die Präzision. Im Bezug auf
@@ -393,9 +406,9 @@ Markererkennungsläufen, nach denen ein vorher gesehener Marker während
 der Marker-Wiedererkennung verworfen wird  max_corner_distance
 float64  0.001  0.01  0.005  Maximale Distanz zusammengehöriger Ecken
 zweier Marker während der Marker-Wiedererkennung  quality  string  -
--  H  Qualität der Markererkennung (H, M oder L)  use_cached_images
-bool  false  true  false  Benutze das zuletzt empfangene Stereo-
-Bildpaar, anstatt auf ein neues zu warten
+-  High  Qualität der Markererkennung (High, Medium oder Low)
+use_cached_images  bool  false  true  false  Benutze das zuletzt
+empfangene Stereo-Bildpaar, anstatt auf ein neues zu warten
 
 Statuswerte
 

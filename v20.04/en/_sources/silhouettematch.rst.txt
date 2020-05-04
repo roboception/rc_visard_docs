@@ -355,7 +355,9 @@ during the hand-eye calibration process. The component relies on the
 on-board Hand-eye calibration component\:(Section
 \ref{handeye_calibration:sect-handeye-calibration}) to retrieve the
 camera mounting (static or robot mounted) and the hand-eye
-transformation.
+transformation. If the sensor mounting is static, no further
+information is needed. If the sensor is robot-mounted, the robot_pose
+is required to transform poses to and from the external frame.
 
 All "pose_frame" values that are not "camera" or "external" are
 rejected.
@@ -367,9 +369,8 @@ Note: If the hand-eye calibration has changed after base-plane
   calibration, the base-plane calibration will be marked as invalid
   and must be renewed.
 
-Depending on the value of "pose_frame", it is necessary to
-additionally provide the current robot pose ("robot_pose") to the
-SilhouetteMatch component:
+If the sensor is robot-mounted, the current "robot_pose" has to be
+provided depending on the value of "pose_frame":
 
 If pose_frame is set to external, providing the robot pose is
 obligatory.
@@ -426,8 +427,7 @@ the template and the detected edges in the image  match_percentile
 float64  0.7  1.0  0.85  percentage of template pixels that must be
 within the maximum distance to successfully match the template
 max_number_of_detected_objects  int32  1  20  10  maximum number of
-detected objects  quality  string  -  -  High  H(igh), M(edium), or
-L(ow)
+detected objects  quality  string  -  -  High  High, Medium, or Low
 
 Description of run-time parameters
 
@@ -441,9 +441,9 @@ Quality
 
 )
    Object detection can be performed on images with different
-   resolutions: high (1280 x 960), medium (640 x 480) and low (320 x
-   240). The lower the resolution, the lower the detection time, but
-   the fewer details of the objects are visible.
+   resolutions: "High" (1280 x 960), "Medium" (640 x 480) and "Low"
+   (320 x 240). The lower the resolution, the lower the detection
+   time, but the fewer details of the objects are visible.
 
 "max_number_of_detected_objects" (
 Maximum Object Number

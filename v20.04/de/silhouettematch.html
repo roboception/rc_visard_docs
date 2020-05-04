@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>SilhouetteMatch &mdash; rc_visard 20.04.3
+  <title>SilhouetteMatch &mdash; rc_visard 20.04.4-1-gfc547f5
  Dokumentation</title>
   
 
@@ -44,7 +44,7 @@
         <link rel="index" title="Stichwortverzeichnis"
               href="genindex.html"/>
         <link rel="search" title="Suche" href="search.html"/>
-    <link rel="top" title="rc_visard 20.04.3
+    <link rel="top" title="rc_visard 20.04.4-1-gfc547f5
  Dokumentation" href="index.html"/>
         <link rel="up" title="Optionale Softwaremodule" href="optional.html"/>
         <link rel="next" title="CollisionCheck" href="collisioncheck.html"/>
@@ -739,7 +739,7 @@
 <p>Es kann zwischen den folgenden zwei Werten für <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> gewählt werden:</p>
 <ol class="arabic simple">
 <li><strong>Kamera-Koordinatensystem</strong> (<code class="docutils literal notranslate"><span class="pre">camera</span></code>): Alle Posen und Ebenenparameter werden im Kamera-Koordinatensystem angegeben.</li>
-<li><strong>Benutzerdefiniertes externes Koordinatensystem</strong> (<code class="docutils literal notranslate"><span class="pre">external</span></code>): Alle Posen und Ebenenparameter sind im sogenannten externen Koordinatensystem angegeben, welches vom Nutzer während der Hand-Auge-Kalibrierung gewählt wurde. In diesem Fall bezieht das SilhouetteMatch-Modul alle notwendigen Informationen über die Kameramontage und die kalibrierte Hand-Auge-Transformation automatisch vom internen Modul <a class="reference internal" href="handeye_calibration.html"><span class="doc">Hand-Auge-Kalibrierung</span></a>.</li>
+<li><strong>Benutzerdefiniertes externes Koordinatensystem</strong> (<code class="docutils literal notranslate"><span class="pre">external</span></code>): Alle Posen und Ebenenparameter sind im sogenannten externen Koordinatensystem angegeben, welches vom Nutzer während der Hand-Auge-Kalibrierung gewählt wurde. In diesem Fall bezieht das SilhouetteMatch-Modul alle notwendigen Informationen über die Kameramontage und die kalibrierte Hand-Auge-Transformation automatisch vom internen Modul <a class="reference internal" href="handeye_calibration.html"><span class="doc">Hand-Auge-Kalibrierung</span></a>. Für den Fall einer robotergeführten Kamera ist vom Nutzer zusätzlich die jeweils aktuelle Roboterpose <code class="docutils literal notranslate"><span class="pre">robot_pose</span></code> anzugeben.</li>
 </ol>
 <p>Zulässige Werte zur Angabe des Referenzkoordinatensystems sind <code class="docutils literal notranslate"><span class="pre">camera</span></code> und <code class="docutils literal notranslate"><span class="pre">external</span></code>. Andere Werte werden als ungültig zurückgewiesen.</p>
 <div class="admonition note">
@@ -750,7 +750,7 @@
 <p class="first admonition-title">Bemerkung</p>
 <p class="last">Wird die Hand-Auge-Kalibrierung nach einer Kalibrierung der Basisebene verändert, wird die Kalibrierung der Basisebene als ungültig markiert und muss erneuert werden.</p>
 </div>
-<p>Abhängig von <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> kann es nötig sein, dem SilhouetteMatch-Modul zusätzlich die aktuelle Roboterpose (<code class="docutils literal notranslate"><span class="pre">robot_pose</span></code>) zur Verfügung zu stellen:</p>
+<p>Für den Fall einer robotergeführten Kamera ist es abhängig von <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> nötig, zusätzlich die aktuelle Roboterpose (<code class="docutils literal notranslate"><span class="pre">robot_pose</span></code>) zur Verfügung zu stellen:</p>
 <ul class="simple">
 <li>Wenn <code class="docutils literal notranslate"><span class="pre">external</span></code> als <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> ausgewählt ist, ist die Angabe der Roboterpose obligatorisch.</li>
 <li>Wenn <code class="docutils literal notranslate"><span class="pre">camera</span></code> als <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> ausgewählt ist, ist die Angabe der Roboterpose optional.</li>
@@ -821,7 +821,7 @@
 <td>-</td>
 <td>-</td>
 <td>High</td>
-<td>H(igh), M(edium), oder L(ow)</td>
+<td>High, Medium, oder Low</td>
 </tr>
 </tbody>
 </table>
@@ -831,7 +831,7 @@
 <p>Die Laufzeitparameter werden zeilenweise auf der SilhouetteMatch-Seite in der Web GUI dargestellt. Im folgenden wird der Name des Parameters in der Web GUI in Klammern hinter dem eigentlichen Parameternamen angegeben. Die Parameter sind in derselben Reihenfolge wie in der Web GUI aufgelistet:</p>
 <dl class="docutils">
 <dt><code class="docutils literal notranslate"><span class="pre">quality</span></code> (<em>Qualität</em>)</dt>
-<dd>Die Objekterkennung kann auf Bildern mit unterschiedlicher Auflösung durchgeführt werden: Hoch (1280 x 960), mittel (640 x 480) oder niedrig (320 x 240). Je niedriger die Auflösung ist, desto niedriger ist die Berechnungszeit der Objekterkennung, aber desto weniger Objektdetails sind erkennbar.</dd>
+<dd>Die Objekterkennung kann auf Bildern mit unterschiedlicher Auflösung durchgeführt werden: <code class="docutils literal notranslate"><span class="pre">High</span></code> (<em>Hoch</em>, 1280 x 960), <code class="docutils literal notranslate"><span class="pre">Medium</span></code> (<em>Mittel</em>, 640 x 480) oder <code class="docutils literal notranslate"><span class="pre">Low</span></code> (<em>Niedrig</em>, 320 x 240). Je niedriger die Auflösung ist, desto niedriger ist die Berechnungszeit der Objekterkennung, aber desto weniger Objektdetails sind erkennbar.</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">max_number_of_detected_objects</span></code> (<em>Maximale Objektanzahl</em>)</dt>
 <dd>Dieser Parameter gibt an, wie viele Objekte maximal in der Szene erkannt werden sollen. Falls mehr als die angegebene Zahl an Objekten gefunden wurden, werden nur die besten Ergebnisse zurückgeliefert.</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">match_max_distance</span></code> (<em>Maximale Matchingdistanz</em>)</dt>
@@ -1599,7 +1599,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'20.04.3',
+            VERSION:'20.04.4-1-gfc547f5',
             LANGUAGE:'de',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

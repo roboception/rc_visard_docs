@@ -685,7 +685,7 @@ Assuming that d16_{ik} is the 16 bit disparity value at column i and
 row k of a disparity image, the float disparity in pixels d_{ik} is
 given by
 
-   d_{ik}&=d16_{ik} \cdot \mathrm{Scan3dCoordinateScale}
+   d_{ik}=d16_{ik} \cdot \mathrm{Scan3dCoordinateScale}
 
 The 3D reconstruction in meters can be written with the GenICam
 parameters as:

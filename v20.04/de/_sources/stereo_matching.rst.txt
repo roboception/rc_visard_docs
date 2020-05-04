@@ -239,19 +239,19 @@ Dieses Softwaremodul bietet folgende Laufzeitparameter:
 
 Laufzeitparameter des rc_stereomatching-Moduls              Name  Typ
 Min.  Max.  Default  Beschreibung  acquisition_mode  string  -  -
-Continuous  S (Einzelbild), O (Einzelbild+Out1) oder C
-(Kontinuierlich)  disprange  int32  32  512  256  Disparitätsbereich
-in Pixeln  fill  int32  0  4  3  Disparitätstoleranz (für das Füllen
-von Löchern) in Pixeln  maxdepth  float64  0.1  100.0  100.0  Maximale
-Tiefe in Metern  maxdeptherr  float64  0.01  100.0  100.0  Maximaler
-Tiefenfehler in Metern  median  int32  1  5  1  Größe des
-Medianfilter-Fensters in Pixeln  minconf  float64  0.5  1.0  0.5
-Mindestkonfidenz  mindepth  float64  0.1  100.0  0.1  Minimaler
-Abstand in Metern  quality  string  -  -  High  F (Voll), H (Hoch), M
-(Mittel), oder L (Niedrig). F (Voll) benötigt eine
-'StereoPlus'-Lizenz.  seg  int32  0  4000  200  Mindestgröße der
-gültigen Disparitätssegmente in Pixeln  smooth  bool  false  true
-true  Glättung von Disparitätsbildern (benötigt eine
+Continuous  SingleFrame (Einzelbild), SingleFrameOut1
+(Einzelbild+Out1) oder Continuous (Kontinuierlich)  disprange  int32
+32  512  256  Disparitätsbereich in Pixeln  fill  int32  0  4  3
+Disparitätstoleranz (für das Füllen von Löchern) in Pixeln  maxdepth
+float64  0.1  100.0  100.0  Maximale Tiefe in Metern  maxdeptherr
+float64  0.01  100.0  100.0  Maximaler Tiefenfehler in Metern  median
+int32  1  5  1  Größe des Medianfilter-Fensters in Pixeln  minconf
+float64  0.5  1.0  0.5  Mindestkonfidenz  mindepth  float64  0.1
+100.0  0.1  Minimaler Abstand in Metern  quality  string  -  -  High
+Full (Voll), High (Hoch), Medium (Mittel), oder Low (Niedrig). Full
+benötigt eine 'StereoPlus'-Lizenz.  seg  int32  0  4000  200
+Mindestgröße der gültigen Disparitätssegmente in Pixeln  smooth  bool
+false  true  true  Glättung von Disparitätsbildern (benötigt eine
 'StereoPlus'-Lizenz)  static_scene  bool  false  true  false  Mitteln
 von Bildern in statischen Szenen, um Rauschen zu reduzieren
 
@@ -271,13 +271,23 @@ aufgelistet:
 Aufnahmemodus
 
 )
-   Der Aufnahmemodus kann auf *Kontinuierlich* (C), *Einzelbild* (S)
-   oder *Einzelbild + Out1* (O) eingestellt werden. *Kontinuierlich*
-   ist die Standardeinstellung, bei der das Stereo-Matching
-   kontinuierlich mit der vom Benutzer eingestellten
-   Bildwiederholrate, entsprechend der verfügbaren Rechenressourcen,
-   durchgeführt wird. Bei den beiden anderen Modi wird das Stereo-
-   Matching bei jedem Drücken des
+   Der Aufnahmemodus kann auf "Continuous" (
+
+   Kontinuierlich
+
+   ), "SingleFrame" (
+
+   Einzelbild
+
+   ) oder "SingleFrameOut1" (
+
+   Einzelbild + Out1
+
+   ) eingestellt werden. *Kontinuierlich* ist die Standardeinstellung,
+   bei der das Stereo-Matching kontinuierlich mit der vom Benutzer
+   eingestellten Bildwiederholrate, entsprechend der verfügbaren
+   Rechenressourcen, durchgeführt wird. Bei den beiden anderen Modi
+   wird das Stereo-Matching bei jedem Drücken des
 
    Aufnehmen
 
@@ -305,17 +315,28 @@ Qualität
 
 )
    Disparitätsbilder lassen sich in verschiedenen Auflösungen
-   berechnen: Hoch (H, 640 x 480 Pixel), Mittel (M, 320 x 240 Pixel)
-   und Niedrig (L, 214 x 160 Pixel). Je niedriger die Auflösung, desto
-   höher die Bildwiederholrate des Disparitätsbilds. Eine
-   Bildwiederholrate von 25 Hz lässt sich nur bei niedriger Auflösung
-   erreichen. Es ist zu beachten, dass die Bildwiederholrate der
-   Disparitäts-, Konfidenz- und Fehlerbilder immer höchstens der
-   Bildwiederholrate der Kamera entspricht.
+   berechnen: "High" (
+
+   Hoch
+
+   , 640 x 480 Pixel), "Medium" (
+
+   Mittel
+
+   , 320 x 240 Pixel) und "Low" (
+
+   Niedrig
+
+   , 214 x 160 Pixel). Je niedriger die Auflösung, desto höher die
+   Bildwiederholrate des Disparitätsbilds. Eine Bildwiederholrate von
+   25 Hz lässt sich nur bei niedriger Auflösung erreichen. Es ist zu
+   beachten, dass die Bildwiederholrate der Disparitäts-, Konfidenz-
+   und Fehlerbilder immer höchstens der Bildwiederholrate der Kamera
+   entspricht.
 
    Zusätzlich steht mit einer gültigen StereoPlus-Lizenz das Stereo-
-   Matching mit der vollen Auflösung (F) von 1280 x 960 Pixeln zur
-   Verfügung.
+   Matching mit der vollen Auflösung ("Full") von 1280 x 960 Pixeln
+   zur Verfügung.
 
    Bei voller Auflösung wird der Disparitätsbereich aufgrund von
    internen Speicherlimitierungen auf 128 beschränkt. Aus diesem Grund
@@ -487,8 +508,9 @@ acquisition_trigger
 
    Der Aufruf signalisiert dem Modul, das Stereo-Matching auf den
    nächsten Stereobildern durchzuführen, falls "acquisition_mode" auf
-   S (*Einzelbild*) oder O (*Einzelbild+Out1*) eingestellt ist. Es
-   wird ein Fehler zurückgegeben, falls "acquisition_mode" auf C
+   "SingleFrame" (*Einzelbild*) oder "SingleFrameOut1"
+   (*Einzelbild+Out1*) eingestellt ist. Es wird ein Fehler
+   zurückgegeben, falls "acquisition_mode" auf "Continuous"
    (*Kontinuierlich*) eingestellt ist.
 
    Dieser Service hat keine Argumente.

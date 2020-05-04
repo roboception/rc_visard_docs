@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Stereo matching &mdash; rc_visard 20.04.3
+  <title>Stereo matching &mdash; rc_visard 20.04.4-1-gfc547f5
  documentation</title>
   
 
@@ -44,7 +44,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rc_visard 20.04.3
+    <link rel="top" title="rc_visard 20.04.4-1-gfc547f5
  documentation" href="index.html"/>
         <link rel="up" title="Software components" href="components.html"/>
         <link rel="next" title="Sensor dynamics" href="dynamics.html"/>
@@ -779,7 +779,7 @@ The user can change the stereo matching parameters there, or use the REST-API
 <td>-</td>
 <td>-</td>
 <td>Continuous</td>
-<td>S(ingleFrame), (SingleFrame)O(ut1) or C(ontinuous)</td>
+<td>SingleFrame, SingleFrameOut1 or Continuous</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">disprange</span></code></td>
 <td>int32</td>
@@ -835,7 +835,7 @@ The user can change the stereo matching parameters there, or use the REST-API
 <td>-</td>
 <td>-</td>
 <td>High</td>
-<td>F(ull), H(igh), M(edium), or L(ow). Full requires ‘stereo_plus’ license.</td>
+<td>Full, High, Medium, or Low. Full requires ‘stereo_plus’ license.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">seg</span></code></td>
 <td>int32</td>
@@ -872,7 +872,7 @@ they appear in the Web GUI:</p>
 </div>
 <dl class="docutils" id="index-8">
 <dt><code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> (<em>Acquisition Mode</em>)</dt>
-<dd><p class="first">The acquisition mode can be set to <cite>Continuous</cite> (C), <cite>Single</cite> (S) or <cite>Single + Out1</cite> (O).
+<dd><p class="first">The acquisition mode can be set to <code class="docutils literal notranslate"><span class="pre">Continuous</span></code>, <code class="docutils literal notranslate"><span class="pre">SingleFrame</span></code> (<em>Single</em>) or <code class="docutils literal notranslate"><span class="pre">SingleFrameOut1</span></code> (<em>Single + Out1</em>).
 The first one is the default, which performs stereo matching continuously according to the
 user defined frame rate and the available computation resources. The two other modes
 perform stereo matching upon each click of the <em>Acquire</em> button. The <cite>Single + Out1</cite>
@@ -888,12 +888,12 @@ license is available on the <em>rc_visard</em>.</p>
 </dd>
 <dt id="expl-depth-quality"><span id="index-9"></span><code class="docutils literal notranslate"><span class="pre">quality</span></code> (<em>Quality</em>)</dt>
 <dd><p class="first">Disparity images can be computed in different resolutions:
-high (640 x 480), medium (320 x 240) and low (214 x 160). The lower
+<code class="docutils literal notranslate"><span class="pre">High</span></code> (640 x 480), <code class="docutils literal notranslate"><span class="pre">Medium</span></code> (320 x 240) and <code class="docutils literal notranslate"><span class="pre">Low</span></code> (214 x 160). The lower
 the resolution, the higher the frame rate of the disparity image. A 25 Hz frame
 rate can be achieved only at the lowest resolution. Please note that the frame
 rate of the disparity, confidence, and error images will always be less than or
 equal to the camera frame rate.</p>
-<p>Additionally, full resolution matching with 1280 x 960 pixel is possible with
+<p>Additionally, full resolution matching (<code class="docutils literal notranslate"><span class="pre">Full</span></code>) with 1280 x 960 pixel is possible with
 a valid StereoPlus license.</p>
 <p class="last">If full resolution is selected, the disparity range
 is internally limited to 128, due to limited on-board memory resources. Due to
@@ -1012,9 +1012,9 @@ restoring parameter settings.</p>
 <h3><code class="docutils literal notranslate"><span class="pre">acquisition_trigger</span></code><a class="headerlink" href="#acquisition-trigger" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><p>This call signals the module to perform stereo matching of the next available
-images, if the parameter <code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> is set to S (<cite>SingleFrame</cite>) or
-O (<cite>SingleFrame+Out1</cite>). An
-error is returned if the <code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> is set to C (<cite>Continuous</cite>).</p>
+images, if the parameter <code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> is set to <code class="docutils literal notranslate"><span class="pre">SingleFrame</span></code> or
+<code class="docutils literal notranslate"><span class="pre">SingleFrameOut1</span></code>. An
+error is returned if the <code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> is set to <code class="docutils literal notranslate"><span class="pre">Continuous</span></code>.</p>
 <p>This service has no arguments.</p>
 <p>The definition for the response with corresponding datatypes is:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -1198,7 +1198,7 @@ current parameter settings for the stereo matching component to be irrecoverably
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'20.04.3',
+            VERSION:'20.04.4-1-gfc547f5',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

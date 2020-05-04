@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Stereokamera &mdash; rc_visard 20.04.3
+  <title>Stereokamera &mdash; rc_visard 20.04.4-1-gfc547f5
  Dokumentation</title>
   
 
@@ -44,7 +44,7 @@
         <link rel="index" title="Stichwortverzeichnis"
               href="genindex.html"/>
         <link rel="search" title="Suche" href="search.html"/>
-    <link rel="top" title="rc_visard 20.04.3
+    <link rel="top" title="rc_visard 20.04.4-1-gfc547f5
  Dokumentation" href="index.html"/>
         <link rel="up" title="Softwaremodule" href="components.html"/>
         <link rel="next" title="Stereo-Matching" href="stereo_matching.html"/>
@@ -811,7 +811,7 @@ s_2 p_r &amp;= A(P-T_s).\end{split}\end{aligned}\end{align} \]</div>
 <dt><code class="docutils literal notranslate"><span class="pre">exp_auto_mode</span></code> (<em>Modus Belichtungsautomatik</em>)</dt>
 <dd><p class="first">Der Modus für automatische Belichtung kann auf <cite>Normal</cite> oder <cite>AdaptiveOut1</cite> gesetzt werden. Diese Modi sind nur relevant, wenn der <em>rc_visard</em> mit einer externen Lichtquelle oder einem Projektor betrieben wird, der an den GPIO-Ausgang 1 des <em>rc_visard</em> angeschlossen ist. Dieser Ausgang kann durch das optionale IOControl-Modul (<a class="reference internal" href="iocontrol.html#sect-iocontrol"><span class="std std-ref">IOControl und Projektor-Kontrolle</span></a>) gesteuert werden.</p>
 <p><cite>Normal</cite>: Alle Bilder werden für die Regelung der Belichtungszeit in Betracht gezogen, außer wenn der IOControl-Modus für den GPIO-Ausgang 1 <cite>ExposureAlternateActive</cite> ist: Dann werden nur Bilder berücksichtigt, bei denen GPIO-Ausgang 1 HIGH ist, da diese Bilder heller sein können, falls dieser GPIO-Ausgang benutzt wird um einen externen Projektor auszulösen.</p>
-<p class="last"><cite>AdaptiveOut1</cite>: Dieser Modus optimiert die Belichtungszeit für alle Bilder, bei denen der GPIO-Ausgang 1 HIGH ist. Dieser Modus wird empfohlen, wenn im Stereo-Matching-Modul der Parameter <code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> auf <cite>O</cite> (Einzelbild+Out1) gesetzt ist (<a class="reference internal" href="stereo_matching.html#sect-disp-image-parameters"><span class="std std-ref">Parameter des Stereo-Matching-Moduls</span></a>), und ein externer Projektor an den GPIO-Ausgang 1 angeschlossen ist. Die Differenz der Belichtung zwischen Bildern mit GPIO-Ausgang 1 HIGH und LOW wird gespeichert. Während der IOControl-Modus für GPIO-Ausgang 1 LOW ist, werden die Bilder um diese Differenz unterbelichtet, um eine Überbelichtung zu verhindern sobald der externe Projektor über GPIO-Ausgang 1 ausgelöst wird.</p>
+<p class="last"><cite>AdaptiveOut1</cite>: Dieser Modus optimiert die Belichtungszeit für alle Bilder, bei denen der GPIO-Ausgang 1 HIGH ist. Dieser Modus wird empfohlen, wenn im Stereo-Matching-Modul der Parameter <code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> auf <code class="docutils literal notranslate"><span class="pre">SingleFrameOut1</span></code> (<em>Einzelbild+Out1</em>) gesetzt ist (<a class="reference internal" href="stereo_matching.html#sect-disp-image-parameters"><span class="std std-ref">Parameter des Stereo-Matching-Moduls</span></a>), und ein externer Projektor an den GPIO-Ausgang 1 angeschlossen ist. Die Differenz der Belichtung zwischen Bildern mit GPIO-Ausgang 1 HIGH und LOW wird gespeichert. Während der IOControl-Modus für GPIO-Ausgang 1 LOW ist, werden die Bilder um diese Differenz unterbelichtet, um eine Überbelichtung zu verhindern sobald der externe Projektor über GPIO-Ausgang 1 ausgelöst wird.</p>
 </dd>
 </dl>
 <span class="target" id="expl-exp-value"></span><span class="target" id="expl-exp-max"><span id="index-6"></span></span><dl class="docutils" id="index-7">
@@ -1041,7 +1041,7 @@ s_2 p_r &amp;= A(P-T_s).\end{split}\end{aligned}\end{align} \]</div>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'20.04.3',
+            VERSION:'20.04.4-1-gfc547f5',
             LANGUAGE:'de',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

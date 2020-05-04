@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Stereo camera &mdash; rc_visard 20.04.3
+  <title>Stereo camera &mdash; rc_visard 20.04.4-1-gfc547f5
  documentation</title>
   
 
@@ -44,7 +44,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rc_visard 20.04.3
+    <link rel="top" title="rc_visard 20.04.4-1-gfc547f5
  documentation" href="index.html"/>
         <link rel="up" title="Software components" href="components.html"/>
         <link rel="next" title="Stereo matching" href="stereo_matching.html"/>
@@ -880,7 +880,7 @@ which can be controlled by the optional IOControl component
 for GPIO Out1 is <cite>ExposureAlternateActive</cite>: then only images where GPIO Out1 is HIGH will be
 considered, since these images may be brighter in case GPIO Out1 is used to trigger an external light source.</p>
 <p class="last"><cite>AdaptiveOut1</cite>: This exposure mode optimizes the exposure time for GPIO Out1 being HIGH.
-This mode is recommended for using the <code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> <cite>O</cite> (SingleFrame+Out1) in the stereo matching component
+This mode is recommended for using the <code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> <code class="docutils literal notranslate"><span class="pre">SingleFrameOut1</span></code> in the stereo matching component
 as described in <a class="reference internal" href="stereo_matching.html#sect-disp-image-parameters"><span class="std std-ref">Stereo Matching Parameters</span></a>
 and having an
 external projector connected to GPIO Out1. The exposure difference between images with GPIO Out1
@@ -1145,7 +1145,7 @@ current parameter settings for the camera component are irrecoverably lost.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'20.04.3',
+            VERSION:'20.04.4-1-gfc547f5',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

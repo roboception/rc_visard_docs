@@ -10,7 +10,7 @@ angegebenen Revisionshinweise.
 
 Dokumentationsversion
 
- 20.04.3  17.04.2020
+ 20.04.4-1-gfc547f5  04.05.2020
 
 Gültig für
 

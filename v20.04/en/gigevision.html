@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>GigE Vision 2.0/GenICam image interface &mdash; rc_visard 20.04.3
+  <title>GigE Vision 2.0/GenICam image interface &mdash; rc_visard 20.04.4-1-gfc547f5
  documentation</title>
   
 
@@ -44,7 +44,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rc_visard 20.04.3
+    <link rel="top" title="rc_visard 20.04.4-1-gfc547f5
  documentation" href="index.html"/>
         <link rel="up" title="Interfaces" href="interfaces.html"/>
         <link rel="next" title="REST-API interface" href="rest_api.html"/>
@@ -1366,7 +1366,7 @@ using the equations described in <a class="reference internal" href="stereo_matc
 <p>Assuming that <span class="math notranslate nohighlight">\(d16_{ik}\)</span> is the 16 bit disparity value at column <span class="math notranslate nohighlight">\(i\)</span> and row <span class="math notranslate nohighlight">\(k\)</span>
 of a disparity image, the float disparity in pixels <span class="math notranslate nohighlight">\(d_{ik}\)</span> is given by</p>
 <div class="math notranslate nohighlight">
-\[d_{ik}&amp;=d16_{ik} \cdot \mathrm{Scan3dCoordinateScale}\]</div>
+\[d_{ik}=d16_{ik} \cdot \mathrm{Scan3dCoordinateScale}\]</div>
 <p>The 3D reconstruction in meters can be written with the GenICam parameters as:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}P_x&amp;=\left(i-\mathrm{Scan3dPrincipalPointU}\right) \frac{\mathrm{Scan3dBaseline}}{d_{ik}},\\
@@ -1498,7 +1498,7 @@ resolution of the corresponding image.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'20.04.3',
+            VERSION:'20.04.4-1-gfc547f5',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

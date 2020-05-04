@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>TagDetect &mdash; rc_visard 20.04.3
+  <title>TagDetect &mdash; rc_visard 20.04.4-1-gfc547f5
  documentation</title>
   
 
@@ -44,7 +44,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rc_visard 20.04.3
+    <link rel="top" title="rc_visard 20.04.4-1-gfc547f5
  documentation" href="index.html"/>
         <link rel="up" title="Optional software components" href="optional.html"/>
         <link rel="next" title="ItemPick and BoxPick" href="itempick.html"/>
@@ -786,11 +786,11 @@ for the precision of the resulting tag pose.
 To control the speed of this step, the <code class="docutils literal notranslate"><span class="pre">quality</span></code> parameter
 can be set by the user.
 It results in a downscaling of the image pair before reading the tags.
-“H” (<cite>High</cite>) yields the largest maximum detection distance and highest
+<code class="docutils literal notranslate"><span class="pre">High</span></code> yields the largest maximum detection distance and highest
 precision, but also the highest processing time.
-“L” (<cite>Low</cite>) results in the smallest maximum detection distance and
+<code class="docutils literal notranslate"><span class="pre">Low</span></code> results in the smallest maximum detection distance and
 lowest precision, but processing requires less than half of the time.
-“M” (<cite>Medium</cite>) lies in between.
+<code class="docutils literal notranslate"><span class="pre">Medium</span></code> lies in between.
 Please note that this quality parameter has no relation to the quality
 parameter of
 <a class="reference internal" href="stereo_matching.html#sect-stereo-matching"><span class="std std-ref">Stereo matching</span></a>.</p>
@@ -800,7 +800,7 @@ parameter of
 modules <span class="math notranslate nohighlight">\(r\)</span>, and size of a tag in meters <span class="math notranslate nohighlight">\(t\)</span>
 for AprilTags (left) and QR codes (right)</span></p>
 </div>
-<p>The maximum detection distance <span class="math notranslate nohighlight">\(z\)</span> at quality “H” can be
+<p>The maximum detection distance <span class="math notranslate nohighlight">\(z\)</span> at quality <code class="docutils literal notranslate"><span class="pre">High</span></code> can be
 approximated by using the following formulae,</p>
 <div class="math notranslate nohighlight">
 \[z = \frac{f s}{p},\]</div>
@@ -825,7 +825,7 @@ Approximate values for robust detection are:</p>
 </ul>
 <p>The following tables give sample maximum distances for
 different situations, assuming a focal length of
-1075 pixels and the parameter <code class="docutils literal notranslate"><span class="pre">quality</span></code> to be set to “H”.</p>
+1075 pixels and the parameter <code class="docutils literal notranslate"><span class="pre">quality</span></code> to be set to <code class="docutils literal notranslate"><span class="pre">High</span></code>.</p>
 <span id="tab-tag-max-dist-april"></span><table border="1" class="docutils" id="id5">
 <caption><span class="caption-number">Table 29 </span><span class="caption-text">Maximum detection distance examples for AprilTags with a width
          of <span class="math notranslate nohighlight">\(t=4\)</span> cm</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
@@ -922,7 +922,7 @@ try to detect such situations and filter out affected tags.</p>
 QR codes.
 We distinguish between lateral precision (i.e., in x and y direction) and
 precision in z direction.
-It is assumed that <code class="docutils literal notranslate"><span class="pre">quality</span></code> is set to “H” and that the camera’s
+It is assumed that <code class="docutils literal notranslate"><span class="pre">quality</span></code> is set to <code class="docutils literal notranslate"><span class="pre">High</span></code> and that the camera’s
 viewing direction is roughly parallel to the tag’s normal.
 The size of a tag does not have a significant effect on the lateral or z
 precision; however, in general, larger tags improve precision.
@@ -1111,8 +1111,8 @@ example of <code class="docutils literal notranslate"><span class="pre">rc_qr_co
 <td>string</td>
 <td>-</td>
 <td>-</td>
-<td>H</td>
-<td>Quality of tag detection (H, M or L)</td>
+<td>High</td>
+<td>Quality of tag detection (High, Medium or Low)</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">use_cached_images</span></code></td>
 <td>bool</td>
@@ -1575,7 +1575,7 @@ these values are applied even after reboot.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'20.04.3',
+            VERSION:'20.04.4-1-gfc547f5',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

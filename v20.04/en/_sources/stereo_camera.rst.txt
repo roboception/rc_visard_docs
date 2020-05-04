@@ -252,7 +252,7 @@ Auto Exposure Mode
 
    *AdaptiveOut1*: This exposure mode optimizes the exposure time for
    GPIO Out1 being HIGH. This mode is recommended for using the
-   "acquisition_mode" *O* (SingleFrame+Out1) in the stereo matching
+   "acquisition_mode" "SingleFrameOut1" in the stereo matching
    component as described in
 
    Stereo Matching Parameters

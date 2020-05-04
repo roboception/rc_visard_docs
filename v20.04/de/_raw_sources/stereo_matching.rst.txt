@@ -231,7 +231,7 @@ they appear in the |webgui|:
    pair: disparity image; frame rate
 
 ``acquisition_mode`` (*Acquisition Mode*)
-    The acquisition mode can be set to `Continuous` (C), `Single` (S) or `Single + Out1` (O).
+    The acquisition mode can be set to ``Continuous``, ``SingleFrame`` (*Single*) or ``SingleFrameOut1`` (*Single + Out1*).
     The first one is the default, which performs stereo matching continuously according to the
     user defined frame rate and the available computation resources. The two other modes
     perform stereo matching upon each click of the *Acquire* button. The `Single + Out1`
@@ -250,13 +250,13 @@ they appear in the |webgui|:
 
 ``quality`` (*Quality*)
     Disparity images can be computed in different resolutions:
-    high (640 x 480), medium (320 x 240) and low (214 x 160). The lower
+    ``High`` (640 x 480), ``Medium`` (320 x 240) and ``Low`` (214 x 160). The lower
     the resolution, the higher the frame rate of the disparity image. A 25 Hz frame
     rate can be achieved only at the lowest resolution. Please note that the frame
     rate of the disparity, confidence, and error images will always be less than or
     equal to the camera frame rate.
 
-    Additionally, full resolution matching with 1280 x 960 pixel is possible with
+    Additionally, full resolution matching (``Full``) with 1280 x 960 pixel is possible with
     a valid StereoPlus license.
 
     .. only:: rc_visard
@@ -428,9 +428,9 @@ restoring parameter settings.
 ^^^^^^^^^^^^^^^^^^^^^^^
 
    This call signals the module to perform stereo matching of the next available
-   images, if the parameter ``acquisition_mode`` is set to S (`SingleFrame`) or
-   O (`SingleFrame+Out1`). An
-   error is returned if the ``acquisition_mode`` is set to C (`Continuous`).
+   images, if the parameter ``acquisition_mode`` is set to ``SingleFrame`` or
+   ``SingleFrameOut1``. An
+   error is returned if the ``acquisition_mode`` is set to ``Continuous``.
 
    .. include:: _gen/nodes/services/rc_stereomatching_acquisition_trigger.txt
 
