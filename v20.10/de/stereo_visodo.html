@@ -1,0 +1,974 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="de" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Visuelle Odometrie &mdash; rc_visard 20.10.1
+ Dokumentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Stichwortverzeichnis"
+              href="genindex.html"/>
+        <link rel="search" title="Suche" href="search.html"/>
+    <link rel="top" title="rc_visard 20.10.1
+ Dokumentation" href="index.html"/>
+        <link rel="up" title="Softwaremodule" href="components.html"/>
+        <link rel="next" title="Stereo-INS" href="stereo_ins.html"/>
+        <link rel="prev" title="Sensordynamik" href="dynamics.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Suche" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Einführung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Überblick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Garantie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Schnittstellen, Zulassungen und Normen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Zulassungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Normen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Sicherheit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">Allgemeine Sicherheitshinweise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Bestimmungsgemäße Verwendung</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware-Spezifikation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Lieferumfang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technische Spezifikation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Umwelt- und Betriebsbedingungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Spezifikationen für die Stromversorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Verkabelung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanische Schnittstelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Koordinatensysteme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-and-configuration">Installation und Konfiguration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#software-license">Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Einschalten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rc-xxx-devices">Aufspüren von <em>rc_visard</em>-Geräten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Zurücksetzen der Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Netzwerkkonfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#host-name">Host-Name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatische Konfiguration (werkseitige Voreinstellung)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manuelle Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#web-gui">Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Messprinzipien</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concept_stereo.html">Stereovision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concept_dynamics.html">Sensordynamik</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="components.html">Softwaremodule</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="stereo_camera.html">Stereokamera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#image-acquisition">Bilderfassung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#planar-rectification">Planare Rektifizierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#accessing-images">Zugriff auf die Kamerabilder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_matching.html">Stereo-Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Berechnung von Disparitätsbildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Berechnung von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Konfidenz- und Fehlerbilder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#acquisition-trigger"><code class="docutils literal notranslate"><span class="pre">acquisition_trigger</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dynamics.html">Sensordynamik</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#coordinate-frames-for-state-estimation">Koordinatensysteme für die Zustandsschätzung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#available-state-estimates">Verfügbare Zustandsschätzungen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#camera-pose-streams-pose-and-pose-ins">Kameraposen-Datenströme (<code class="docutils literal notranslate"><span class="pre">pose</span></code> und <code class="docutils literal notranslate"><span class="pre">pose_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-camera-pose-streams-pose-rt-and-pose-rt-ins">Echtzeit-Datenströme der Kamerapose (<code class="docutils literal notranslate"><span class="pre">pose_rt</span></code> und <code class="docutils literal notranslate"><span class="pre">pose_rt_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-dynamics-streams-dynamics-and-dynamics-ins">Echtzeit-Dynamik-Datenströme (<code class="docutils literal notranslate"><span class="pre">dynamics</span></code> und <code class="docutils literal notranslate"><span class="pre">dynamics_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#imu-data-stream-imu">IMU-Datenstrom (<code class="docutils literal notranslate"><span class="pre">imu</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#start"><code class="docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#start-slam"><code class="docutils literal notranslate"><span class="pre">start_slam</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#stop-slam"><code class="docutils literal notranslate"><span class="pre">stop_slam</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#restart"><code class="docutils literal notranslate"><span class="pre">restart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#restart-slam"><code class="docutils literal notranslate"><span class="pre">restart_slam</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#get-cam2imu-transform"><code class="docutils literal notranslate"><span class="pre">get_cam2imu_transform</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Visuelle Odometrie</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_ins.html">Stereo-INS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#status-values">Statuswerte</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="camera_calibration.html">Kamerakalibrierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#calibration-process">Kalibriervorgang</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-1-calibration-settings">Schritt&nbsp;1: Einstellung der Kalibrierparameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-2-verify-calibration">Schritt&nbsp;2: Kalibrierung überprüfen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-3-performing-calibration">Schritt&nbsp;3: Durchführung der Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#monocalibration">Monokalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#stereo-calibration">Stereokalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-4-storing-the-calibration-result">Schritt&nbsp;4: Kalibrierergebnis speichern</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="handeye_calibration.html">Hand-Auge-Kalibrierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Kalibrierschnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#camera-mounting">Kameramontage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Kalibrierroutine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-1-setting-parameters">Schritt&nbsp;1: Einstellung der Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-2-selecting-and-reporting-robot-calibration-positions">Schritt&nbsp;2: Auswahl und Übertragung der Kalibrierpositionen des Roboters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-3-calculating-and-saving-the-calibration-transformation">Schritt&nbsp;3: Berechnen und Speichern der Kalibriertransformation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#reset-calibration"><code class="docutils literal notranslate"><span class="pre">reset_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#set-pose"><code class="docutils literal notranslate"><span class="pre">set_pose</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibrate"><code class="docutils literal notranslate"><span class="pre">calibrate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#set-calibration"><code class="docutils literal notranslate"><span class="pre">set_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#save-calibration"><code class="docutils literal notranslate"><span class="pre">save_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#remove-calibration"><code class="docutils literal notranslate"><span class="pre">remove_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#get-calibration"><code class="docutils literal notranslate"><span class="pre">get_calibration</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iocontrol.html">IOControl und Projektor-Kontrolle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#get-io-values"><code class="docutils literal notranslate"><span class="pre">get_io_values</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#introduction">Einführung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#qr-code">QR-Code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#apriltag">AprilTag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#comparison">Vergleich</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-reading">Markererkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#pose-estimation">Posenschätzung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-re-identification">Marker-Wiedererkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#start"><code class="docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#restart"><code class="docutils literal notranslate"><span class="pre">restart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#detect"><code class="docutils literal notranslate"><span class="pre">detect</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="optional.html">Optionale Softwaremodule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="slam.html">SLAM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#usage">Verwendung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#memory-limitations">Speicherbeschränkungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#parameter-overview">Übersicht über die Parameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#reset"><code class="docutils literal notranslate"><span class="pre">reset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#get-trajectory"><code class="docutils literal notranslate"><span class="pre">get_trajectory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#save-map"><code class="docutils literal notranslate"><span class="pre">save_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#load-map"><code class="docutils literal notranslate"><span class="pre">load_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#remove-map"><code class="docutils literal notranslate"><span class="pre">remove_map</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="itempick.html">ItemPick und BoxPick</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#introduction">Einführung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#detection-of-items-boxpick">Erkennung von Rechtecken (BoxPick)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#computation-of-grasps">Berechnung der Greifpunkte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#interaction-with-other-components">Wechselwirkung mit anderen Modulen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#stereo-camera-and-stereo-matching">Stereokamera und Stereo-Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#estimation-of-gravity-vector">Schätzung der Gravitationsrichtung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#io-and-projector-control">IOControl und Projektor-Kontrolle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#collisioncheck">CollisionCheck</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#start"><code class="docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#set-region-of-interest"><code class="docutils literal notranslate"><span class="pre">set_region_of_interest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#get-regions-of-interest"><code class="docutils literal notranslate"><span class="pre">get_regions_of_interest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#delete-regions-of-interest"><code class="docutils literal notranslate"><span class="pre">delete_regions_of_interest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#set-load-carrier"><code class="docutils literal notranslate"><span class="pre">set_load_carrier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#get-load-carriers"><code class="docutils literal notranslate"><span class="pre">get_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#delete-load-carriers"><code class="docutils literal notranslate"><span class="pre">delete_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detect-load-carriers"><code class="docutils literal notranslate"><span class="pre">detect_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detect-filling-level"><code class="docutils literal notranslate"><span class="pre">detect_filling_level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detect-items-boxpick-only"><code class="docutils literal notranslate"><span class="pre">detect_items</span></code> (nur BoxPick)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#compute-grasps-for-itempick"><code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> (für ItemPick)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#compute-grasps-for-boxpick"><code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> (für BoxPick)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#introduction">Einführung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#suitable-objects">Taugliche Objekte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#suitable-scene">Taugliche Szene</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Kalibrierung der Basisebene</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#apriltag-based-base-plane-calibration">AprilTag-basierte Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#stereo-based-base-plane-calibration">Stereo-basierte Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#manual-base-plane-calibration">Manuelle Kalibrierung der Basisebene</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setzen einer Region of Interest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#setting-of-grasp-points">Setzen von Greifpunkten</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-grasp-points-in-the-webgui">Setzen von Greifpunken in der Web GUI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-grasp-points-via-the-rest-api">Setzen von Greifpunkten über die REST-API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#interaction-with-other-components">Wechselwirkung mit anderen Modulen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#stereo-camera-and-stereo-matching">Stereokamera und Stereo-Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#io-and-projector-control">IOControl und Projektor-Kontrolle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#collisioncheck">CollisionCheck</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#calibrate-base-plane"><code class="docutils literal notranslate"><span class="pre">calibrate_base_plane</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-base-plane-calibration"><code class="docutils literal notranslate"><span class="pre">get_base_plane_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#delete-base-plane-calibration"><code class="docutils literal notranslate"><span class="pre">delete_base_plane_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#set-region-of-interest-2d"><code class="docutils literal notranslate"><span class="pre">set_region_of_interest_2d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-regions-of-interest-2d"><code class="docutils literal notranslate"><span class="pre">get_regions_of_interest_2d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#delete-regions-of-interest-2d"><code class="docutils literal notranslate"><span class="pre">delete_regions_of_interest_2d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#set-load-carrier"><code class="docutils literal notranslate"><span class="pre">set_load_carrier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-load-carriers"><code class="docutils literal notranslate"><span class="pre">get_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#delete-load-carriers"><code class="docutils literal notranslate"><span class="pre">delete_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detect-load-carriers"><code class="docutils literal notranslate"><span class="pre">detect_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detect-filling-level"><code class="docutils literal notranslate"><span class="pre">detect_filling_level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#set-preferred-orientation"><code class="docutils literal notranslate"><span class="pre">set_preferred_orientation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-preferred-orientation"><code class="docutils literal notranslate"><span class="pre">get_preferred_orientation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#set-grasp"><code class="docutils literal notranslate"><span class="pre">set_grasp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#set-all-grasps"><code class="docutils literal notranslate"><span class="pre">set_all_grasps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-grasps"><code class="docutils literal notranslate"><span class="pre">get_grasps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#delete-grasps"><code class="docutils literal notranslate"><span class="pre">delete_grasps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-symmetric-grasps"><code class="docutils literal notranslate"><span class="pre">get_symmetric_grasps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detect-object"><code class="docutils literal notranslate"><span class="pre">detect_object</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#template-upload">Template Upload</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="collisioncheck.html">CollisionCheck</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#introduction">Einleitung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#setting-a-gripper">Erstellen eines Greifers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#robot-flange-radius">Flanschradius</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#creating-a-gripper-via-the-rest-api">Erstellen eines Greifers über die REST-API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#creating-a-gripper-in-the-webgui">Erstellen eines Greifers in der Web GUI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#calculated-tcp-position">Berechnete TCP-Position</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#creating-rotationally-asymmetric-grippers">Nicht-rotationssymmetrische Greifer erstellen</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#collision-checking">Kollisionsprüfung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#stand-alone-collision-checking">Stand-Alone Kollisionsprüfung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#collision-checking-within-other-modules">Integrierte Kollisionsprüfung in anderen Modulen</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#parameter-overview">Übersicht der Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#set-gripper"><code class="docutils literal notranslate"><span class="pre">set_gripper</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#get-grippers"><code class="docutils literal notranslate"><span class="pre">get_grippers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#delete-grippers"><code class="docutils literal notranslate"><span class="pre">delete_grippers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#check-collision"><code class="docutils literal notranslate"><span class="pre">check_collision</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="commonfunctionalities.html">Gemeinsame Funktionalitäten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier.html">Load Carrier Funktionalität</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#load-carrier">Load Carrier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-load-carriers">Erkennung von Load Carriern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-filling-level">Füllstandserkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#interaction-with-other-components">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="roi.html">Region of Interest Funktionalität</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Schnittstellen</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Kategorie: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Kategorie: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Kategorie: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Kategorie: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Kategorie: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Kategorie: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk-Daten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_nodes.html">Module, Parameter und Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_datastreams.html">Datenströme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_syslogs.html">System und Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_datamodel.html">Datentyp-Definitionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_swagger_ui.html">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rc_dynamics.html">Die rc_dynamics-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#starting-stopping-dynamic-state-estimation">Starten/Stoppen der Dynamik-Zustandsschätzungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#configuring-data-streams">Konfiguration von Datenströmen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#data-stream-protocol">Datenstromprotokoll</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#rc-dynamics-api">Die rc_dynamics-Programmierschnittstelle</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Konfiguration der Ethernet-Verbindung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Allgemeine XML-Struktur</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Rückgabecode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Anfrage-XML-Struktur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Antwort-XML-Struktur</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI-XML-Konfigurationsdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Wartung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Reinigung der Kameralinsen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Kamerakalibrierung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Neustart des <em>rc_visard</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Anschlussset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Verkabelung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet-Anschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Stromanschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Netzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Ersatzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Fehlerbehebung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED-Farben</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Probleme mit der Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Probleme mit der Konnektivität</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Probleme mit den Kamerabildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Probleme mit Tiefen-/Disparitäts-, Fehler- oder Konfidenzbildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#dynamics-issues">Probleme mit der Zustandsschätzung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">Probleme mit GigE&nbsp;Vision/GenICam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Kontakt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Adresse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Anhang</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pose_formats.html">Formate für Posendaten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyzabc-format">XYZABC-Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyz-quaternion-format">XYZ+Quaternion-Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#conversion-from-abc-to-quaternion">Umrechnung von ABC in Quaternionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#conversion-from-quaternion-to-abc">Umrechnung von Quaternionen in ABC</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Dokumentation</a> &raquo;</li>
+        
+          <li><a href="components.html">Softwaremodule</a> &raquo;</li>
+        
+      <li>Visuelle Odometrie</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="visual-odometry">
+<span id="sect-visual-odometry"></span><h1>Visuelle Odometrie<a class="headerlink" href="#visual-odometry" title="Link zu dieser Überschrift">¶</a></h1>
+<p id="index-0">Die visuelle Odometrie ist Teil des Sensordynamik-Moduls. Sie dient dazu, die Bewegung der Kamera aus der Bewegung charakteristischer Bildpunkte (sogenannter Bildmerkmale) im linken Kamerabild zu schätzen. Bildmerkmale werden auf Basis von Eckpunkten, Bildbereichen mit hohen Intensitätsgradienten, errechnet. Mithilfe von Bildmerkmalen lassen sich Übereinstimmungen zwischen aufeinanderfolgenden Bildern finden. Deren 3D-Koordinaten werden mithilfe eines Stereo-Matching-Verfahrens (unabhängig vom Disparitätsbild) berechnet. Aus den übereinstimmenden 3D-Punkten zweier Kamerabilder wird die Bewegung der Kamera berechnet. Um die Robustheit der visuellen Odometrie zu erhöhen, werden Übereinstimmungen nicht nur zum letzten Kamerabild, sondern zu mehreren vorherigen Kamerabildern, sogenannten <em>Keyframes</em>, berechnet. Dann wird das beste Resultat ausgewählt.</p>
+<p id="index-1">Die Bildwiederholrate der visuellen Odometrie ist unabhängig von der Benutzereinstellung im Stereokamera-Modul. Sie ist intern auf 12&nbsp;Hz begrenzt, kann aber je nach Anzahl der Bildmerkmale oder Keyframes auch niedriger sein. Um die Posenschätzung in einer guten Qualität berechnen zu können, sollte die Bildwiederholrate nicht signifikant unter 10&nbsp;Hz fallen.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Die gleichzeitige Nutzung von <a class="reference internal" href="stereo_matching.html"><span class="doc">Stereo-Matching</span></a> mit dem Sensordynamik-Modul kann durch die hohe Prozessorlast zu verringerter Genauigkeit in der Bewegungsschätzung führen.  Es wird daher empfohlen, bei gleichzeitigem Betrieb die Bildwiederholrate der <a class="reference internal" href="stereo_camera.html"><span class="doc">Stereokamera</span></a> zu reduzieren, um die Rechenlast durch das Stereo-Matching zu senken.</p>
+</div>
+<p>Die Messungen aus der visuellen Odometrie lassen sich nicht direkt vom <em>rc_visard</em> aufrufen. Stattdessen werden sie intern mit den Daten der integrierten inertialen Messeinheit (IMU) kombiniert, um so die Robustheit und Frequenz der Posenschätzungen zu erhöhen und die Latenz zu verringern. Das Ergebnis der Sensordatenfusion wird in Form verschiedener Datenströme bereitgestellt (siehe <a class="reference internal" href="stereo_ins.html"><span class="doc">Stereo-INS</span></a>).</p>
+<div class="section" id="parameters">
+<span id="sect-vo-parameters"></span><h2>Parameter<a class="headerlink" href="#parameters" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-2">Das Odometrie-Modul heißt <code class="docutils literal notranslate"><span class="pre">rc_stereovisodo</span></code> und wird in der <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> auf der Seite <em>Dynamik</em> dargestellt. Der Benutzer kann die Parameter der visuellen Odometrie entweder dort oder über die REST-API (<a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API-Schnittstelle</span></a>) ändern.</p>
+<div class="section" id="parameter-overview">
+<h3>Übersicht über die Parameter<a class="headerlink" href="#parameter-overview" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Dieses Softwaremodul bietet folgende Laufzeitparameter:</p>
+<table border="1" class="docutils" id="laufzeitparameter-des-rc-stereovisodo-moduls">
+<caption><span class="caption-number">Tab. 14 </span><span class="caption-text">Laufzeitparameter des <code class="docutils literal notranslate"><span class="pre">rc_stereovisodo</span></code>-Moduls</span><a class="headerlink" href="#laufzeitparameter-des-rc-stereovisodo-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Typ</th>
+<th class="head">Min.</th>
+<th class="head">Max.</th>
+<th class="head">Default</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">disprange</span></code></td>
+<td>int32</td>
+<td>32</td>
+<td>512</td>
+<td>256</td>
+<td>Disparitätsbereich in Pixeln</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">ncorner</span></code></td>
+<td>int32</td>
+<td>50</td>
+<td>4000</td>
+<td>500</td>
+<td>Anzahl der Eckpunkte</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">nfeature</span></code></td>
+<td>int32</td>
+<td>50</td>
+<td>4000</td>
+<td>300</td>
+<td>Anzahl der Bildmerkmale</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">nkey</span></code></td>
+<td>int32</td>
+<td>1</td>
+<td>4</td>
+<td>4</td>
+<td>Anzahl der Keyframes</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="description-of-run-time-parameters">
+<h3>Beschreibung der Laufzeitparameter<a class="headerlink" href="#description-of-run-time-parameters" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Laufzeitparameter beeinflussen die Anzahl an Bildmerkmalen, auf deren Grundlage die Berechnungen für die visuelle Odometrie vorgenommen werden. Ein Mehr an Bildmerkmalen erhöht die Robustheit der visuellen Odometrie, geht jedoch zu Lasten einer längeren Laufzeit, was wiederum die Frequenz der visuellen Odometrie verringern kann. Doch auch wenn die resultierende Zustandsschätzung aufgrund der Kombination mit den IMU-Messdaten immer mit einer hohen Frequenz bereitgestellt wird, sind hohe Odometrie-Raten dennoch wünschenswert, da diese Messungen viel akkurater sind als IMU-Messungen allein. Daher sollte für die visuelle Odometrie eine Frequenz von 10&nbsp;Hz angestrebt werden. Die Rate der visuellen Odometrie wird als Statusparameter bereitgestellt und unter der Bildvorschau in der <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> auf der Seite <em>Dynamik</em> angegeben.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/webgui_dynamics_de.png"><img alt="_images/webgui_dynamics_de.png" src="_images/webgui_dynamics_de.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 26 </span><span class="caption-text"><em>Dynamik</em>-Seite der Web GUI</span></p>
+</div>
+<p>Auf dem auf dieser Seite gezeigten Kamerabild werden Bildmerkmale als kleine grüne Punkte dargestellt. Die dicken grünen Punkte sind diejenigen Merkmale, für die Übereinstimmungen zu einem vorherigen Keyframe gefunden werden konnten. Grüne Linien stellen dar, wie sich diese Bildmerkmale in Bezug auf den vorherigen Keyframe bewegt haben. Diese Darstellung soll beim Finden eines guten Parametersatzes für die visuelle Odometrie helfen. Die Anzahl an übereinstimmenden Bildmerkmalen (Korrespondenzen) wird als Statusparameter bereitgestellt und unter der Bildvorschau in der <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> auf der Seite <em>Dynamik</em> angegeben. Für robuste Odometrie-Messungen sollten die Parameter derart angepasst werden, dass die resultierende Anzahl an Korrespondenzen in der Zielumgebung bei mindestens 50 liegt, wenn sich der Sensor bewegt. Die Anzahl an Korrespondenzen ist höher, wenn der <em>rc_visard</em> in Ruhe ist, und sie wird sich verändern, wenn sich der <em>rc_visard</em> durch die Umgebung bewegt. Aufgrund der Kombination mit den IMU-Messungen kann ein kurzer Ausfall der visuellen Odometrie toleriert werden. Längere Ausfälle sollten vermieden werden, da sie zu größeren Posenunsicherheiten und zu Fehlern in der Zustandsschätzung führen können.</p>
+<p>Jeder Laufzeitparameter ist durch eine eigene Zeile auf der Seite <em>Dynamik</em> der Web GUI repräsentiert. Der Name der Zeile ist in Klammern hinter dem Namen des Parameters angegeben und die Parameter werden in der Reihenfolge, in der sie in der Web GUI erscheinen, aufgelistet:</p>
+<blockquote>
+<div><span class="target" id="expl-vo-disp-range"></span></div></blockquote>
+<dl class="docutils" id="index-3">
+<dt><code class="docutils literal notranslate"><span class="pre">start</span></code> (<em>Dynamik</em>)</dt>
+<dd>Dieser Parameter startet die Module für die Schätzungen zur Sensordynamik (siehe <a class="reference internal" href="dynamics.html#sect-dynamics-services"><span class="std std-ref">Services</span></a>).</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">disprange</span></code> (<em>Disparitätsbereich</em>)</dt>
+<dd>Der Disparitätsbereich gibt den maximalen Disparitätswert an, den jedes Bildmerkmal im hochaufgelösten Disparitätsbild (640&nbsp;x&nbsp;480&nbsp;Pixel) annehmen kann. Der Disparitätsbereich bestimmt den Mindestabstand für die visuelle Odometrie. Ist der Disparitätsbereich klein, werden nur entferntere Merkmale für die Odometrie-Schätzungen berücksichtigt. Bei einem größeren Disparitätsbereich können auch nahe liegende Merkmale einbezogen werden. Ein größerer Disparitätsbereich erhöht die Rechenzeit, was die Frequenz der visuellen Odometrie verringern kann.<span class="target" id="expl-vo-no-keyframes"></span></dd>
+<dt id="index-4"><code class="docutils literal notranslate"><span class="pre">nkey</span></code> (<em>Anzahl der Keyframes</em>)</dt>
+<dd>Ein Mehr an Keyframes kann die Robustheit und Genauigkeit der visuellen Odometrie erhöhen, was jedoch mit einer längeren Rechenzeit und möglicherweise mit einer geringeren Odometriefrequenz einhergehen kann.<span class="target" id="expl-vo-no-corners"></span></dd>
+<dt id="index-5"><code class="docutils literal notranslate"><span class="pre">ncorner</span></code> (<em>Anzahl der Ecken</em>)</dt>
+<dd>Dieser Parameter gibt die ungefähre Anzahl an Eckpunkten an, die im linken Bild detektiert werden. Ein größerer Wert macht die visuelle Odometrie robuster und genauer, kann aber zu einer geringeren Odometriefrequenz führen.<span class="target" id="expl-vo-no-features"></span></dd>
+<dt id="index-6"><code class="docutils literal notranslate"><span class="pre">nfeature</span></code> (<em>Anzahl der Merkmale</em>)</dt>
+<dd>Dieser Parameter beschreibt die maximale Anzahl an Bildmerkmalen, die von den Eckpunkten abgeleitet werden. Es ist hilfreich, mehr Eckpunkte zu erkennen, sodass die beste Teilmenge als Merkmale ausgewählt werden kann. Ein größerer Wert macht die visuelle Odometrie robuster und genauer, kann aber zu einer geringeren Odometrierate führen. Je nach Szene und Bewegung werden möglicherweise weniger Merkmale berechnet. Die tatsächliche Anzahl an Merkmalen wird unter der Bildvorschau in der <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> auf der Seite <em>Dynamik</em> angegeben.</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Die Erhöhung der Anzahl an Keyframes, Ecken oder Merkmalen erhöht zwar die Robustheit, führt aber zu mehr Rechenzeit und kann, je nachdem, welche anderen Module auf dem <em>rc_visard</em> aktiv sind, die Rate der visuellen Odometrie verringern. Die Odometriefrequenz sollte mindestens 10&nbsp;Hz betragen.</p>
+</div>
+</div>
+</div>
+<div class="section" id="status-values">
+<span id="sect-vo-status-values"></span><h2>Statuswerte<a class="headerlink" href="#status-values" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Dieses Modul meldet folgende Statuswerte:</p>
+<table border="1" class="docutils" id="statuswerte-des-rc-stereovisodo-moduls">
+<caption><span class="caption-number">Tab. 15 </span><span class="caption-text">Statuswerte des <code class="docutils literal notranslate"><span class="pre">rc_stereovisodo</span></code>-Moduls</span><a class="headerlink" href="#statuswerte-des-rc-stereovisodo-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">corner</span></code></td>
+<td>Anzahl der erkannten Eckpunkte. Dieser Wert wird unter der Bildvorschau in der Web GUI als <em>Ecken</em> angezeigt.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">correspondences</span></code></td>
+<td>Anzahl der Übereinstimmungen. Dieser Wert wird unter der Bildvorschau in der Web GUI als <em>Korrespondenzen</em> angezeigt.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">feature</span></code></td>
+<td>Anzahl der Bildmerkmale. Dieser Wert wird unter der Bildvorschau in der Web GUI als <em>Merkmale</em> angezeigt.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">fps</span></code></td>
+<td>Frequenz der visuellen Odometrie in Hertz. Dieser Wert wird unter der Bildvorschau in der Web GUI als <em>Rate visuelle Odometrie (Hz)</em> angezeigt.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">time_frame</span></code></td>
+<td>Verarbeitungszeit in Sekunden, die zur Berechnung von Eckpunkten und Bildmerkmalen pro Frame benötigt wird</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">time_vo</span></code></td>
+<td>Verarbeitungszeit in Sekunden, die zur Berechnung der Bewegung benötigt wird</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="services">
+<span id="sect-vo-services"></span><h2>Services<a class="headerlink" href="#services" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-7">Das Modul bietet keine eigenen Funktionen zum Starten bzw. Stoppen, da es über das <a class="reference internal" href="dynamics.html"><span class="doc">Dynamik-Modul</span></a> gestartet bzw. gestoppt wird.</p>
+<p>Das Visuelle-Odometrie-Modul bietet folgende Services, um Parametereinstellungen zu speichern bzw. wiederherzustellen.</p>
+<div class="section" id="save-parameters">
+<h3><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code><a class="headerlink" href="#save-parameters" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>Beim Aufruf dieses Services werden die aktuellen Parametereinstellungen zur visuellen Odometrie auf dem <em>rc_visard</em> gespeichert. Das bedeutet, dass diese Werte selbst nach einem Neustart angewandt werden.</p>
+<p>Dieser Service hat keine Argumente.</p>
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="reset-defaults">
+<h3><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code><a class="headerlink" href="#reset-defaults" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>Hiermit werden die Werkseinstellungen der Parameter dieses Moduls wiederhergestellt und angewandt („factory reset“).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Durch den Aufruf dieses Services gehen die aktuellen Parametereinstellungen für das Visuelle-Odometrie-Modul unwiderruflich verloren.</p>
+</div>
+<p>Dieser Service hat keine Argumente.</p>
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="stereo_ins.html" class="btn btn-neutral float-right" title="Stereo-INS" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dynamics.html" class="btn btn-neutral" title="Sensordynamik" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Optionen</span>
+      de
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Sprachen</dt>
+        
+          
+          <dd><a href="../en/stereo_visodo.html">en</a></dd>
+          
+        
+          
+          <dd><a href="../de/stereo_visodo.html">de</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versionen</dt>
+          
+            <dd><a href="../../v1.0/index.html">v1.0</a></dd>
+          
+            <dd><a href="../../v1.1/index.html">v1.1</a></dd>
+          
+            <dd><a href="../../v1.2/index.html">v1.2</a></dd>
+          
+            <dd><a href="../../v1.3/index.html">v1.3</a></dd>
+          
+            <dd><a href="../../v1.4/index.html">v1.4</a></dd>
+          
+            <dd><a href="../../v1.5/index.html">v1.5</a></dd>
+          
+            <dd><a href="../../v1.6/index.html">v1.6</a></dd>
+          
+            <dd><a href="../../v1.7/index.html">v1.7</a></dd>
+          
+            <dd><a href="../../v1.8/index.html">v1.8</a></dd>
+          
+            <dd><a href="../../v20.04/index.html">v20.04</a></dd>
+          
+            <dd><a href="../../v20.10/index.html">v20.10</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_manual_en.pdf">PDF (en)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_manual_de.pdf">PDF (de)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'20.10.1',
+            LANGUAGE:'de',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

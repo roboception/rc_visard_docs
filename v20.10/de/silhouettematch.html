@@ -1,0 +1,2127 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="de" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SilhouetteMatch &mdash; rc_visard 20.10.1
+ Dokumentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Stichwortverzeichnis"
+              href="genindex.html"/>
+        <link rel="search" title="Suche" href="search.html"/>
+    <link rel="top" title="rc_visard 20.10.1
+ Dokumentation" href="index.html"/>
+        <link rel="up" title="Optionale Softwaremodule" href="optional.html"/>
+        <link rel="next" title="CollisionCheck" href="collisioncheck.html"/>
+        <link rel="prev" title="ItemPick und BoxPick" href="itempick.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Suche" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Einführung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Überblick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Garantie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Schnittstellen, Zulassungen und Normen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Zulassungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Normen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Sicherheit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">Allgemeine Sicherheitshinweise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Bestimmungsgemäße Verwendung</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware-Spezifikation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Lieferumfang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technische Spezifikation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Umwelt- und Betriebsbedingungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Spezifikationen für die Stromversorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Verkabelung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanische Schnittstelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Koordinatensysteme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-and-configuration">Installation und Konfiguration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#software-license">Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Einschalten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rc-xxx-devices">Aufspüren von <em>rc_visard</em>-Geräten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Zurücksetzen der Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Netzwerkkonfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#host-name">Host-Name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatische Konfiguration (werkseitige Voreinstellung)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manuelle Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#web-gui">Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Messprinzipien</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concept_stereo.html">Stereovision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concept_dynamics.html">Sensordynamik</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="components.html">Softwaremodule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stereo_camera.html">Stereokamera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#image-acquisition">Bilderfassung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#planar-rectification">Planare Rektifizierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#accessing-images">Zugriff auf die Kamerabilder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_matching.html">Stereo-Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Berechnung von Disparitätsbildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Berechnung von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Konfidenz- und Fehlerbilder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#acquisition-trigger"><code class="docutils literal notranslate"><span class="pre">acquisition_trigger</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dynamics.html">Sensordynamik</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#coordinate-frames-for-state-estimation">Koordinatensysteme für die Zustandsschätzung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#available-state-estimates">Verfügbare Zustandsschätzungen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#camera-pose-streams-pose-and-pose-ins">Kameraposen-Datenströme (<code class="docutils literal notranslate"><span class="pre">pose</span></code> und <code class="docutils literal notranslate"><span class="pre">pose_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-camera-pose-streams-pose-rt-and-pose-rt-ins">Echtzeit-Datenströme der Kamerapose (<code class="docutils literal notranslate"><span class="pre">pose_rt</span></code> und <code class="docutils literal notranslate"><span class="pre">pose_rt_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-dynamics-streams-dynamics-and-dynamics-ins">Echtzeit-Dynamik-Datenströme (<code class="docutils literal notranslate"><span class="pre">dynamics</span></code> und <code class="docutils literal notranslate"><span class="pre">dynamics_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#imu-data-stream-imu">IMU-Datenstrom (<code class="docutils literal notranslate"><span class="pre">imu</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#start"><code class="docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#start-slam"><code class="docutils literal notranslate"><span class="pre">start_slam</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#stop-slam"><code class="docutils literal notranslate"><span class="pre">stop_slam</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#restart"><code class="docutils literal notranslate"><span class="pre">restart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#restart-slam"><code class="docutils literal notranslate"><span class="pre">restart_slam</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#get-cam2imu-transform"><code class="docutils literal notranslate"><span class="pre">get_cam2imu_transform</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_visodo.html">Visuelle Odometrie</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_ins.html">Stereo-INS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#status-values">Statuswerte</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="camera_calibration.html">Kamerakalibrierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#calibration-process">Kalibriervorgang</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-1-calibration-settings">Schritt&nbsp;1: Einstellung der Kalibrierparameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-2-verify-calibration">Schritt&nbsp;2: Kalibrierung überprüfen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-3-performing-calibration">Schritt&nbsp;3: Durchführung der Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#monocalibration">Monokalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#stereo-calibration">Stereokalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-4-storing-the-calibration-result">Schritt&nbsp;4: Kalibrierergebnis speichern</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="handeye_calibration.html">Hand-Auge-Kalibrierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Kalibrierschnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#camera-mounting">Kameramontage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Kalibrierroutine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-1-setting-parameters">Schritt&nbsp;1: Einstellung der Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-2-selecting-and-reporting-robot-calibration-positions">Schritt&nbsp;2: Auswahl und Übertragung der Kalibrierpositionen des Roboters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-3-calculating-and-saving-the-calibration-transformation">Schritt&nbsp;3: Berechnen und Speichern der Kalibriertransformation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#reset-calibration"><code class="docutils literal notranslate"><span class="pre">reset_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#set-pose"><code class="docutils literal notranslate"><span class="pre">set_pose</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibrate"><code class="docutils literal notranslate"><span class="pre">calibrate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#set-calibration"><code class="docutils literal notranslate"><span class="pre">set_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#save-calibration"><code class="docutils literal notranslate"><span class="pre">save_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#remove-calibration"><code class="docutils literal notranslate"><span class="pre">remove_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#get-calibration"><code class="docutils literal notranslate"><span class="pre">get_calibration</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iocontrol.html">IOControl und Projektor-Kontrolle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#get-io-values"><code class="docutils literal notranslate"><span class="pre">get_io_values</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#introduction">Einführung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#qr-code">QR-Code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#apriltag">AprilTag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#comparison">Vergleich</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-reading">Markererkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#pose-estimation">Posenschätzung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-re-identification">Marker-Wiedererkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#start"><code class="docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#restart"><code class="docutils literal notranslate"><span class="pre">restart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#detect"><code class="docutils literal notranslate"><span class="pre">detect</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="optional.html">Optionale Softwaremodule</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="slam.html">SLAM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#usage">Verwendung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#memory-limitations">Speicherbeschränkungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#parameter-overview">Übersicht über die Parameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#reset"><code class="docutils literal notranslate"><span class="pre">reset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#get-trajectory"><code class="docutils literal notranslate"><span class="pre">get_trajectory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#save-map"><code class="docutils literal notranslate"><span class="pre">save_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#load-map"><code class="docutils literal notranslate"><span class="pre">load_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#remove-map"><code class="docutils literal notranslate"><span class="pre">remove_map</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="itempick.html">ItemPick und BoxPick</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#introduction">Einführung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#detection-of-items-boxpick">Erkennung von Rechtecken (BoxPick)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#computation-of-grasps">Berechnung der Greifpunkte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#interaction-with-other-components">Wechselwirkung mit anderen Modulen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#stereo-camera-and-stereo-matching">Stereokamera und Stereo-Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#estimation-of-gravity-vector">Schätzung der Gravitationsrichtung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#io-and-projector-control">IOControl und Projektor-Kontrolle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#collisioncheck">CollisionCheck</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#start"><code class="docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#set-region-of-interest"><code class="docutils literal notranslate"><span class="pre">set_region_of_interest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#get-regions-of-interest"><code class="docutils literal notranslate"><span class="pre">get_regions_of_interest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#delete-regions-of-interest"><code class="docutils literal notranslate"><span class="pre">delete_regions_of_interest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#set-load-carrier"><code class="docutils literal notranslate"><span class="pre">set_load_carrier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#get-load-carriers"><code class="docutils literal notranslate"><span class="pre">get_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#delete-load-carriers"><code class="docutils literal notranslate"><span class="pre">delete_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detect-load-carriers"><code class="docutils literal notranslate"><span class="pre">detect_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detect-filling-level"><code class="docutils literal notranslate"><span class="pre">detect_filling_level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detect-items-boxpick-only"><code class="docutils literal notranslate"><span class="pre">detect_items</span></code> (nur BoxPick)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#compute-grasps-for-itempick"><code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> (für ItemPick)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#compute-grasps-for-boxpick"><code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> (für BoxPick)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SilhouetteMatch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Einführung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#suitable-objects">Taugliche Objekte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#suitable-scene">Taugliche Szene</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#base-plane-calibration">Kalibrierung der Basisebene</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#apriltag-based-base-plane-calibration">AprilTag-basierte Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stereo-based-base-plane-calibration">Stereo-basierte Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manual-base-plane-calibration">Manuelle Kalibrierung der Basisebene</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-a-region-of-interest">Setzen einer Region of Interest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-of-grasp-points">Setzen von Greifpunkten</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#setting-grasp-points-in-the-webgui">Setzen von Greifpunken in der Web GUI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-grasp-points-via-the-rest-api">Setzen von Greifpunkten über die REST-API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interaction-with-other-components">Wechselwirkung mit anderen Modulen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#stereo-camera-and-stereo-matching">Stereokamera und Stereo-Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#io-and-projector-control">IOControl und Projektor-Kontrolle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#collisioncheck">CollisionCheck</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-overview">Übersicht über die Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#calibrate-base-plane"><code class="docutils literal notranslate"><span class="pre">calibrate_base_plane</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-base-plane-calibration"><code class="docutils literal notranslate"><span class="pre">get_base_plane_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-base-plane-calibration"><code class="docutils literal notranslate"><span class="pre">delete_base_plane_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-region-of-interest-2d"><code class="docutils literal notranslate"><span class="pre">set_region_of_interest_2d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-regions-of-interest-2d"><code class="docutils literal notranslate"><span class="pre">get_regions_of_interest_2d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-regions-of-interest-2d"><code class="docutils literal notranslate"><span class="pre">delete_regions_of_interest_2d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-load-carrier"><code class="docutils literal notranslate"><span class="pre">set_load_carrier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-load-carriers"><code class="docutils literal notranslate"><span class="pre">get_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-load-carriers"><code class="docutils literal notranslate"><span class="pre">delete_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#detect-load-carriers"><code class="docutils literal notranslate"><span class="pre">detect_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#detect-filling-level"><code class="docutils literal notranslate"><span class="pre">detect_filling_level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-preferred-orientation"><code class="docutils literal notranslate"><span class="pre">set_preferred_orientation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-preferred-orientation"><code class="docutils literal notranslate"><span class="pre">get_preferred_orientation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-grasp"><code class="docutils literal notranslate"><span class="pre">set_grasp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-all-grasps"><code class="docutils literal notranslate"><span class="pre">set_all_grasps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-grasps"><code class="docutils literal notranslate"><span class="pre">get_grasps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-grasps"><code class="docutils literal notranslate"><span class="pre">delete_grasps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-symmetric-grasps"><code class="docutils literal notranslate"><span class="pre">get_symmetric_grasps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#detect-object"><code class="docutils literal notranslate"><span class="pre">detect_object</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#template-upload">Template Upload</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="collisioncheck.html">CollisionCheck</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#introduction">Einleitung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#setting-a-gripper">Erstellen eines Greifers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#robot-flange-radius">Flanschradius</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#creating-a-gripper-via-the-rest-api">Erstellen eines Greifers über die REST-API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#creating-a-gripper-in-the-webgui">Erstellen eines Greifers in der Web GUI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#calculated-tcp-position">Berechnete TCP-Position</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#creating-rotationally-asymmetric-grippers">Nicht-rotationssymmetrische Greifer erstellen</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#collision-checking">Kollisionsprüfung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#stand-alone-collision-checking">Stand-Alone Kollisionsprüfung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#collision-checking-within-other-modules">Integrierte Kollisionsprüfung in anderen Modulen</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#parameters">Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#parameter-overview">Übersicht der Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#description-of-run-time-parameters">Beschreibung der Laufzeitparameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#status-values">Statuswerte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#set-gripper"><code class="docutils literal notranslate"><span class="pre">set_gripper</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#get-grippers"><code class="docutils literal notranslate"><span class="pre">get_grippers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#delete-grippers"><code class="docutils literal notranslate"><span class="pre">delete_grippers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#check-collision"><code class="docutils literal notranslate"><span class="pre">check_collision</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="commonfunctionalities.html">Gemeinsame Funktionalitäten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier.html">Load Carrier Funktionalität</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#load-carrier">Load Carrier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-load-carriers">Erkennung von Load Carriern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-filling-level">Füllstandserkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#interaction-with-other-components">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="roi.html">Region of Interest Funktionalität</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Schnittstellen</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Kategorie: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Kategorie: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Kategorie: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Kategorie: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Kategorie: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Kategorie: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk-Daten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_nodes.html">Module, Parameter und Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_datastreams.html">Datenströme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_syslogs.html">System und Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_datamodel.html">Datentyp-Definitionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_swagger_ui.html">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rc_dynamics.html">Die rc_dynamics-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#starting-stopping-dynamic-state-estimation">Starten/Stoppen der Dynamik-Zustandsschätzungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#configuring-data-streams">Konfiguration von Datenströmen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#data-stream-protocol">Datenstromprotokoll</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#rc-dynamics-api">Die rc_dynamics-Programmierschnittstelle</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Konfiguration der Ethernet-Verbindung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Allgemeine XML-Struktur</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Rückgabecode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Anfrage-XML-Struktur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Antwort-XML-Struktur</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI-XML-Konfigurationsdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Wartung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Reinigung der Kameralinsen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Kamerakalibrierung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Neustart des <em>rc_visard</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Anschlussset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Verkabelung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet-Anschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Stromanschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Netzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Ersatzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Fehlerbehebung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED-Farben</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Probleme mit der Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Probleme mit der Konnektivität</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Probleme mit den Kamerabildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Probleme mit Tiefen-/Disparitäts-, Fehler- oder Konfidenzbildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#dynamics-issues">Probleme mit der Zustandsschätzung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">Probleme mit GigE&nbsp;Vision/GenICam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Kontakt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Adresse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Anhang</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pose_formats.html">Formate für Posendaten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyzabc-format">XYZABC-Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyz-quaternion-format">XYZ+Quaternion-Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#conversion-from-abc-to-quaternion">Umrechnung von ABC in Quaternionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#conversion-from-quaternion-to-abc">Umrechnung von Quaternionen in ABC</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Dokumentation</a> &raquo;</li>
+        
+          <li><a href="optional.html">Optionale Softwaremodule</a> &raquo;</li>
+        
+      <li>SilhouetteMatch</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="silhouettematch">
+<span id="sect-silhouettematch"></span><h1>SilhouetteMatch<a class="headerlink" href="#silhouettematch" title="Link zu dieser Überschrift">¶</a></h1>
+<div class="section" id="introduction">
+<span id="index-0"></span><h2>Einführung<a class="headerlink" href="#introduction" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Das SilhouetteMatch-Modul ist ein optional erhältliches Modul, welches intern auf dem <em>rc_visard</em> läuft. Das SilhouetteMatch-Modul erkennt Objekte, indem eine vordefinierte Silhouette („Template“) mit Kanten im Bild verglichen wird.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Das SilhouetteMatch-Modul ist optional und benötigt eine eigene <a class="reference internal" href="maintenance.html#sect-updating-license"><span class="std std-ref">Lizenz</span></a>, welche erworben werden muss.</p>
+</div>
+<p>Für jedes Objekt, das mit dem SilhouetteMatch-Modul erkannt werden soll, wird ein Template benötigt. Roboception bietet hierfür einen Template-Generierungsservice auf ihrer <a class="reference external" href="https://roboception.com/de/template-request-de/">Website</a> an, auf der der Benutzer CAD-Daten oder mit dem System aufgenommene Daten hochladen kann, um Templates generieren zu lassen.</p>
+<p>Templates bestehen aus den prägnanten Kanten eines Objekts. Die Kanten des Templates werden mit den erkannten Kanten im linken und rechten Kamerabild abgeglichen, wobei die Größe der Objekte und deren Abstand zur Kamera mit einbezogen wird. Die Posen der erkannten Objekte werden zurückgegeben und können beispielsweise benutzt werden, um die Objekte zu greifen.</p>
+<p>Das SilhouetteMatch-Modul bietet:</p>
+<ul class="simple">
+<li>eine intuitiv gestaltete Bedienoberfläche für Inbetriebnahme, Konfiguration und Test auf der <em>rc_visard</em> <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a></li>
+<li>eine <a class="reference internal" href="rest_api.html"><span class="doc">REST-API-Schnittstelle</span></a> und eine <a class="reference internal" href="eki.html"><span class="doc">KUKA Ethernet KRL Schnittstelle</span></a></li>
+<li>die Möglichkeit, sogenannte Regions of Interest (ROIs) zu definieren, um relevante Teilbereiche des Kamerabilds auszuwählen (siehe <a class="reference internal" href="#sect-silhouettematch-roi"><span class="std std-ref">Setzen einer Region of Interest</span></a>)</li>
+<li>eine integrierte Behältererkennung (siehe <a class="reference internal" href="loadcarrier.html#sect-loadcarrier"><span class="std std-ref">Load Carrier Funktionalität</span></a>), um in Bin-Picking-Anwendungen („Griff in die Kiste“) Greifpunkte nur für Objekte in dem erkannten Behälter zu berechnen</li>
+<li>die Definition von Greifpunkten für jedes Template über eine interaktive Visualisierung in der Web GUI</li>
+<li>die Unterstützung von sowohl statisch montierten als auch robotergeführten Kameras. Optional kann es mit der <a class="reference internal" href="handeye_calibration.html"><span class="doc">Hand-Auge-Kalibrierung</span></a>  kombiniert werden, um Greifposen in einem benutzerdefinierten externen Koordinatensystem zu liefern</li>
+<li>eine Sortierung der Greifpunkte nach ihrer Erreichbarkeit, sodass die Greifpunkte, die entlang der z-Achse des TCP am dichtesten an der Kamera liegen, zuerst zurückgeliefert werden</li>
+</ul>
+<div class="section" id="suitable-objects">
+<h3>Taugliche Objekte<a class="headerlink" href="#suitable-objects" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Das SilhouetteMatch-Modul ist für Objekte ausgelegt, die prägnante Kanten auf einer Ebene besitzen, welche parallel zu der Basisebene ist, auf der die Objekte liegen. Das trifft beispielsweise auf flache, nicht-transparente Objekte zu, wie gefräste, lasergeschnittene oder wasserstrahlgeschnittene Teile. Komplexere Objekte können auch erkannt werden, solange sie prägnante Kanten auf einer Ebene besitzen, z.B. ein gedrucktes Muster auf einer ebenen Fläche.</p>
+<p>Das SilhouetteMatch-Modul funktioniert am besten für Objekte, die auf einer texturlosen Basisebene liegen. Die Farbe der Basisebene sollte so gewählt werden, dass im Intensitätsbild ein klarer Kontrast zwischen den Objekten und der Basisebene sichtbar ist.</p>
+</div>
+<div class="section" id="suitable-scene">
+<h3>Taugliche Szene<a class="headerlink" href="#suitable-scene" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Eine für das SilhouetteMatch-Modul taugliche Szene muss folgende Bedingungen erfüllen:</p>
+<ul class="simple">
+<li>Die zu erkennenden Objekte müssen, wie oben beschrieben, tauglich für das SilhouetteMatch-Modul sein.</li>
+<li>Nur Objekte, die zum selben Template gehören, dürfen gleichzeitig sichtbar sein (sortenrein). Falls auch andere Objekte sichtbar sind, muss eine passende Region of Interest (ROI) festgelegt werden.</li>
+<li>Alle sichtbaren Objekte befinden sich auf einer gemeinsamen Basisebene, welche kalibriert werden muss.</li>
+<li>Die Verkippung der Basisebene zur Blickrichtung der Kamera darf 10 Grad nicht übersteigen.</li>
+<li>Die Objekte sind weder teilweise noch komplett verdeckt.</li>
+<li>Alle sichtbaren Objekte liegen richtig herum.</li>
+<li>Die Objektkanten, welche abgeglichen werden sollen, sind sowohl im linken als auch im rechten Kamerabild zu sehen.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="base-plane-calibration">
+<span id="sect-silhouettematch-base-plane-calib"></span><h2>Kalibrierung der Basisebene<a class="headerlink" href="#base-plane-calibration" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-1">Bevor Objekte erkannt werden können, muss die Basisebene kalibriert werden. Hierbei wird die Distanz und der Winkel der Ebene, auf welcher die Objekte liegen, gemessen und persistent auf dem <em>rc_visard</em> gespeichert.</p>
+<p>Durch die Trennung der Kalibrierung der Basisebene von der eigentlichen Objekterkennung werden beispielsweise Szenarien ermöglicht, in denen die Basisebene zeitweise verdeckt ist. Darüber hinaus wird die Berechnungszeit der Objekterkennung für Szenarien verringert, in denen die Basisebene für eine gewisse Zeit fixiert ist – die Basisebene muss in diesem Fall nicht fortlaufend neu detektiert werden.</p>
+<p>Die Kalibrierung der Basisebene kann mit drei unterschiedlichen Verfahren durchgeführt werden, auf die im Folgenden näher eingegangen wird:</p>
+<ul class="simple">
+<li>AprilTag-basiert</li>
+<li>Stereo-basiert</li>
+<li>Manuell</li>
+</ul>
+<p>Die Kalibrierung ist erfolgreich, solange der Normalenvektor der Basisebene höchstens 10 Grad gegen die Blickrichtung der Kamera verkippt ist. Eine erfolgreiche Kalibrierung wird persistent auf dem <em>rc_visard</em> gespeichert, bis sie entweder gelöscht wird oder eine neue Kalibrierung durchgeführt wird.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Um Datenschutzproblemen entgegenzuwirken, wird die Visualisierung der Kalibrierung der Basisebene nach einem Neustart des <em>rc_visard</em> verschwommen dargestellt.</p>
+</div>
+<p>In Szenarien, in denen die Basisebene nicht direkt kalibriert werden kann, ist es auch möglich, zu einer zur Basisebene parallel liegenden Ebene zu kalibrieren. In diesem Fall kann der Parameter <code class="docutils literal notranslate"><span class="pre">offset</span></code> benutzt werden, um die geschätzte Ebene auf die eigentliche Basisebene zu verschieben. Der Parameter <code class="docutils literal notranslate"><span class="pre">offset</span></code> gibt die Distanz in Metern an, um welche die geschätzte Ebene in Richtung der Kamera verschoben wird.</p>
+<p>In der REST-API ist eine Ebene durch eine Normale (<code class="docutils literal notranslate"><span class="pre">normal</span></code>) und einen Abstand (<code class="docutils literal notranslate"><span class="pre">distance</span></code>) definiert. <code class="docutils literal notranslate"><span class="pre">normal</span></code> ist ein normalisierter 3-Vektor, welcher die Normale der Ebene spezifiziert. Die Normale zeigt immer von der Kamera weg. <code class="docutils literal notranslate"><span class="pre">distance</span></code> repräsentiert den Abstand der Ebene von der Kamera in Richtung der Normale. <code class="docutils literal notranslate"><span class="pre">normal</span></code> und <code class="docutils literal notranslate"><span class="pre">distance</span></code> können auch als <span class="math notranslate nohighlight">\(a\)</span>, <span class="math notranslate nohighlight">\(b\)</span>, <span class="math notranslate nohighlight">\(c\)</span>, bzw. <span class="math notranslate nohighlight">\(d\)</span> der Ebenengleichung interpretiert werden:</p>
+<div class="math notranslate nohighlight">
+\[ax + by + cz + d = 0\]</div>
+<div class="section" id="apriltag-based-base-plane-calibration">
+<h3>AprilTag-basierte Kalibrierung der Basisebene<a class="headerlink" href="#apriltag-based-base-plane-calibration" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Die AprilTag-Erkennung (siehe <a class="reference internal" href="tagdetect.html"><span class="doc">TagDetect</span></a>) wird benutzt, um AprilTags in der Szene zu finden und eine Ebene durch diese zu legen. Mindestens drei AprilTags müssen so auf der Basisebene platziert werden, dass sie im linken und rechten Kamerabild zu sehen sind. Die AprilTags sollten ein möglichst großes Dreieck aufspannen. Je größer das Dreieck ist, desto höher wird die Genauigkeit der Schätzung der Basisebene. Diese Methode sollte benutzt werden, wenn die Basisebene untexturiert und kein externer Projektor mit Zufallsmuster angeschlossen ist. Diese Kalibriermethode ist sowohl über die <a class="reference internal" href="rest_api.html"><span class="doc">REST-API-Schnittstelle</span></a> als auch über die <em>rc_visard</em> Web GUI verfügbar.</p>
+</div>
+<div class="section" id="stereo-based-base-plane-calibration">
+<h3>Stereo-basierte Kalibrierung der Basisebene<a class="headerlink" href="#stereo-based-base-plane-calibration" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Die 3D-Punktwolke, welche vom Stereo-Matching-Modul berechnet wird, wird benutzt um eine Ebene in den 3D-Punkten zu finden. Die Region of Interest (ROI) sollte für diese Methode deshalb so gewählt werden, dass nur die relevante Basisebene eingeschlossen wird. Der Parameter <code class="docutils literal notranslate"><span class="pre">plane_preference</span></code> erlaubt es auszuwählen, ob die zur Kamera am nächsten gelegene oder die von der Kamera am weitesten entfernte Ebene als Basisebene benutzt wird. Die am nächsten gelegene Ebene kann in Szenarien ausgewählt werden, in denen die Basisebene vollständig von Objekten verdeckt wird oder für die Kalibrierung nicht erreichbar ist. Diese Methode sollte benutzt werden, wenn die Basisebene texturiert ist oder ein Projektor mit Zufallsmuster angeschlossen ist. Diese Kalibriermethode ist sowohl über die <a class="reference internal" href="rest_api.html"><span class="doc">REST-API-Schnittstelle</span></a> als auch über die <em>rc_visard</em> Web GUI verfügbar.</p>
+</div>
+<div class="section" id="manual-base-plane-calibration">
+<h3>Manuelle Kalibrierung der Basisebene<a class="headerlink" href="#manual-base-plane-calibration" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Die Basisebene kann manuell gesetzt werden, falls die Parameter bekannt sind – beispielsweise von einer vorangegangenen Kalibrierung. Diese Kalibriermethode ist nur über die <a class="reference internal" href="rest_api.html"><span class="doc">REST-API-Schnittstelle</span></a> und nicht über die <em>rc_visard</em> Web GUI verfügbar.</p>
+</div>
+</div>
+<div class="section" id="setting-a-region-of-interest">
+<span id="sect-silhouettematch-roi"></span><h2>Setzen einer Region of Interest<a class="headerlink" href="#setting-a-region-of-interest" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-2">Falls Objekte nur in einem Teil des Sichtfelds der Kamera erkannt werden sollen, kann eine Region of Interest (ROI) gesetzt werden. Eine ROI ist als rechteckiger Teil des linken Kamerabilds definiert und kann sowohl über die <a class="reference internal" href="rest_api.html"><span class="doc">REST-API-Schnittstelle</span></a> als auch über die <em>rc_visard</em> Web GUI gesetzt werden. Die Web GUI bietet hierfür ein einfach zu benutzendes Werkzeug an. Es können bis zu 50 ROIs angelegt und persistent auf dem <em>rc_visard</em> gespeichert werden. Jeder ROI muss ein eindeutiger Name zugewiesen werden, um diese später während der Kalibrierung der Basisebene oder der Objekterkennung verwenden zu können.</p>
+<p>In der REST-API ist eine 2D-ROI über folgende Werte spezifiziert:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">id</span></code>: Eindeutiger Name der ROI</li>
+<li><code class="docutils literal notranslate"><span class="pre">offset_x</span></code>, <code class="docutils literal notranslate"><span class="pre">offset_y</span></code>: Abstand in Pixeln von der oberen rechten Bildecke entlang der x- bzw. y-Achse</li>
+<li><code class="docutils literal notranslate"><span class="pre">width</span></code>, <code class="docutils literal notranslate"><span class="pre">height</span></code>: Breite und Höhe in Pixeln</li>
+</ul>
+</div>
+<div class="section" id="setting-of-grasp-points">
+<span id="sect-silhouettematch-grasps"></span><h2>Setzen von Greifpunkten<a class="headerlink" href="#setting-of-grasp-points" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-3">Um das SilhouetteMatch-Modul direkt in einer Roboteranwendung zu nutzen, können für jedes Template Greifpunkte definiert werden. Ein Greifpunkt repräsentiert die gewünschte Position und Orientierung des Roboter-TCPs (Tool Center Point), mit der das Objekt gegriffen werden kann (siehe <a class="reference internal" href="#fig-silhouettematch-grasp-points"><span class="std std-numref">Abb. 55</span></a>).</p>
+<div class="figure align-center" id="id1">
+<span id="fig-silhouettematch-grasp-points"></span><a class="reference internal image-reference" href="_images/grasp_points_silm.svg"><img alt="_images/grasp_points_silm.svg" src="_images/grasp_points_silm.svg" width="50%" /></a>
+<p class="caption"><span class="caption-number">Abb. 55 </span><span class="caption-text">Definition von Greifpunkten bezogen auf den Roboter-TCP</span></p>
+</div>
+<p>Jeder Greifpunkt enthält eine <code class="docutils literal notranslate"><span class="pre">id</span></code>, die eindeutig über alle Greifpunkte eines Objekt-Templates sein muss, die ID des Templates (<code class="docutils literal notranslate"><span class="pre">template_id</span></code>), zu dem der Greifpunkt hinzugefügt wird, und die Greifpose (<code class="docutils literal notranslate"><span class="pre">pose</span></code>) im Koordinatensystem des Templates. Greifpunkte können über die <a class="reference internal" href="rest_api.html"><span class="doc">REST-API-Schnittstelle</span></a>, oder über die interaktive Visualisierung in der Web GUI definiert werden. Der <em>rc_visard</em> kann bis zu 50 Greifpunkte pro Template speichern.</p>
+<div class="section" id="setting-grasp-points-in-the-webgui">
+<h3>Setzen von Greifpunken in der Web GUI<a class="headerlink" href="#setting-grasp-points-in-the-webgui" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Die <em>rc_visard</em> Web GUI bietet eine interaktive und intuitive Möglichkeit, Greifpunkte für Objekt-Templates zu setzen. Im ersten Schritt muss das Objekt-Template auf den <em>rc_visard</em> hochgeladen werden. Das kann über die <em>SilhouetteMatch</em>-Seite (unter der Seite <em>Module</em>) in der Web GUI erfolgen, indem im Abschnitt <em>Templates und Greifpunkte</em> auf <em>neues Template hinzufügen</em> geklickt wird. Wenn der Upload abgeschlossen ist, erscheint ein Fenster mit einer 3D-Visualisierung des Templates, in dem Greifpunkte hinzugefügt oder existierende Greifpunkte bearbeitet werden können. Dasselbe Fenster erscheint, wenn ein vorhandenes Template bearbeitet wird.</p>
+<p>Dieses Fenster bietet zwei Möglichkeiten, um Greifpunkte zu setzen:</p>
+<ol class="arabic simple">
+<li><strong>Greifpunkte manuell hinzufügen</strong>: Durch Klicken auf das <em>+</em> Symbol wird ein neuer Greifpunkt im Ursprung des Templates angelegt. Diesem Greifpunkt kann ein eindeutiger Name gegeben werden, der seiner ID entspricht. Die gewünschte Pose des Greifpunkts im Koordinatensystem des Templates kann in den Feldern für <em>Position</em> und <em>Roll/Pitch/Yaw</em> eingegeben werden. Die Greifpunkte können frei platziert werden, auch außerhalb oder innerhalb des Templates, und werden mit ihrer Orientierung zur Überprüfung in der Visualisierung veranschaulicht.</li>
+<li><strong>Greifpunkte interaktiv hinzufügen</strong>: Greifpunkte können interaktiv zu einem Template hinzugefügt werden, indem zuerst auf den Button <em>Greifpunkt hinzufügen</em> oben links in der Visualisierung und anschließend auf den gewünschten Punkt auf dem Template geklickt wird. Der Greifpunkt wird an die Oberfläche angeheftet und seine Orientierung entspricht einem rechtshändigen Koordinatensystem, sodass die z-Achse senkrecht auf der Template-Oberfläche steht und in das Template hineingerichtet ist. Die Position und Orientierung des Greifpunkts im Koordinatensystem des Templates ist auf der rechten Seite angezeigt. Die Position und Orientierung des Greifpunkts kann auch interaktiv verändert werden. Für den Fall, dass <em>An Oberfläche anheften</em> in der Visualisierung aktiv ist (das ist der Standardwert), kann der Greifpunkt durch Klicken auf <em>Verschieben</em> und anschließendes Klicken auf den Greifpunkt über die Oberfläche des Templates zur gewünschten Position bewegt werden. Die Orientierung des Greifpunkts um die Oberflächennormale kann ebenfalls interaktiv verändert werden, in dem auf <em>Rotieren</em> geklickt wird und anschließend der Greifpunkt mit der Maus rotiert wird. Wenn <em>An Oberfläche anheften</em> nicht aktiv ist, kann der Greifpunkt mit der Maus frei in allen drei Raumrichtungen verschoben und rotiert werden.</li>
+</ol>
+<p>Wenn das Template Symmetrien hat, können die Greifpunkte, die symmetrisch zum definierten Greifpunkt sind, durch Klick auf <em>Symmetrische Greifpunkte anzeigen</em> angezeigt werden.</p>
+</div>
+<div class="section" id="setting-grasp-points-via-the-rest-api">
+<h3>Setzen von Greifpunkten über die REST-API<a class="headerlink" href="#setting-grasp-points-via-the-rest-api" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Greifpunkte können über die <a class="reference internal" href="rest_api.html"><span class="doc">REST-API-Schnittstelle</span></a> mithilfe des <code class="docutils literal notranslate"><span class="pre">set_grasp</span></code> oder <code class="docutils literal notranslate"><span class="pre">set_all_grasps</span></code> Services gesetzt werden (siehe <a class="reference internal" href="#sect-silhouettematch-services"><span class="std std-ref">Services</span></a>). Im SilhouetteMatch-Modul besteht ein Greifpunkt aus der <code class="docutils literal notranslate"><span class="pre">id</span></code>, die eindeutig über alle Greifpunkte eines Objekt-Templates sein muss, der ID des Templates (<code class="docutils literal notranslate"><span class="pre">template_id</span></code>), zu dem der Greifpunkt hinzugefügt wird, und der Greifpose (<code class="docutils literal notranslate"><span class="pre">pose</span></code>). Die Pose ist im Koordinatensystem des Templates angegeben und besteht aus einer Position (<code class="docutils literal notranslate"><span class="pre">position</span></code>) in Metern und einer Orientierung (<code class="docutils literal notranslate"><span class="pre">orientation</span></code>) als Quaternion.</p>
+</div>
+</div>
+<div class="section" id="setting-the-preferred-orientation-of-the-tcp">
+<span id="sect-silhouettematch-set-preferred-orientation"></span><h2>Setzen der bevorzugten TCP-Orientierung<a class="headerlink" href="#setting-the-preferred-orientation-of-the-tcp" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-4">Das SilhouetteMatch-Modul berechnet die Erreichbarkeit von Greifpunkten basierend auf der bevorzugten Orientierung des Greifers oder TCPs. Die bevorzugte Orientierung kann über den Service <code class="docutils literal notranslate"><span class="pre">set_preferred_orientation</span></code> oder über die <em>SilhouetteMatch</em>-Seite in der Web GUI gesetzt werden. Die resultierende Richtung der z-Achse des TCP wird genutzt, um Greifpunkte zu verwerfen, die der Greifer nicht erreichen kann. Weiterhin wird die bevorzugte Orientierung genutzt, um die erreichbaren Greifpunkte so zu sortieren, dass diejenigen, die entlang der z-Achse der bevorzugten TCP-Orientierung am dichtesten an der Kamera liegen, zuerst zurückgeliefert werden.</p>
+<p>Die bevorzugte TCP-Orientierung kann im Kamerakoordinatensystem oder im externen Koordinatensystem gesetzt werden, wenn eine Hand-Auge-Kalibrierung verfügbar ist. Wenn die bevorzugte TCP-Orientierung im externen Koordinatensystem definiert ist, und der Sensor am Roboter montiert ist, muss bei jedem Aufruf der Objekterkennung die aktuelle Roboterpose angegeben werden, damit die bevorzugte Orientierung zur Filterung und Sortierung der Greifpunkte auf den erkannten Objekten genutzt werden kann. Wenn keine bevorzugte TCP-Orientierung gesetzt wird, wird die z-Achse der linken Kamera als die bevorzugte TCP-Orientierung genutzt.</p>
+</div>
+<div class="section" id="detection-of-objects">
+<span id="sect-silhouettematch-detect"></span><h2>Objekterkennung<a class="headerlink" href="#detection-of-objects" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-5">Objekte können erst nach einer erfolgreichen Kalibrierung der Basisebene erkannt werden. Es muss sichergestellt werden, dass sich Position und Orientierung der Basisebene zwischen Kalibrierung und Objekterkennung nicht ändern. Anderenfalls muss die Kalibrierung erneuert werden.</p>
+<p>Um eine Objekterkennung durchzuführen, müssen im Allgemeinen die folgenden Serviceargumente an das SilhouetteMatch-Modul übergeben werden:</p>
+<ul class="simple">
+<li>das Template des Objekts, welches in der Szene erkannt werden soll</li>
+<li>das Koordinatensystem, in dem die Posen der detektierten Objekte zurückgegeben werden sollen (siehe <a class="reference internal" href="#sect-silhouettematch-hand-eye-calib"><span class="std std-ref">Hand-Auge-Kalibrierung</span></a>)</li>
+</ul>
+<p>Optional können auch folgende Serviceargumente an das SilhouetteMatch-Modul übergeben werden:</p>
+<ul class="simple">
+<li>ein Versatz, falls Objekte nicht direkt auf der Basisebene liegen, sondern auf einer zu dieser parallelen Ebene. Der Versatz bezeichnet die Distanz beider Ebenen in Richtung der Kamera. Wenn dieser Wert nicht gesetzt wird, wird ein Versatz von 0 angenommen.</li>
+<li>die ID des Load Carriers, der die zu detektierenden Objekte enthält</li>
+<li>die ID der Region of Interest, innerhalb der nach dem Load Carrier gesucht wird, oder – falls kein Load Carrier angegeben ist – die Region of Interest, innerhalb der Objekte erkannt werden sollen. Wenn keine ROI gesetzt wird, werden Objekte im gesamten Kamerabild gesucht.</li>
+<li>die aktuelle Roboterpose, wenn die Kamera am Roboter montiert ist und als Koordinatensystem <code class="docutils literal notranslate"><span class="pre">external</span></code> gewählt wurde, oder die bevorzugte TCP-Orientierung im externen Koordinatensystem angegeben ist</li>
+<li>Informationen für die Kollisionsprüfung: Die ID des Greifers, um die Kollisionsprüfung zu aktivieren, und optional ein Greif-Offset, der die Vorgreifposition definiert. Die Kollisionsprüfung benötigt eine gesonderte CollisionCheck-<a class="reference internal" href="maintenance.html#sect-updating-license"><span class="std std-ref">Lizenz</span></a>. Details zur Kollisionsprüfung sind in <a class="reference internal" href="#sect-silhouettematch-collision-check-dep"><span class="std std-ref">CollisionCheck</span></a> gegeben.</li>
+</ul>
+<p>Im <em>Ausprobieren</em>-Abschnitt der Seite <em>SilhouetteMatch</em> der Web GUI kann die Objektdetektion ausprobiert werden. Das Ergebnis wird, wie in <a class="reference internal" href="#fig-silm-result-images"><span class="std std-numref">Abb. 56</span></a> dargestellt, visualisiert.</p>
+<div class="figure align-center" id="id2">
+<span id="fig-silm-result-images"></span><a class="reference internal image-reference" href="_images/silhouetteMatchResults_de.png"><img alt="_images/silhouetteMatchResults_de.png" src="_images/silhouetteMatchResults_de.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 56 </span><span class="caption-text">Ergebnisbild des SilhouetteMatch-Moduls, wie über die Web GUI dargestellt</span></p>
+</div>
+<p>Das obere linke Bild zeigt die ausgewählte Region of Interest. Das untere linke Bild zeigt die kalibrierte Basisebene in blau und das zu erkennende Template in rot mit den Greifpunkten (siehe <a class="reference internal" href="#sect-silhouettematch-grasps"><span class="std std-ref">Setzen von Greifpunkten</span></a>) in grün. Das Template wird passend zu Abstand und Verkippung der Basisebene verformt dargestellt.</p>
+<p>Das rechte Bild zeigt das Detektionsergebnis. Die blauschattierte Fläche auf der linken Seite markiert den Teil des linken Kamerabilds, welcher nicht mit dem rechten Kamerabild überlappt. In diesem Bereich können keine Objekte erkannt werden. Die gewählte Region of Interest wird als petrolfarbenes Rechteck dargestellt. Erkannte Kanten im Bild werden in hellem Blau und erkannte Objekte (<code class="docutils literal notranslate"><span class="pre">instances</span></code>) in rot visualisiert. Blaue Punkte markieren jeweils den Ursprung der detektierten Objekte, wie im Template festgelegt. Erreichbare Greifpunkte sind als grüne Punkte dargestellt. Nicht erreichbare Greifpunkte werden als rote Punkte visualisiert (nicht im Bild dargestellt).</p>
+<p>Die Posen der Objektursprünge werden im gewählen Koordinatensystem zurückgegeben. Wenn das ausgewählte Template auch Greifpunkte hat, dann wird zusätzlich zu den erkannten Objekten auch eine Liste von Greifpunkten (<code class="docutils literal notranslate"><span class="pre">grasps</span></code>) für alle erkannten Objekte zurückgegeben. Die Greifpunkte in dieser Liste sind nach ihrer Erreichbarkeit sortiert (siehe <a class="reference internal" href="#sect-silhouettematch-set-preferred-orientation"><span class="std std-ref">Setzen der bevorzugten TCP-Orientierung</span></a>). Die Posen der Greifpunkte sind im gewünschten Koordinatensystem angegeben. Die erkannten Objekte und die Greifpunkte können einander über ihre UUIDs zugeordnet werden. Falls das Template eine kontinuierliche Rotationssymmetrie aufweist, besitzen alle Ergebnisposen die gleiche Orientierung. Für nicht-rotationssymmetrische Objekte richtet sich die Orientierung nach der Normalen der Basisebene.</p>
+<p>Die Detektionsergebnisse und Berechnungszeiten werden durch Laufzeitparameter beeinflusst, welche weiter unten aufgezählt und beschrieben werden. Unsachgemäße Parameterwerte können zu Zeitüberschreitungen im Detektionsprozess des SilhouetteMatch-Moduls führen.</p>
+</div>
+<div class="section" id="interaction-with-other-components">
+<h2>Wechselwirkung mit anderen Modulen<a class="headerlink" href="#interaction-with-other-components" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Die folgenden, auf dem <em>rc_visard</em> laufenden Module liefern Daten für das SilhouetteMatch-Modul oder haben Einfluss auf die Datenverarbeitung.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Jede Konfigurationsänderung dieser Module kann direkte Auswirkungen auf die Qualität oder das Leistungsverhalten des SilhouetteMatch-Moduls haben.</p>
+</div>
+<div class="section" id="stereo-camera-and-stereo-matching">
+<span id="sect-silhouettematch-stereo-camera-matching"></span><h3>Stereokamera und Stereo-Matching<a class="headerlink" href="#stereo-camera-and-stereo-matching" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Das SilhouetteMatch-Modul verarbeitet intern die rektifizierten Bilder des <a class="reference internal" href="stereo_camera.html"><span class="doc">Stereokamera</span></a>-Moduls (<code class="docutils literal notranslate"><span class="pre">rc_stereocamera</span></code>). Es sollte deshalb auf eine passende Belichtungszeit geachtet werden, um optimale Ergebnisse zu erhalten.</p>
+<p>Für die Kalibrierung der Basisebene mit der Stereo-Methode wird das Disparitätsbild des <a class="reference internal" href="stereo_matching.html"><span class="doc">Stereo-Matching</span></a>-Moduls (<code class="docutils literal notranslate"><span class="pre">rc_stereomatching</span></code>) verarbeitet. Abgesehen davon sollte das Stereo-Matching-Modul nicht parallel zum SilhouetteMatch-Modul ausgeführt werden, da die Laufzeit der Objekterkennung sonst negativ beeinflusst wird.</p>
+<p>Für beste Ergebnisse wird empfohlen, <a class="reference internal" href="stereo_matching.html#expl-depth-smooth"><span class="std std-ref">Glättung</span></a>  für <a class="reference internal" href="stereo_matching.html"><span class="doc">Stereo-Matching</span></a> zu aktivieren.</p>
+</div>
+<div class="section" id="io-and-projector-control">
+<h3>IOControl und Projektor-Kontrolle<a class="headerlink" href="#io-and-projector-control" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Wenn der <em>rc_visard</em> in Verbindung mit einem externen Musterprojektor und dem Modul <a class="reference internal" href="iocontrol.html"><span class="doc">IOControl und Projektor-Kontrolle</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_iocontrol</span></code>) betrieben wird, sollte der Projektor für die stereobasierte Kalibrierung der Basisebene benutzt werden.</p>
+<p>Das projizierte Muster darf während der Objektdetektion nicht im linken oder rechten Kamerabild sichtbar sein, da es den Detektionsvorgang behindert. Der Projektor sollte deshalb entweder ausgeschaltet sein oder im Modus <code class="docutils literal notranslate"><span class="pre">ExposureAlternateActive</span></code> betrieben werden.</p>
+</div>
+<div class="section" id="hand-eye-calibration">
+<span id="sect-silhouettematch-hand-eye-calib"></span><h3>Hand-Auge-Kalibrierung<a class="headerlink" href="#hand-eye-calibration" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Wenn die Kamera zu einem Roboter kalibriert ist, kann das SilhouetteMatch-Modul die Ergebnisposen automatisch im Roboterkoordinatensystem liefern. Für die <a class="reference internal" href="#sect-silhouettematch-services"><span class="std std-ref">Services</span></a> des SilhouetteMatch-Moduls kann das Referenzkoordinatensystem aller Posen über das Argument <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> angegeben werden.</p>
+<p>Es kann zwischen den folgenden zwei Werten für <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> gewählt werden:</p>
+<ol class="arabic simple">
+<li><strong>Kamera-Koordinatensystem</strong> (<code class="docutils literal notranslate"><span class="pre">camera</span></code>): Alle Posen und Ebenenparameter werden im Kamera-Koordinatensystem angegeben.</li>
+<li><strong>Benutzerdefiniertes externes Koordinatensystem</strong> (<code class="docutils literal notranslate"><span class="pre">external</span></code>): Alle Posen und Ebenenparameter sind im sogenannten externen Koordinatensystem angegeben, welches vom Nutzer während der Hand-Auge-Kalibrierung gewählt wurde. In diesem Fall bezieht das SilhouetteMatch-Modul alle notwendigen Informationen über die Kameramontage und die kalibrierte Hand-Auge-Transformation automatisch vom internen Modul <a class="reference internal" href="handeye_calibration.html"><span class="doc">Hand-Auge-Kalibrierung</span></a>. Für den Fall einer robotergeführten Kamera ist vom Nutzer zusätzlich die jeweils aktuelle Roboterpose <code class="docutils literal notranslate"><span class="pre">robot_pose</span></code> anzugeben.</li>
+</ol>
+<p>Zulässige Werte zur Angabe des Referenzkoordinatensystems sind <code class="docutils literal notranslate"><span class="pre">camera</span></code> und <code class="docutils literal notranslate"><span class="pre">external</span></code>. Andere Werte werden als ungültig zurückgewiesen.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Wurde keine Hand-Auge-Kalibrierung durchgeführt, muss als Referenzkoordinatensystem <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> immer <code class="docutils literal notranslate"><span class="pre">camera</span></code> angegeben werden.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Wird die Hand-Auge-Kalibrierung nach einer Kalibrierung der Basisebene verändert, wird die Kalibrierung der Basisebene als ungültig markiert und muss erneuert werden.</p>
+</div>
+<p>Für den Fall einer robotergeführten Kamera ist es abhängig von <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> und der bevorzugten TCP-Orientierung nötig, zusätzlich die aktuelle Roboterpose (<code class="docutils literal notranslate"><span class="pre">robot_pose</span></code>) zur Verfügung zu stellen:</p>
+<ul class="simple">
+<li>Wenn <code class="docutils literal notranslate"><span class="pre">external</span></code> als <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> ausgewählt ist, ist die Angabe der Roboterpose obligatorisch.</li>
+<li>Wenn die bevorzugte TCP-Orientierung in <code class="docutils literal notranslate"><span class="pre">external</span></code> definiert ist, ist die Angabe der Roboterpose obligatorisch.</li>
+<li>Wenn <code class="docutils literal notranslate"><span class="pre">camera</span></code> als <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> ausgewählt ist und die bevorzugte TCP-Orientierung in <code class="docutils literal notranslate"><span class="pre">external</span></code> definiert ist, ist die Angabe der Roboterpose optional.</li>
+</ul>
+<p>Wenn die aktuelle Roboterpose während der Kalibrierung der Basisebene angegeben wird, wird sie persistent auf dem <em>rc_visard</em> gespeichert. Falls für die Services <code class="docutils literal notranslate"><span class="pre">get_base_plane_calibration</span></code> oder <code class="docutils literal notranslate"><span class="pre">detect_objects</span></code> die dann aktuelle Roboterpose ebenfalls angegeben wird, wird die Basisebene automatisch zu der neuen Roboterpose transformiert. Das erlaubt dem Benutzer, die Roboterpose (und damit die Pose der Kamera) zwischen Kalibrierung der Basisebene und Objekterkennung zu verändern.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Eine Objekterkennung kann nur durchgeführt werden, wenn die Verkippung der Basisebene zur Sichtachse der Kamera ein 10-Grad-Limit nicht übersteigt.</p>
+</div>
+</div>
+<div class="section" id="collisioncheck">
+<span id="sect-silhouettematch-collision-check-dep"></span><h3>CollisionCheck<a class="headerlink" href="#collisioncheck" title="Link zu dieser Überschrift">¶</a></h3>
+<p id="index-6">Falls eine CollisionCheck-Lizenz verfügbar ist, kann die Kollisionsprüfung für die Greifpunktberechnung des SilhouetteMatch-Moduls aktiviert werden, indem die ID des benutzten Greifers und optional ein Greif-Offset an den <code class="docutils literal notranslate"><span class="pre">detect_object</span></code> Service übergeben werden. Der Greifer muss im CollisionCheck-Modul definiert werden (siehe <a class="reference internal" href="collisioncheck.html#sect-collisioncheck-gripper"><span class="std std-ref">Erstellen eines Greifers</span></a>) und Details über die Kollisionsprüfung werden in <a class="reference internal" href="collisioncheck.html#sect-collision-check-other-modules"><span class="std std-ref">Integrierte Kollisionsprüfung in anderen Modulen</span></a> gegeben.</p>
+<p>Wenn die Kollisionsprüfung aktiviert ist, werden nur kollisionsfreie Greifpunkte zurückgeliefert. Jedoch werden in der Ergebnis-Visualisierung oben auf der <em>SilhouetteMatch</em>-Seite der Web GUI kollidierende Greifpunkte als rote Punkte dargestellt.</p>
+<p>Die Laufzeitparameter des CollisionCheck-Moduls beeinflussen die Kollisionserkennung wie in <a class="reference internal" href="collisioncheck.html#sect-collisioncheck-parameters"><span class="std std-ref">CollisionCheck-Parameter</span></a> beschrieben.</p>
+</div>
+</div>
+<div class="section" id="parameters">
+<h2>Parameter<a class="headerlink" href="#parameters" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-7">Das SilhouetteMatch-Modul wird in der REST-API als <code class="docutils literal notranslate"><span class="pre">rc_silhouettematch</span></code> bezeichnet und in der <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> auf der Seite <em>SilhouetteMatch</em> (unter der Seite <em>Module</em>) dargestellt. Der Benutzer kann die Parameter entweder dort oder über die <a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API-Schnittstelle</span></a> ändern.</p>
+<div class="section" id="parameter-overview">
+<h3>Übersicht über die Parameter<a class="headerlink" href="#parameter-overview" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Dieses Softwaremodul bietet folgende Laufzeitparameter:</p>
+<table border="1" class="docutils" id="laufzeitparameter-des-rc-silhouettematch-moduls">
+<caption><span class="caption-number">Tab. 42 </span><span class="caption-text">Laufzeitparameter des <code class="docutils literal notranslate"><span class="pre">rc_silhouettematch</span></code>-Moduls</span><a class="headerlink" href="#laufzeitparameter-des-rc-silhouettematch-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Typ</th>
+<th class="head">Min.</th>
+<th class="head">Max.</th>
+<th class="head">Default</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">edge_sensitivity</span></code></td>
+<td>float64</td>
+<td>0.1</td>
+<td>1.0</td>
+<td>0.6</td>
+<td>Empfindlichkeit der Kantenerkennung</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">load_carrier_crop_distance</span></code></td>
+<td>float64</td>
+<td>0.0</td>
+<td>0.02</td>
+<td>0.005</td>
+<td>Sicherheitsspielraum um den das Load Carrier Innenmaß verringert wird, um eine Region of Interest für die Erkennung zu definieren</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">load_carrier_model_tolerance</span></code></td>
+<td>float64</td>
+<td>0.003</td>
+<td>0.025</td>
+<td>0.008</td>
+<td>Gibt an, wie weit die Abmessungen des Load Carriers von den Werten im Modell abweichen dürfen</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">match_max_distance</span></code></td>
+<td>float64</td>
+<td>0.0</td>
+<td>10.0</td>
+<td>2.5</td>
+<td>Der maximale tolerierte Abstand zwischen dem Template und den detektierten Kanten im Bild in Pixeln</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">match_percentile</span></code></td>
+<td>float64</td>
+<td>0.7</td>
+<td>1.0</td>
+<td>0.85</td>
+<td>Der Anteil der Template-Pixel, die innerhalb der maximalen Matchingdistanz liegen müssen, um ein Objekt erfolgreich zu detektieren</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">max_number_of_detected_objects</span></code></td>
+<td>int32</td>
+<td>1</td>
+<td>20</td>
+<td>10</td>
+<td>Maximale Anzahl der zu detektierenden Objekte</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">quality</span></code></td>
+<td>string</td>
+<td>-</td>
+<td>-</td>
+<td>High</td>
+<td>High, Medium, oder Low</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="description-of-run-time-parameters">
+<h3>Beschreibung der Laufzeitparameter<a class="headerlink" href="#description-of-run-time-parameters" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Die Laufzeitparameter werden zeilenweise auf der SilhouetteMatch-Seite in der Web GUI dargestellt. Im folgenden wird der Name des Parameters in der Web GUI in Klammern hinter dem eigentlichen Parameternamen angegeben. Die Parameter sind in derselben Reihenfolge wie in der Web GUI aufgelistet:</p>
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">max_number_of_detected_objects</span></code> (<em>Maximale Objektanzahl</em>)</dt>
+<dd>Dieser Parameter gibt an, wie viele Objekte maximal in der Szene erkannt werden sollen. Falls mehr als die angegebene Zahl an Objekten gefunden wurden, werden nur die besten Ergebnisse zurückgeliefert.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">load_carrier_model_tolerance</span></code> (<em>Modelltoleranz</em>)</dt>
+<dd>siehe <a class="reference internal" href="loadcarrier.html#sect-loadcarrier-parameters"><span class="std std-ref">Parameter der Load Carrier Funktionalität</span></a>.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">load_carrier_crop_distance</span></code> (<em>Cropping</em>)</dt>
+<dd>siehe <a class="reference internal" href="loadcarrier.html#sect-loadcarrier-parameters"><span class="std std-ref">Parameter der Load Carrier Funktionalität</span></a>.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">quality</span></code> (<em>Qualität</em>)</dt>
+<dd>Die Objekterkennung kann auf Bildern mit unterschiedlicher Auflösung durchgeführt werden: <code class="docutils literal notranslate"><span class="pre">High</span></code> (<em>Hoch</em>, 1280 x 960), <code class="docutils literal notranslate"><span class="pre">Medium</span></code> (<em>Mittel</em>, 640 x 480) oder <code class="docutils literal notranslate"><span class="pre">Low</span></code> (<em>Niedrig</em>, 320 x 240). Je niedriger die Auflösung ist, desto niedriger ist die Berechnungszeit der Objekterkennung, aber desto weniger Objektdetails sind erkennbar.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">match_max_distance</span></code> (<em>Maximale Matchingdistanz</em>)</dt>
+<dd>Dieser Parameter gibt den maximal tolerierten Abstand zwischen dem Template und den detektierten Kanten im Bild in Pixeln an. Falls das Objekt durch das Template nicht exakt genug beschrieben wird, wird es möglicherweise nicht erkannt, wenn dieser Wert zu klein ist. Höhere Werte können jedoch im Fall von komplexen Szenen und bei ähnlichen Objekten zu Fehldetektionen führen, und auch die Berechnungszeit erhöhen.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">match_percentile</span></code> (<em>Matching Perzentil</em>)</dt>
+<dd>Dieser Parameter kontrolliert, wie strikt der Detektionsprozess sein soll. Das Matching Perzentil gibt den Anteil der Template-Pixel an, die innerhalb der maximalen Matchingdistanz liegen müssen, um ein Objekt erfolgreich zu detektieren. Je höher der Wert, desto exakter muss ein Match sein, um als gültig angesehen zu werden.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">edge_sensitivity</span></code> (<em>Kantenempfindlichkeit</em>)</dt>
+<dd>Der Parameter beeinflusst, wie viele Kanten in den Kamerabildern gefunden werden. Umso größer dieser Parameter gewählt wird, umso mehr Kanten werden für die Erkennung benutzt. Eine große Anzahl von Kanten im Bild kann die Erkennung verlangsamen.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="status-values">
+<h2>Statuswerte<a class="headerlink" href="#status-values" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-8">Dieses Modul meldet folgende Statuswerte.</p>
+<table border="1" class="docutils" id="statuswerte-des-rc-silhouettematch-moduls">
+<caption><span class="caption-number">Tab. 43 </span><span class="caption-text">Statuswerte des <code class="docutils literal notranslate"><span class="pre">rc_silhouettematch</span></code>-Moduls</span><a class="headerlink" href="#statuswerte-des-rc-silhouettematch-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">calibrate_service_time</span></code></td>
+<td>Berechnungszeit für die Kalibrierung der Basisebene, einschließlich der Datenaufnahmezeit</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">data_acquisition_time</span></code></td>
+<td>Zeit in Sekunden, für die beim letzten Aufruf auf Bilddaten gewartet werden musste</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">load_carrier_detection_time</span></code></td>
+<td>Berechnungszeit für die letzte Load Carrier Detektion in Sekunden</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">detect_service_time</span></code></td>
+<td>Berechnungszeit für die Objekterkennung, einschließlich der Datenaufnahmezeit</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">last_timestamp_processed</span></code></td>
+<td>Zeitstempel des letzten verarbeiteten Bilddatensatzes</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="services">
+<span id="sect-silhouettematch-services"></span><h2>Services<a class="headerlink" href="#services" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-9">Die angebotenen Services des <code class="docutils literal notranslate"><span class="pre">rc_silhouettematch</span></code>-Moduls können mithilfe der <a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API-Schnittstelle</span></a> oder der <em>rc_visard</em> <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> ausprobiert und getestet werden.</p>
+<p>Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen sogenannten <code class="docutils literal notranslate"><span class="pre">return_code</span></code> bestehend aus einem Integer-Wert und einer optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden mit einem Wert von <code class="docutils literal notranslate"><span class="pre">0</span></code> quittiert. Positive Werte bedeuten, dass die Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche Informationen zur Verfügung stehen. Negative Werte bedeuten, dass Fehler aufgetreten sind.</p>
+<span id="tab-silhouettematch-return-codes"></span><table border="1" class="docutils" id="fehlercodes-und-warnung-der-services-des-silm-moduls">
+<caption><span class="caption-number">Tab. 44 </span><span class="caption-text">Fehlercodes und Warnung der Services des SilhouetteMatch-Moduls</span><a class="headerlink" href="#fehlercodes-und-warnung-der-services-des-silm-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Code</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>Erfolgreich</td>
+</tr>
+<tr class="row-odd"><td>-1</td>
+<td>Ungültige(s) Argument(e)</td>
+</tr>
+<tr class="row-even"><td>-3</td>
+<td>Ein interner Timeout ist aufgetreten, beispielsweise während der Objekterkennung.</td>
+</tr>
+<tr class="row-odd"><td>-4</td>
+<td>Die maximal erlaubte Zeitspanne von 5.0 Sekunden für die interne Akquise der Bilddaten wurde überschritten.</td>
+</tr>
+<tr class="row-even"><td>-7</td>
+<td>Daten konnten nicht in den persistenten Speicher geschrieben oder vom persistenten Speicher gelesen werden.</td>
+</tr>
+<tr class="row-odd"><td>-8</td>
+<td>Das Modul befindet sich in einem Zustand, in welchem dieser Service nicht aufgerufen werden kann. Beispielsweise kann <code class="docutils literal notranslate"><span class="pre">detect_object</span></code> nicht aufgerufen werden, solange keine Kalibrierung der Basisebene durchgeführt wurde.</td>
+</tr>
+<tr class="row-even"><td>-10</td>
+<td>Das neue Element konnte nicht hinzugefügt werden, da die maximal speicherbare Anzahl an ROIs oder Templates überschritten wurde.</td>
+</tr>
+<tr class="row-odd"><td>-100</td>
+<td>Ein interner Fehler ist aufgetreten.</td>
+</tr>
+<tr class="row-even"><td>-101</td>
+<td>Die Erkennung der Basisebene schlug fehl.</td>
+</tr>
+<tr class="row-odd"><td>-102</td>
+<td>Die Hand-Auge-Kalibrierung hat sich seit der letzten Kalibrierung der Basisebene verändert.</td>
+</tr>
+<tr class="row-even"><td>-104</td>
+<td>Die Verkippung zwischen der Basisebene und der Sichtachse der Kamera überschreitet das 10-Grad-Limit.</td>
+</tr>
+<tr class="row-odd"><td>10</td>
+<td>Die maximale Anzahl an ROIs oder Templates wurde erreicht.</td>
+</tr>
+<tr class="row-even"><td>11</td>
+<td>Ein bestehendes Element wurde überschrieben.</td>
+</tr>
+<tr class="row-odd"><td>100</td>
+<td>Die angefragten Load Carrier wurden in der Szene nicht gefunden.</td>
+</tr>
+<tr class="row-even"><td>101</td>
+<td>Keiner der Greifpunkte ist erreichbar.</td>
+</tr>
+<tr class="row-odd"><td>102</td>
+<td>Der detektierte Load Carrier ist leer.</td>
+</tr>
+<tr class="row-even"><td>103</td>
+<td>Alle berechneten Greifpunkte sind in Kollision mit dem Load Carrier.</td>
+</tr>
+<tr class="row-odd"><td>107</td>
+<td>Die Basisebene wurde nicht zur aktuellen Kamerapose transformiert, z.B. weil keine Roboterpose während der Kalibrierung der Basisebene angegeben wurde.</td>
+</tr>
+<tr class="row-even"><td>108</td>
+<td>Das Template ist überholt.</td>
+</tr>
+<tr class="row-odd"><td>151</td>
+<td>Das Objekt-Template hat eine kontinuierliche Symmetrie.</td>
+</tr>
+<tr class="row-even"><td>999</td>
+<td>Zusätzliche Hinweise für die Anwendungsentwicklung</td>
+</tr>
+</tbody>
+</table>
+<p>Das SilhouetteMatch-Modul bietet folgende Services.</p>
+<div class="section" id="calibrate-base-plane">
+<span id="expl-silhouettematch-srv-calib"></span><h3><code class="docutils literal notranslate"><span class="pre">calibrate_base_plane</span></code><a class="headerlink" href="#calibrate-base-plane" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>führt die Kalibrierung der Basisebene durch, wie in <a class="reference internal" href="#sect-silhouettematch-base-plane-calib"><span class="std std-ref">Kalibrierung der Basisebene</span></a> beschrieben. Eine erfolgreiche Kalibrierung der Basisebene wird persistent auf dem <em>rc_visard</em> gespeichert und vom Service zurückgegeben. Die Kalibrierung ist dauerhaft – auch über Firmware-Updates und -Wiederherstellungen hinweg – gespeichert.</p>
+<p>Das Zeitverhalten dieses Services garantiert, dass nur Bilddaten zur Erkennung benutzt werden, welche nach dem Anfragezeitpunkt generiert wurden.</p>
+<p><strong>Request:</strong></p>
+<blockquote>
+<div><blockquote>
+<div><p>Die Definition der <cite>Request</cite>-Argumente mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;plane&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;distance&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;normal&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;plane_estimation_method&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;region_of_interest_2d_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;robot_pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;stereo&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;plane_preference&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Obligatorische Serviceargumente:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">plane_estimation_method</span></code>: Methode der Kalibrierung der Basisebene. Gültige Werte sind <code class="docutils literal notranslate"><span class="pre">STEREO</span></code>, <code class="docutils literal notranslate"><span class="pre">APRILTAG</span></code>, <code class="docutils literal notranslate"><span class="pre">MANUAL</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pose_frame</span></code>: siehe <a class="reference internal" href="#sect-silhouettematch-hand-eye-calib"><span class="std std-ref">Hand-Auge-Kalibrierung</span></a>.</p>
+</div></blockquote>
+<p>Potentiell obligatorische Serviceargumente:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">plane</span></code> wenn für <code class="docutils literal notranslate"><span class="pre">plane_estimation_method</span></code> <code class="docutils literal notranslate"><span class="pre">MANUAL</span></code> gewählt ist: Die Ebene, welche als Basisebene gesetzt wird.</p>
+<p><code class="docutils literal notranslate"><span class="pre">robot_pose</span></code>: siehe <a class="reference internal" href="#sect-silhouettematch-hand-eye-calib"><span class="std std-ref">Hand-Auge-Kalibrierung</span></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">region_of_interest_2d_id</span></code>: ID der Region of Interest für die Kalibrierung der Basisebene.</p>
+</div></blockquote>
+<p>Optionale Serviceargumente:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">offset</span></code>: Versatz in Metern, um welchen die geschätzte Ebene in Richtung der Kamera verschoben wird.</p>
+<p><code class="docutils literal notranslate"><span class="pre">plane_preference</span></code> in <code class="docutils literal notranslate"><span class="pre">stereo</span></code>: Ob die der Kamera am nächsten (<code class="docutils literal notranslate"><span class="pre">CLOSEST</span></code>) gelegene oder die am weitesten entfernte (<code class="docutils literal notranslate"><span class="pre">FARTHEST</span></code>) Ebene als Basisebene benutzt wird. Diese Option kann nur gesetzt werden, falls <code class="docutils literal notranslate"><span class="pre">plane_estimation_method</span></code> auf <code class="docutils literal notranslate"><span class="pre">STEREO</span></code> gesetzt ist. Valide Werte sind <code class="docutils literal notranslate"><span class="pre">CLOSEST</span></code> und <code class="docutils literal notranslate"><span class="pre">FARTHEST</span></code>. Falls der Wert nicht gesetzt ist, wird <code class="docutils literal notranslate"><span class="pre">FARTHEST</span></code> verwendet.</p>
+</div></blockquote>
+</div></blockquote>
+<p><strong>Response:</strong></p>
+<blockquote>
+<div><p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;plane&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;distance&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;normal&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">plane</span></code>: kalibrierte Basisebene.</p>
+<p><code class="docutils literal notranslate"><span class="pre">timestamp</span></code>: Zeitstempel des Bildes, das für die Kalibrierung benutzt wurde.</p>
+<p><code class="docutils literal notranslate"><span class="pre">return_code</span></code>: enthält mögliche Warnungen oder Fehlercodes und Nachrichten.</p>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="get-base-plane-calibration">
+<span id="expl-silhouettematch-srv-get-calib"></span><h3><code class="docutils literal notranslate"><span class="pre">get_base_plane_calibration</span></code><a class="headerlink" href="#get-base-plane-calibration" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>gibt die derzeitige Kalibrierung der Basisebene zurück.</p>
+<p><strong>Request:</strong></p>
+<blockquote>
+<div><p>Die Definition der <cite>Request</cite>-Argumente mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;robot_pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Obligatorische Serviceargumente:</p>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">pose_frame</span></code>: siehe <a class="reference internal" href="#sect-silhouettematch-hand-eye-calib"><span class="std std-ref">Hand-Auge-Kalibrierung</span></a>.</div></blockquote>
+<p>Potentiell obligatorische Serviceargumente:</p>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">robot_pose</span></code>: siehe <a class="reference internal" href="#sect-silhouettematch-hand-eye-calib"><span class="std std-ref">Hand-Auge-Kalibrierung</span></a>.</div></blockquote>
+</div></blockquote>
+<p><strong>Response:</strong></p>
+<blockquote>
+<div><p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;plane&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;distance&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;normal&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="delete-base-plane-calibration">
+<span id="expl-silhouettematch-srv-delete-calib"></span><h3><code class="docutils literal notranslate"><span class="pre">delete_base_plane_calibration</span></code><a class="headerlink" href="#delete-base-plane-calibration" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>löscht die derzeitige Kalibrierung der Basisebene.</p>
+<p>Dieser Service hat keine Argumente.</p>
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="set-region-of-interest-2d">
+<span id="expl-silhouettematch-srv-set-roi"></span><h3><code class="docutils literal notranslate"><span class="pre">set_region_of_interest_2d</span></code><a class="headerlink" href="#set-region-of-interest-2d" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>speichert eine 2D-Region of Interest (ROI) auf dem <em>rc_visard</em>. Alle ROIs sind dauerhaft gespeichert, auch über Firmware-Updates und -Wiederherstellungen hinweg.</p>
+<p>Die Definition der <cite>Request</cite>-Argumente mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;region_of_interest_2d&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;height&quot;</span><span class="p">:</span> <span class="s2">&quot;uint32&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;offset_x&quot;</span><span class="p">:</span> <span class="s2">&quot;uint32&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;offset_y&quot;</span><span class="p">:</span> <span class="s2">&quot;uint32&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;width&quot;</span><span class="p">:</span> <span class="s2">&quot;uint32&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">region_of_interest_2d</span></code>: siehe <a class="reference internal" href="#sect-silhouettematch-roi"><span class="std std-ref">Setzen einer Region of Interest</span></a>.</p>
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="get-regions-of-interest-2d">
+<span id="expl-silhouettematch-srv-get-rois"></span><h3><code class="docutils literal notranslate"><span class="pre">get_regions_of_interest_2d</span></code><a class="headerlink" href="#get-regions-of-interest-2d" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>gibt die konfigurierten 2D-Regions of Interest (ROI) mit den angegebenen <code class="docutils literal notranslate"><span class="pre">region_of_interest_2d_ids</span></code> zurück. Wenn keine <code class="docutils literal notranslate"><span class="pre">region_of_interest_2d_ids</span></code> übergeben werden, werden alle ROIs zurückgegeben.</p>
+<p>Die Definition der <cite>Request</cite>-Argumente mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;region_of_interest_2d_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;regions_of_interest&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;height&quot;</span><span class="p">:</span> <span class="s2">&quot;uint32&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;offset_x&quot;</span><span class="p">:</span> <span class="s2">&quot;uint32&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;offset_y&quot;</span><span class="p">:</span> <span class="s2">&quot;uint32&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;width&quot;</span><span class="p">:</span> <span class="s2">&quot;uint32&quot;</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="delete-regions-of-interest-2d">
+<span id="expl-silhouettematch-srv-delete-rois"></span><h3><code class="docutils literal notranslate"><span class="pre">delete_regions_of_interest_2d</span></code><a class="headerlink" href="#delete-regions-of-interest-2d" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>löscht die mit <code class="docutils literal notranslate"><span class="pre">region_of_interest_2d_ids</span></code> spezifizierten, gespeicherten ROIs. Alle zu löschenden ROIs müssen explizit angegeben werden.</p>
+<p>Die Definition der <cite>Request</cite>-Argumente mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;region_of_interest_2d_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="set-load-carrier">
+<h3><code class="docutils literal notranslate"><span class="pre">set_load_carrier</span></code><a class="headerlink" href="#set-load-carrier" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div>siehe <a class="reference internal" href="loadcarrier.html#expl-loadcarrier-srv-set-lc"><span class="std std-ref">set_load_carrier</span></a>.</div></blockquote>
+</div>
+<div class="section" id="get-load-carriers">
+<span id="expl-silhouettematch-srv-get-lc"></span><h3><code class="docutils literal notranslate"><span class="pre">get_load_carriers</span></code><a class="headerlink" href="#get-load-carriers" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div>siehe <a class="reference internal" href="loadcarrier.html#expl-loadcarrier-srv-get-lc"><span class="std std-ref">get_load_carriers</span></a>.</div></blockquote>
+</div>
+<div class="section" id="delete-load-carriers">
+<span id="expl-silhouettematch-srv-delete-lc"></span><h3><code class="docutils literal notranslate"><span class="pre">delete_load_carriers</span></code><a class="headerlink" href="#delete-load-carriers" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div>siehe <a class="reference internal" href="loadcarrier.html#expl-loadcarrier-srv-delete-lc"><span class="std std-ref">delete_load_carriers</span></a>.</div></blockquote>
+</div>
+<div class="section" id="detect-load-carriers">
+<span id="expl-silhouettematch-srv-detect-lc"></span><h3><code class="docutils literal notranslate"><span class="pre">detect_load_carriers</span></code><a class="headerlink" href="#detect-load-carriers" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div>siehe <a class="reference internal" href="loadcarrier.html#expl-loadcarrier-srv-detect-lc"><span class="std std-ref">detect_load_carriers</span></a>.</div></blockquote>
+</div>
+<div class="section" id="detect-filling-level">
+<span id="expl-silhouettematch-srv-detect-filling-level"></span><h3><code class="docutils literal notranslate"><span class="pre">detect_filling_level</span></code><a class="headerlink" href="#detect-filling-level" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div>siehe <a class="reference internal" href="loadcarrier.html#expl-loadcarrier-srv-detect-filling-level"><span class="std std-ref">detect_filling_level</span></a>.</div></blockquote>
+</div>
+<div class="section" id="set-preferred-orientation">
+<span id="expl-silhouettematch-srv-set-preferred-orientation"></span><h3><code class="docutils literal notranslate"><span class="pre">set_preferred_orientation</span></code><a class="headerlink" href="#set-preferred-orientation" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>speichert die bevorzugte TCP-Orientierung zum Berechnen der Erreichbarkeit der Greifpunkte, die zur Sortierung und Filterung der vom <code class="docutils literal notranslate"><span class="pre">detect_object</span></code> Service zurückgelieferten Greifpunkte verwendet wird (siehe <a class="reference internal" href="#sect-silhouettematch-set-preferred-orientation"><span class="std std-ref">Setzen der bevorzugten TCP-Orientierung</span></a>).</p>
+<p>Die Definition der <cite>Request</cite>-Argumente mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="get-preferred-orientation">
+<span id="expl-silhouettematch-srv-get-preferred-orientation"></span><h3><code class="docutils literal notranslate"><span class="pre">get_preferred_orientation</span></code><a class="headerlink" href="#get-preferred-orientation" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>gibt die bevorzugte TCP-Orientierung zurück, die für die Sortierung und Filterung der vom <code class="docutils literal notranslate"><span class="pre">detect_object</span></code> Service zurückgelieferten Greifpunkte verwendet wird (siehe <a class="reference internal" href="#sect-silhouettematch-set-preferred-orientation"><span class="std std-ref">Setzen der bevorzugten TCP-Orientierung</span></a>).</p>
+<p>Dieser Service hat keine Argumente.</p>
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="set-grasp">
+<span id="expl-silhouettematch-srv-set-grasp"></span><h3><code class="docutils literal notranslate"><span class="pre">set_grasp</span></code><a class="headerlink" href="#set-grasp" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>speichert einen Greifpunkt für das angegebene Template auf dem <em>rc_visard</em>. Alle Greifpunkte sind dauerhaft gespeichert, auch über Firmware-Updates und -Wiederherstellungen hinweg.</p>
+<p>Die Definition der <cite>Request</cite>-Argumente mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;grasp&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;template_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Die Definition des Typs <code class="docutils literal notranslate"><span class="pre">grasp</span></code> wird in <a class="reference internal" href="#sect-silhouettematch-grasps"><span class="std std-ref">Setzen von Greifpunkten</span></a> beschrieben.</p>
+</div></blockquote>
+</div>
+<div class="section" id="set-all-grasps">
+<span id="expl-silhouettematch-srv-set-all-grasps"></span><h3><code class="docutils literal notranslate"><span class="pre">set_all_grasps</span></code><a class="headerlink" href="#set-all-grasps" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>Ersetzt die gesamte Liste von Greifpunkten auf dem <em>rc_visard</em> für das angegebene Template.</p>
+<p>Die Definition der <cite>Request</cite>-Argumente mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;grasps&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;template_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;template_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Die Definition des Typs <code class="docutils literal notranslate"><span class="pre">grasp</span></code> wird in <a class="reference internal" href="#sect-silhouettematch-grasps"><span class="std std-ref">Setzen von Greifpunkten</span></a> beschrieben.</p>
+</div></blockquote>
+</div>
+<div class="section" id="get-grasps">
+<span id="expl-silhouettematch-srv-get-grasps"></span><h3><code class="docutils literal notranslate"><span class="pre">get_grasps</span></code><a class="headerlink" href="#get-grasps" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>gibt alle definierten Greifpunkte mit den angegebenen IDs (<code class="docutils literal notranslate"><span class="pre">grasp_ids</span></code>) zurück, die zu den Templates mit den angegebenen <code class="docutils literal notranslate"><span class="pre">template_ids</span></code> gehören. Wenn keine <code class="docutils literal notranslate"><span class="pre">grasp_ids</span></code> angegeben werden, werden alle Greifpunkte zu den angegebenen <code class="docutils literal notranslate"><span class="pre">template_ids</span></code> zurückgeliefert. Wenn keine <code class="docutils literal notranslate"><span class="pre">template_ids</span></code> angegeben werden, werden alle Greifpunkte mit den geforderten <code class="docutils literal notranslate"><span class="pre">grasp_ids</span></code> zurückgeliefert. Wenn gar keine IDs angegeben werden, werden alle gespeicherten Greifpunkte zurückgeliefert.</p>
+<p>Die Definition der <cite>Request</cite>-Argumente mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;grasp_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;template_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;grasps&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;template_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="delete-grasps">
+<span id="expl-silhouettematch-srv-delete-grasps"></span><h3><code class="docutils literal notranslate"><span class="pre">delete_grasps</span></code><a class="headerlink" href="#delete-grasps" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>löscht alle Greifpunkte mit den angegebenen <code class="docutils literal notranslate"><span class="pre">grasp_ids</span></code>, die zu den Templates mit den angegebenen <code class="docutils literal notranslate"><span class="pre">template_ids</span></code> gehören. Wenn keine <code class="docutils literal notranslate"><span class="pre">grasp_ids</span></code> angegeben werden, werden alle Greifpunkte gelöscht, die zu den Templates mit den angegebenen <code class="docutils literal notranslate"><span class="pre">template_ids</span></code> gehören. Die Liste <code class="docutils literal notranslate"><span class="pre">template_ids</span></code> darf nicht leer sein.</p>
+<p>Die Definition der <cite>Request</cite>-Argumente mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;grasp_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;template_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="get-symmetric-grasps">
+<span id="expl-silhouettematch-srv-get-symmetric-grasps"></span><h3><code class="docutils literal notranslate"><span class="pre">get_symmetric_grasps</span></code><a class="headerlink" href="#get-symmetric-grasps" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>gibt alle Greifpunkte zurück, die symmetrisch zum angegebenen Greifpunkt sind. Der erste Greifpunkt in der Rückgabeliste ist derselbe, der dem Service übergeben wurde. Wenn das Template keine exakte Symmetrie hat, wird nur der übergebene Greifpunkt zurückgeliefert. Wenn das Template eine kontinuierliche Symmetrie hat (z.B. ein zylindrisches Objekt), werden nur 12 gleichverteilte Greifpunkte zurückgeliefert.</p>
+<p>Die Definition der <cite>Request</cite>-Argumente mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;grasp&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;template_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;grasps&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;template_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Die Definition des Typs <code class="docutils literal notranslate"><span class="pre">grasp</span></code> wird in <a class="reference internal" href="#sect-silhouettematch-grasps"><span class="std std-ref">Setzen von Greifpunkten</span></a> beschrieben.</p>
+</div></blockquote>
+</div>
+<div class="section" id="detect-object">
+<span id="expl-silhouettematch-srv-detect-objects"></span><h3><code class="docutils literal notranslate"><span class="pre">detect_object</span></code><a class="headerlink" href="#detect-object" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>führt eine Objekterkennung durch, wie in <a class="reference internal" href="#sect-silhouettematch-detect"><span class="std std-ref">Objekterkennung</span></a> beschrieben. Der Service gibt die Posen aller gefundenen Objektinstanzen zurück. Die maximale Anzahl der zurückgegebenen Instanzen kann über den <code class="docutils literal notranslate"><span class="pre">max_number_of_detected_objects</span></code>-Parameter kontrolliert werden.</p>
+<p>Das Zeitverhalten dieses Services garantiert, dass nur Bilddaten zur Erkennung benutzt werden, welche nach dem Anfragezeitpunkt generiert wurden.</p>
+<p><strong>Request:</strong></p>
+<blockquote>
+<div><p>Die Definition der <cite>Request</cite>-Argumente mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;collision_detection&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;gripper_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;pre_grasp_offset&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;load_carrier_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;object_to_detect&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;object_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;region_of_interest_2d_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;robot_pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Obligatorische Serviceargumente:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">object_id</span></code> in <code class="docutils literal notranslate"><span class="pre">object_to_detect</span></code>: ID des Templates, welches erkannt werden soll.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pose_frame</span></code>: siehe <a class="reference internal" href="#sect-silhouettematch-hand-eye-calib"><span class="std std-ref">Hand-Auge-Kalibrierung</span></a>.</p>
+</div></blockquote>
+<p>Potentiell obligatorische Serviceargumente:</p>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">robot_pose</span></code>: siehe <a class="reference internal" href="#sect-silhouettematch-hand-eye-calib"><span class="std std-ref">Hand-Auge-Kalibrierung</span></a>.</div></blockquote>
+<p>Optionale Serviceargumente:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">offset</span></code>: Versatz in Metern, um welche die Basisebene in Richtung der Kamera verschoben werden soll.</p>
+<p><code class="docutils literal notranslate"><span class="pre">load_carrier_id</span></code>: ID des Load Carriers, welcher die zu erkennenden Objekte enthält.</p>
+<p><code class="docutils literal notranslate"><span class="pre">collision_detection</span></code>: siehe <a class="reference internal" href="collisioncheck.html#sect-collision-check-other-modules"><span class="std std-ref">Integrierte Kollisionsprüfung in anderen Modulen</span></a>.Die Kollisionsprüfung benötigt eine gesonderte CollisionCheck-<a class="reference internal" href="maintenance.html#sect-updating-license"><span class="std std-ref">Lizenz</span></a>.</p>
+</div></blockquote>
+</div></blockquote>
+<p><strong>Response:</strong></p>
+<blockquote>
+<div><p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;grasps&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;instance_uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;instances&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;grasp_uuids&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;string&quot;</span>
+      <span class="p">],</span>
+      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;object_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;load_carriers&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;inner_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;outer_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;overfilled&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;rim_thickness&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;object_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">object_id</span></code>: ID des erkannten Templates.</p>
+<p><code class="docutils literal notranslate"><span class="pre">instances</span></code>: Liste der erkannten Objektinstanzen.</p>
+<p><code class="docutils literal notranslate"><span class="pre">grasps</span></code>: Liste von Greifpunkten auf den erkannten Objekten. Die Greifpunkte sind nach ihrer Erreichbarkeit sortiert, begonnen mit dem Greifpunkt, der am besten vom Roboter erreicht werden kann. Die <code class="docutils literal notranslate"><span class="pre">instance_uuid</span></code> gibt eine Referenz auf das detektierte Objekt in <code class="docutils literal notranslate"><span class="pre">instances</span></code> an, zu dem dieser Greifpunkt gehört.</p>
+<p><code class="docutils literal notranslate"><span class="pre">load_carriers</span></code>: Liste der erkannten Load Carrier (Behälter).</p>
+<p><code class="docutils literal notranslate"><span class="pre">timestamp</span></code>: Zeitstempel des Bildes, das für die Erkennung benutzt wurde.</p>
+<p><code class="docutils literal notranslate"><span class="pre">return_code</span></code>: enthält mögliche Warnungen oder Fehlercodes und Nachrichten.</p>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="save-parameters">
+<span id="expl-silhouettematch-srv-save-params"></span><h3><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code><a class="headerlink" href="#save-parameters" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>speichert die aktuellen Parametereinstellungen des SilhouetteMatch-Moduls auf dem <em>rc_visard</em>. Das bedeutet, dass diese Werte selbst nach einem Neustart angewandt werden. Bei Firmware-Updates oder -Wiederherstellungen werden sie jedoch wieder auf den Standardwert gesetzt.</p>
+<p>Dieser Service hat keine Argumente.</p>
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="reset-defaults">
+<span id="expl-silhouettematch-srv-reset-params"></span><h3><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code><a class="headerlink" href="#reset-defaults" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>stellt die Werkseinstellungen der Parameter dieses Moduls wieder her und wendet sie an („factory reset“). Dies betrifft nicht die konfigurierten ROIs und die Kalibrierung der Basisebene.</p>
+<p>Dieser Service hat keine Argumente.</p>
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="template-upload">
+<h2>Template Upload<a class="headerlink" href="#template-upload" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-10">Für den Upload, Download und das Auflisten von Templates werden spezielle REST-API-Endpunkte zur Verfügung gestellt. Bis zu 50 Templates können gleichzeitig auf dem <em>rc_visard</em> gespeichert werden.</p>
+<dl class="get">
+<dt id="get--nodes-rc_silhouettematch-templates">
+<code class="descname">GET </code><code class="descname">/nodes/rc_silhouettematch/templates</code><a class="headerlink" href="#get--nodes-rc_silhouettematch-templates" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>listet alle rc_silhouettematch-Templates auf.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/nodes/rc_silhouettematch/templates</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Musterantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Antwort-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabewert: Array der Templates)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – Modul nicht gefunden</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-template"><span class="std std-ref">Template</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--nodes-rc_silhouettematch-templates-id">
+<code class="descname">GET </code><code class="descname">/nodes/rc_silhouettematch/templates/{id}</code><a class="headerlink" href="#get--nodes-rc_silhouettematch-templates-id" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>ruft ein rc_silhouettematch-Template ab. Falls der angefragte Content-Typ application/octet-stream ist, wird das Template als Datei zurückgegeben.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/nodes/rc_silhouettematch/templates/&lt;id&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Musterantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameter:</th><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> (<em>string</em>) – ID des Templates <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Antwort-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/octet-stream</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabewert: Template)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – Modul oder Template wurden nicht gefunden.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-template"><span class="std std-ref">Template</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="put">
+<dt id="put--nodes-rc_silhouettematch-templates-id">
+<code class="descname">PUT </code><code class="descname">/nodes/rc_silhouettematch/templates/{id}</code><a class="headerlink" href="#put--nodes-rc_silhouettematch-templates-id" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>erstellt oder aktualisiert ein rc_silhouettematch-Template.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/api/v1/nodes/rc_silhouettematch/templates/&lt;id&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">multipart/form-data application/json</span>
+</pre></div>
+</div>
+<p><strong>Musterantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameter:</th><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> (<em>string</em>) – ID des Templates <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Formularparameter:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>file</strong> – Template-Datei <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Anfrage-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – multipart/form-data application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Antwort-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabewert: Template)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – Template ist ungültig oder die maximale Zahl an Templates wurde erreicht.</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4">403 Forbidden</a> – Verboten, z.B. weil keine gültige Lizenz für das SilhouetteMatch-Modul vorliegt.</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – Modul oder Template wurden nicht gefunden.</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.14">413 Request Entity Too Large</a> – Template ist zu groß.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-template"><span class="std std-ref">Template</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="delete">
+<dt id="delete--nodes-rc_silhouettematch-templates-id">
+<code class="descname">DELETE </code><code class="descname">/nodes/rc_silhouettematch/templates/{id}</code><a class="headerlink" href="#delete--nodes-rc_silhouettematch-templates-id" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>entfernt ein rc_silhouettematch-Template.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">DELETE</span> <span class="nn">/api/v1/nodes/rc_silhouettematch/templates/&lt;id&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameter:</th><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> (<em>string</em>) – ID des Templates <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Anfrage-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Antwort-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4">403 Forbidden</a> – Verboten, z.B. weil keine gültige Lizenz für das SilhouetteMatch-Modul vorliegt.</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – Modul oder Template wurden nicht gefunden.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="collisioncheck.html" class="btn btn-neutral float-right" title="CollisionCheck" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="itempick.html" class="btn btn-neutral" title="ItemPick und BoxPick" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Optionen</span>
+      de
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Sprachen</dt>
+        
+          
+          <dd><a href="../en/silhouettematch.html">en</a></dd>
+          
+        
+          
+          <dd><a href="../de/silhouettematch.html">de</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versionen</dt>
+          
+            <dd><a href="../../v1.0/index.html">v1.0</a></dd>
+          
+            <dd><a href="../../v1.1/index.html">v1.1</a></dd>
+          
+            <dd><a href="../../v1.2/index.html">v1.2</a></dd>
+          
+            <dd><a href="../../v1.3/index.html">v1.3</a></dd>
+          
+            <dd><a href="../../v1.4/index.html">v1.4</a></dd>
+          
+            <dd><a href="../../v1.5/index.html">v1.5</a></dd>
+          
+            <dd><a href="../../v1.6/index.html">v1.6</a></dd>
+          
+            <dd><a href="../../v1.7/index.html">v1.7</a></dd>
+          
+            <dd><a href="../../v1.8/index.html">v1.8</a></dd>
+          
+            <dd><a href="../../v20.04/index.html">v20.04</a></dd>
+          
+            <dd><a href="../../v20.10/index.html">v20.10</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_manual_en.pdf">PDF (en)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_manual_de.pdf">PDF (de)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'20.10.1',
+            LANGUAGE:'de',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

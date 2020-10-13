@@ -1,0 +1,86 @@
+Pose formats
+
+XYZABC format
+
+The XYZABC format is used to express a pose by 6 values. XYZ is the
+position in millimeters. ABC are Euler angles in degrees. The
+convention used for Euler angles is ZYX, i.e., first A rotates around
+the Z axis, then B rotates around the Y axis, and then C rotates
+around the X axis. In this convention, the axes are the intrinsic,
+body-aligned axes which change during the rotation. Thus, A is the yaw
+angle, B the pitch angle and C the roll angle. The elements of the
+rotation matrix can be computed by using
+
+   r_{11} & = \cos{B}\cos{A}, \\ r_{12} & =
+   \sin{C}\sin{B}\cos{A}-\cos{C}\sin{A}, \\ r_{13} & =
+   \cos{C}\sin{B}\cos{A}+\sin{C}\sin{A}, \\ r_{21} & = \cos{B}\sin{A},
+   \\ r_{22} & = \sin{C}\sin{B}\sin{A}+\cos{C}\cos{A}, \\ r_{23} & =
+   \cos{C}\sin{B}\sin{A}-\sin{C}\cos{A}, \\ r_{31} & = -\sin{B}, \\
+   r_{32} & = \sin{C}\cos{B}, \text{and} \\ r_{33} & = \cos{C}\cos{B}.
+   \\
+
+Note: The trigonometric functions \sin and \cos are assumed to
+  accept values in degrees. The argument needs to be multiplied by the
+  factor \frac{\pi}{180} if they expect their values in radians.
+
+Using these values, the rotation matrix R and translation vector T are
+defined as
+
+   R = \left(\begin{array}{ccc}   r_{11} & r_{12} & r_{13} \\   r_{21}
+   & r_{22} & r_{23} \\   r_{31} & r_{32} & r_{33} \end{array}\right),
+   \qquad T = \left(\begin{array}{c}   X \\   Y \\   Z
+   \end{array}\right).
+
+The transformation can be applied to a point P by
+
+   P' = R P + T.
+
+XYZ+quaternion format
+
+The XYZ+quaternion format is used to express a pose by a position and
+a unit quaternion. XYZ is the position in meters. The quaternion is a
+vector of length 1 that defines a rotation by four values, i.e.,
+q=(\begin{array}{cccc}x & y & z & w\end{array})^T with ||q||=1. The
+corresponding rotation matrix and translation vector are defined by
+
+   R = 2 \left(\begin{array}{ccc}   \frac{1}{2} - y^2 - z^2 & x y - z
+   w & x z + y w \\   x y + z w & \frac{1}{2} - x^2 - z^2 & y z - x w
+   \\   x z - y w & y z + x w & \frac{1}{2} - x^2 - y^2
+   \end{array}\right), \qquad T = \left(\begin{array}{c}   X \\   Y \\
+   Z \end{array}\right).
+
+The transformation can be applied to a point P by
+
+   P' = R P + T.
+
+Note: In XYZ+quaternion format, the pose is defined in meters,
+  whereas in the XYZABC format, the pose is defined in millimeters.
+
+Conversion from ABC to quaternion
+
+The conversion from the ABC Euler angles in degrees to a quaternion
+q=(\begin{array}{cccc}x & y & z & w\end{array})^T can be done as
+follows.
+
+   x = \cos{(A/2)}\cos{(B/2)}\sin{(C/2)} -
+   \sin{(A/2)}\sin{(B/2)}\cos{(C/2)} \\ y =
+   \cos{(A/2)}\sin{(B/2)}\cos{(C/2)} +
+   \sin{(A/2)}\cos{(B/2)}\sin{(C/2)} \\ z =
+   \sin{(A/2)}\cos{(B/2)}\cos{(C/2)} -
+   \cos{(A/2)}\sin{(B/2)}\sin{(C/2)} \\ w =
+   \cos{(A/2)}\cos{(B/2)}\cos{(C/2)} +
+   \sin{(A/2)}\sin{(B/2)}\sin{(C/2)}
+
+Note: The trigonometric functions \sin and \cos are assumed to
+  accept values in degrees. The argument needs to be multiplied by the
+  factor \frac{\pi}{180} if they expect their values in radians.
+
+Conversion from quaternion to ABC
+
+The conversion from a quaternion q=(\begin{array}{cccc}x & y & z &
+w\end{array})^T to the ABC Euler angles in degrees can be done as
+follows.
+
+   A &= \text{atan2}{(2(wz + xy), 1 - 2(y^2 + z^2))}\frac{180}{\pi}
+   \\ B &= \text{asin}{(2(wy - zx))}\frac{180}{\pi} \\ C &=
+   \text{atan2}{(2(wx + yz), 1 - 2(x^2 + y^2))}\frac{180}{\pi}

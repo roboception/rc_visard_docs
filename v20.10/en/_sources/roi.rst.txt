@@ -1,0 +1,235 @@
+Region of interest functionality
+
+Introduction
+
+The region of interest (ROI) functionality is contained in an internal
+ROI component and can only be used through the software components
+providing a ROI functionality.
+
+The ROI functionality is provided by the
+
+ItemPick and BoxPick
+
+ modules.
+
+Region of interest
+
+A region of interest (ROI) defines a volume in space which is of
+interest for a specific user-application. A ROI can narrow the volume
+where a load carrier is searched for, or select a volume which only
+contains items to be detected and/or grasped. Processing times can
+significantly decrease when using a ROI.
+
+Currently, regions of interest of the following types ("type") are
+supported:
+
+   BOX, with dimensions box.x, box.y, box.z.
+
+   SPHERE, with radius sphere.radius.
+
+The user can specify the region of interest "pose" in the "camera" or
+the "external" coordinate system. "External" can only be chosen if a
+
+Hand-eye calibration
+
+ is available. When the
+
+rc_visard
+
+ is robot mounted, and the region of interest is defined in the
+external frame, the current robot pose must be given to every detect
+service call that uses this region of interest.
+
+The
+
+rc_visard
+
+ can persistently store up to 50 different regions of interest, each
+one identified by a different "id". The configuration of regions of
+interest is normally performed offline, during the set up of the
+desired application. This can be done via the
+
+REST-API interface
+
+ or in the
+
+rc_visard
+
+ Web GUI on the page of the module offering the region of interest
+functionality.
+
+Note: The configured regions of interest are persistent even over
+  firmware updates and rollbacks.
+
+Parameters
+
+The ROI component does not have any parameters.
+
+Services
+
+The user can explore and call the ROI component's services, e.g. for
+development and testing, using the
+
+REST-API interface
+
+ or the
+
+rc_visard
+
+
+Web GUI
+
+ page of the module offering the ROI functionality.
+
+Each service response contains a "return_code", which consists of a
+"value" plus an optional "message". A successful service returns with
+a "return_code" value of "0". Negative "return_code" values indicate
+that the service failed. Positive "return_code" values indicate that
+the service succeeded with additional information. The smaller value
+is selected in case a service has multiple "return_code" values, but
+all messages are appended in the "return_code" message.
+
+The following table contains a list of common codes:
+
+Return codes of the region of interest services      Code  Description
+0  Success  -1  An invalid argument was provided  -10  New element
+could not be added as the maximum storage capacity of regions of
+interest has been exceeded  10  The maximum storage capacity of
+regions of interest has been reached  11  An existent persistent model
+was overwritten by the call to set_region_of_interest
+
+All software components providing the ROI functionality offer the
+following services.
+
+set_region_of_interest
+
+   Persistently stores a region of interest on the
+
+   rc_visard
+
+   . All configured regions of interest are persistent over firmware
+   updates and rollbacks.
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "region_of_interest": {
+          "box": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "id": "string",
+          "pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "pose_frame": "string",
+          "sphere": {
+            "radius": "float64"
+          },
+          "type": "string"
+        }
+      }
+
+   Details for the definition of the "region_of_interest" type are
+   given in
+
+   Region of interest
+
+   .
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+get_regions_of_interest
+
+   Returns the configured regions of interest with the requested
+   "region_of_interest_ids". If no "region_of_interest_ids" are
+   provided, all configured regions of interest are returned.
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "region_of_interest_ids": [
+          "string"
+        ]
+      }
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "regions_of_interest": [
+          {
+            "box": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "id": "string",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "sphere": {
+              "radius": "float64"
+            },
+            "type": "string"
+          }
+        ],
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+delete_regions_of_interest
+
+   Deletes the configured regions of interest with the requested
+   "region_of_interest_ids". All regions of interest to be deleted
+   must be explicitly stated in "region_of_interest_ids".
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "region_of_interest_ids": [
+          "string"
+        ]
+      }
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }

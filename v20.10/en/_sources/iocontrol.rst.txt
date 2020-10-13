@@ -1,0 +1,235 @@
+IO and Projector Control
+
+The IOControl component allows reading the status of the general
+purpose digital inputs and controlling the digital general purpose
+outputs (GPIOs) of the
+
+rc_visard
+
+. The outputs can be set to LOW or HIGH, or configured to be HIGH for
+the exposure time of every image or every second image.
+
+The purpose of the IOControl component is the control of an external
+light source or a projector, which is connected to one of the
+
+rc_visard
+
+'s GPIOs to be synchronized by the image acquisition trigger. In case
+a pattern projector is used to improve stereo matching, the intensity
+images also show the projected pattern, which might be a disadvantage
+for image processing tasks that are based on the intensity image (e.g.
+edge detection). For this reason, the IOControl component allows
+setting GPIO outputs to HIGH for the exposure time of every second
+image, so that intensity images without the projected pattern are also
+available.
+
+Note: For more details on the
+
+  rc_visard
+
+  's GPIOs please refer to
+
+  Wiring
+
+  .
+
+Parameters
+
+The IOControl component is called "rc_iocontrol" in the REST-API and
+is represented by the
+
+IOControl
+
+ page in the
+
+Modules
+
+ tab of the
+
+Web GUI
+
+. The user can change the parameters via the Web GUI, the
+
+REST-API interface
+
+, or via GigE Vision using the DigitalIOControl parameters
+"LineSelector" and "LineSource" (
+
+Category: DigitalIOControl
+
+).
+
+Parameter overview
+
+This component offers the following run-time parameters:
+
+The rc_iocontrol component's run-time parameters              Name
+Type  Min  Max  Default  Description  out1_mode  string  -  -  Low
+Low, High, ExposureActive, ExposureAlternateActive  out2_mode  string
+-  -  Low  Low, High, ExposureActive, ExposureAlternateActive
+
+Description of run-time parameters
+
+"out1_mode" and "out2_mode" (
+Out1
+
+ and
+Out2
+
+)
+   The output modes for GPIO Out 1 and Out 2 can be set individually:
+
+   "Low" sets the ouput permanently to LOW. This is the factory
+   default.
+
+   "High" sets the output permanently to HIGH.
+
+   "ExposureActive" sets the output to HIGH for the exposure time of
+   every image.
+
+   "ExposureAlternateActive" sets the output to HIGH for the exposure
+   time of every second image.
+
+Note: The parameters can only be changed if the IOControl license is
+  available on the
+
+  rc_visard
+
+  . Otherwise, the parameters will stay at their factory defaults,
+  i.e. "out1_mode" = "Low" and "out2_mode" = "Low".
+
+Fig. 45
+
+ shows which images are used for stereo matching and transmission via
+GigE Vision in "ExposureActive" mode with a user-defined frame rate of
+8 Hz.
+
+
+The mode "ExposureAlternateActive" is meant to be used when an
+external random dot projector is connected to the
+
+rc_visard
+
+'s GPIO Out 1. When setting Out 1 to "ExposureAlternateActive", the
+
+stereo matching
+
+ component only uses images with GPIO Out 1 being HIGH, i.e. projector
+is on. The maximum frame rate that is used for stereo matching is
+therefore half of the frame rate configured by the user (see
+
+FPS
+
+). All components which make use of the intensity image, like
+
+TagDetect
+
+ and
+
+ItemPick
+
+, use the intensity images with GPIO Out 1 being LOW, i.e. projector
+is off.
+
+Fig. 46
+
+ shows an example.
+
+
+Note: In "ExposureAlternateActive" mode, an intensity image with
+  GPIO Out 1 being HIGH (i.e. with projection) is always 40 ms away
+  from an intensity image with Out 1 being LOW (i.e. without
+  projection), regardless of the user-defined frame rate. This needs
+  to be considered when synchronizing disparity images and camera
+  images without projection in this special mode.
+
+The functionality can also be controlled by the DigitalIOControl
+parameters of the GenICam interface (
+
+Category: DigitalIOControl
+
+).
+
+Services
+
+Each service response contains a "return_code", which consists of a
+"value" plus an optional "message". A successful service returns with
+a "return_code" value of "0". Negative "return_code" values indicate
+that the service failed. Positive "return_code" values indicate that
+the service succeeded with additional information.
+
+The IOControl component offers the following services.
+
+get_io_values
+
+   This service call retrieves the current state of the
+
+   rc_visard
+
+   's general purpose inputs and outputs (GPIOs).
+
+   This service has no arguments.
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "in1": "bool",
+        "in2": "bool",
+        "out1": "bool",
+        "out2": "bool",
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        },
+        "timestamp": {
+          "nsec": "int32",
+          "sec": "int32"
+        }
+      }
+
+   The returned "timestamp" is the time of measurement.
+
+   "return_code" holds possible warnings or error codes and messages.
+   Possible "return_code" values are shown below.
+
+       Code  Description  0  Success  -2  Internal error  -9  License
+   for IOControl is not available
+
+save_parameters
+
+   With this service call, the component's current parameter settings
+   are persisted to the
+
+   rc_visard
+
+   . That means, these values are applied even after reboot.
+
+   This service has no arguments.
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+reset_defaults
+
+   Restores and applies the default values for this component's
+   parameters ("factory reset").
+
+   This service has no arguments.
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+   Warning: By calling this service, the current parameter settings
+     for the IOControl component are irrecoverably lost.

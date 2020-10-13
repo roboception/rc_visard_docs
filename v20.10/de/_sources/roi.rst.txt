@@ -1,0 +1,252 @@
+Region of Interest Funktionalität
+
+Einleitung
+
+Die Region of Interest (ROI) Funktionalität wird von einer internen
+ROI-Komponente bereitgestellt und kann nur über die Softwaremodule
+genutzt werden, die diese Funktionalität anbieten.
+
+Die ROI-Funktionalität wird von den
+
+ItemPick und BoxPick
+
+ Modulen angeboten.
+
+Region of Interest
+
+Eine sogenannte Region of Interest (ROI) definiert ein abgegrenztes,
+für eine spezifische Anwendung relevantes Raumvolumen. Eine ROI kann
+das Volumen, in dem ein Load Carrier gesucht wird, einschränken, oder
+ein Volumen definieren, das nur die zu erkennenden oder zu greifenden
+Objekte enthält. Die Verarbeitungszeit kann sich deutlich verringern,
+wenn eine ROI genutzt wird.
+
+Aktuell werden folgende Arten von ROIs ("type") unterstützt:
+
+   BOX, für quaderförmige ROIs mit den Abmessungen box.x, box.y,
+   box.z.
+
+   SPHERE, für kugelförmige ROIs mit dem  Radius sphere.radius.
+
+Die Pose "pose" einer ROI kann entweder relativ zum
+
+Kamera
+
+-Koordinatensystem "camera" oder mithilfe der Hand-Auge-Kalibrierung
+im
+
+externen
+
+ Koordinatensystem "external" angegeben werden. Das externe
+Koordinatensystem steht nur zur Verfügung, wenn eine
+
+Hand-Auge-Kalibrierung
+
+ durchgeführt wurde. Wenn der
+
+rc_visard
+
+ am Roboter montiert ist, und die ROI im externen Koordinatensystem
+definiert ist, dann muss jedem Detektions-Service, der diese ROI
+benutzt, die aktuelle Roboterpose übergeben werden.
+
+Der
+
+rc_visard
+
+ erlaubt das Speichern von bis zu 50 verschiedenen ROIs, von denen
+jede mit einer "id" versehen ist. Die Konfiguration von ROIs erfolgt
+in der Regel offline während der Einrichtung der gewünschten
+Anwendung. Die Konfiguration kann mithilfe der
+
+REST-API-Schnittstelle
+
+  oder der
+
+rc_visard
+
+ Web GUI auf der Seite des Moduls, welches die ROI-Funktionalität
+anbietet, vorgenommen werden.
+
+Bemerkung: Die erstellten ROIs sind persistent auf dem
+
+  rc_visard
+
+   gespeichert und auch nach Firmware-Updates und -Wiederherstellungen
+  verfügbar.
+
+Parameter
+
+Die ROI-Komponente hat keine Laufzeitparameter.
+
+Services
+
+Die angebotenen Services der ROI-Funktionalität können mithilfe der
+
+REST-API-Schnittstelle
+
+ oder der
+
+rc_visard
+
+
+Web GUI
+
+ auf der Seite des Moduls, das die ROI-Funktionalität anbietet,
+ausprobiert und getestet werden.
+
+Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen
+sogenannten "return_code" bestehend aus einem Integer-Wert und einer
+optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden
+mit einem Wert von "0" quittiert. Positive Werte bedeuten, dass die
+Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche
+Informationen zur Verfügung stehen. Negative Werte bedeuten, dass
+Fehler aufgetreten sind. Für den Fall, dass mehrere Rückgabewerte
+zutreffend wären, wird der kleinste zurückgegeben, und die
+entsprechenden Textnachrichten werden in "return_code.message"
+akkumuliert.
+
+Die folgende Tabelle führt die möglichen Rückgabe-Codes an:
+
+Rückgabe-Codes der Region of Interest Funktionalität      Code
+Beschreibung  0  Erfolgreich  -1  Ungültige(s) Argument(e)  -10  Das
+neue Element konnte nicht hinzugefügt werden, da die maximal
+speicherbare Anzahl an ROIs überschritten wurde.  10  Die maximal
+speicherbare Anzahl an ROIs wurde erreicht.  11  Mit dem Aufruf von
+set_region_of_interest wurde ein bereits existierendes Objekt mit
+derselben id überschrieben.
+
+Alle Softwaremodule, die die ROI-Funktionalität anbieten, stellen
+folgende Services zur Verfügung.
+
+set_region_of_interest
+
+   speichert eine ROI auf dem
+
+   rc_visard
+
+   . Alle ROIs sind dauerhaft gespeichert, auch über Firmware-Updates
+   und -Wiederherstellungen hinweg.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "region_of_interest": {
+          "box": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "id": "string",
+          "pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "pose_frame": "string",
+          "sphere": {
+            "radius": "float64"
+          },
+          "type": "string"
+        }
+      }
+
+   Die Definition des Typs "region_of_interest" wird in
+
+   Region of Interest
+
+    beschrieben.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+get_regions_of_interest
+
+   gibt die mit "region_of_interest_ids" spezifizierten, gespeicherten
+   ROIs zurück. Werden keine "region_of_interest_ids" angegeben,
+   enthält die Serviceantwort alle gespeicherten ROIs.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "region_of_interest_ids": [
+          "string"
+        ]
+      }
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "regions_of_interest": [
+          {
+            "box": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "id": "string",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "sphere": {
+              "radius": "float64"
+            },
+            "type": "string"
+          }
+        ],
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }
+
+delete_regions_of_interest
+
+   löscht die mit "region_of_interest_ids" spezifizierten,
+   gespeicherten ROIs. Alle zu löschenden ROIs müssen explizit
+   angegeben werden.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "region_of_interest_ids": [
+          "string"
+        ]
+      }
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "return_code": {
+          "message": "string",
+          "value": "int16"
+        }
+      }

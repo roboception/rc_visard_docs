@@ -1,0 +1,1643 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TagDetect &mdash; rc_visard 20.10.1
+ documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="rc_visard 20.10.1
+ documentation" href="index.html"/>
+        <link rel="up" title="Software components" href="components.html"/>
+        <link rel="next" title="Optional software components" href="optional.html"/>
+        <link rel="prev" title="IO and Projector Control" href="iocontrol.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Warranty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Applicable standards</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Approvals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Safety</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">General warnings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Intended use</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Scope of delivery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technical specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Environmental and operating conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Power-supply specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Wiring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanical interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-and-configuration">Installation and configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#software-license">Software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Power up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rc-xxx-devices">Discovery of <em>rc_visard</em> devices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Resetting configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Network configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#host-name">Host name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatic configuration (factory default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manual configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#web-gui">Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Measurement principles</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concept_stereo.html">Stereo vision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concept_dynamics.html">Sensor dynamics</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="components.html">Software components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="stereo_camera.html">Stereo camera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#image-acquisition">Image acquisition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#planar-rectification">Planar rectification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#accessing-images">Accessing Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_matching.html">Stereo matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Computing disparity images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Computing depth images and point clouds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Confidence and error images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#acquisition-trigger"><code class="docutils literal notranslate"><span class="pre">acquisition_trigger</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dynamics.html">Sensor dynamics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#coordinate-frames-for-state-estimation">Coordinate frames for state estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#available-state-estimates">Available state estimates</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#camera-pose-streams-pose-and-pose-ins">Camera-pose streams (<code class="docutils literal notranslate"><span class="pre">pose</span></code> and <code class="docutils literal notranslate"><span class="pre">pose_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-camera-pose-streams-pose-rt-and-pose-rt-ins">Real-time camera-pose streams (<code class="docutils literal notranslate"><span class="pre">pose_rt</span></code> and <code class="docutils literal notranslate"><span class="pre">pose_rt_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-dynamics-streams-dynamics-and-dynamics-ins">Real-time dynamics streams (<code class="docutils literal notranslate"><span class="pre">dynamics</span></code> and <code class="docutils literal notranslate"><span class="pre">dynamics_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#imu-data-stream-imu">IMU data stream (<code class="docutils literal notranslate"><span class="pre">imu</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#start"><code class="docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#start-slam"><code class="docutils literal notranslate"><span class="pre">start_slam</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#stop-slam"><code class="docutils literal notranslate"><span class="pre">stop_slam</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#restart"><code class="docutils literal notranslate"><span class="pre">restart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#restart-slam"><code class="docutils literal notranslate"><span class="pre">restart_slam</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#get-cam2imu-transform"><code class="docutils literal notranslate"><span class="pre">get_cam2imu_transform</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_visodo.html">Visual odometry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_ins.html">Stereo INS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#self-calibration">Self-Calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#status-values">Status values</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="camera_calibration.html">Camera calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#self-calibration">Self-calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#calibration-process">Calibration process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-1-calibration-settings">Step 1: Calibration settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-2-verify-calibration">Step 2: Verify calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-3-performing-calibration">Step 3: Performing calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#monocalibration">Monocalibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#stereo-calibration">Stereo calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-4-storing-the-calibration-result">Step 4: Storing the calibration result</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="handeye_calibration.html">Hand-eye calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Calibration interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#camera-mounting">Camera mounting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Calibration routine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-1-setting-parameters">Step 1: Setting parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-2-selecting-and-reporting-robot-calibration-positions">Step 2:  Selecting and reporting robot calibration positions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-3-calculating-and-saving-the-calibration-transformation">Step 3: Calculating and saving the calibration transformation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#reset-calibration"><code class="docutils literal notranslate"><span class="pre">reset_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#set-pose"><code class="docutils literal notranslate"><span class="pre">set_pose</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibrate"><code class="docutils literal notranslate"><span class="pre">calibrate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#set-calibration"><code class="docutils literal notranslate"><span class="pre">set_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#save-calibration"><code class="docutils literal notranslate"><span class="pre">save_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#remove-calibration"><code class="docutils literal notranslate"><span class="pre">remove_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#get-calibration"><code class="docutils literal notranslate"><span class="pre">get_calibration</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iocontrol.html">IO and Projector Control</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#get-io-values"><code class="docutils literal notranslate"><span class="pre">get_io_values</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">TagDetect</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#qr-code">QR code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apriltag">AprilTag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#comparison">Comparison</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tag-reading">Tag reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pose-estimation">Pose estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tag-re-identification">Tag re-identification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hand-eye-calibration">Hand-eye calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#start"><code class="docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#restart"><code class="docutils literal notranslate"><span class="pre">restart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#detect"><code class="docutils literal notranslate"><span class="pre">detect</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="optional.html">Optional software components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="slam.html">SLAM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#memory-limitations">Memory limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#parameter-overview">Parameter overview</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#reset"><code class="docutils literal notranslate"><span class="pre">reset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#get-trajectory"><code class="docutils literal notranslate"><span class="pre">get_trajectory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#save-map"><code class="docutils literal notranslate"><span class="pre">save_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#load-map"><code class="docutils literal notranslate"><span class="pre">load_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#remove-map"><code class="docutils literal notranslate"><span class="pre">remove_map</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="itempick.html">ItemPick and BoxPick</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#detection-of-items-boxpick">Detection of items (BoxPick)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#computation-of-grasps">Computation of grasps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#interaction-with-other-components">Interaction with other components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#stereo-camera-and-stereo-matching">Stereo camera and Stereo matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#estimation-of-gravity-vector">Estimation of gravity vector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#io-and-projector-control">IO and Projector Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#hand-eye-calibration">Hand-eye calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#collisioncheck">CollisionCheck</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#start"><code class="docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#set-region-of-interest"><code class="docutils literal notranslate"><span class="pre">set_region_of_interest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#get-regions-of-interest"><code class="docutils literal notranslate"><span class="pre">get_regions_of_interest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#delete-regions-of-interest"><code class="docutils literal notranslate"><span class="pre">delete_regions_of_interest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#set-load-carrier"><code class="docutils literal notranslate"><span class="pre">set_load_carrier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#get-load-carriers"><code class="docutils literal notranslate"><span class="pre">get_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#delete-load-carriers"><code class="docutils literal notranslate"><span class="pre">delete_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detect-load-carriers"><code class="docutils literal notranslate"><span class="pre">detect_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detect-filling-level"><code class="docutils literal notranslate"><span class="pre">detect_filling_level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detect-items-boxpick-only"><code class="docutils literal notranslate"><span class="pre">detect_items</span></code> (BoxPick only)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#compute-grasps-for-itempick"><code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> (for ItemPick)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#compute-grasps-for-boxpick"><code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> (for BoxPick)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#suitable-objects">Suitable objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#suitable-scene">Suitable scene</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Base-plane calibration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#apriltag-based-base-plane-calibration">AprilTag based base-plane calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#stereo-based-base-plane-calibration">Stereo based base-plane calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#manual-base-plane-calibration">Manual base-plane calibration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setting a region of interest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#setting-of-grasp-points">Setting of grasp points</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-grasp-points-in-the-webgui">Setting grasp points in the Web GUI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-grasp-points-via-the-rest-api">Setting grasp points via the REST-API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#setting-the-preferred-orientation-of-the-tcp">Setting the preferred orientation of the TCP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Detection of objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#interaction-with-other-components">Interaction with other components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#stereo-camera-and-stereo-matching">Stereo camera and stereo matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#io-and-projector-control">IO and Projector Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#hand-eye-calibration">Hand-eye calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#collisioncheck">CollisionCheck</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#calibrate-base-plane"><code class="docutils literal notranslate"><span class="pre">calibrate_base_plane</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-base-plane-calibration"><code class="docutils literal notranslate"><span class="pre">get_base_plane_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#delete-base-plane-calibration"><code class="docutils literal notranslate"><span class="pre">delete_base_plane_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#set-region-of-interest-2d"><code class="docutils literal notranslate"><span class="pre">set_region_of_interest_2d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-regions-of-interest-2d"><code class="docutils literal notranslate"><span class="pre">get_regions_of_interest_2d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#delete-regions-of-interest-2d"><code class="docutils literal notranslate"><span class="pre">delete_regions_of_interest_2d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#set-load-carrier"><code class="docutils literal notranslate"><span class="pre">set_load_carrier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-load-carriers"><code class="docutils literal notranslate"><span class="pre">get_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#delete-load-carriers"><code class="docutils literal notranslate"><span class="pre">delete_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detect-load-carriers"><code class="docutils literal notranslate"><span class="pre">detect_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detect-filling-level"><code class="docutils literal notranslate"><span class="pre">detect_filling_level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#set-preferred-orientation"><code class="docutils literal notranslate"><span class="pre">set_preferred_orientation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-preferred-orientation"><code class="docutils literal notranslate"><span class="pre">get_preferred_orientation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#set-grasp"><code class="docutils literal notranslate"><span class="pre">set_grasp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#set-all-grasps"><code class="docutils literal notranslate"><span class="pre">set_all_grasps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-grasps"><code class="docutils literal notranslate"><span class="pre">get_grasps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#delete-grasps"><code class="docutils literal notranslate"><span class="pre">delete_grasps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-symmetric-grasps"><code class="docutils literal notranslate"><span class="pre">get_symmetric_grasps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detect-object"><code class="docutils literal notranslate"><span class="pre">detect_object</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#template-upload">Template Upload</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="collisioncheck.html">CollisionCheck</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#setting-a-gripper">Setting a gripper</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#robot-flange-radius">Robot flange radius</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#creating-a-gripper-via-the-rest-api">Creating a gripper via the REST-API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#creating-a-gripper-in-the-webgui">Creating a gripper in the Web GUI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#calculated-tcp-position">Calculated TCP position</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#creating-rotationally-asymmetric-grippers">Creating rotationally asymmetric grippers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#collision-checking">Collision checking</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#stand-alone-collision-checking">Stand-alone collision checking</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#collision-checking-within-other-modules">Collision checking within other modules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#set-gripper"><code class="docutils literal notranslate"><span class="pre">set_gripper</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#get-grippers"><code class="docutils literal notranslate"><span class="pre">get_grippers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#delete-grippers"><code class="docutils literal notranslate"><span class="pre">delete_grippers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#check-collision"><code class="docutils literal notranslate"><span class="pre">check_collision</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="commonfunctionalities.html">Common functionalities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier.html">Load carrier functionality</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#load-carrier">Load Carrier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-load-carriers">Detection of load carriers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-filling-level">Detection of filling level</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#interaction-with-other-components">Interaction with other components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="roi.html">Region of interest functionality</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#region-of-interest">Region of interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Interfaces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">General API structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Available resources and requests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_nodes.html">Nodes, parameters, and services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_datastreams.html">Datastreams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_syslogs.html">System and logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_datamodel.html">Data type definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_swagger_ui.html">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rc_dynamics.html">The rc_dynamics interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#starting-stopping-dynamic-state-estimation">Starting/stopping dynamic-state estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#configuring-data-streams">Configuring data streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#data-stream-protocol">Data-stream protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#rc-dynamics-api">rc_dynamics_api</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Ethernet connection configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Generic XML structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Return code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Request XML structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Response XML structure</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI XML configuration files</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Maintenance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Lens cleaning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Camera calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Updating the firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Rebooting the <em>rc_visard</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Connectivity kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Wiring</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Power connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Power supplies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Spare parts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED colors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Hardware issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Connectivity issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Camera-image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Depth/Disparity, error, and confidence image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#dynamics-issues">Dynamics issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">GigE Vision/GenICam issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Address</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pose_formats.html">Pose formats</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyzabc-format">XYZABC format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyz-quaternion-format">XYZ+quaternion format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#conversion-from-abc-to-quaternion">Conversion from ABC to quaternion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#conversion-from-quaternion-to-abc">Conversion from quaternion to ABC</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="components.html">Software components</a> &raquo;</li>
+        
+      <li>TagDetect</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tagdetect">
+<span id="sect-tag-detection"></span><h1>TagDetect<a class="headerlink" href="#tagdetect" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<span id="index-0"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The TagDetect components run on board the <em>rc_visard</em> and allow the detection of 2D bar codes and tags.
+Currently, there are TagDetect components for <cite>QR codes</cite> and <cite>AprilTags</cite>.
+The components, furthermore, compute the position and orientation of each tag
+in the 3D camera coordinate system, making it simple to manipulate a tag
+with a robot or to localize the camera with respect to a tag.</p>
+<p>Tag detection is made up of three steps:</p>
+<ol class="arabic simple">
+<li>Tag reading on the 2D image pair (see <a class="reference internal" href="#sect-tag-reading"><span class="std std-ref">Tag reading</span></a>).</li>
+<li>Estimation of the pose of each tag (see <a class="reference internal" href="#sect-tag-pose-estimation"><span class="std std-ref">Pose estimation</span></a>).</li>
+<li>Re-identification of previously seen tags (see <a class="reference internal" href="#sect-tag-re-identification"><span class="std std-ref">Tag re-identification</span></a>).</li>
+</ol>
+<p>In the following, the two supported tag types are described, followed
+by a comparison.</p>
+<div class="section" id="qr-code">
+<h3>QR code<a class="headerlink" href="#qr-code" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center" id="id1">
+<span id="index-1"></span><a class="reference internal image-reference" href="_images/example_qr_code.png"><img alt="_images/example_qr_code.png" src="_images/example_qr_code.png" style="width: 200px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 47 </span><span class="caption-text">Sample QR code</span></p>
+</div>
+<p>QR codes are two-dimensional bar codes that contain arbitrary user-defined data.
+There is wide support for decoding of QR codes on commodity hardware
+such as smartphones.
+Also, many online and offline tools are available for the generation of such codes.</p>
+<p>The “pixels” of a QR code are called <cite>modules</cite>.
+Appearance and resolution of QR codes change with the amount
+of data they contain.
+While the special patterns in the three corners are always 7 modules
+wide, the number of modules between them increases the
+more data is stored.
+The lowest-resolution QR code is of size 21x21 modules and can contain
+up to 152 bits.</p>
+<p>Even though many QR code generation tools support generation of
+specially designed QR codes (e.g., containing a logo, having round
+corners, or having dots as modules), a reliable detection of these tags by
+the <em>rc_visard</em>’s TagDetect component is not guaranteed.
+The same holds for QR codes which contain characters that are not part
+of regular ASCII.</p>
+</div>
+<div class="section" id="apriltag">
+<span id="sect-apriltag"></span><h3>AprilTag<a class="headerlink" href="#apriltag" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center" id="id2">
+<span id="fig-april-tag-example"></span><span id="index-2"></span><a class="reference internal image-reference" href="_images/apriltag_dim_vis.png"><img alt="_images/apriltag_dim_vis.png" src="_images/apriltag_dim_vis.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 48 </span><span class="caption-text">A 16h5 tag (left) and a 36h11 tag (right).
+AprilTags consist of a mandatory white (a) and black (b) border and
+a variable amount of data bits (c).</span></p>
+</div>
+<p>AprilTags are similar to QR codes.
+However, they are specifically designed for robust identification at
+large distances.
+As for QR codes, we will call the tag pixels <cite>modules</cite>.
+<a class="reference internal" href="#fig-april-tag-example"><span class="std std-numref">Fig. 48</span></a> shows how AprilTags are structured.
+They are surrounded by a mandatory white and black border, each one module
+wide.
+In the center, they carry a variable amount of data modules.
+Other than QR codes, they do not contain any user-defined information but
+are identified by a predefined <em>family</em> and <em>ID</em>.
+The tags in
+<a class="reference internal" href="#fig-april-tag-example"><span class="std std-numref">Fig. 48</span></a>
+for example are of family 16h5 and 36h11 and have id 0 and 11, respectively.
+All supported families are shown in
+<a class="reference internal" href="#tab-tag-families"><span class="std std-numref">Table 25</span></a>.</p>
+<span id="tab-tag-families"></span><table border="1" class="docutils" id="id3">
+<caption><span class="caption-number">Table 25 </span><span class="caption-text">AprilTag families</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="18%" />
+<col width="50%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Family</th>
+<th class="head">Number of tag IDs</th>
+<th class="head">Recommended</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>16h5</td>
+<td>30</td>
+<td>-</td>
+</tr>
+<tr class="row-odd"><td>25h7</td>
+<td>242</td>
+<td>-</td>
+</tr>
+<tr class="row-even"><td>25h9</td>
+<td>35</td>
+<td>o</td>
+</tr>
+<tr class="row-odd"><td>36h10</td>
+<td>2320</td>
+<td>o</td>
+</tr>
+<tr class="row-even"><td>36h11</td>
+<td>587</td>
+<td>+</td>
+</tr>
+</tbody>
+</table>
+<p>For each family, the number before the “h” states the number of data
+modules contained in the tag:
+While a 16h5 tag contains 16 (4x4) data modules
+((c) in <a class="reference internal" href="#fig-april-tag-example"><span class="std std-numref">Fig. 48</span></a>),
+a 36h11 tag contains 36 (6x6) modules.
+The number behind the “h” refers to the Hamming distance between two tags of
+the same family.
+The higher, the more robust is the detection, but the fewer individual tag
+IDs are available for the same number of data modules (see
+<a class="reference internal" href="#tab-tag-families"><span class="std std-numref">Table 25</span></a>).</p>
+<p>The advantage of fewer data modules (as for 16h5 compared to 36h11) is
+the lower resolution of the tag.
+Hence, each tag module is larger and the tag therefore can be detected
+from a larger distance.
+This, however, comes at a price:
+Firstly, fewer data modules lead to fewer individual tag IDs.
+Secondly, and more importantly, detection robustness is significantly
+reduced due to a higher false positive rate; i.e, tags are mixed up
+or nonexistent tags are detected in random image texture or noise.</p>
+<p>For these reasons we recommend using the 36h11 family and highly
+discourage the use of the 16h5 and 25h7 families.
+The latter families should only be used if a large detection distance
+really is necessary for an application.
+However, the maximum detection distance increases only by approximately 25%
+when using a 16h5 tag instead of a 36h11 tag.</p>
+<p>Pre-generated AprilTags can be downloaded at the
+AprilTag project website (<a class="reference external" href="https://april.eecs.umich.edu/software/apriltag.html">https://april.eecs.umich.edu/software/apriltag.html</a>).
+There, each family consists of multiple PNGs containing single
+tags and one PDF containing each tag on a separate page.
+Each pixel in the PNGs corresponds to one AprilTag module.
+When printing the tags, special care must be taken to also include the
+white border around the tag that is contained in the PNGs as well
+as PDFs (see (a) in
+<a class="reference internal" href="#fig-april-tag-example"><span class="std std-numref">Fig. 48</span></a>).
+Moreover, the tags should be scaled to the desired printing size
+without any interpolation, so that the sharp edges are preserved.</p>
+</div>
+<div class="section" id="comparison">
+<h3>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h3>
+<p>Both QR codes and AprilTags have their up and down sides.
+While QR codes allow arbitrary user-defined data to be stored,
+AprilTags have a pre-defined and limited set of tags.
+On the other hand, AprilTags have a lower resolution and can therefore
+be detected at larger distances.
+Moreover, the continuous white to black edge around AprilTags allow for
+more precise pose estimation.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If user-defined data is not required, AprilTags should be preferred over QR codes.</p>
+</div>
+</div>
+</div>
+<div class="section" id="tag-reading">
+<span id="sect-tag-reading"></span><h2>Tag reading<a class="headerlink" href="#tag-reading" title="Permalink to this headline">¶</a></h2>
+<p>The first step in the tag detection pipeline is reading the tags on the
+2D image pair.
+This step takes most of the processing time and its precision is crucial
+for the precision of the resulting tag pose.
+To control the speed of this step, the <code class="docutils literal notranslate"><span class="pre">quality</span></code> parameter
+can be set by the user.
+It results in a downscaling of the image pair before reading the tags.
+<code class="docutils literal notranslate"><span class="pre">High</span></code> yields the largest maximum detection distance and highest
+precision, but also the highest processing time.
+<code class="docutils literal notranslate"><span class="pre">Low</span></code> results in the smallest maximum detection distance and
+lowest precision, but processing requires less than half of the time.
+<code class="docutils literal notranslate"><span class="pre">Medium</span></code> lies in between.
+Please note that this quality parameter has no relation to the quality
+parameter of
+<a class="reference internal" href="stereo_matching.html#sect-stereo-matching"><span class="std std-ref">Stereo matching</span></a>.</p>
+<div class="figure align-center" id="id4">
+<span id="fig-tag-sizes"></span><a class="reference internal image-reference" href="_images/tag_sizes_vis.png"><img alt="_images/tag_sizes_vis.png" src="_images/tag_sizes_vis.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 49 </span><span class="caption-text">Visualization of module size <span class="math notranslate nohighlight">\(s\)</span>, size of a tag in
+modules <span class="math notranslate nohighlight">\(r\)</span>, and size of a tag in meters <span class="math notranslate nohighlight">\(t\)</span>
+for AprilTags (left) and QR codes (right)</span></p>
+</div>
+<p>The maximum detection distance <span class="math notranslate nohighlight">\(z\)</span> at quality <code class="docutils literal notranslate"><span class="pre">High</span></code> can be
+approximated by using the following formulae,</p>
+<div class="math notranslate nohighlight">
+\[z = \frac{f s}{p},\]</div>
+<div class="math notranslate nohighlight">
+\[s = \frac{t}{r},\]</div>
+<p>where <span class="math notranslate nohighlight">\(f\)</span> is the
+<a class="reference internal" href="stereo_camera.html#sect-stereo-camera-rectification"><span class="std std-ref">focal length</span></a>
+in pixels and <span class="math notranslate nohighlight">\(s\)</span> is the size
+of a module in meters.
+<span class="math notranslate nohighlight">\(s\)</span> can easily be calculated by the latter formula, where <span class="math notranslate nohighlight">\(t\)</span>
+is the size of the tag in meters and <span class="math notranslate nohighlight">\(r\)</span> is the width of the
+code in modules (for AprilTags without the white border).
+<a class="reference internal" href="#fig-tag-sizes"><span class="std std-numref">Fig. 49</span></a> visualizes these variables.
+<span class="math notranslate nohighlight">\(p\)</span> denotes the number of image pixels per module required
+for detection.
+It is different for QR codes and AprilTags.
+Moreover, it varies with the tag’s angle to the camera and illumination.
+Approximate values for robust detection are:</p>
+<ul class="simple">
+<li>AprilTag: <span class="math notranslate nohighlight">\(p=5\)</span> pixels/module</li>
+<li>QR code: <span class="math notranslate nohighlight">\(p=6\)</span> pixels/module</li>
+</ul>
+<p>The following tables give sample maximum distances for
+different situations, assuming a focal length of
+1075 pixels and the parameter <code class="docutils literal notranslate"><span class="pre">quality</span></code> to be set to <code class="docutils literal notranslate"><span class="pre">High</span></code>.</p>
+<span id="tab-tag-max-dist-april"></span><table border="1" class="docutils" id="id5">
+<caption><span class="caption-number">Table 26 </span><span class="caption-text">Maximum detection distance examples for AprilTags with a width
+         of <span class="math notranslate nohighlight">\(t=4\)</span> cm</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="37%" />
+<col width="33%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">AprilTag family</th>
+<th class="head">Tag width</th>
+<th class="head">Maximum distance</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>36h11 (recommended)</td>
+<td>8 modules</td>
+<td>1.1 m</td>
+</tr>
+<tr class="row-odd"><td>16h5</td>
+<td>6 modules</td>
+<td>1.4 m</td>
+</tr>
+</tbody>
+</table>
+<span id="tab-tag-max-dist-qr"></span><table border="1" class="docutils" id="id6">
+<caption><span class="caption-number">Table 27 </span><span class="caption-text">Maximum detection distance examples for QR codes with a width
+         of <span class="math notranslate nohighlight">\(t=8\)</span> cm</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="52%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Tag width</th>
+<th class="head">Maximum distance</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>29 modules</td>
+<td>0.49 m</td>
+</tr>
+<tr class="row-odd"><td>21 modules</td>
+<td>0.70 m</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="pose-estimation">
+<span id="sect-tag-pose-estimation"></span><h2>Pose estimation<a class="headerlink" href="#pose-estimation" title="Permalink to this headline">¶</a></h2>
+<p id="index-3">For each detected tag, the pose of this tag in the camera coordinate
+frame is estimated.
+A requirement for pose estimation is that a tag is fully visible in
+the left and right camera image.
+The coordinate frame of the tag is aligned as shown below.</p>
+<div class="figure align-center" id="id7">
+<span id="fig-tag-coord-frames"></span><a class="reference internal image-reference" href="_images/tag_coord_frames.png"><img alt="_images/tag_coord_frames.png" src="_images/tag_coord_frames.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 50 </span><span class="caption-text">Coordinate frames of AprilTags (left) and QR codes (right)</span></p>
+</div>
+<p>The z-axis is pointing “into” the tag.
+Please note that for AprilTags, although having the white border included
+in their definition, the coordinate system’s origin is placed exactly at the
+transition from the white to the black border.
+Since AprilTags do not have an obvious orientation, the origin is
+defined as the upper left corner in the orientation they are pre-generated in.</p>
+<p>During pose estimation, the tag’s size is also estimated, while
+assuming the tag to be square.
+For QR codes, the size covers the full tag.
+For AprilTags, the size covers only the black part of the tag,
+hence ignoring the outermost white border.</p>
+<p>The user can also specify the approximate size (<span class="math notranslate nohighlight">\(\pm 10\%\)</span>) of tags with
+a specific ID.
+All tags not matching this size contraint are automatically filtered out.
+This information is further used to resolve ambiguities in pose estimation
+that may arise if multiple tags with the same ID are visible in the left
+and right image and these tags are aligned in parallel to the image rows.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For best pose estimation results one should make sure to accurately print
+the tag and to attach it to a rigid and as planar as possible surface.
+Any distortion of the tag or bump in the surface will degrade the
+estimated pose.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">It is highly recommended to set the approximate size of a tag.
+Otherwise, if multiple tags with the same ID are visible in the left or right
+image, pose estimation may compute a wrong pose if these tags have the
+same orientation and are approximately aligned in parallel to the image
+rows.
+However, even if the approximate size is not given, the TagDetect components
+try to detect such situations and filter out affected tags.</p>
+</div>
+<p>Below tables give approximate precisions of the estimated poses of AprilTags and
+QR codes.
+We distinguish between lateral precision (i.e., in x and y direction) and
+precision in z direction.
+It is assumed that <code class="docutils literal notranslate"><span class="pre">quality</span></code> is set to <code class="docutils literal notranslate"><span class="pre">High</span></code> and that the camera’s
+viewing direction is roughly parallel to the tag’s normal.
+The size of a tag does not have a significant effect on the lateral or z
+precision; however, in general, larger tags improve precision.
+With respect to precision of the orientation especially around the x and y
+axes, larger tags clearly outperform smaller ones.</p>
+<span id="tab-tag-precision-april"></span><table border="1" class="docutils" id="id8">
+<caption><span class="caption-number">Table 28 </span><span class="caption-text">Approximate pose precision for AprilTags</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="9%" />
+<col width="26%" />
+<col width="19%" />
+<col width="27%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Distance</th>
+<th class="head"><em>rc_visard</em> 65 - lateral</th>
+<th class="head"><em>rc_visard</em> 65 - z</th>
+<th class="head"><em>rc_visard</em> 160 - lateral</th>
+<th class="head"><em>rc_visard</em> 160 - z</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0.3 m</td>
+<td>0.4 mm</td>
+<td>0.9 mm</td>
+<td>0.4 mm</td>
+<td>0.8 mm</td>
+</tr>
+<tr class="row-odd"><td>1.0 m</td>
+<td>0.7 mm</td>
+<td>3.3 mm</td>
+<td>0.7 mm</td>
+<td>3.3 mm</td>
+</tr>
+</tbody>
+</table>
+<span id="tab-tag-precision-qr"></span><table border="1" class="docutils" id="id9">
+<caption><span class="caption-number">Table 29 </span><span class="caption-text">Approximate pose precision for QR codes</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="9%" />
+<col width="26%" />
+<col width="19%" />
+<col width="27%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Distance</th>
+<th class="head"><em>rc_visard</em> 65 - lateral</th>
+<th class="head"><em>rc_visard</em> 65 - z</th>
+<th class="head"><em>rc_visard</em> 160 - lateral</th>
+<th class="head"><em>rc_visard</em> 160 - z</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0.3 m</td>
+<td>0.6 mm</td>
+<td>2.0 mm</td>
+<td>0.6 mm</td>
+<td>1.3 mm</td>
+</tr>
+<tr class="row-odd"><td>1.0 m</td>
+<td>2.6 mm</td>
+<td>15 mm</td>
+<td>2.6 mm</td>
+<td>7.9 mm</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="tag-re-identification">
+<span id="sect-tag-re-identification"></span><h2>Tag re-identification<a class="headerlink" href="#tag-re-identification" title="Permalink to this headline">¶</a></h2>
+<p id="index-4">Each tag has an ID; for AprilTags it is the <em>family</em> plus <em>tag ID</em>, for
+QR codes it is the contained data.
+However, these IDs are not unique, since the same tag may appear multiple times
+in a scene.</p>
+<p>For distinction of these tags, the TagDetect components also assign
+each detected tag a unique identifier.
+To help the user identifying an identical tag over multiple detections,
+tag detection tries to re-identify tags;
+if successful, a tag is assigned the same unique identifier again.</p>
+<p>Tag re-identification compares the positions of the
+corners of the tags in a static coordinate frame to find identical tags.
+Tags are assumed identical if they did not or only slightly move in
+that static coordinate frame.
+For that static coordinate frame to be available, <a class="reference internal" href="dynamics.html#sect-dynamics"><span class="std std-ref">dynamic-state estimation</span></a>
+must be switched on.
+If it is not, the sensor is assumed to be static; tag re-identification
+will then not work across sensor movements.</p>
+<p>By setting the <code class="docutils literal notranslate"><span class="pre">max_corner_distance</span></code>
+threshold, the user can specify how much a tag is allowed move in the static
+coordinate frame between two detections to be considered identical.
+This parameter defines the maximum distance between the corners of
+two tags, which is shown in
+<a class="reference internal" href="#fig-tag-re-identification"><span class="std std-numref">Fig. 51</span></a>.
+The Euclidean distances of all four corresponding tag corners are computed in 3D.
+If none of these distances exceeds the threshold, the tags are
+considered identical.</p>
+<div class="figure align-center" id="id10">
+<span id="fig-tag-re-identification"></span><a class="reference internal image-reference" href="_images/tag-re-identification.png"><img alt="_images/tag-re-identification.png" src="_images/tag-re-identification.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 51 </span><span class="caption-text">Simplified visualization of tag re-identification.
+Euclidean distances between associated tag corners in 3D are compared
+(red arrows).</span></p>
+</div>
+<p>After a number of tag detection runs, previously detected tag instances
+will be discarded if they are not detected in the meantime.
+This can be configured by the parameter <code class="docutils literal notranslate"><span class="pre">forget_after_n_detections</span></code>.</p>
+</div>
+<div class="section" id="hand-eye-calibration">
+<span id="sect-tag-hand-eye-calib"></span><h2>Hand-eye calibration<a class="headerlink" href="#hand-eye-calibration" title="Permalink to this headline">¶</a></h2>
+<p>In case the <em>rc_visard</em> has been calibrated to a robot, the TagDetect component
+can automatically provide poses in the robot coordinate frame.
+For the TagDetect node’s <a class="reference internal" href="#sect-tag-services"><span class="std std-ref">Services</span></a>, the frame of the
+output poses can be controlled with the <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> argument.</p>
+<p>Two different <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> values can be chosen:</p>
+<ol class="arabic simple">
+<li><strong>Camera frame</strong> (<code class="docutils literal notranslate"><span class="pre">camera</span></code>).
+All poses provided by the component are in the camera frame.</li>
+<li><strong>External frame</strong> (<code class="docutils literal notranslate"><span class="pre">external</span></code>).
+All poses provided by the component are in the external frame,
+configured by the user during the hand-eye calibration process.
+The component relies on the on-board
+<a class="reference internal" href="handeye_calibration.html"><span class="doc">Hand-eye calibration component</span></a>
+to retrieve the sensor mounting (static or robot mounted) and
+the hand-eye transformation.
+If the sensor mounting is static, no further information is needed.
+If the sensor is robot-mounted, the <code class="docutils literal notranslate"><span class="pre">robot_pose</span></code> is required
+to transform poses to and from the <code class="docutils literal notranslate"><span class="pre">external</span></code> frame.</li>
+</ol>
+<p>All <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> values that are not <code class="docutils literal notranslate"><span class="pre">camera</span></code> or <code class="docutils literal notranslate"><span class="pre">external</span></code> are rejected.</p>
+</div>
+<div class="section" id="parameters">
+<span id="sect-tag-parameters"></span><h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<p>There are two separate components availabe for tag detection,
+one for detecting AprilTags and one for QR codes, named
+<code class="docutils literal notranslate"><span class="pre">rc_april_tag_detect</span></code> and <code class="docutils literal notranslate"><span class="pre">rc_qr_code_detect</span></code>, respectively.
+Apart from the component names they share the same interface definition.</p>
+<p>In addition to the <a class="reference internal" href="rest_api.html"><span class="doc">REST-API interface</span></a>, the TagDetect components provide tabs
+on the Web GUI, on which they can be tried out and configured manually.</p>
+<p>In the following, the parameters are listed based on the
+example of <code class="docutils literal notranslate"><span class="pre">rc_qr_code_detect</span></code>. They are the same for
+<code class="docutils literal notranslate"><span class="pre">rc_april_tag_detect</span></code>.</p>
+<p>This component offers the following run-time parameters:</p>
+<table border="1" class="docutils" id="id11">
+<caption><span class="caption-number">Table 30 </span><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">rc_qr_code_detect</span></code> component’s run-time parameters</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Min</th>
+<th class="head">Max</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">detect_inverted_tags</span></code></td>
+<td>bool</td>
+<td>false</td>
+<td>true</td>
+<td>false</td>
+<td>Detect tags with black and white exchanged</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">forget_after_n_detections</span></code></td>
+<td>int32</td>
+<td>1</td>
+<td>1000</td>
+<td>30</td>
+<td>Number of detection runs after which to forget about a previous tag during tag re-identification</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">max_corner_distance</span></code></td>
+<td>float64</td>
+<td>0.001</td>
+<td>0.01</td>
+<td>0.005</td>
+<td>Maximum distance of corresponding tag corners in meters during tag re-identification</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">quality</span></code></td>
+<td>string</td>
+<td>-</td>
+<td>-</td>
+<td>High</td>
+<td>Quality of tag detection (High, Medium or Low)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">use_cached_images</span></code></td>
+<td>bool</td>
+<td>false</td>
+<td>true</td>
+<td>false</td>
+<td>Use most recently received image pair instead of waiting for a new pair</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="status-values">
+<span id="sect-tag-status-values"></span><h2>Status values<a class="headerlink" href="#status-values" title="Permalink to this headline">¶</a></h2>
+<p>These TagDetect components reports the following status values:</p>
+<table border="1" class="docutils" id="id12">
+<caption><span class="caption-number">Table 31 </span><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">rc_qr_code_detect</span></code> and <code class="docutils literal notranslate"><span class="pre">rc_april_tag_detect</span></code> component’s status values</span><a class="headerlink" href="#id12" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">data_acquisition_time</span></code></td>
+<td>Time in seconds required to acquire image pair</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">last_timestamp_processed</span></code></td>
+<td>The timestamp of the last processed image pair</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">state</span></code></td>
+<td>The current state of the node</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">tag_detection_time</span></code></td>
+<td>Processing time of the last tag detection in seconds</td>
+</tr>
+</tbody>
+</table>
+<p>The reported <code class="docutils literal notranslate"><span class="pre">state</span></code> can take one of the following values.</p>
+<span id="tab-rc-tag-detection-states"></span><table border="1" class="docutils" id="id13">
+<caption><span class="caption-number">Table 32 </span><span class="caption-text">Possible states of the TagDetect components</span><a class="headerlink" href="#id13" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">State name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>IDLE</td>
+<td>The component is idle.</td>
+</tr>
+<tr class="row-odd"><td>RUNNING</td>
+<td>The component is running and ready for tag detection.</td>
+</tr>
+<tr class="row-even"><td>FATAL</td>
+<td>A fatal error has occurred.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="services">
+<span id="sect-tag-services"></span><h2>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h2>
+<p id="index-5">The TagDetect components implement a state machine for starting and stopping.
+The actual tag detection can be triggered via <code class="docutils literal notranslate"><span class="pre">detect</span></code>.</p>
+<div class="section" id="start">
+<span id="expl-tag-srv-start"></span><h3><code class="docutils literal notranslate"><span class="pre">start</span></code><a class="headerlink" href="#start" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>starts the component by transitioning from <code class="docutils literal notranslate"><span class="pre">IDLE</span></code> to <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code>.</p>
+<p>When running, the component receives images from the stereo camera and is
+ready to perform tag detections.
+To save computing resources, the
+component should only be running when necessary.</p>
+<p>This service has no arguments.</p>
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="stop">
+<span id="expl-tag-srv-stop"></span><h3><code class="docutils literal notranslate"><span class="pre">stop</span></code><a class="headerlink" href="#stop" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>stops the component by transitioning to <code class="docutils literal notranslate"><span class="pre">IDLE</span></code>.</p>
+<p>This transition can be performed from state <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code> and <code class="docutils literal notranslate"><span class="pre">FATAL</span></code>.
+All tag re-identification information is cleared during stopping.</p>
+<p>This service has no arguments.</p>
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="restart">
+<span id="expl-tag-srv-restart"></span><h3><code class="docutils literal notranslate"><span class="pre">restart</span></code><a class="headerlink" href="#restart" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>restarts the component.
+If in <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code> or <code class="docutils literal notranslate"><span class="pre">FATAL</span></code>, the component will be stopped and then started.
+If in <code class="docutils literal notranslate"><span class="pre">IDLE</span></code>, the component will be started.</p>
+<p>This service has no arguments.</p>
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="detect">
+<span id="expl-tag-srv-detect"></span><h3><code class="docutils literal notranslate"><span class="pre">detect</span></code><a class="headerlink" href="#detect" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>triggers a tag detection.
+Depending on the <code class="docutils literal notranslate"><span class="pre">use_cached_images</span></code> parameter, the component will use
+the latest received image pair (if set to true) or wait for a new pair
+that is captured after the service call was triggered (if set to false,
+this is the default).
+Even if set to true, tag detection will never use one image pair twice.</p>
+<p>It is recommended to call <code class="docutils literal notranslate"><span class="pre">detect</span></code> in state <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code> only.
+It is also possible to be called in state <code class="docutils literal notranslate"><span class="pre">IDLE</span></code>, resulting in an
+auto-start and stop of the component.
+This, however, has some drawbacks:
+First, the call will take considerably longer;
+second, tag re-identification will not work.
+It is therefore highly recommended to manually start the component
+before calling <code class="docutils literal notranslate"><span class="pre">detect</span></code>.</p>
+<p><strong>Request:</strong></p>
+<blockquote>
+<div><p>The definition for the request arguments with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;robot_pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Optional arguments:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">tags</span></code> is the list of tag IDs that the TagDetect component should detect.
+For QR codes, the ID is the contained data.
+For AprilTags, it is <cite>“&lt;family&gt;_&lt;id&gt;”</cite>, so, e.g., for a tag of
+family 36h11 and ID 5, it is <cite>“36h11_5”</cite>.
+Naturally, the AprilTag component can only be triggered for AprilTags, and
+the QR code component only for QR codes.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">tags</span></code> list can also be left empty.
+In that case, all detected tags will be returned.
+This feature should be used only during development and debugging
+of an application.
+Whenever possible, the concrete tag IDs should be listed, on the one
+hand avoiding some false positives, on the other hand speeding up tag
+detection by filtering tags not of interest.</p>
+<p>For AprilTags, the user can not only specify concrete tags but also
+a complete family by setting the ID to “&lt;family&gt;”, so, e.g., “36h11”.
+All tags of this family will then be detected. It is further possible
+to specify multiple complete tag families or a combination of
+concrete tags and complete tag families; for instance, triggering for
+“36h11”, “25h9_3”, and “36h10” at the same time.</p>
+<p>In addition to the ID, the approximate size (<span class="math notranslate nohighlight">\(\pm 10\%\)</span>) of a tag
+can be set with the <code class="docutils literal notranslate"><span class="pre">size</span></code> parameter.
+As described in
+<a class="reference internal" href="#sect-tag-pose-estimation"><span class="std std-ref">Pose estimation</span></a>,
+this information helps to resolve ambiguities in pose estimation that may
+arise in certain situations.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> controls whether the poses of the detected tags are
+returned in the camera or external frame,
+as detailed in
+<a class="reference internal" href="#sect-tag-hand-eye-calib"><span class="std std-ref">Hand-eye calibration</span></a>.
+The default is <code class="docutils literal notranslate"><span class="pre">camera</span></code>.</p>
+</div></blockquote>
+</div></blockquote>
+<p><strong>Response:</strong></p>
+<blockquote>
+<div><p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;instance_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">timestamp</span></code> is set to the timestamp of the image pair the tag
+detection ran on.</p>
+<p><code class="docutils literal notranslate"><span class="pre">tags</span></code> contains all detected tags.</p>
+<p><code class="docutils literal notranslate"><span class="pre">id</span></code> is the ID of the tag, similar to <code class="docutils literal notranslate"><span class="pre">id</span></code> in the request.</p>
+<p><code class="docutils literal notranslate"><span class="pre">instance_id</span></code> is the random unique identifier of the tag
+assigned by tag re-identification.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pose</span></code> contains <code class="docutils literal notranslate"><span class="pre">position</span></code> and <code class="docutils literal notranslate"><span class="pre">orientation</span></code>.
+The orientation is in quaternion format.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> is set to the coordinate frame above pose refers to.
+It will either be “camera” or “external”.</p>
+<p><code class="docutils literal notranslate"><span class="pre">size</span></code> will be set to the estimated tag size in meters; for AprilTags,
+the white border is not included.</p>
+<p><code class="docutils literal notranslate"><span class="pre">return_code</span></code> holds possible warnings or error codes in <code class="docutils literal notranslate"><span class="pre">value</span></code>,
+which are represented by a value greater than or less than 0, respectively.
+The respective error message can be found in <code class="docutils literal notranslate"><span class="pre">message</span></code>.
+The following table contains a list of common codes:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="7%" />
+<col width="93%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>Success</td>
+</tr>
+<tr class="row-odd"><td>-1</td>
+<td>An invalid argument was provided</td>
+</tr>
+<tr class="row-even"><td>-4</td>
+<td>A timeout occurred while waiting for the image pair</td>
+</tr>
+<tr class="row-odd"><td>-9</td>
+<td>The license is not valid</td>
+</tr>
+<tr class="row-even"><td>-101</td>
+<td>Internal error during tag detection</td>
+</tr>
+<tr class="row-odd"><td>-102</td>
+<td>There was a backwards jump of system time</td>
+</tr>
+<tr class="row-even"><td>-103</td>
+<td>Internal error during tag pose estimation</td>
+</tr>
+<tr class="row-odd"><td>-200</td>
+<td>A fatal internal error occurred</td>
+</tr>
+<tr class="row-even"><td>200</td>
+<td>Multiple warnings occurred; see list in <code class="docutils literal notranslate"><span class="pre">message</span></code></td>
+</tr>
+<tr class="row-odd"><td>201</td>
+<td>The component was not in state <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>Tags might be omitted from the <code class="docutils literal notranslate"><span class="pre">detect</span></code> response due to several
+reasons, e.g., if a tag is visible in only one of the cameras or if
+pose estimation did not succeed.
+These filtered-out tags are noted in the log, which can be accessed as
+described in
+<a class="reference internal" href="maintenance.html#sect-downloading-log-files"><span class="std std-ref">Downloading log files</span></a>.</p>
+<p>A visualization of the latest detection is shown on the Web GUI tabs
+of the TagDetect components. Please note that this visualization
+will only be shown after calling the detection service at least once.
+On the Web GUI, one can also manually try the detection by clicking the
+<cite>Detect</cite> button.</p>
+<p>Due to changes in system time on the <em>rc_visard</em> there might occur jumps
+of timestamps, forward as well as backward (see <a class="reference internal" href="time_sync.html#sect-time-sync"><span class="std std-ref">Time synchronization</span></a>).
+Forward jumps do not have an effect on the TagDetect component.
+Backward jumps, however, invalidate already received images.
+Therefore, in case a backwards time jump is detected, an error of
+value -102 will be issued on the next <code class="docutils literal notranslate"><span class="pre">detect</span></code> call, also to inform
+the user that the timestamps included in the response will jump back.</p>
+</div></blockquote>
+</div>
+<div class="section" id="save-parameters">
+<span id="expl-tag-srv-save-params"></span><h3><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code><a class="headerlink" href="#save-parameters" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>With this service call, the TagDetect component’s current parameter settings
+are persisted to the <em>rc_visard</em>. That is,
+these values are applied even after reboot.</p>
+<p>This service has no arguments.</p>
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="reset-defaults">
+<span id="expl-tag-srv-reset-params"></span><h3><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code><a class="headerlink" href="#reset-defaults" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Restores and applies the default values for this component’s parameters
+(“factory reset”) as given in the table above.</p>
+<p>This service has no arguments.</p>
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="optional.html" class="btn btn-neutral float-right" title="Optional software components" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="iocontrol.html" class="btn btn-neutral" title="IO and Projector Control" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Options</span>
+      en
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Languages</dt>
+        
+          
+          <dd><a href="../en/tagdetect.html">en</a></dd>
+          
+        
+          
+          <dd><a href="../de/tagdetect.html">de</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versions</dt>
+          
+            <dd><a href="../../v1.0/index.html">v1.0</a></dd>
+          
+            <dd><a href="../../v1.1/index.html">v1.1</a></dd>
+          
+            <dd><a href="../../v1.2/index.html">v1.2</a></dd>
+          
+            <dd><a href="../../v1.3/index.html">v1.3</a></dd>
+          
+            <dd><a href="../../v1.4/index.html">v1.4</a></dd>
+          
+            <dd><a href="../../v1.5/index.html">v1.5</a></dd>
+          
+            <dd><a href="../../v1.6/index.html">v1.6</a></dd>
+          
+            <dd><a href="../../v1.7/index.html">v1.7</a></dd>
+          
+            <dd><a href="../../v1.8/index.html">v1.8</a></dd>
+          
+            <dd><a href="../../v20.04/index.html">v20.04</a></dd>
+          
+            <dd><a href="../../v20.10/index.html">v20.10</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_manual_en.pdf">PDF (en)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_manual_de.pdf">PDF (de)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'20.10.1',
+            LANGUAGE:'en',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
