@@ -1,0 +1,50 @@
+Optionale Softwaremodule
+
+Der
+
+rc_visard
+
+ bietet optionale Softwaremodule, für die separat eine
+
+Lizenz
+
+ zur Aktivierung erworben werden kann.
+
+Die optionalen Softwaremodule des
+
+rc_visard
+
+ sind:
+
+SLAM (rc_slam, Abschnitt \ref{slam:sect-slam})  übernimmt die
+simultane Lokalisierung und Kartenerstellung, um akkumulierte
+Posendaten zu korrigieren. Die Trajektorie des rc_visard lässt sich
+über die REST-API-Schnittstelle\:(Abschnitt \ref{rest_api:sect-rest-
+api}) abfragen.
+
+ItemPick und BoxPick (rc_itempick und rc_boxpick, Abschnitt
+\ref{itempick:sect-itempick})  bietet eine Standardlösung für
+robotische Pick-and-Place-Anwendungen für Vakuum-Greifsysteme.
+
+SilhouetteMatch (rc_silhouettematch, Abschnitt \ref{silhouettematch
+:sect-silhouettematch})  bietet eine Objekterkennungslösung für
+Objekte, die sich auf einer Ebene befinden.
+
+CollisionCheck (rc_collision_check, Abschnitt \ref{collisioncheck
+:sect-collision})  bietet eine einfache Möglichkeit, auf Kollisionen
+zwischen einem Greifer und einem Load Carrier zu prüfen.
+
+Der
+
+rc_visard
+
+ bietet einige Funktionalitäten, die von mehreren optionalen
+Softwaremodulen gemeinsam genutzt werden. Diese Funktionalitäten sind:
+
+Load Carrier Funktionalität\:(Abschnitt \ref{loadcarrier:sect-
+loadcarrier})  ermöglicht das Setzen und Abrufen von Load Carriern
+(Behältern), sowie deren Füllstandserkennung.
+
+Region of Interest Funktionalität\:(Abschnitt \ref{roi:sect-roi})
+ermöglicht das Setzen und Abrufen von 3D Regions of Interest.
+

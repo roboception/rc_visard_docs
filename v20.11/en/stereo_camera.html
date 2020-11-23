@@ -1,0 +1,1265 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Stereo camera &mdash; rc_visard 20.11.0
+ documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="rc_visard 20.11.0
+ documentation" href="index.html"/>
+        <link rel="up" title="Software components" href="components.html"/>
+        <link rel="next" title="Stereo matching" href="stereo_matching.html"/>
+        <link rel="prev" title="Software components" href="components.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Warranty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Applicable standards</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Approvals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Safety</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">General warnings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Intended use</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Scope of delivery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technical specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Environmental and operating conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Power-supply specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Wiring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanical interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-and-configuration">Installation and configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#software-license">Software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Power up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rc-xxx-devices">Discovery of <em>rc_visard</em> devices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Resetting configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Network configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#host-name">Host name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatic configuration (factory default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manual configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#web-gui">Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Measurement principles</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concept_stereo.html">Stereo vision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concept_dynamics.html">Sensor dynamics</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="components.html">Software components</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Stereo camera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#image-acquisition">Image acquisition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#planar-rectification">Planar rectification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accessing-images">Accessing Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_matching.html">Stereo matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Computing disparity images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Computing depth images and point clouds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Confidence and error images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#acquisition-trigger"><code class="docutils literal notranslate"><span class="pre">acquisition_trigger</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dynamics.html">Sensor dynamics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#coordinate-frames-for-state-estimation">Coordinate frames for state estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#available-state-estimates">Available state estimates</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#camera-pose-streams-pose-and-pose-ins">Camera-pose streams (<code class="docutils literal notranslate"><span class="pre">pose</span></code> and <code class="docutils literal notranslate"><span class="pre">pose_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-camera-pose-streams-pose-rt-and-pose-rt-ins">Real-time camera-pose streams (<code class="docutils literal notranslate"><span class="pre">pose_rt</span></code> and <code class="docutils literal notranslate"><span class="pre">pose_rt_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#real-time-dynamics-streams-dynamics-and-dynamics-ins">Real-time dynamics streams (<code class="docutils literal notranslate"><span class="pre">dynamics</span></code> and <code class="docutils literal notranslate"><span class="pre">dynamics_ins</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#imu-data-stream-imu">IMU data stream (<code class="docutils literal notranslate"><span class="pre">imu</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamics.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#start"><code class="docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#start-slam"><code class="docutils literal notranslate"><span class="pre">start_slam</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#stop-slam"><code class="docutils literal notranslate"><span class="pre">stop_slam</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#restart"><code class="docutils literal notranslate"><span class="pre">restart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#restart-slam"><code class="docutils literal notranslate"><span class="pre">restart_slam</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dynamics.html#get-cam2imu-transform"><code class="docutils literal notranslate"><span class="pre">get_cam2imu_transform</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_visodo.html">Visual odometry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_visodo.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_visodo.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_ins.html">Stereo INS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#self-calibration">Self-Calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_ins.html#status-values">Status values</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="camera_calibration.html">Camera calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#self-calibration">Self-calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#calibration-process">Calibration process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-1-calibration-settings">Step 1: Calibration settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-2-verify-calibration">Step 2: Verify calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-3-performing-calibration">Step 3: Performing calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#monocalibration">Monocalibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#stereo-calibration">Stereo calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#step-4-storing-the-calibration-result">Step 4: Storing the calibration result</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="handeye_calibration.html">Hand-eye calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Calibration interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#camera-mounting">Camera mounting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Calibration routine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-1-setting-parameters">Step 1: Setting parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-2-selecting-and-reporting-robot-calibration-positions">Step 2:  Selecting and reporting robot calibration positions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#step-3-calculating-and-saving-the-calibration-transformation">Step 3: Calculating and saving the calibration transformation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#reset-calibration"><code class="docutils literal notranslate"><span class="pre">reset_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#set-pose"><code class="docutils literal notranslate"><span class="pre">set_pose</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibrate"><code class="docutils literal notranslate"><span class="pre">calibrate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#set-calibration"><code class="docutils literal notranslate"><span class="pre">set_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#save-calibration"><code class="docutils literal notranslate"><span class="pre">save_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#remove-calibration"><code class="docutils literal notranslate"><span class="pre">remove_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#get-calibration"><code class="docutils literal notranslate"><span class="pre">get_calibration</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iocontrol.html">IO and Projector Control</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#get-io-values"><code class="docutils literal notranslate"><span class="pre">get_io_values</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#qr-code">QR code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#apriltag">AprilTag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#comparison">Comparison</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-reading">Tag reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#pose-estimation">Pose estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag re-identification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#hand-eye-calibration">Hand-eye calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#start"><code class="docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#restart"><code class="docutils literal notranslate"><span class="pre">restart</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#detect"><code class="docutils literal notranslate"><span class="pre">detect</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="optional.html">Optional software components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="slam.html">SLAM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#memory-limitations">Memory limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#parameter-overview">Parameter overview</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slam.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#reset"><code class="docutils literal notranslate"><span class="pre">reset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#get-trajectory"><code class="docutils literal notranslate"><span class="pre">get_trajectory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#save-map"><code class="docutils literal notranslate"><span class="pre">save_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#load-map"><code class="docutils literal notranslate"><span class="pre">load_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="slam.html#remove-map"><code class="docutils literal notranslate"><span class="pre">remove_map</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="itempick.html">ItemPick and BoxPick</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#detection-of-items-boxpick">Detection of items (BoxPick)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#computation-of-grasps">Computation of grasps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#interaction-with-other-components">Interaction with other components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#stereo-camera-and-stereo-matching">Stereo camera and Stereo matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#estimation-of-gravity-vector">Estimation of gravity vector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#io-and-projector-control">IO and Projector Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#hand-eye-calibration">Hand-eye calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#collisioncheck">CollisionCheck</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#start"><code class="docutils literal notranslate"><span class="pre">start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#set-region-of-interest"><code class="docutils literal notranslate"><span class="pre">set_region_of_interest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#get-regions-of-interest"><code class="docutils literal notranslate"><span class="pre">get_regions_of_interest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#delete-regions-of-interest"><code class="docutils literal notranslate"><span class="pre">delete_regions_of_interest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#set-load-carrier"><code class="docutils literal notranslate"><span class="pre">set_load_carrier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#get-load-carriers"><code class="docutils literal notranslate"><span class="pre">get_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#delete-load-carriers"><code class="docutils literal notranslate"><span class="pre">delete_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detect-load-carriers"><code class="docutils literal notranslate"><span class="pre">detect_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detect-filling-level"><code class="docutils literal notranslate"><span class="pre">detect_filling_level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detect-items-boxpick-only"><code class="docutils literal notranslate"><span class="pre">detect_items</span></code> (BoxPick only)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#compute-grasps-for-itempick"><code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> (for ItemPick)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#compute-grasps-for-boxpick"><code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> (for BoxPick)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#suitable-objects">Suitable objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#suitable-scene">Suitable scene</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Base-plane calibration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#apriltag-based-base-plane-calibration">AprilTag based base-plane calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#stereo-based-base-plane-calibration">Stereo based base-plane calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#manual-base-plane-calibration">Manual base-plane calibration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setting a region of interest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#setting-of-grasp-points">Setting of grasp points</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-grasp-points-in-the-webgui">Setting grasp points in the Web GUI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-grasp-points-via-the-rest-api">Setting grasp points via the REST-API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#setting-the-preferred-orientation-of-the-tcp">Setting the preferred orientation of the TCP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Detection of objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#interaction-with-other-components">Interaction with other components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#stereo-camera-and-stereo-matching">Stereo camera and stereo matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#io-and-projector-control">IO and Projector Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#hand-eye-calibration">Hand-eye calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#collisioncheck">CollisionCheck</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#calibrate-base-plane"><code class="docutils literal notranslate"><span class="pre">calibrate_base_plane</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-base-plane-calibration"><code class="docutils literal notranslate"><span class="pre">get_base_plane_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#delete-base-plane-calibration"><code class="docutils literal notranslate"><span class="pre">delete_base_plane_calibration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#set-region-of-interest-2d"><code class="docutils literal notranslate"><span class="pre">set_region_of_interest_2d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-regions-of-interest-2d"><code class="docutils literal notranslate"><span class="pre">get_regions_of_interest_2d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#delete-regions-of-interest-2d"><code class="docutils literal notranslate"><span class="pre">delete_regions_of_interest_2d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#set-load-carrier"><code class="docutils literal notranslate"><span class="pre">set_load_carrier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-load-carriers"><code class="docutils literal notranslate"><span class="pre">get_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#delete-load-carriers"><code class="docutils literal notranslate"><span class="pre">delete_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detect-load-carriers"><code class="docutils literal notranslate"><span class="pre">detect_load_carriers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detect-filling-level"><code class="docutils literal notranslate"><span class="pre">detect_filling_level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#set-preferred-orientation"><code class="docutils literal notranslate"><span class="pre">set_preferred_orientation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-preferred-orientation"><code class="docutils literal notranslate"><span class="pre">get_preferred_orientation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#set-grasp"><code class="docutils literal notranslate"><span class="pre">set_grasp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#set-all-grasps"><code class="docutils literal notranslate"><span class="pre">set_all_grasps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-grasps"><code class="docutils literal notranslate"><span class="pre">get_grasps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#delete-grasps"><code class="docutils literal notranslate"><span class="pre">delete_grasps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#get-symmetric-grasps"><code class="docutils literal notranslate"><span class="pre">get_symmetric_grasps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detect-object"><code class="docutils literal notranslate"><span class="pre">detect_object</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html#template-upload">Template Upload</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="collisioncheck.html">CollisionCheck</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#setting-a-gripper">Setting a gripper</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#robot-flange-radius">Robot flange radius</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#creating-a-gripper-via-the-rest-api">Creating a gripper via the REST-API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#creating-a-gripper-in-the-webgui">Creating a gripper in the Web GUI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#calculated-tcp-position">Calculated TCP position</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#creating-rotationally-asymmetric-grippers">Creating rotationally asymmetric grippers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#collision-checking">Collision checking</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#stand-alone-collision-checking">Stand-alone collision checking</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#collision-checking-within-other-modules">Collision checking within other modules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#parameter-overview">Parameter overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#description-of-run-time-parameters">Description of run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#status-values">Status values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#set-gripper"><code class="docutils literal notranslate"><span class="pre">set_gripper</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#get-grippers"><code class="docutils literal notranslate"><span class="pre">get_grippers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#delete-grippers"><code class="docutils literal notranslate"><span class="pre">delete_grippers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#check-collision"><code class="docutils literal notranslate"><span class="pre">check_collision</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#save-parameters"><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#reset-defaults"><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="commonfunctionalities.html">Common functionalities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier.html">Load carrier functionality</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#load-carrier">Load Carrier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-load-carriers">Detection of load carriers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-filling-level">Detection of filling level</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#interaction-with-other-components">Interaction with other components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="roi.html">Region of interest functionality</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#region-of-interest">Region of interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Interfaces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">General API structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Available resources and requests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_nodes.html">Nodes, parameters, and services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_datastreams.html">Datastreams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_syslogs.html">System and logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_datamodel.html">Data type definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_swagger_ui.html">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rc_dynamics.html">The rc_dynamics interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#starting-stopping-dynamic-state-estimation">Starting/stopping dynamic-state estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#configuring-data-streams">Configuring data streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#data-stream-protocol">Data-stream protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rc_dynamics.html#rc-dynamics-api">rc_dynamics_api</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Ethernet connection configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Generic XML structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Return code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Request XML structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Response XML structure</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI XML configuration files</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Maintenance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Lens cleaning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Camera calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Updating the firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Rebooting the <em>rc_visard</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Connectivity kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Wiring</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Power connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Power supplies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Spare parts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED colors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Hardware issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Connectivity issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Camera-image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Depth/Disparity, error, and confidence image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#dynamics-issues">Dynamics issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">GigE Vision/GenICam issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Address</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pose_formats.html">Pose formats</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyzabc-format">XYZABC format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#xyz-quaternion-format">XYZ+quaternion format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#conversion-from-abc-to-quaternion">Conversion from ABC to quaternion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_formats.html#conversion-from-quaternion-to-abc">Conversion from quaternion to ABC</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="components.html">Software components</a> &raquo;</li>
+        
+      <li>Stereo camera</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="stereo-camera">
+<span id="sect-stereo-camera"></span><h1>Stereo camera<a class="headerlink" href="#stereo-camera" title="Permalink to this headline">¶</a></h1>
+<p>The stereo camera component contains functionality for acquiring stereo
+image pairs and performing planar rectification needed to use the stereo
+camera as a measurement device.</p>
+<div class="section" id="image-acquisition">
+<h2>Image acquisition<a class="headerlink" href="#image-acquisition" title="Permalink to this headline">¶</a></h2>
+<p id="index-0">Acquiring stereo image pairs is the first step toward stereo vision. Since
+both cameras are equipped with global shutters and their chips are
+hardware-synchronized, all pixels of both camera images are always exposed at
+exactly the same time. The time at the middle of the image exposure is attached to the images as a timestamp.
+This timestamp becomes important for dynamic applications in which the cameras or the scene moves.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The period during which the shutter is open is signaled via the <em>rc_visard</em>’s
+<a class="reference internal" href="hardware_spec.html#sect-wiring"><span class="std std-ref">GPIO out 1</span></a>.</p>
+</div>
+<p>Exposure time can be set manually to a fixed value. This is useful in an environment
+where lighting is controlled so that it is always at the same intensity. The
+camera is set to auto exposure by default. In this mode,
+the exposure time is chosen automatically, up to a user
+defined maximum. The permitted maximum is meant to limit the motion blur that occurs when taking images
+while the camera or the scene is moving. The maximum exposure time thus depends on the
+application. If the maximum exposure time is reached, the auto-exposure algorithm uses the gain to
+increase image brightness. However, larger gain factors also amplify image noise. Thus, the
+maximum exposure time trades motion blur off against image noise under weak-light conditions.</p>
+</div>
+<div class="section" id="planar-rectification">
+<span id="sect-stereo-camera-rectification"></span><h2>Planar rectification<a class="headerlink" href="#planar-rectification" title="Permalink to this headline">¶</a></h2>
+<p id="index-1">Camera parameters such as focal length,
+lens distortion, and the relationship of the cameras to each other must be exactly known
+to use the stereo camera as a measuring instrument. The <em>rc_visard</em> is already calibrated at
+production time and normally requires no recalibration. The camera parameters describe with great precision all
+of the stereo-camera system’s geometric properties, but the resulting model is
+complex and difficult to use.</p>
+<p>Rectification is the process of remapping the images according to an ideal stereo-camera model.
+Lens distortion is removed and the images are aligned so that an object point is always projected
+onto the same image row in both images. The cameras’ optical axes become exactly parallel.
+This means that points at infinite distance are projected
+onto the same image column in both images. The
+closer an object point is, the larger is the difference between its image columns in the right and
+left images. This difference is called disparity.</p>
+<p>Mathematically, the object point <span class="math notranslate nohighlight">\(P=(P_x, P_y, P_z)\)</span> is projected onto image point
+<span class="math notranslate nohighlight">\(p_l=(p_{lx}, p_{ly}, 1)\)</span> in the left rectified image and onto <span class="math notranslate nohighlight">\(p_r=(p_{rx}, p_{ry}, 1)\)</span>
+in the right rectified image by</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}A &amp;= \left(\begin{array}{ccc} f &amp; 0 &amp; \frac{w}{2}\\
+                        0 &amp; f &amp; \frac{h}{2}\\
+                        0 &amp; 0 &amp; 1
+\end{array}\right), \qquad
+T_s = \left(\begin{array}{c}t\\
+                        0\\
+                        0
+\end{array}\right),\end{split}\\\begin{split}s_1 p_l &amp;= AP, \\
+s_2 p_r &amp;= A(P-T_s).\end{split}\end{aligned}\end{align} \]</div>
+<p>The focal length <span class="math notranslate nohighlight">\(f\)</span> is the distance between the common image plane and
+the optical centers of the left and right cameras. It is measured in pixels. The
+baseline <span class="math notranslate nohighlight">\(t\)</span> is the distance between the optical centers of the two cameras.
+The image width <span class="math notranslate nohighlight">\(w\)</span> and height <span class="math notranslate nohighlight">\(h\)</span> are measured in pixels, too. <span class="math notranslate nohighlight">\(s_1\)</span>
+and <span class="math notranslate nohighlight">\(s_2\)</span> are scale factors ensuring that the third coordinates of the image points
+<span class="math notranslate nohighlight">\(p_l\)</span> and <span class="math notranslate nohighlight">\(p_r\)</span> are equal to 1.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <em>rc_visard</em> reports a focal length factor via its various
+interfaces. It relates to the image width
+for supporting different image resolutions. The focal length <span class="math notranslate nohighlight">\(f\)</span>
+in pixels can be easily obtained by multiplying the focal length factor
+by the image width in pixels.</p>
+</div>
+</div>
+<div class="section" id="accessing-images">
+<span id="sect-cam-accessing-images"></span><h2>Accessing Images<a class="headerlink" href="#accessing-images" title="Permalink to this headline">¶</a></h2>
+<p>The <em>rc_visard</em> provides the time-stamped, rectified left and right images
+over the GenICam interface (see <a class="reference internal" href="gigevision.html#sect-provided-image-streams"><span class="std std-ref">Provided image streams</span></a>). Live streams of the images are provided
+with reduced quality in the <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>.</p>
+<p>The <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>
+also provides the opportunity to download a snapshot of the current scene as a .tar.gz file
+by clicking on the camera icon below the image live streams on the <em>Camera</em> tab. This snapshot contains:</p>
+<ul class="simple">
+<li>the rectified left and right camera images in full resolution as .png files,</li>
+<li>a camera parameter file containing the camera matrix, image dimensions, exposure time,
+gain value and the stereo baseline,</li>
+<li>the current IMU readings as imu.csv file,</li>
+<li>a nodes.json file containing information about all nodes running on the <em>rc_visard</em>,</li>
+<li>a system_info.json file containing system information about the <em>rc_visard</em>.</li>
+</ul>
+</div>
+<div class="section" id="parameters">
+<span id="sect-cam-params"></span><h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<p id="index-2">The stereo-camera software component is called <code class="docutils literal notranslate"><span class="pre">rc_stereocamera</span></code> and is represented by the
+<em>Camera</em> tab in the <a class="reference internal" href="installation.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>.
+The user can change the camera parameters there, or directly via the REST-API
+(<a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API interface</span></a>) or GigE Vision
+(<a class="reference internal" href="gigevision.html#sect-genicam"><span class="std std-ref">GigE Vision 2.0/GenICam image interface</span></a>).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Camera parameters cannot be changed via the Web GUI or REST-API if <em>rc_visard</em>
+is used via GigE Vision.</p>
+</div>
+<div class="section" id="parameter-overview">
+<h3>Parameter overview<a class="headerlink" href="#parameter-overview" title="Permalink to this headline">¶</a></h3>
+<p>This component offers the following run-time parameters:</p>
+<table border="1" class="docutils" id="id1">
+<caption><span class="caption-number">Table 7 </span><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">rc_stereocamera</span></code> component’s run-time parameters</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Min</th>
+<th class="head">Max</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">exp_auto</span></code></td>
+<td>bool</td>
+<td>false</td>
+<td>true</td>
+<td>true</td>
+<td>Switching between auto and manual exposure</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">exp_auto_average_max</span></code></td>
+<td>float64</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.75</td>
+<td>Maximum average intensity if exp_auto is true</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">exp_auto_average_min</span></code></td>
+<td>float64</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.25</td>
+<td>Minimum average intensity if exp_auto is true</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">exp_auto_mode</span></code></td>
+<td>string</td>
+<td>-</td>
+<td>-</td>
+<td>Normal</td>
+<td>Auto-exposure mode, i.e. Normal, Out1High or AdaptiveOut1</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">exp_height</span></code></td>
+<td>int32</td>
+<td>0</td>
+<td>959</td>
+<td>0</td>
+<td>Height of auto exposure region. 0 for whole image.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">exp_max</span></code></td>
+<td>float64</td>
+<td>6.6e-05</td>
+<td>0.018</td>
+<td>0.018</td>
+<td>Maximum exposure time in seconds if exp_auto is true</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">exp_offset_x</span></code></td>
+<td>int32</td>
+<td>0</td>
+<td>1279</td>
+<td>0</td>
+<td>First column of auto exposure region</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">exp_offset_y</span></code></td>
+<td>int32</td>
+<td>0</td>
+<td>959</td>
+<td>0</td>
+<td>First row of auto exposure region</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">exp_value</span></code></td>
+<td>float64</td>
+<td>6.6e-05</td>
+<td>0.018</td>
+<td>0.005</td>
+<td>Manual exposure time in seconds if exp_auto is false</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">exp_width</span></code></td>
+<td>int32</td>
+<td>0</td>
+<td>1279</td>
+<td>0</td>
+<td>Width of auto exposure region. 0 for whole image.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">fps</span></code></td>
+<td>float64</td>
+<td>1.0</td>
+<td>25.0</td>
+<td>25.0</td>
+<td>Frames per second in Hertz</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">gain_value</span></code></td>
+<td>float64</td>
+<td>0.0</td>
+<td>18.0</td>
+<td>0.0</td>
+<td>Manual gain value in decibel if exp_auto is false</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">wb_auto</span></code></td>
+<td>bool</td>
+<td>false</td>
+<td>true</td>
+<td>true</td>
+<td>Switching white balance on and off (only for color camera)</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">wb_ratio_blue</span></code></td>
+<td>float64</td>
+<td>0.125</td>
+<td>8.0</td>
+<td>2.4</td>
+<td>Blue to green balance ratio if wb_auto is false (only for color camera)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">wb_ratio_red</span></code></td>
+<td>float64</td>
+<td>0.125</td>
+<td>8.0</td>
+<td>1.2</td>
+<td>Red to green balance ratio if wb_auto is false (only for color camera)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="description-of-run-time-parameters">
+<h3>Description of run-time parameters<a class="headerlink" href="#description-of-run-time-parameters" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="_images/webgui_camera_en.png"><img alt="_images/webgui_camera_en.png" src="_images/webgui_camera_en.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 20 </span><span class="caption-text">The Web GUI’s <em>Camera</em> tab</span></p>
+</div>
+<span class="target" id="expl-fps"></span><dl class="docutils" id="index-3">
+<dt><code class="docutils literal notranslate"><span class="pre">fps</span></code> (<em>FPS</em>)</dt>
+<dd><p class="first">This value is the cameras’ frame rate (fps, frames per second),
+which determines the upper frequency at which depth images
+can be computed. This is also the frequency at which the <em>rc_visard</em>
+delivers images via GigE Vision. Reducing this frequency also
+reduces the network bandwidth required to transmit the images.</p>
+<p>The camera always runs with 25 Hz to ensure proper working of
+internal modules such as visual odometry that need a constant frame rate.
+The user frame rate setting is implemented by excluding frames
+for stereo matching and transmission via GigE Vision to reduce
+bandwidth as shown in figure <a class="reference internal" href="#fig-fps"><span class="std std-numref">Fig. 21</span></a>.</p>
+<div class="last figure align-center" id="id3">
+<span id="fig-fps"></span><a class="reference internal image-reference" href="_images/fps.png"><img alt="_images/fps.png" src="_images/fps.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 21 </span><span class="caption-text">Images are internally always captured with 25 Hz. The <code class="docutils literal notranslate"><span class="pre">fps</span></code> parameter
+determines how many of them are sent as camera images via GigE Vision.</span></p>
+</div>
+</dd>
+</dl>
+<span class="target" id="expl-exp-auto"></span><dl class="docutils" id="index-4">
+<dt><code class="docutils literal notranslate"><span class="pre">exp_auto</span></code> (<em>Exposure Auto</em> or <em>Manual</em>)</dt>
+<dd>This value can be set to <cite>true</cite> for auto-exposure mode,
+or to <cite>false</cite> for manual exposure mode. In manual exposure mode, the
+chosen exposure time is kept, even if the images are overexposed or
+underexposed. In auto-exposure mode, the exposure time and gain factor
+is chosen automatically to correctly expose the image. The last
+automatically determined exposure and gain values are set into
+<code class="docutils literal notranslate"><span class="pre">exp_value</span></code> and <code class="docutils literal notranslate"><span class="pre">gain_value</span></code> when switching auto-exposure off.</dd>
+</dl>
+<span class="target" id="expl-exp-auto-mode"></span><dl class="docutils" id="index-5">
+<dt><code class="docutils literal notranslate"><span class="pre">exp_auto_mode</span></code> (<em>Auto Exposure Mode</em>)</dt>
+<dd><p class="first">The auto exposure mode can be set to <cite>Normal</cite>, <cite>Out1High</cite> or <cite>AdaptiveOut1</cite>. These modes are
+relevant when the <em>rc_visard</em> is used with an external light source or projector connected
+to the <em>rc_visard</em>’s GPIO Out1,
+which can be controlled by the optional IOControl component
+(<a class="reference internal" href="iocontrol.html#sect-iocontrol"><span class="std std-ref">IO and Projector Control</span></a>).</p>
+<p><cite>Normal</cite>: All images are considered for exposure control, except if the IOControl mode
+for GPIO Out1 is <cite>ExposureAlternateActive</cite>: then only images where GPIO Out1 is HIGH will be
+considered, since these images may be brighter in case GPIO Out1 is used to trigger an external light source.</p>
+<p><cite>Out1High</cite>: This exposure mode adapts the exposure time using only images with GPIO Out1 HIGH. Images where GPIO Out1 is LOW are not
+considered at all, which means, that the exposure time does not change when only images with Out1 LOW are acquired.
+This mode is recommended for using the <code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code> <code class="docutils literal notranslate"><span class="pre">SingleFrameOut1</span></code> in the stereo matching component as described in
+<a class="reference internal" href="stereo_matching.html#sect-disp-image-parameters"><span class="std std-ref">Stereo Matching Parameters</span></a>
+and having an external projector connected to GPIO Out1, when changes in the brightness of the scene should only be considered when Out1 is HIGH.
+This is the case, for example, when a bright part of the robot moves through the field of view of the camera just before a detection is triggered,
+which should not affect the exposure time.</p>
+<p class="last"><cite>AdaptiveOut1</cite>: This exposure mode uses all camera images and tracks the exposure difference between images
+with GPIO Out1 LOW and HIGH. While the IOControl mode for GPIO Out1 is LOW, the images are under-exposed by this exposure
+difference to avoid over-exposure for when GPIO Out1 triggers an external projector. The resulting exposure difference
+is given as Out1 Reduction below the live images. This mode is recommended for using the <code class="docutils literal notranslate"><span class="pre">acquisition_mode</span></code>
+<code class="docutils literal notranslate"><span class="pre">SingleFrameOut1</span></code> in the stereo matching component as described in
+<a class="reference internal" href="stereo_matching.html#sect-disp-image-parameters"><span class="std std-ref">Stereo Matching Parameters</span></a>
+and having an external projector connected to GPIO Out1, when changes in the brightness of the scene should be considered at all times.
+This is the case, for example, in applications where the external lighting is changing.</p>
+</dd>
+</dl>
+<span class="target" id="expl-exp-value"></span><span class="target" id="expl-exp-max"><span id="index-6"></span></span><dl class="docutils" id="index-7">
+<dt><code class="docutils literal notranslate"><span class="pre">exp_max</span></code> (<em>Max Exposure</em>)</dt>
+<dd>This value is the maximal exposure time in auto-exposure
+mode in seconds. The actual
+exposure time is adjusted automatically so that the images are exposed
+correctly. If the maximum exposure time is reached, but the images are still
+underexposed, the <em>rc_visard</em> stepwise increases the gain to increase the
+images’ brightness. Limiting the exposure time is useful for avoiding
+or reducing motion blur during fast movements. However, higher gain
+introduces noise into the image. The best trade-off depends on the application.</dd>
+</dl>
+<dl class="docutils" id="exp-auto-max-min-average">
+<dt><code class="docutils literal notranslate"><span class="pre">exp_auto_average_max</span></code> (<em>Max Brightness</em>) and <code class="docutils literal notranslate"><span class="pre">exp_auto_average_min</span></code> (<em>Min Brightness</em>)</dt>
+<dd><p class="first">The auto-exposure tries to set the exposure time and gain factor such that the
+average intensity (i.e. brightness) in the image or exposure region is between a
+maximum and a minimum. The maximum brightness will be used if there is no saturation, e.g.
+no over-exposure due to bright surfaces or reflections. In case of saturation,
+the exposure time and gain factor are reduced, but only down to the minimum
+brightness.</p>
+<p>The maximum brightness has precendence over the minimum brightness parameter.
+If the minimum brightness is larger than the maximum brightness, the auto-exposure
+always tries to make the average intensity equal to the maximum brightness.</p>
+<p class="last">The current brightness is always shown in the status bar below the images.</p>
+</dd>
+</dl>
+<span class="target" id="expl-exp-region"></span><dl class="docutils" id="index-8">
+<dt><code class="docutils literal notranslate"><span class="pre">exp_offset_x</span></code>, <code class="docutils literal notranslate"><span class="pre">exp_offset_y</span></code>, <code class="docutils literal notranslate"><span class="pre">exp_width</span></code>, <code class="docutils literal notranslate"><span class="pre">exp_height</span></code> (<em>Exposure Region</em>)</dt>
+<dd><p class="first">These values define a rectangular region in the left rectified image for
+limiting the area used for computing the auto exposure. The exposure time and
+gain factor of both images are chosen to optimally expose the defined region.
+This can lead to over- or underexposure of image parts outside the defined
+region. If either the width or height is 0, then the whole left and right
+images are considered by the auto exposure function. This is the default.</p>
+<p class="last">The region is visualized in the Web GUI by a rectangle in the left
+rectified image. It can be defined using the sliders or by selecting
+it in the image after pressing the button <code class="docutils literal notranslate"><span class="pre">Select</span> <span class="pre">Region</span> <span class="pre">in</span> <span class="pre">Image</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">exp_value</span></code> (<em>Exposure</em>)</dt>
+<dd>This value is the exposure time in manual exposure mode in seconds. This exposure time is kept constant
+even if the images are underexposed.</dd>
+</dl>
+<span class="target" id="expl-gain-value"></span><dl class="docutils" id="index-9">
+<dt><code class="docutils literal notranslate"><span class="pre">gain_value</span></code> (<em>Gain</em>)</dt>
+<dd>This value is the gain factor in decibel that can be set in manual exposure mode. Higher gain factors
+reduce the required exposure time but introduce noise.</dd>
+</dl>
+<span class="target" id="expl-wb-auto"></span><dl class="docutils" id="index-10">
+<dt><code class="docutils literal notranslate"><span class="pre">wb_auto</span></code> (<em>White Balance Auto</em> or <em>Manual</em>)</dt>
+<dd>This value can be set to <cite>true</cite> for automatic white balancing or <cite>false</cite> for manually
+setting the ratio between the colors using <code class="docutils literal notranslate"><span class="pre">wb_ratio_red</span></code> and
+<code class="docutils literal notranslate"><span class="pre">wb_ratio_blue</span></code>. The last automatically determined ratios are set into
+<code class="docutils literal notranslate"><span class="pre">wb_ratio_red</span></code> and <code class="docutils literal notranslate"><span class="pre">wb_ratio_blue</span></code> when switching automatic white balancing off.
+White balancing is without function for monochrome
+cameras and will not be displayed in the Web GUI in this case.</dd>
+</dl>
+<span class="target" id="expl-wb-ratio"></span><dl class="docutils" id="index-11">
+<dt><code class="docutils literal notranslate"><span class="pre">wb_ratio_blue</span></code> and <code class="docutils literal notranslate"><span class="pre">wb_ratio_red</span></code> (<em>Blue | Green</em> and <em>Red | Green</em>)</dt>
+<dd>These values are used to set blue to green and red to green ratios
+for manual white balance. White balancing is without function for monochrome
+cameras and will not be displayed in the Web GUI in this case.</dd>
+</dl>
+<p>These parameters are also available over the GenICam interface with slightly different names and partly with different units
+or data types (see <a class="reference internal" href="gigevision.html#sect-genicam"><span class="std std-ref">GigE Vision 2.0/GenICam image interface</span></a>).</p>
+</div>
+</div>
+<div class="section" id="status-values">
+<h2>Status values<a class="headerlink" href="#status-values" title="Permalink to this headline">¶</a></h2>
+<p>This component reports the following status values:</p>
+<table border="1" class="docutils" id="id4">
+<caption><span class="caption-number">Table 8 </span><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">rc_stereocamera</span></code> component’s status values</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">out1_reduction</span></code></td>
+<td>Fraction of reduction (0.0 - 1.0) of brightness for images with GPIO Out1=LOW in exp_auto_mode=AdaptiveOut1 or exp_auto_mode=Out1High</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">baseline</span></code></td>
+<td>Stereo baseline <span class="math notranslate nohighlight">\(t\)</span> in meters</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">brightness</span></code></td>
+<td>Current brightness of the image as value between 0 and 1</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">color</span></code></td>
+<td>0 for monochrome cameras, 1 for color cameras</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">exp</span></code></td>
+<td>Actual exposure time in seconds. This value is shown below the image preview in the Web GUI as <em>Exposure (ms)</em>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">focal</span></code></td>
+<td>Focal length factor normalized to an image width of 1</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">fps</span></code></td>
+<td>Actual frame rate of the camera images in Hertz. This value is shown in the Web GUI below the image preview as <em>FPS (Hz)</em>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">gain</span></code></td>
+<td>Actual gain factor in decibel. This value is shown in the Web GUI below the image preview as <em>Gain (dB)</em>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">height</span></code></td>
+<td>Height of the camera image in pixels</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">temp_left</span></code></td>
+<td>Temperature of the left camera sensor in degrees Celsius</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">temp_right</span></code></td>
+<td>Temperature of the right camera sensor in degrees Celsius</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">test</span></code></td>
+<td>0 for live images and 1 for test images</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">time</span></code></td>
+<td>Processing time for image grabbing in seconds</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">width</span></code></td>
+<td>Width of the camera image in pixels</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="services">
+<span id="sect-cam-services"></span><h2>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h2>
+<p id="index-12">The stereo camera component offers the following services for persisting and
+restoring parameter settings.</p>
+<div class="section" id="save-parameters">
+<h3><code class="docutils literal notranslate"><span class="pre">save_parameters</span></code><a class="headerlink" href="#save-parameters" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>With this service call, the stereo camera component’s current parameter
+settings will be made persistent to the <em>rc_visard</em>. That means,
+these values are applied even after reboot.</p>
+<p>This service has no arguments.</p>
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="reset-defaults">
+<h3><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code><a class="headerlink" href="#reset-defaults" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Restores and applies the default values for this component’s parameters
+(“factory reset”).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">By calling this service, the
+current parameter settings for the camera component are irrecoverably lost.</p>
+</div>
+<p>This service has no arguments.</p>
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="stereo_matching.html" class="btn btn-neutral float-right" title="Stereo matching" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="components.html" class="btn btn-neutral" title="Software components" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Options</span>
+      en
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Languages</dt>
+        
+          
+          <dd><a href="../en/stereo_camera.html">en</a></dd>
+          
+        
+          
+          <dd><a href="../de/stereo_camera.html">de</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versions</dt>
+          
+            <dd><a href="../../v1.0/index.html">v1.0</a></dd>
+          
+            <dd><a href="../../v1.1/index.html">v1.1</a></dd>
+          
+            <dd><a href="../../v1.2/index.html">v1.2</a></dd>
+          
+            <dd><a href="../../v1.3/index.html">v1.3</a></dd>
+          
+            <dd><a href="../../v1.4/index.html">v1.4</a></dd>
+          
+            <dd><a href="../../v1.5/index.html">v1.5</a></dd>
+          
+            <dd><a href="../../v1.6/index.html">v1.6</a></dd>
+          
+            <dd><a href="../../v1.7/index.html">v1.7</a></dd>
+          
+            <dd><a href="../../v1.8/index.html">v1.8</a></dd>
+          
+            <dd><a href="../../v20.04/index.html">v20.04</a></dd>
+          
+            <dd><a href="../../v20.10/index.html">v20.10</a></dd>
+          
+            <dd><a href="../../v20.11/index.html">v20.11</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_manual_en.pdf">PDF (en)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_manual_de.pdf">PDF (de)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'20.11.0',
+            LANGUAGE:'en',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

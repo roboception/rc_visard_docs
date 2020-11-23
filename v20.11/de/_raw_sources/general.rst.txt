@@ -1,0 +1,64 @@
+.. include:: global_rst.glb
+
+.. raw:: latex
+
+    \newpage
+
+.. _sect-general:
+
+Overview
+========
+
+.. only:: rc_cube
+
+    The |rc_xxx| is a high-performance 3D-image-processing device that is developed to
+    enhance the computing capabilities of the |company| stereo-camera |rc_visard|.
+
+.. only:: rc_visard
+
+    The 3D sensor |rc_visard| is an IP54-protected, self-registering stereo-camera
+    with on-board computing capabilities.
+
+The |rc_xxx| provides real-time camera images and disparity images, which can
+also be used to compute depth images and 3D point clouds. Additionally, it provides
+confidence and error images as quality measures for each image acquisition.
+It offers an intuitive web UI (user interface) and a standardized
+GenICam interface, making it compatible with all major image processing
+libraries.
+
+With optionally available |rc_reason| modules the |rc_xxx| provides out-of-the-box solutions
+for object detection and robotic pick-and-place applications.
+
+.. only:: rc_visard
+
+    The |rc_visard| also provides self-localization based on image and inertial data.
+    A mobile navigation solution can be established with the optional on-board SLAM module.
+
+    The |rc_visard| is offered with two different stereo baselines: The |rc_visard| 65
+    is optimally suited for mounting on robotic manipulators, whereas the |rc_visard| 160 can be employed as a navigation or as externally-fixed sensor.
+    The |rc_xxx|'s intuitive calibration, configuration, and use enable 3D vision for everyone.
+
+.. only:: roboception
+
+      .. figure:: images/sensor.png
+          :width: 50 %
+          :align: center
+
+          |rc_visard| 65 and |rc_visard| 160
+
+    The terms "sensor," "|rc_visard| 65," and "|rc_visard| 160" used throughout the manual all refer to the |company| |rc_visard| family of self-registering cameras.
+    Installation and control for all sensors are exactly the same, and all use the same mounting base.
+
+    .. NOTE:: Unless specified, the information provided in this manual applies to both the |rc_visard| 65 and |rc_visard| 160 versions of the |company| sensor.
+
+.. only:: rc_cube
+
+    .. figure:: images/rc_cube.png
+        :width: 90 %
+        :align: center
+
+        The |rc_cube|
+
+.. NOTE:: This manual uses the metric system and mostly uses the units meter and
+   millimeter. Unless otherwise specified, all dimensions in technical drawings are
+   in millimeters.

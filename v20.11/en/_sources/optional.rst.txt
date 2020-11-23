@@ -1,0 +1,51 @@
+Optional software components
+
+The
+
+rc_visard
+
+ offers optional software components that can be activated by
+purchasing a separate
+
+license
+
+.
+
+The
+
+rc_visard
+
+'s optional software consists of the following components:
+
+SLAM (rc_slam, Section \ref{slam:sect-slam})  performs simultaneous
+localization and mapping for correcting accumulated poses. The
+rc_visard's covered trajectory is offered via the REST-API
+interface\:(Section \ref{rest_api:sect-rest-api}).
+
+ItemPick and BoxPick (rc_itempick and rc_boxpick, Section
+\ref{itempick:sect-itempick})  provides an out-of-the-box perception
+solution for robotic pick-and-place applications of unknown objects or
+boxes.
+
+SilhouetteMatch (rc_silhouettematch, Section \ref{silhouettematch
+:sect-silhouettematch})  provides an object detection solution for
+objects placed on a plane.
+
+CollisionCheck (rc_collision_check, Section \ref{collisioncheck:sect-
+collision})  provides an easy way to check if a gripper is in
+collision with load carrier.
+
+The
+
+rc_visard
+
+ provides some common functionalities which are used in multiple
+optional software components. The common functionalities are:
+
+Load carrier functionality\:(Section \ref{loadcarrier:sect-
+loadcarrier})  allows setting and retrieving load carriers, as well as
+detecting load carriers and their filling level.
+
+Region of interest functionality\:(Section \ref{roi:sect-roi})  allows
+setting and retrieving 3D regions of interest.
+

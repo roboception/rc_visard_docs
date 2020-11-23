@@ -1,0 +1,37 @@
+.. include:: global_rst.glb
+
+.. _sect-rest-datastreams:
+
+Datastreams
+~~~~~~~~~~~
+
+.. index::
+   pair: REST-API; data stream
+   pair: REST-API; dynamics
+
+The following resources and requests allow access to and configuration of the
+:ref:`rc_dynamics interface <sect-rc-dynamics-interface>` data streams\ :latex:`\:
+(Section \ref{rc_dynamics:sect-rc-dynamics-interface})`. These
+|restapi| requests offer
+
+   - showing available and currently running data streams, e.g.,
+
+     .. code-block:: bash
+
+        curl -X GET http://<host>/api/v1/datastreams
+
+   - starting a data stream to a destination, e.g.,
+
+     .. code-block:: bash
+
+        curl -X PUT --header 'Content-Type: application/x-www-form-urlencoded' -d 'destination=<target-ip>:<target-port>' http://<host>/api/v1/datastreams/pose
+
+   - and stopping data streams, e.g.,
+
+     .. code-block:: bash
+
+        curl -X DELETE http://<host>/api/v1/datastreams/pose?destination=<target-ip>:<target-port>
+
+The following list includes all |restapi| requests associated with data streams:
+
+.. include:: _gen/swagger/rc_visard/datastreams.txt

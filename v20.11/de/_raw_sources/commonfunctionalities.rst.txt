@@ -1,0 +1,27 @@
+.. include:: global_rst.glb
+
+.. _sect-common-functionalities:
+
+Common functionalities
+======================
+
+The |rc_xxx| provides some common functionalities
+which are used in multiple optional software components. The common functionalities are:
+
+- :doc:`loadcarrier`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier})`
+   allows setting and retrieving load carriers, as well as detecting
+   load carriers and their filling level.
+
+- :doc:`roi`:latex:`\:(Section \ref{roi:sect-roi})`
+   allows setting and retrieving 3D regions of interest.
+
+All services and parameters of the common functionalities are only available through the software
+component that uses them. All stored load carriers and regions of interest are available to all software 
+components that use this respective functionality. 
+
+.. toctree-filt::
+   :maxdepth: 2
+   :hidden:
+
+   loadcarrier
+   roi
