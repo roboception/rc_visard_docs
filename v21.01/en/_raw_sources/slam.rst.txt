@@ -1,0 +1,287 @@
+.. include:: global_rst.glb
+
+.. _sect-slam:
+
+SLAM
+====
+
+.. index:: ! SLAM
+  see: Simultaneous Localization and Mapping; SLAM
+  pair: SLAM; Web GUI
+  single: loop closure
+  pair: pose; error
+
+The SLAM component is part of the sensor dynamics component. It provides
+additional accuracy for the pose estimate of the stereo INS.  When the |rc_visard| moves through
+the world, the pose estimate slowly accumulates errors over time. The SLAM
+component can correct these pose errors by recognizing previously visited places.
+
+The acronym SLAM stands for Simultaneous Localization and Mapping. The
+SLAM component creates a map consisting of the image features as used in the visual
+odometry component. The map is later used to correct accumulated pose errors. This is
+most apparent in applications where, e.g., a robot returns to a previously visited
+place after covering a large distance (this is called a *loop closure*).
+In this case, the robot can re-detect image features that are already stored
+in its map and can use this information to correct the drift in the pose estimate that
+accumulated since the last visit.
+
+When closing a loop, not only the current pose, but also the past pose
+estimates (the trajectory of the |rc_visard|), are corrected.  Continuous
+trajectory correction leads to a more accurate map. On the other hand, the
+accuracy of the full trajectory is important when it is used to build an
+integrated world model, e.g., by projecting the 3D point clouds
+obtained (see :ref:`sect-point-clouds`:latex:`, Section
+\ref{stereo_matching:sect-point-clouds}`) into a common coordinate frame. The
+full trajectory can be requested from the SLAM component for this purpose.
+
+.. Note::
+
+   The SLAM component is optionally available for the |rc_visard| and will run on board
+   the sensor. If a SLAM license is stored on the |rc_visard|, then
+   the SLAM component is shown as *Available* on the :ref:`Web GUI<sect-web-gui>`'s
+   *Overview* page and in the *License* section of the *System* page.
+
+Usage
+-----
+
+The SLAM component can be activated at any time, either via the rc_dynamics
+interface (see the documentation of the respective
+:ref:`sect-dynamics-services`:latex:`, Section \ref{dynamics:sect-dynamics-services}`)
+or from the *Dynamics* page of the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+
+The pose estimate of the SLAM component will be initialized with the current
+estimate of the stereo INS - and thus the origin will be where the stereo INS
+was started.
+
+Since the SLAM component builds on the motion estimates of the stereo INS component,
+the latter will automatically be started up if it is not yet running when SLAM is started.
+
+When the SLAM component is running, the corrected pose estimates will be available via the
+datastreams :ref:`pose<sect-datastream-pose>`, :ref:`pose_rt<sect-datastream-pose-rt>`,
+and :ref:`dynamics<sect-datastream-dynamics>` of the rc_dynamics component.
+
+The full trajectory is available through the service ``get_trajectory``,
+see :ref:`sect-slam-services`:latex:`\:(Section \ref{slam:sect-slam-services})`
+below for details.
+
+To store the feature map on the |rc-visard|, the SLAM component provides the service
+``save_map``, which can be used only during runtime (state "RUNNING") or after stopping
+(state "HALTED"). 
+
+A stored map can be loaded before startup using the service ``load_map``,
+which is only applicable in state "IDLE" (use the ``reset`` service to go back to "IDLE"
+when SLAM is in state "HALTED"). Note that mistaken localization at (visually) similar places may happen more
+easily when initially localizing in a loaded map than when localizing during continuous operation.
+Choosing a starting point with a unique visual appearance avoids this problem.
+The SLAM component will therefore assume that the |rc-visard| is started in the rough vincinity
+(a few meters) of the origin of the map. The origin of the map is where the Stereo-INS
+component was started when the map was recorded.
+
+
+Memory limitations
+------------------
+
+In contrast to the other software components running on the |rc_visard|, the
+SLAM component needs to accumulate data over time, e.g., motion measurements and
+image features.  Further, the optimization of the trajectory requires
+substantial amounts of memory, particularly when closing large loops.
+Therefore the memory requirements of the SLAM component increase over time.
+
+Given the memory limitations of the hardware, the SLAM component needs to reduce
+its own memory footprint when running continuously. When the available memory
+runs low, the SLAM component will fix parts of the trajectory, i.e. no further
+optimization will be done on these parts.
+A minimum of 10 minutes of the trajectory will be kept unfixed at all times.
+
+When the available memory runs low despite the above measures, two options
+are available. The first option is that the SLAM component automatically goes to
+the HALTED state, where it stops processing, but the trajectory (up to the
+stopping time) is still available. This is the default behavior.
+
+The second option is to keep running until the memory is exhausted. In that
+case, the SLAM component will be restarted. If the ``autorecovery`` parameter is set
+to true, the SLAM component will recover its previous position and resume
+mapping. Otherwise it will go to FATAL state, requiring to be restarted via
+the rc_dynamics interface (see :ref:`sect-dynamics-services`:latex:`, Section \ref{dynamics:sect-dynamics-services}`).
+
+The operation time until the memory limit is reached is strongly dependent
+on the trajectory of the sensor.
+
+.. Warning:: Because of the memory limitations, it is not recommended to run
+  SLAM at the same time as :doc:`stereo_matching` in full resolution, because
+  the memory available to SLAM will be greatly reduced. In the worst case, a
+  long running SLAM process may even be forcefully reset, when full-resolution
+  stereo matching is turned on.
+
+Parameters
+----------
+
+The SLAM component is called ``rc_slam`` in the |rest-api|. The user can
+change the SLAM parameters using the 
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. include:: _gen/nodes/params/rc_slam.txt
+
+Status values
+-------------
+
+This component reports the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_slam`` component's status values
+	:header:  Name, Description
+
+	"``map_frames``","Number of frames that constitute the map"
+	"``state``","The current state of the rc_slam node"
+	"``trajectory_poses``","Number of poses in the estimated trajectory"
+
+The reported ``state`` can take one of the following values.
+
+.. _tab-rc-slam-states:
+.. tabularcolumns:: |p{3.5cm}|p{11.0cm}|
+.. csv-table:: Possible states of the ``rc_slam`` component
+	:header:  State name, Description
+
+	IDLE, "The component is ready, but idle. No trajectory data is available."
+	WAITING_FOR_DATA, "The component was started but is waiting for data from stereo INS or VO."
+	RUNNING, "The component is running."
+	HALTED, "The component is stopped. The trajectory data is still available. No new information is processed."
+	RESETTING, "The component is being stopped and the internal data is being cleared."
+	RESTARTING, "The component is being restarted."
+	FATAL, "A fatal error has occured."
+
+.. _sect-slam-services:
+
+Services
+--------
+
+.. NOTE:: Activation and deactivation of the SLAM component is done via the service interface of rc_dynamics
+   (see :ref:`sect-dynamics-services`:latex:`, Section \ref{dynamics:sect-dynamics-services}`).
+
+Each service response (except for the ``reset`` service) contains a ``return_code``,
+which consists of a ``value`` plus an optional ``message``.
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+
+The SLAM component offers the following services.
+
+``reset``
+^^^^^^^^^
+
+  clears the internal state of the SLAM component.
+  This service is to be used after stopping the SLAM component using the rc_dynamics interface
+  (see the respective :ref:`sect-dynamics-services`:latex:`, Section \ref{dynamics:sect-dynamics-services}`).
+  The SLAM component maintains the estimate of the full trajectory even when stopped.
+  This service clears this estimate and frees the respective memory.
+  The returned status is RESETTING.
+
+  This service can be called as follows.
+
+  .. code-block:: bash
+
+     PUT http://<host>/api/v1/nodes/rc_slam/services/reset
+
+  .. include:: _gen/nodes/services/rc_slam_reset.txt
+
+``get_trajectory``
+^^^^^^^^^^^^^^^^^^
+
+  returns the trajectory. 
+
+  This service can be called as follows.
+
+  .. code-block:: bash
+
+     PUT http://<host>/api/v1/nodes/rc_slam/services/get_trajectory
+
+  .. include:: _gen/nodes/services/rc_slam_get_trajectory_request.txt
+
+  The service arguments
+  allow to select a subsection of the trajectory by defining a ``start_time`` and
+  an ``end_time``.  Both are optional, i.e., they could be left empty or filled with zero values,
+  which results in the subsection to include the trajectory from the very beginning,
+  or to the very end, respectively, or both. If not empty or zero, they can be defined either as absolute
+  timestamps or to be relative to the trajectory (``start_time_relative``  and ``end_time_relative`` flags).
+  If defined to be relative, the values' signs indicate to which point in time they relate to:
+  Positive values define an offset to the start time of the trajectory; negative values are interpreted as
+  an offset from the end time of the trajectory. The below diagram illustrates three
+  examples for the relative parameterization.
+
+  .. figure:: images/rc_slam_get_trajectory_examples.*
+     :width: 90 %
+     :align: center
+
+     Examples for combinations of relative start and end times for the ``get_trajectory`` service.
+     All combinations shown select the same subset of the trajectory.
+
+  .. NOTE:: A relative ``start_time`` of zero will select everything from the start of the trajectory,
+            whereas a relative ``end_time`` of zero will select everything to the end of the trajectory.
+            Absolute zero values effectively do the same, so one can set all values zero to get the full trajectory.
+
+  .. include:: _gen/nodes/services/rc_slam_get_trajectory_response.txt
+
+  The field ``producer`` indicates where the trajectory data comes from and is always ``slam``.
+
+  The field ``return_code`` holds possible warnings or error codes and messages.
+  The following table contains a list of possible ``return_code`` values:
+
+  .. tabularcolumns:: |c|L|
+  .. csv-table::
+      :header: Code, Description
+
+      "0",   "Success"
+      "-1",  "An invalid argument was provided (e.g., an invalid time range)"
+      "101", "Trajectory is empty, because there is no data in the given time range"
+      "102", "Trajectory is empty, because there is no data at all (e.g., when SLAM is IDLE)"
+
+
+``save_map``
+^^^^^^^^^^^^
+
+  stores the current state as a map to persistent memory. The map consists of a set
+  of fixed map frames. It does not contain the full trajectory that has been covered.
+
+  This service can be called as follows.
+
+  .. code-block:: bash
+
+     PUT http://<host>/api/v1/nodes/rc_slam/services/save_map
+
+  .. Note:: Only abstract feature positions and descriptions are stored in the
+     map. No actual footage of the cameras is stored with the map, nor is it possible to
+     reconstruct images or image parts from the stored information.
+
+  .. Warning:: The map is lost on software updates or rollbacks
+
+  .. include:: _gen/nodes/services/rc_slam_save_map.txt
+
+``load_map``
+^^^^^^^^^^^^
+
+  loads a previously saved map. This is only applicable when the SLAM component is IDLE.
+  It is not possible to load a map into a running system. A loaded map can be cleared
+  with the ``reset`` service call.
+
+  This service can be called as follows.
+
+  .. code-block:: bash
+
+     PUT http://<host>/api/v1/nodes/rc_slam/services/load_map
+
+  .. include:: _gen/nodes/services/rc_slam_load_map.txt
+
+``remove_map``
+^^^^^^^^^^^^^^
+  removes the stored map from the persistent memory.
+
+  This service can be called as follows.
+
+  .. code-block:: bash
+
+     PUT http://<host>/api/v1/nodes/rc_slam/services/remove_map
+
+  .. include:: _gen/nodes/services/rc_slam_remove_map.txt

@@ -1,0 +1,814 @@
+
+.. include:: global_rst.glb
+
+.. _sect-handeye-calibration:
+
+Hand-eye calibration
+====================
+
+.. index::
+   pair: hand-eye calibration; robot frame
+   pair: hand-eye calibration; external reference frame
+
+For applications, in which the camera is integrated into one or more
+robot systems, it needs to be calibrated w.r.t. some robot
+reference frames. For this purpose, the |rcxxx| is shipped with an on-board
+calibration routine called the *hand-eye calibration* component.
+
+.. note:: The implemented calibration routine is
+   completely agnostic about the user-defined robot frame to which the camera is
+   calibrated. It might be a robot's end-effector (e.g., flange or tool
+   center point) or any point on the robot structure.
+   The method's only requirement is that the pose (i.e., translation and
+   rotation) of this robot
+   frame w.r.t. a user-defined external reference frame (e.g., world or robot
+   mounting point) is exactly observable by the robot controller and can be
+   reported to the calibration component.
+
+The
+:ref:`sect-handeye-calibration-procedure`
+:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration-procedure})`
+itself is an easy-to-use three-step procedure using
+a calibration grid which can be obtained from |company|.
+
+Calibration interfaces
+----------------------
+
+The following two interfaces are offered to conduct hand-eye
+calibration:
+
+#. All services and parameters of this component required to conduct the
+   hand-eye calibration **programmatically** are exposed by the |rcxxx|'s
+   :ref:`sect-rest-api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+   The respective node name of this component is ``rc_hand_eye_calibration``
+   and the respective service calls are documented
+   :ref:`sect-handeye-calibration-services`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration-services})`.
+
+   .. note:: The described approach requires a network connection
+         between the |rcxxx| and the robot controller to
+         pass robot poses from the controller to the |rcxxx|'s
+         calibration component.
+
+#. For use cases where robot poses cannot be passed programmatically to the
+   |rcxxx|'s hand-eye calibration component, the
+   :ref:`Web GUI<sect-web-gui>`'s *Hand-Eye Calibration* tab
+   :latex:`\:(Section \ref{webgui:sect-web-gui})` offers a guided
+   process to conduct the calibration routine **manually**.
+
+   .. note:: During the process, the described approach requires the user to
+         manually enter into the |webgui| robot poses, which need to be accessed
+         from the respective robot-teaching or handheld device.
+
+
+.. _sect-handeyecalib-mounting:
+
+Camera mounting
+---------------
+
+.. index::
+   pair: hand-eye calibration; mounting
+
+As illustrated in :numref:`fig-sketch-handeyecalib-robot-mounted` and
+:numref:`fig-sketch-handeyecalib-static`, two different use
+cases w.r.t. to the mounting of the camera generally have to be considered:
+
+a. The camera is **mounted on the robot**, i.e., it is mechanically fixed
+   to a robot link (e.g., at its flange or a flange-mounted tool), and
+   hence moves with the robot.
+
+#. The camera is not mounted on the robot but is fixed
+   to a table or other place in the robot's vicinity and remains at a **static** position
+   w.r.t. the robot.
+
+While the general
+:ref:`sect-handeye-calibration-procedure`:latex:`\:(Section
+\ref{handeye_calibration:sect-handeye-calibration-procedure})` is very similar
+in both use cases,
+the calibration process's output, i.e., the resulting calibration transform,
+will be semantically different, and the fixture of the calibration grid
+will also differ.
+
+
+Calibration with a robot-mounted camera
+   When calibrating a robot-mounted camera with the robot, the calibration
+   grid has to be secured in a static position w.r.t. the robot, e.g., on a table
+   or some other fixed-base coordinate system as sketched in
+   :numref:`fig-sketch-handeyecalib-robot-mounted`.
+
+   .. warning:: It is extremely important that the calibration grid does not move
+               during step 2 of the
+               :ref:`sect-handeye-calibration-procedure`:latex:`\:(Section
+               \ref{handeye_calibration:sect-handeye-calibration-procedure})`.
+               Securely fixing its position
+               to prevent unintended movements such as those caused by
+               vibrations, moving cables, or the like is therefore strongly
+               recommended.
+
+   The result of the calibration (step 3 of the
+   :ref:`sect-handeye-calibration-procedure`:latex:`, Section
+   \ref{handeye_calibration:sect-handeye-calibration-procedure}`) is a pose
+   :math:`\mathbf{T}^{\text{robot}}_{\text{camera}}` describing the
+   (previoulsy unknown) relative positional and rotational transformation
+   from the *camera* frame into the user-selected *robot* frame such that
+
+   .. math::
+     :label: handeye-calib-robotmounted-result
+
+     \mathbf{p}_{\text{robot}} =
+         \mathbf{R}^{\text{robot}}_{\text{camera}}
+         \cdot \mathbf{p}_{\text{camera}}
+         + \mathbf{t}^{\text{robot}}_{\text{camera}}
+         \:,
+
+   where :math:`\mathbf{p}_{\text{robot}} = (x,y,z)^T` is a 3D point
+   with its coordinates expressed in the *robot* frame,
+   :math:`\mathbf{p}_{\text{camera}}` is the same point represented in the
+   *camera* coordinate frame, and :math:`\mathbf{R}^{\text{robot}}_{\text{camera}}`
+   as well as :math:`\mathbf{t}^{\text{robot}}_{\text{camera}}` are the
+   corresponding :math:`3\times 3` rotation matrix and :math:`3\times 1`
+   translation vector of the pose :math:`\mathbf{T}^{\text{robot}}_{\text{camera}}`,
+   respectively. In practise, in the calibration result and in the provided robot
+   poses, the rotation is defined by Euler angles or as quaternion instead of
+   a rotation matrix (see :ref:`sect-pose-formats`:latex:`,\:Section \ref{pose_formats:sect-pose-formats}`).
+
+   .. _fig-sketch-handeyecalib-robot-mounted:
+   .. figure:: images/sketch_handeye_calib_robotmounted.*
+      :width: 60 %
+      :align: center
+
+      Important frames and transformations for calibrating a camera that
+      is mounted on a general robot. The camera is mounted with a fixed relative
+      position to a user-defined *robot* frame (e.g., flange or TCP). It is
+      important that the pose :math:`\mathbf{T}^{\text{ext}}_{\text{robot}}` of
+      this *robot* frame w.r.t. a user-defined external reference frame *ext*
+      is observable during the calibration routine. The result of the calibration
+      process is the desired calibration transformation
+      :math:`\mathbf{T}^{\text{robot}}_{\text{camera}}`, i.e., the pose of the
+      *camera* frame within the user-defined *robot* frame.
+
+   Additional user input is required if the movement of the robot is constrained and
+   the robot can rotate the Tool Center Point (TCP) only
+   around one axis. This is typically the case for robots with four Degrees Of
+   Freedom (4DOF) that are often used for palletizing tasks. In this case,
+   the user must specify which axis of the *robot* frame is the rotation axis of the TCP.
+   Further, the signed offset from the TCP to the
+   *camera* coordinate system along the TCP rotation axis has to be provided.
+   :numref:`fig-sketch-handeyecalib-robot-mounted-4dof` illustrates the situation.
+
+   .. only:: rc_visard
+
+      For |rc_visard|, the camera coordinate system is located in the optical
+      center of the left camera. The approximate location is given in section
+      :ref:`sect-coordinate-frames`:latex:`\:(Section \ref{hardware_spec:sect-coordinate-frames})`.
+
+   .. only:: rc_cube
+
+      For |rc_visard|, the camera coordinate system is located in the optical
+      center of the left camera. The approximate location is given in section
+      `Coordinate Frames <https://doc.rc-visard.com/latest/en/hardware_spec.html#coordinate-frames>`_.
+
+   .. _fig-sketch-handeyecalib-robot-mounted-4dof:
+   .. figure:: images/sketch_handeye_calib_robotmounted_4dof.*
+      :width: 60 %
+      :align: center
+
+      In case of a 4DOF robot, the TCP rotation axis and the offset from the
+      TCP to the camera
+      coordinate system along the TCP rotation axis must be provided.
+      In the illustrated case, this offset is negative.
+
+Calibration with a statically-mounted camera
+   In use cases where the camera is positioned statically w.r.t. the
+   robot, the calibration grid needs to be mounted to the robot as
+   shown for example in :numref:`fig-sketch-handeyecalib-static` and
+   :numref:`fig-sketch-handeyecalib-gridmount`.
+
+   .. note:: The hand-eye calibration component is
+      completely agnostic about the exact mounting and positioning of the
+      calibration grid w.r.t. the user-defined *robot* frame. That means,
+      the relative positioning of the calibration grid to
+      that frame neither needs to
+      be known, nor it is relevant for the calibration routine, as shown in
+      :numref:`fig-sketch-handeyecalib-gridmount`.
+
+   .. warning::
+      It is extremely important that the calibration grid is attached
+      securely to the robot such that it does
+      not change its relative position w.r.t. the user-defined *robot* frame
+      during step 2 of the :ref:`sect-handeye-calibration-procedure`:latex:`\:(Section
+      \ref{handeye_calibration:sect-handeye-calibration-procedure})`.
+
+   In this use case, the result of the calibration (step 3 of the
+   :ref:`sect-handeye-calibration-procedure`:latex:`, Section
+   \ref{handeye_calibration:sect-handeye-calibration-procedure}`) is the pose
+   :math:`\mathbf{T}^{\text{ext}}_{\text{camera}}`
+   describing the
+   (previoulsy unknown) relative positional and rotational transformation
+   between the *camera* frame and the user-selected external reference frame *ext*
+   such that
+
+   .. math::
+     :label: handeye-calib-static-result
+
+     \mathbf{p}_{\text{ext}} =
+         \mathbf{R}^{\text{ext}}_{\text{camera}}
+         \cdot \mathbf{p}_{\text{camera}}
+         + \mathbf{t}^{\text{ext}}_{\text{camera}}
+         \:,
+
+   where :math:`\mathbf{p}_{\text{ext}} = (x,y,z)^T` is a 3D point
+   with its coordinates expressed in the external reference frame *ext*,
+   :math:`\mathbf{p}_{\text{camera}}` is the same point represented in the
+   *camera* coordinate frame, and :math:`\mathbf{R}^{\text{ext}}_{\text{camera}}`
+   as well as :math:`\mathbf{t}^{\text{ext}}_{\text{camera}}` are the
+   corresponding :math:`3\times 3` rotation matrix and :math:`3\times 1`
+   translation vector of the pose :math:`\mathbf{T}^{\text{ext}}_{\text{camera}}`,
+   respectively. In practise, in the calibration result and in the provided robot
+   poses, the rotation is defined by Euler angles or as quaternion instead of
+   a rotation matrix (see :ref:`sect-pose-formats`:latex:`,\:Section \ref{pose_formats:sect-pose-formats}`).
+
+   .. _fig-sketch-handeyecalib-static:
+   .. figure:: images/sketch_handeye_calib_static.*
+      :width: 60 %
+      :align: center
+
+      Important frames and transformations for calibrating a
+      statically mounted camera: The latter is mounted with a fixed
+      position relative to a user-defined external reference frame *ext* (e.g.,
+      the world coordinate frame or the robot's mounting point). It is
+      important that the pose :math:`\mathbf{T}^{\text{ext}}_{\text{robot}}` of the
+      user-defined *robot* frame w.r.t. this frame
+      is observable during the calibration routine. The result of the calibration
+      process is the desired calibration transformation
+      :math:`\mathbf{T}^{\text{ext}}_{\text{camera}}`, i.e., the pose of the
+      *camera* frame in the user-defined external reference frame *ext*.
+
+   .. _fig-sketch-handeyecalib-gridmount:
+   .. figure:: images/sketch_handeye_calib_gridmount.*
+      :width: 60 %
+      :align: center
+
+      Alternate mounting options for attaching the
+      calibration grid to the robot
+
+   Additional user input is required if the movement of the robot is constrained and
+   the robot can rotate the Tool Center Point (TCP) only
+   around one axis. This is typically the case for robots with four Degrees Of
+   Freedom (4DOF) that are often used for palletizing tasks. In this case,
+   the user must specify which axis of the *robot* frame is the rotation axis of the TCP.
+   Further, the signed offset from the TCP to the
+   visible surface of the calibration grid along the TCP rotation axis has to be provided.
+   The grid must be mounted such that the TCP rotation axis is orthogonal to the grid.
+   :numref:`fig-sketch-handeyecalib-robot-static-4dof` illustrates the situation.
+
+   .. _fig-sketch-handeyecalib-robot-static-4dof:
+   .. figure:: images/sketch_handeye_calib_static_4dof.*
+      :width: 60 %
+      :align: center
+
+      In case of a 4DOF robot, the TCP rotation axis and the offset from the
+      TCP to the visible surface of the grid along the TCP rotation axis must
+      be provided. In the illustrated case, this offset is negative.
+
+
+.. _sect-handeye-calibration-procedure:
+
+Calibration routine
+-------------------
+
+.. index::
+   pair: hand-eye calibration; calibration
+
+The general hand-eye calibration routine consists of three steps, which are
+illustrated in :numref:`fig-sketch-handeyecalib-procedure`.
+These three steps
+are also represented in the :ref:`Web GUI<sect-web-gui>`'s
+guided hand-eye-calibration process\ :latex:`\:(Section \ref{webgui:sect-web-gui})`.
+
+.. _fig-sketch-handeyecalib-procedure:
+.. figure:: images/sketch_handeye_calib_procedure.*
+   :width: 90 %
+   :align: center
+
+   Illustration of the three different steps involved in the hand-eye
+   calibration routine
+
+..
+   Discussed with Heiko that we dont want to have this note!
+   .. Note:: Before performing a hand-eye-calibration, please check the camera
+         calibration as described in
+         :ref:`sect-camera-calibration`:latex:`\:(Section
+         \ref{camera_calibration:sect-camera-calibration})`.
+         If re-calibration is necessary, perform the camera calibration first.
+
+
+Step 1: Setting parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Before starting the actual calibration routine, the
+grid and mounting parameters have to be set to the component. As for
+the |restapi|, the respective parameters are listed in
+:ref:`sect-handeye-calibration-params`:latex:`\:(Section
+\ref{handeye_calibration:sect-handeye-calibration-params})`.
+
+|Webgui| example:
+   The |webgui| offers an
+   interface for entering these parameters during the first step of the calibration
+   routine as shown in :numref:`fig-handeyecalib-webgui1`. In addition to grid
+   size and camera mounting, the |webgui| also offers settings for calibrating
+   4DOF robots. In this case, the rotation axis, as well as the offset from
+   the TCP to the camera coordinate system (robot-mounted camera)
+   or grid surface (statically mounted camera) must be given. Finally,
+   the pose format can be chosen, which is used for setting poses
+   in the upcoming step 2 of the calibration process. It can be set to either
+   *XYZABC* for positions and Euler angles, or *XYZ+quaternion* for positions
+   plus quaternions for representing rotations.
+   See :ref:`sect-pose-formats`:latex:`\:(Section
+   \ref{pose_formats:sect-pose-formats})` for the exact definitions.
+
+   .. note:: The *Pose* parameter is added to the |webgui| as a convenience
+         option only. For reporting poses programmatically via |restapi|, the
+         *XYZ+quaternion* format is mandatory.
+
+   .. _fig-handeyecalib-webgui1:
+   .. figure:: images/webgui_hand_eye_calib1.png
+      :width:  100 %
+      :align: center
+
+      Defining hand-eye calibration settings via the |rcxxx|'s |webgui|
+
+
+
+
+Step 2:  Selecting and reporting robot calibration positions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In this step (2a.), the user defines several calibration positions for the robot to
+approach. These positions must each ensure that the
+calibration grid is completely
+visible in the left camera image. Furthermore, the robot positions
+need to be selected properly to achieve a variety of different
+perspectives
+for the camera to perceive the calibration grid.
+:numref:`fig-handeyecalib-poses` shows a schematic recommendation of four
+different view points.
+
+.. _fig-handeyecalib-poses:
+.. figure:: images/handeyecalib-alldraw.png
+   :width: 70 %
+   :align: center
+
+   Recommended views on the calibration grid during the calibration procedure.
+   In case of a 4DOF robot, other views have to be chosen, which should be as
+   different as possible.
+
+.. warning:: Calibration quality, i.e., the accuracy of the
+      calculated calibration result, depends on the calibration-grid views provided.
+      The more diverse the perspectives are, the better
+      is the calibration. Choosing very similar views, i.e., varying
+      the robot positions only slightly between different repetitions
+      of step 2a., may lead to inaccurate estimation of
+      the desired calibration transformation.
+
+.. index::
+   pair: hand-eye calibration; slot
+
+After the robot reaches each calibration position, the
+corresponding pose :math:`\mathbf{T}^{\text{ext}}_{\text{robot}}`
+of the user-defined *robot* frame in the user-defined
+external reference frame *ext* needs to be reported
+to the hand-eye calibration component (2b.). For this purpose, the component
+offers different *slots* to store the reported poses and the
+corresponding left camera images. All filled slots will then be used to
+calculate the desired calibration transformation between the
+*camera* frame and either the user-defined *robot* frame
+(robot-mounted camera) or the user-defined external reference frame *ext*
+(static camera).
+
+.. NOTE:: To successfully calculate the hand-eye calibration
+      transformation, at least three different robot calibration
+      poses need to be reported and stored in slots.
+      However, to prevent errors induced by possible
+      inaccurate measurements, at least **four calibration poses are
+      recommended**.
+
+To transmit the poses programmatically, the component's |restapi|
+offers the ``set_pose`` service call (see
+:ref:`sect-handeye-calibration-services`:latex:`, Section \ref{handeye_calibration:sect-handeye-calibration-services}`).
+
+|Webgui| example:
+   After completing the calibration settings in step 1 and clicking
+   *Next*, the |webgui| offers four different slots (*First View*,
+   *Second View*, etc.) for the user to fill manually with robot poses.
+   At the very top, a live stream from the camera is shown indicating
+   whether the calibration grid is currently detected or not. Next to each
+   slot, a figure suggests a respective dedicated viewpoint on the grid.
+   For each slot, the robot must be operated to achieve the suggested view.
+
+   .. _fig-handeyecalib-webgui2:
+   .. figure:: images/webgui_hand_eye_calib2.png
+      :width:  100 %
+      :align: center
+
+      First sample image in the hand-eye calibration process for a
+      statically mounted camera
+
+
+   Once the suggested view is achieved, the
+   user-defined *robot* frame's pose needs to be entered manually into the
+   respective text fields, and the corresponding camera image
+   is captured using the *Take Picture to Proceed* button.
+
+   .. note:: The user's acquisition of robot pose data
+      depends on the robot model and manufacturer -- it might be read from a
+      teaching or handheld device, which is shipped with the robot.
+
+   .. warning:: Please be careful to correctly and accurately enter the
+         values; even small variations or typos may lead to
+         calibration-process failure.
+
+   This procedure is repeated four times in total. Complying to the
+   suggestions to observe the grid from above, left, front,
+   and right, as sketched in :numref:`fig-handeyecalib-poses`, in this
+   example the following corresponding camera images have been sent to the
+   hand-eye calibration component with their associated robot pose:
+
+   .. _fig-handeyecalib-images:
+   .. figure:: images/handeyecalib-allpics.png
+      :width: 100 %
+      :align: center
+
+      Recorded camera images as input for the calibration procedure
+
+
+
+Step 3: Calculating and saving the calibration transformation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+   pair: error; hand-eye calibration
+
+The final step in the hand-eye calibration routine consists of issuing the
+desired calibration transformation to be computed from the collected
+poses and camera images. The |restapi| offers this functionality via the
+``calibrate`` service call
+(see :ref:`sect-handeye-calibration-services`:latex:`, Section \ref{handeye_calibration:sect-handeye-calibration-services}`).
+Depending on the way
+the camera is mounted, this service computes and returns the
+transformation (i.e., the pose) between the *camera* frame and
+either the user-defined
+*robot* frame (robot-mounted camera)
+or the user-defined external reference frame *ext*
+(statically mounted camera); see
+:ref:`sect-handeyecalib-mounting`:latex:`\:(Section
+\ref{handeye_calibration:sect-handeyecalib-mounting})`.
+
+To enable users to judge the quality of the resulting calibration
+transformation, the component also reports the translational and rotational
+calibration errors, which are computed from the variance of the
+calibration result.
+
+|Webgui| example:
+   The |webgui| automatically triggers computation of the calibration
+   result after taking the last of the four pictures. The user just needs
+   to click the *Next* button to proceed to the result.
+   The user has the possibility to specify or correct settings related to
+   calibration of 4DOF robots if required. After changing any settings, the
+   recompute button needs to be pressed.
+
+   In the example that is shown in :numref:`fig-webgui-hand-eye-calibration-result`,
+   4DOF is turned off and the camera is mounted statically. The resulting output
+   is the pose of the left camera in the external coordinate system of the robot.
+   The reported translational error is 0.67 mm and the rotational error is 0.83 deg.
+
+   .. _fig-webgui-hand-eye-calibration-result:
+   .. figure:: images/webgui_hand_eye_calib3.png
+      :width:  100 %
+      :align: center
+
+      Result of the hand-eye calibration process displayed in the |webgui|
+
+
+.. _sect-handeye-calibration-params:
+
+Parameters
+----------
+
+.. index::
+   pair: parameters; hand-eye calibration
+
+The hand-eye calibration component is called ``rc_hand_eye_calibration`` in the |rest-api| and is
+represented by the *Hand-Eye Calibration* tab in the
+:ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+The user can change the calibration parameters there or use the
+:ref:`sect-rest-api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. include:: _gen/nodes/params/rc_hand_eye_calibration.txt
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The parameter descriptions are given with the corresponding |webgui| names in
+brackets.
+
+.. _expl-hand-eye-calibration-grid-width:
+
+``grid_width`` (*Grid Width (m)*)
+'''''''''''''''''''''''''''''''''
+   Width of the calibration grid in meters. The width should be given with
+   a very high accuracy, preferably with sub-millimeter accuracy.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_hand_eye_calibration/parameters?grid_width=<value>
+
+.. _expl-hand-eye-calibration-grid-height:
+
+``grid_height`` (*Grid Height (m)*)
+'''''''''''''''''''''''''''''''''''
+   Height of the calibration grid in meters. The height should be given
+   with a very high accuracy, preferably with sub-millimeter accuracy.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_hand_eye_calibration/parameters?grid_height=<value>
+
+.. _expl-hand-eye-calibration-robot-mounted:
+
+``robot_mounted`` (*Camera Mounting*)
+'''''''''''''''''''''''''''''''''''''
+    If set to `true`, the camera is mounted on the robot.
+    If set to `false`, the camera is mounted statically and the calibration grid is mounted on the robot.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+    .. code-block:: bash
+
+       PUT http://<host>/api/v1/nodes/rc_hand_eye_calibration/parameters?robot_mounted=<value>
+
+.. _expl-hand-eye-calibration-tcp-offset:
+
+``tcp_offset`` (*TCP Offset*)
+'''''''''''''''''''''''''''''
+    The signed offset from the TCP to the camera coordinate system (robot-mounted sensor)
+    or the visible surface of the calibration grid (statically mounted sensor) along the
+    TCP rotation axis in meters.
+    This is required if the robot's movement is constrained and it
+    can rotate its TCP only around one axis (e.g., 4DOF robot).
+
+    Via the |restapi|, this parameter can be set as follows.
+
+    .. code-block:: bash
+
+       PUT http://<host>/api/v1/nodes/rc_hand_eye_calibration/parameters?tcp_offset=<value>
+
+.. _expl-hand-eye-calibration-tcp-rotation-axis:
+
+``tcp_rotation_axis`` (*TCP Rotation Axis*)
+'''''''''''''''''''''''''''''''''''''''''''
+    The axis of the *robot* frame around which the robot can rotate its TCP.
+    0 is used for X, 1 for Y and 2
+    for the Z axis. This is required if the robot's movement is constrained and it
+    can rotate its TCP only around one
+    axis (e.g., 4DOF robot). -1 means that the robot can rotate its TCP around two
+    independent rotation axes. ``tcp_offset`` is ignored in this case.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+    .. code-block:: bash
+
+       PUT http://<host>/api/v1/nodes/rc_hand_eye_calibration/parameters?tcp_rotation_axis=<value>
+
+(*Pose*)
+''''''''
+   For convenience, the user can choose in the |webgui| between calibration in
+   *XYZABC* format or in *XYZ+quaternion* format
+   (see :ref:`sect-pose-formats`:latex:`,\:Section \ref{pose_formats:sect-pose-formats}`).
+   When calibrating using the |rest-api|, the calibration result will always
+   be given in *XYZ+quaternion*.
+
+.. _sect-handeye-calibration-services:
+
+Services
+--------
+
+The |rest-api| service calls offered to programmatically conduct the
+hand-eye calibration and to store or restore this component's parameters are
+explained below.
+
+``save_parameters``
+^^^^^^^^^^^^^^^^^^^
+
+   With this service call, the current parameter settings of the hand-eye
+   calibration component are persisted to the |rcxxx|. That means,
+   these values are applied even after reboot.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_hand_eye_calibration/services/save_parameters
+
+   .. include:: _gen/nodes/services/rc_hand_eye_calibration_save_parameters.txt
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   restores and applies the default values for this component's parameters
+   ("factory reset"). Does not affect the calibration result itself or any
+   of the ``slots`` saved during calibration. Only parameters such as the
+   grid dimensions and the mount type will be reset.
+
+   .. WARNING:: By calling this service, the
+      current parameter settings for this component are irrecoverably lost.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_hand_eye_calibration/services/reset_defaults
+
+   .. include:: _gen/nodes/services/rc_hand_eye_calibration_reset_defaults.txt
+
+``reset_calibration``
+^^^^^^^^^^^^^^^^^^^^^
+
+   deletes all previously provided poses and corresponding images.
+   The last saved calibration result is reloaded.
+   This service might be used to (re-)start the hand-eye calibration from scratch.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_hand_eye_calibration/services/reset_calibration
+
+   .. include:: _gen/nodes/services/rc_hand_eye_calibration_reset_calibration.txt
+
+``set_pose``
+^^^^^^^^^^^^
+
+   provides a robot pose as calibration pose to the hand-eye calibration
+   routine.
+
+   The ``slot`` argument is used to assign numbers to the different calibration
+   poses. At each instant when ``set_pose`` is called, an image is
+   recorded. This service call fails if the grid was undetectable in
+   the current image.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_hand_eye_calibration/services/set_pose
+
+   .. include:: _gen/nodes/services/rc_hand_eye_calibration_set_pose.txt
+
+   .. tabularcolumns:: |c|c|L|
+   .. csv-table:: Return codes of the ``set_pose`` service call
+      :header: "``status``", "``success``", "Description"
+
+      "1", "``true``", "pose stored successfully"
+      "3", "``true``", "pose stored successfully; collected enough poses for calibration, i.e., ready to calibrate"
+      "4", "``false``", "calibration grid was not detected, e.g., not fully visible in camera image"
+      "8", "``false``", "no image data available"
+      "12", "``false``", "given orientation values are invalid"
+
+``calibrate``
+^^^^^^^^^^^^^
+
+   calculates and returns the hand-eye calibration transformation with the
+   robot poses configured by the ``set_pose`` service. ``save_calibration``
+   must be called to make the calibration available for other modules via
+   the ``get_calibration`` service call and to store it persistently.
+
+   .. NOTE:: For calculating the hand-eye calibration
+      transformation at least three robot calibration poses are
+      required (see ``set_pose`` service). However, four
+      calibration poses are recommended.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_hand_eye_calibration/services/calibrate
+
+   .. include:: _gen/nodes/services/rc_hand_eye_calibration_calibrate.txt
+
+   The field ``error`` gives the calibration error in pixels which is computed from
+   the translational error ``translation_error_meter`` and the rotational error
+   ``rotation_error_degree``. This value is only given for compatibility with older
+   versions. The translational and rotational errors should be preferred. 
+
+   .. tabularcolumns:: |c|c|L|
+   .. csv-table:: Return codes of the ``calibrate`` service call
+      :header: "``status``", "``success``", "Description"
+
+      "0", "``true``", "calibration successful, returned calibration result"
+      "1", "``false``", "not enough poses to perform calibration"
+      "2", "``false``", "calibration result is invalid, please verify the input data"
+      "3", "``false``", "given calibration grid dimensions are not valid"
+      "4", "``false``", "insufficient rotation, ``tcp_offset`` and ``tcp_rotation_axis`` must be specified"
+      "5", "``false``", "sufficient rotation available, ``tcp_rotation_axis`` must be set to -1"
+      "6", "``false``", "poses are not distinct enough from each other"
+
+``set_calibration``
+^^^^^^^^^^^^^^^^^^^
+
+   sets the hand-eye calibration transformation with arguments of this call.
+   The calibration transformation is expected in the same format as returned by
+   the ``calibrate`` and ``get_calibration`` calls.  The given calibration
+   information is also stored persistently on the sensor by internally calling
+   ``save_calibration``.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_hand_eye_calibration/services/set_calibration
+
+   .. include:: _gen/nodes/services/rc_hand_eye_calibration_set_calibration.txt
+
+   .. tabularcolumns:: |c|c|L|
+   .. csv-table:: Return codes of the ``set_calibration`` service call
+      :header: "``status``", "``success``", "Description"
+
+      "0", "``true``", "setting the calibration transformation was successful"
+      "12", "``false``", "given orientation values are invalid"
+
+``save_calibration``
+^^^^^^^^^^^^^^^^^^^^
+
+   persistently saves the result of hand-eye calibration to the |rcxxx| and overwrites
+   the existing one. The stored result can be retrieved any time by the
+   ``get_calibration`` service.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_hand_eye_calibration/services/save_calibration
+
+   .. include:: _gen/nodes/services/rc_hand_eye_calibration_save_calibration.txt
+
+   .. tabularcolumns:: |c|c|L|
+   .. csv-table:: Return codes of the ``save_calibration`` service call
+      :header: "``status``", "``success``", "Description"
+
+      "0", "``true``", "calibration saved successfully"
+      "1", "``false``", "could not save calibration file"
+      "2", "``false``", "calibration result is not available"
+
+``remove_calibration``
+^^^^^^^^^^^^^^^^^^^^^^
+
+   removes the persistent hand-eye calibration on the |rcxxx|.
+   After this call the ``get_calibration`` service reports again that no hand-eye calibration is available.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_hand_eye_calibration/services/remove_calibration
+
+   .. include:: _gen/nodes/services/rc_hand_eye_calibration_remove_calibration.txt
+
+   .. tabularcolumns:: |c|c|L|
+   .. csv-table:: Return codes of the ``get_calibration`` service call
+      :header: "``status``", "``success``", "Description"
+
+      "0", "``true``", "removed persistent calibration, device reports as uncalibrated"
+      "1", "``true``", "no persistent calibration found, device reports as uncalibrated"
+      "2", "``false``", "could not remove persistent calibration"
+
+``get_calibration``
+^^^^^^^^^^^^^^^^^^^
+
+   returns the hand-eye calibration currently stored on the |rc_xxx|.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_hand_eye_calibration/services/get_calibration
+
+   .. include:: _gen/nodes/services/rc_hand_eye_calibration_get_calibration.txt
+
+   The field ``error`` gives the calibration error in pixels which is computed from
+   the translational error ``translation_error_meter`` and the rotational error
+   ``rotation_error_degree``. This value is only given for compatibility with older
+   versions. The translational and rotational errors should be preferred. 
+
+   .. tabularcolumns:: |c|c|L|
+   .. csv-table:: Return codes of the ``get_calibration`` service call
+      :header: "``status``", "``success``", "Description"
+
+      "0", "``true``", "returned valid calibration pose"
+      "2", "``false``", "calibration result is not available"

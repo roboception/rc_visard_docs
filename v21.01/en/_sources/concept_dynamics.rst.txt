@@ -1,0 +1,96 @@
+Sensor dynamics
+
+In addition to providing 3D information about the scene, the
+
+rc_visard
+
+ can also estimate its
+
+egomotion
+
+ or
+
+dynamic state
+
+ in real time. This comprises its current pose, i.e., its position and
+orientation relative to a reference coordinate system or reference
+frame, as well as its velocity and acceleration. Measurements from
+stereo visual odometry (SVO) and the integrated Inertial Measurement
+Unit (
+
+IMU
+
+) are fused to compute this information. This combination is called a
+Visual Inertial Navigation System (V
+
+INS
+
+).
+
+Visual odometry observes the motion of characteristic points in the
+camera images to estimate the camera motion. Object points are
+projected on different pixels in the camera image depending on the
+camera's viewing position. Each point's 3D coordinates can also be
+computed using stereo matching between the point positions in the left
+and right camera images. Thus, for two different viewing positions A
+and B, two sets of corresponding 3D points are computed. Assuming a
+static environment, the motion that transforms one set of points into
+the other is the camera's motion. The principle is illustrated for a
+simplified 2D case in
+
+Fig. 17
+
+.
+
+
+Since visual odometry relies on image-data quality, motion estimates
+deteriorate when the images are blurred or are poorly illuminated.
+Furthermore, visual odometry's frame rate is too low for control
+applications. That's why the
+
+rc_visard
+
+ has an integrated Inertial Measurement Unit (IMU), which measures the
+accelerations and angular velocities that occur when the
+
+rc_visard
+
+ moves. It also measures acceleration due to gravity, which gives
+global orientation in the vertical direction. Further, IMU
+measurements have a high rate of 200 Hz. The
+
+rc_visard
+
+'s linear velocity, position, and orientation can be computed by
+integrating the IMU measurements. However, the integration results
+suffer from increasing drift over time. The
+
+rc_visard
+
+ thus fuses accurate, but low-frequency and sometimes volatile visual
+odometry measurements with reliable high-rate  IMU measurements to
+provide an accurate, robust, high-frequency estimate of the
+
+rc_visard
+
+'s current position, orientation, velocity, and acceleration, which
+can be used in a control loop.
+
+In addition to the stereo camera component and the calibration
+component, pose-estimate computations require the following
+
+rc_visard
+
+ software components:
+
+Sensor dynamics: This component handles starting, stopping, and
+streaming of the estimates for the individual components\:(Section
+\ref{dynamics:sect-dynamics}).  Visual odometry: This component
+computes a motion estimate from the camera images\:(Section
+\ref{stereo_visodo:sect-visual-odometry}).  Stereo INS: This component
+fuses the motion estimates from visual odometry with the measurements
+from the integrated IMU to provide real-time pose estimates at a high
+frequency\:(Section \ref{stereo_ins:sect-stereo-ins}).  SLAM: This
+component is optionally available for the rc_visard and creates an
+internal map of the environment, which is used to correct pose
+errors\:(Section \ref{slam:sect-slam}).

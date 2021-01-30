@@ -1,0 +1,145 @@
+
+.. include:: global_rst.glb
+
+.. _sect-roi:
+
+Region of interest functionality
+================================
+
+.. index:: ! Region of Interest
+   single: ROI
+   single: BoxPick; region of interest
+   single: ItemPick; region of interest
+
+.. only:: rc_cube
+
+   .. index::
+      single: CADMatch; region of interest
+
+Introduction
+------------
+
+The region of interest (ROI) functionality is contained in an internal ROI component
+and can only be used through the software components providing a ROI functionality.
+
+.. only:: rc_visard
+
+   The ROI functionality is provided by the :ref:`sect-itempick`:latex:`\:(Section \ref{itempick:sect-itempick})`
+   modules.
+
+.. only:: rc_cube
+
+   The ROI functionality is provided by the :ref:`sect-itempick`:latex:`\:(Section \ref{itempick:sect-itempick})` and
+   :ref:`sect-cadmatch`:latex:`\:(Section \ref{cadmatch:sect-cadmatch})` modules.
+
+.. _sect-roi-definition:
+
+Region of interest
+------------------
+
+A region of interest (ROI) defines a volume in space which is of interest for
+a specific user-application.
+A ROI can narrow the volume where a load carrier is searched for, or select a volume
+which only contains items to be detected and/or grasped.
+Processing times can significantly decrease when using a ROI.
+
+Currently, regions of interest of the following types (``type``) are supported:
+
+ - ``BOX``, with dimensions ``box.x``, ``box.y``, ``box.z``.
+ - ``SPHERE``, with radius ``sphere.radius``.
+
+The user can specify the region of interest ``pose`` in the ``camera`` or the ``external`` coordinate system.
+``External`` can only be chosen if a 
+:doc:`handeye_calibration`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})` is available. When the |rc_visard| is robot mounted, and the region of interest is defined in the external frame, the current robot pose must be given to every detect service call that uses this region of interest. 
+
+The |rcxxx| can persistently store up to 50 different regions of interest,
+each one identified by a different ``id``.
+The configuration of regions of interest is normally performed offline, during
+the set up of the desired application.
+This can be done via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or in 
+the |rcxxx| |webgui| on the page of the module offering the region of interest functionality.
+
+.. Note::
+  The configured regions of interest
+  are persistent even over firmware updates and rollbacks.
+
+.. _sect-roi-parameters:
+
+Parameters
+----------
+
+The ROI component does not have any parameters.
+
+.. _sect-roi-services:
+
+Services
+--------
+
+.. index::
+   single: region of interest; services
+
+The user can explore and call the ROI component's services,
+e.g. for development and testing, using the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or
+the |rc_xxx|
+:ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+page of the module offering the ROI functionality.
+
+Each service response contains a ``return_code``,
+which consists of a ``value`` plus an optional ``message``.
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+The smaller value is selected in case a service has multiple ``return_code`` values,
+but all messages are appended in the ``return_code`` message.
+
+The following table contains a list of common codes:
+
+.. tabularcolumns:: |c|L|
+.. _tab-roi-return-codes:
+.. csv-table:: Return codes of the region of interest services
+    :header:  Code, Description
+
+    "0",    "Success"
+    "-1",   "An invalid argument was provided"
+    "-10",  "New element could not be added as the maximum storage capacity of regions of interest has been exceeded"
+    "10",   "The maximum storage capacity of regions of interest has been reached"
+    "11",  "An existent persistent model was overwritten by the call to ``set_region_of_interest``"
+
+All software components providing the ROI functionality offer the following services.
+
+.. _expl-roi-srv-set-roi:
+
+``set_region_of_interest``
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores a region of interest on the |rc_xxx|.
+   All configured regions of interest are persistent over firmware updates and rollbacks.
+
+   .. include:: _gen/nodes/services/rc_itempick_set_region_of_interest_request.txt
+
+   Details for the definition of the ``region_of_interest`` type are given in 
+   :ref:`sect-roi-definition`:latex:`\:(Section \ref{roi:sect-roi-definition})`.
+
+   .. include:: _gen/nodes/services/rc_itempick_set_region_of_interest_response.txt
+
+.. _expl-roi-srv-get-roi:
+
+``get_regions_of_interest``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the configured regions of interest with the requested ``region_of_interest_ids``.
+   If no ``region_of_interest_ids`` are provided, all configured regions of interest are returned.
+
+   .. include:: _gen/nodes/services/rc_itempick_get_regions_of_interest.txt
+
+.. _expl-roi-srv-delete-roi:
+
+``delete_regions_of_interest``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured regions of interest with the requested ``region_of_interest_ids``.
+   All regions of interest to be deleted must be explicitly stated in ``region_of_interest_ids``.
+
+   .. include:: _gen/nodes/services/rc_itempick_delete_regions_of_interest.txt
+

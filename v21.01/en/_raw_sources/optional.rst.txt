@@ -1,0 +1,55 @@
+.. include:: global_rst.glb
+
+.. _sect-opt-software-components:
+
+Optional software components
+============================
+
+The |rc_xxx| offers optional software components that can be activated by
+purchasing a separate
+:ref:`license<sect-updating-license>`:latex:`\:(Section \ref{maintenance:sect-updating-license})`.
+
+The |rc_xxx|'s optional software consists of the following components:
+
+.. only:: rc_visard
+
+   - :doc:`slam` (``rc_slam``:latex:`, Section \ref{slam:sect-slam}`)
+      performs simultaneous localization and mapping for correcting
+      accumulated poses. The |rcvisard|'s covered trajectory is offered via the
+      :ref:`sect-rest-api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+- :doc:`itempick` (``rc_itempick`` and ``rc_boxpick``:latex:`, Section \ref{itempick:sect-itempick}`)
+   provides an out-of-the-box perception solution for robotic pick-and-place
+   applications of unknown objects or boxes.
+
+- :doc:`silhouettematch` (``rc_silhouettematch``:latex:`, Section \ref{silhouettematch:sect-silhouettematch}`)
+   provides an object detection solution for objects placed on a plane.
+
+.. only:: rc_cube
+
+   - :doc:`cadmatch` (``rc_cadmatch``:latex:`, Section \ref{cadmatch:sect-cadmatch}`)
+      provides an object detection solution for 3D objects.
+
+- :doc:`collisioncheck` (``rc_collision_check``:latex:`, Section \ref{collisioncheck:sect-collision}`)
+   provides an easy way to check if a gripper is in collision with load carrier or detected objects.
+
+The |rc_xxx| provides some common functionalities
+which are used in multiple optional software components. The common functionalities are:
+
+- :doc:`loadcarrier`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier})`
+   allows setting and retrieving load carriers, as well as detecting
+   load carriers and their filling level.
+
+- :doc:`roi`:latex:`\:(Section \ref{roi:sect-roi})`
+   allows setting and retrieving 3D regions of interest.
+
+.. toctree-filt::
+   :maxdepth: 2
+   :hidden:
+
+   :rc_cube_exclude:slam
+   itempick
+   silhouettematch
+   :rc_visard_exclude:cadmatch
+   collisioncheck
+   commonfunctionalities

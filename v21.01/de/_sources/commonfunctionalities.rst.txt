@@ -1,0 +1,21 @@
+Gemeinsame Funktionalitäten
+
+Der
+
+rc_visard
+
+ bietet einige Funktionalitäten, die von mehreren optionalen
+Softwaremodulen gemeinsam genutzt werden. Diese Funktionalitäten sind:
+
+Load Carrier Funktionalität\:(Abschnitt \ref{loadcarrier:sect-
+loadcarrier})  ermöglicht das Setzen und Abrufen von Load Carriern
+(Behältern), sowie deren Füllstandserkennung
+
+Region of Interest Funktionalität\:(Abschnitt \ref{roi:sect-roi})
+ermöglicht das Setzen und Abrufen von 3D Regions of Interest
+
+Alle Services und Parameter der gemeinsamen Funktionalitäten sind nur
+über das Modul verfügbar, welches diese Funktionalität nutzt. Alle
+gespeicherten Load Carrier und Regions of Interest sind für alle
+Softwaremodule verfügbar, die die jeweilige Funktionalität nutzen.
+

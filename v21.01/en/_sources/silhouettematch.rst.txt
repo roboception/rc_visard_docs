@@ -1,0 +1,1999 @@
+SilhouetteMatch
+
+Introduction
+
+The SilhouetteMatch component is an optional on-board component of the
+
+rc_visard
+
+, which detects objects by matching a predefined silhouette
+(“template”) to edges in an image.
+
+Note: This component is optional and requires a separate
+  SilhouetteMatch
+
+  license
+
+    to be purchased.
+
+For the SilhouetteMatch component to work, special object templates
+are required for each type of object to be detected. Roboception
+offers a template generation service on their
+
+website
+
+, where the user can upload CAD files or recorded data of the objects
+and request object templates for the SilhouetteMatch component.
+
+The object templates consist of significant edges of each object.
+These template edges are matched to the edges detected in the left and
+right camera images, considering the actual size of the objects and
+their distance from the camera. The poses of the detected objects are
+returned and can be used for grasping, for example.
+
+The SilhouetteMatch component offers:
+
+A dedicated page on the rc_visard Web GUI\:(Section \ref{webgui:sect-
+web-gui}) for easy setup, configuration, testing, and application
+tuning.
+
+A REST-API interface\:(Section \ref{rest_api:sect-rest-api}) and a
+KUKA Ethernet KRL Interface\:(Section \ref{eki:sect-eki}).
+
+The definition of 2D regions of interest to select relevant parts of
+the camera image (see Setting a region of interest, Section
+\ref{silhouettematch:sect-silhouettematch-roi}).
+
+A load carrier detection functionality for bin-picking applications
+(see Load carrier functionality, Section \ref{loadcarrier:sect-
+loadcarrier}), to provide grasps for objects inside a bin only.
+
+The definition of grasp points for each template via an interactive
+visualization in the Web GUI.
+
+Support for static and robot-mounted cameras and optional integration
+with the Hand-eye calibration (Section \ref{handeye_calibration:sect-
+handeye-calibration}) component, to provide grasps in the user-
+configured external reference frame.
+
+Sorting of grasps according to reachability so that the ones which are
+closest to the camera along the z axis of the preferred orientation of
+the TCP are returned first.
+
+Suitable objects
+
+The SilhouetteMatch component is intended for objects which have
+significant edges on a common plane that is parallel to the base plane
+on which the objects are placed. This applies to flat, nontransparent
+objects, such as routed, laser-cut or water-cut 2D parts and flat-
+machined parts. More complex parts can also be detected if there are
+significant edges on a common plane, e.g. a special pattern printed on
+a flat surface.
+
+The SilhouetteMatch component works best for objects on a texture-free
+base plane. The color of the base plane should be chosen such that a
+clear contrast between the objects and the base plane appears in the
+intensity image.
+
+Suitable scene
+
+The scene must meet the following conditions to be suitable for the
+SilhouetteMatch component:
+
+The objects to be detected must be suitable for the SilhouetteMatch
+component as described above.
+
+Only objects belonging to one specific template are visible at a time
+(unmixed scenario). In case other objects are visible as well, a
+proper region of interest (ROI) must be set.
+
+All visible objects are lying on a common base plane, which has to be
+calibrated.
+
+The offset between the base plane normal and the camera's line of
+sight does not exceed 10 degrees.
+
+The objects are not partially or fully occluded.
+
+All visible objects are right side up (no flipped objects).
+
+The object edges to be matched are visible in both, left and right
+camera images.
+
+Base-plane calibration
+
+Before objects can be detected, a base-plane calibration must be
+performed. Thereby, the distance and angle of the plane on which the
+objects are placed is measured and stored persistently on the
+
+rc_visard
+
+.
+
+Separating the detection of the base plane from the actual object
+detection renders scenarios possible in which the base plane is
+temporarily occluded. Moreover, it increases performance of the object
+detection for scenarios where the base plane is fixed for a certain
+time; thus, it is not necessary to continuously re-detect the base
+plane.
+
+The base-plane calibration can be performed in three different ways,
+which will be explained in more detail further down:
+
+AprilTag based
+
+Stereo based
+
+Manual
+
+The base-plane calibration is successful if the normal vector of the
+estimated base plane is at most 10 degrees offset to the camera's line
+of sight. If the base-plane calibration is successful, it will be
+stored persistently on the
+
+rc_visard
+
+ until it is removed or a new base-plane calibration is performed.
+
+Note: To avoid privacy issues, the image of the persistently stored
+  base- plane calibration will appear blurred after rebooting the
+
+  rc_visard
+
+  .
+
+In scenarios where the base plane is not accessible for calibration, a
+plane parallel to the base-plane can be calibrated. Then an "offset"
+parameter can be used to shift the estimated plane onto the actual
+base plane where the objects are placed. The "offset" parameter gives
+the distance in meters by which the estimated plane is shifted towards
+the camera.
+
+In the REST-API, a plane is defined by a "normal" and a "distance".
+"normal" is a normalized 3-vector, specifying the normal of the plane.
+The normal points away from the camera. "distance" represents the
+distance of the plane from the camera along the normal. Normal and
+distance can also be interpreted as a, b, c, and d components of the
+plane equation, respectively:
+
+   ax + by + cz + d = 0
+
+AprilTag based base-plane calibration
+
+AprilTag detection (ref.
+
+TagDetect
+
+) is used to find AprilTags in the scene and fit a plane through them.
+At least three AprilTags must be placed on the base plane so that they
+are visible in the left and right camera images. The tags should be
+placed such that they are spanning a triangle that is as large as
+possible. The larger the triangle, the more accurate is the resulting
+base-plane estimate. Use this method if the base plane is untextured
+and no external random dot projector is available. This calibration
+mode is available via the
+
+REST-API interface
+
+ and the
+
+rc_visard
+
+ Web GUI.
+
+Stereo based base-plane calibration
+
+The 3D point cloud computed by the stereo matching component is used
+to fit a plane through its 3D points. Therefore, the region of
+interest (ROI) for this method must be set such that only the relevant
+base plane is included. The "plane_preference" parameter allows to
+select whether the plane closest to or farthest from the camera should
+be used as base plane. Selecting the closest plane can be used in
+scenarios where the base plane is completely occluded by objects or
+not accessible for calibration. Use this method if the base plane is
+well textured or you can make use of a random dot projector to project
+texture on the base plane. This calibration mode is available via the
+
+REST-API interface
+
+ and the
+
+rc_visard
+
+ Web GUI.
+
+Manual base-plane calibration
+
+The base plane can be set manually if its parameters are known, e.g.
+from previous calibrations. This calibration mode is only available
+via the
+
+REST-API interface
+
+ and not the
+
+rc_visard
+
+ Web GUI.
+
+Setting a region of interest
+
+If objects are to be detected only in part of the camera’s field of
+view, a region of interest (ROI) can be set accordingly. This ROI is
+defined as a rectangular part of the left camera image, and can be set
+via the
+
+REST-API interface
+
+ or the
+
+rc_visard
+
+ Web GUI. The Web GUI offers an easy-to-use selection tool. Up to 50
+ROIs can be set and stored persistently on the
+
+rc_visard
+
+. Each ROI must have a unique name to address a specific ROI in the
+base-plane calibration or object detection process.
+
+In the REST-API, a 2D ROI is defined by the following values:
+
+id: Unique name of the region of interest
+
+offset_x, offset_y: offset in pixels along the x-axis and y-axis from
+the top-left corner of the image, respectively
+
+width, height: width and height in pixels
+
+Setting of grasp points
+
+To use SilhouetteMatch directly in a robot application, grasp points
+can be defined for each template. A grasp point represents the desired
+position and orientation of the robot's TCP (Tool Center Point) to
+grasp an object as shown in
+
+Fig. 54
+
+
+Each grasp consists of an "id" which must be unique within all grasps
+for an object template, the "template_id" representing the template to
+which the grasp should be attached, and the "pose" in the coordinate
+frame of the object template. Grasp points can be set via the
+
+REST-API interface
+
+, or by using the interactive visualization in the Web GUI. The
+
+rc_visard
+
+ can store up to 50 grasp points per template.
+
+Setting grasp points in the Web GUI
+
+The
+
+rc_visard
+
+ Web GUI provides an intuitive and interactive way of defining grasp
+points for object templates. In a first step, the object template has
+to be uploaded to the
+
+rc_visard
+
+. This can be done on the
+
+SilhouetteMatch
+
+ page in the
+
+Modules
+
+ tab of the Web GUI by clicking on
+
+add new Template
+
+ in the
+
+Templates and Grasps
+
+ section of the
+
+SilhouetteMatch
+
+ page. Once the template upload is complete, a dialog with a 3D
+visualization of the object tempate is shown for adding or editing
+grasp points. The same dialog appears when editing an existing
+template.
+
+This dialog provides two ways for setting grasp points:
+
+Adding grasps manually: By clicking on the + symbol, a new grasp is
+placed in the object origin. The grasp can be given a unique name
+which corresponds to its ID. The desired pose of the grasp can be
+entered in the fields for Position and Roll/Pitch/Yaw which are given
+in the coordinate frame of the object template represented by the long
+x, y and z axes in the visualization. The grasp point can be placed
+freely with respect to the object template - inside, outside or on the
+surface. The grasp point and its orientation are visualized in 3D for
+verification.
+
+Adding grasps interactively: Grasp points can be added interactively
+by first clicking on the Add Grasp button in the upper left corner of
+the visualization and then clicking on the desired point on the object
+template visualization. The grasp is attached to the template surface.
+The grasp orientation is a right-handed coordinate system and is
+chosen such that its z axis is perpendicular to the surface pointing
+inside the template at the grasp position. The position and
+orientation in the object coordinate frame is displayed on the right.
+The position and orientation of the grasp can also be changed
+interactively. In case Snap to surface is enabled in the visualization
+(default), the grasp can be moved along the template surface by
+clicking on the Translate button in the visualization and then
+clicking on the grasp point and dragging it to the desired position.
+The orientation of the grasp around the surface normal can also be
+changed by choosing Rotate and then rotating the grasp with the
+cursor. In case Snap to surface is disabled, the grasp can be
+translated and rotated freely in all three dimensions.
+
+If the object template has symmetries, the grasps which are symmetric
+to the defined grasps can be displayed by clicking on
+
+Show symmetric grasps
+
+.
+
+Setting grasp points via the REST-API
+
+Grasp points can be set via the
+
+REST-API interface
+
+ using the "set_grasp" or "set_all_grasps" services (see
+
+Services
+
+). In the SilhouetteMatch component a grasp consists of the
+"template_id" of the template to which the grasp should be attached,
+an "id" uniquely identifying the grasp point and the "pose". The pose
+is given in the coordinate frame of the object template and consists
+of a "position" in meters and an "orientation" as quaternion.
+
+Setting the preferred orientation of the TCP
+
+The SilhouetteMatch component determines the reachability of grasp
+points based on the
+
+preferred orientation
+
+ of the gripper or TCP. The preferred orientation can be set via the
+"set_preferred_orientation" service or on the
+
+SilhouetteMatch
+
+ page in the Web GUI. The resulting direction of the TCP's z axis is
+used to reject grasps which cannot be reached by the gripper.
+Furthermore, it is used to sort the reachable grasps such that the
+closest grasps to the camera along the Z axis of the preferred
+orientation of the TCP are returned first.
+
+The preferred orientation can be set in the camera coordinate frame or
+in the external coordinate frame, in case a hand-eye calibration is
+available. If the preferred orientation is specified in the external
+coordinate frame and the sensor is robot mounted, the current robot
+pose has to be given to each object detection call, so that the
+preferred orientation can be used for filtering and sorting the grasps
+on the detected objects. If no preferred orientation is set, the z
+axis of the left camera is used as the preferred orientation of the
+TCP.
+
+Detection of objects
+
+Objects can only be detected after a successful base-plane
+calibration. It must be ensured that the position and orientation of
+the base plane does not change before the detection of objects.
+Otherwise, the base-plane calibration must be renewed.
+
+For triggering the object detection, in general, the following
+information must be provided to the SilhouetteMatch component:
+
+The template of the object to be detected in the scene.
+
+The coordinate frame in which the poses of the detected objects shall
+be returned (ref. Hand-eye calibration, Section \ref{silhouettematch
+:sect-silhouettematch-hand-eye-calib}).
+
+Optionally, further information can be given to the SilhouetteMatch
+component:
+
+An offset in case the objects are lying not on the base plane but on a
+plane parallel to it. The offset is the distance between both planes
+given in the direction towards the camera. If omitted, an offset of 0
+is assumed.
+
+The ID of the load carrier which contains the objects to be detected.
+
+The ID of the region of interest where to search for the load carrier
+if a load carrier is set. Otherwise, the ID of the region of interest
+where the objects should be detected. If omitted, objects are matched
+in the whole image.
+
+The current robot pose in case the camera is mounted on the robot and
+the chosen coordinate frame for the poses is external or the preferred
+orientation is given in the external frame.
+
+Collision detection information: The ID of the gripper to enable
+collision checking and optionally a pre-grasp offset to define a pre-
+grasp position. Details on collision checking are given below in
+CollisionCheck\:(Section \ref{silhouettematch:sect-silhouettematch-
+collision-check-dep}).
+
+On the Web GUI the detection can be tested in the
+
+Try Out
+
+ section of the SilhouetteMatch component's tab. The result is
+visualized as shown in
+
+Fig. 55
+
+.
+
+
+The left image shows the calibrated base plane in blue and the
+template to be matched in red with the defined grasp points in green
+(see
+
+Setting of grasp points
+
+). The template is warped to the size and tilt matching objects on the
+calibrated base plane would have.
+
+The right image shows the detection result. The shaded blue area on
+the left is the region of the left camera image which does not overlap
+with the right image, and in which no objects can be detected. The
+chosen region of interest is shown as bold petrol rectangle. The
+detected edges in the image are shown in light blue and the matches
+with the template ("instances") are shown in red. The blue circles are
+the origins of the detected objects as defined in the template and the
+green circles are the reachable grasp points. Unreachable grasp points
+will be visualized as red dots (not shown in the figure).
+
+The poses of the object origins in the chosen coordinate frame are
+returned as results. If the chosen template also has grasp points
+attached, a list of "grasps" for all objects sorted by their
+reachability (see
+
+Setting the preferred orientation of the TCP
+
+) is returned in addition to the list of detected objects. The grasp
+poses are given in the desired coordinate frame. There are references
+between the detected object instances and the grasps via their
+"uuids". In case the templates have a continuous rotational symmetry,
+all returned object poses will have the same orientation. For
+rotationally non-symmetric objects, the orientation of the detected
+objects is aligned with the normal of the base plane.
+
+The detection results and runtimes are affected by several run-time
+parameters which are listed and explained further down. Improper
+parameters can lead to time-outs of the SilhouetteMatch component's
+detection process.
+
+Interaction with other components
+
+Internally, the SilhouetteMatch component depends on, and interacts
+with other on-board components as listed below.
+
+Note: All changes and configuration updates to these components will
+  affect the performance of the SilhouetteMatch component.
+
+Stereo camera and stereo matching
+
+The SilhouetteMatch component makes internally use of the rectified
+images from the
+
+Stereo camera
+
+ component ("rc_stereocamera"). Thus, the exposure time should be set
+properly to achieve the optimal performance of the component.
+
+For base-plane calibration in stereo mode the disparity images from
+the
+
+Stereo matching
+
+ component ("rc_stereomatching") are used. Apart from that, the
+stereo-matching component should not be run in parallel to the
+SilhouetteMatch component, because the detection runtime increases.
+
+For best results it is recommended to enable
+
+smoothing
+
+  for
+
+Stereo matching
+
+.
+
+IO and Projector Control
+
+In case the
+
+rc_visard
+
+ is used in conjunction with an external random dot projector and the
+
+IO and Projector Control
+
+ component ("rc_iocontrol"), the projector should be used for the
+stereo-based base-plane calibration.
+
+The projected pattern must not be visible in the left and right camera
+images during object detection as it interferes with the matching
+process. Therefore, it must either be switched off or operated in
+"ExposureAlternateActive" mode.
+
+Hand-eye calibration
+
+In case the camera has been calibrated to a robot, the SilhouetteMatch
+component can automatically provide poses in the robot coordinate
+frame. For the SilhouetteMatch node's
+
+Services
+
+, the frame of the input and output poses and plane coordinates can be
+controlled with the "pose_frame" argument.
+
+Two different "pose_frame" values can be chosen:
+
+Camera frame (camera). All poses and plane coordinates provided to and
+by the component are in the camera frame.
+
+External frame (external). All poses and plane coordinates provided to
+and by the component are in the external frame, configured by the user
+during the hand-eye calibration process. The component relies on the
+on-board Hand-eye calibration component\:(Section
+\ref{handeye_calibration:sect-handeye-calibration}) to retrieve the
+camera mounting (static or robot mounted) and the hand-eye
+transformation. If the sensor mounting is static, no further
+information is needed. If the sensor is robot-mounted, the robot_pose
+is required to transform poses to and from the external frame.
+
+All "pose_frame" values that are not "camera" or "external" are
+rejected.
+
+Note: If no hand-eye calibration is available, all "pose_frame"
+  values should be set to "camera".
+
+Note: If the hand-eye calibration has changed after base-plane
+  calibration, the base-plane calibration will be marked as invalid
+  and must be renewed.
+
+If the sensor is robot-mounted, the current "robot_pose" has to be
+provided depending on the value of "pose_frame" and the definition of
+the preferred TCP orientation:
+
+If pose_frame is set to external, providing the robot pose is
+obligatory.
+
+If the preferred TCP orientation is defined in external, providing the
+robot pose is obligatory.
+
+If pose_frame is set to camera and the preferred TCP orientation is
+defined in camera, providing the robot pose is optional.
+
+If the current robot pose is provided during calibration, it is stored
+persistently on the
+
+rc_visard
+
+. If the updated robot pose is later provided during
+"get_base_plane_calibration" or "detect_object" as well, the base-
+plane calibration will be transformed automatically to this new robot
+pose. This enables the user to change the robot pose (and thus camera
+position) between base-plane calibration and object detection.
+
+Note: Object detection can only be performed if the limit of 10
+  degrees angle offset between the base plane normal and the camera's
+  line of sight is not exceeded.
+
+CollisionCheck
+
+Collision checking can be easily enabled for grasp computation of the
+SilhouetteMatch component by passing the ID of the used gripper and
+optionally a pre-grasp offset to the "detect_object" service call. The
+gripper has to be defined in the CollisionCheck component (see
+
+Setting a gripper
+
+) and details about collision checking are given in
+
+Collision checking within other modules
+
+. In addition, collisions between the gripper and the calibrated base
+plane are checked. If the selected SilhouetteMatch template contains a
+collision geometry, also collisions between the gripper and the
+detected objects will be checked. The object on which the grasp point
+to be checked is located, is excluded from the collision check.
+
+If collision checking is enabled, only grasps which are collision free
+will be returned. However, the visualization images on the
+
+SilhouetteMatch
+
+ tab of the Web GUI also shows colliding grasp points in red.
+
+The CollisionCheck module's run-time parameters affect the collision
+detection as described in
+
+CollisionCheck Parameters
+
+.
+
+Parameters
+
+The SilhouetteMatch software component is called "rc_silhouettematch"
+in the REST-API and is represented by the
+
+SilhouetteMatch
+
+ page in the
+
+Modules
+
+ tab of the
+
+Web GUI
+
+. The user can explore and configure the "rc_silhouettematch"
+component's run-time parameters, e.g. for development and testing,
+using the Web GUI or the
+
+REST-API interface
+
+.
+
+Parameter overview
+
+This component offers the following run-time parameters:
+
+The rc_silhouettematch component's run-time parameters
+Name  Type  Min  Max  Default  Description  edge_sensitivity  float64
+0.1  1.0  0.6  sensitivity of the edge detector
+load_carrier_crop_distance  float64  0.0  0.05  0.005  Safety margin
+in meters by which the load carrier inner dimensions are reduced to
+define the region of interest for detection
+load_carrier_model_tolerance  float64  0.003  0.025  0.008  Indicates
+how much the estimated load carrier dimensions are allowed to differ
+from the load carrier model dimensions in meters  match_max_distance
+float64  0.0  10.0  2.5  maximum allowed distance in pixels between
+the template and the detected edges in the image  match_percentile
+float64  0.7  1.0  0.85  percentage of template pixels that must be
+within the maximum distance to successfully match the template
+max_number_of_detected_objects  int32  1  20  10  maximum number of
+detected objects  quality  string  -  -  High  High, Medium, or Low
+
+Description of run-time parameters
+
+Each run-time parameter is represented by a row on the Web GUI's
+SilhouetteMatch Module tab. The name in the Web GUI is given in
+brackets behind the parameter name and the parameters are listed in
+the order they appear in the Web GUI:
+
+max_number_of_detected_objects (Maximum Object Number)
+
+   This parameter gives the maximum number of objects to detect in the
+   scene. If more than the given number of objects can be detected in
+   the scene, only the objects with the highest matching results are
+   returned.
+
+   Via the REST-API, this parameter can be set as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?max_number_of_detected_objects=<value>
+
+load_carrier_model_tolerance (Model Tolerance)
+
+   see
+
+   Parameters of the load carrier functionality
+
+   .
+
+   Via the REST-API, this parameter can be set as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?load_carrier_model_tolerance=<value>
+
+load_carrier_crop_distance (Crop Distance)
+
+   see
+
+   Parameters of the load carrier functionality
+
+   .
+
+   Via the REST-API, this parameter can be set as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?load_carrier_crop_distance=<value>
+
+quality (Quality)
+
+   Object detection can be performed on images with different
+   resolutions: "High" (1280 x 960), "Medium" (640 x 480) and "Low"
+   (320 x 240). The lower the resolution, the lower the detection
+   time, but the fewer details of the objects are visible.
+
+   Via the REST-API, this parameter can be set as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?quality=<value>
+
+match_max_distance (Maximum Matching Distance)
+
+   This parameter gives the maximum allowed pixel distance of an image
+   edge pixel from the object edge pixel in the template to be still
+   considered as matching. If the object is not perfectly represented
+   in the template, it might not be detected when this parameter is
+   low. High values, however, might lead to false detections in case
+   of a cluttered scene or the presence of similar objects, and also
+   increase runtime.
+
+   Via the REST-API, this parameter can be set as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?match_max_distance=<value>
+
+match_percentile (Matching Percentile)
+
+   This parameter indicates how strict the matching process should be.
+   The matching percentile is the ratio of template pixels that must
+   be within the Maximum Matching Distance to successfully match the
+   template. The higher this number, the more accurate the match must
+   be to be considered as valid.
+
+   Via the REST-API, this parameter can be set as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?match_percentile=<value>
+
+edge_sensitivity (Edge Sensitivity)
+
+   This parameter influences how many edges are detected in the camera
+   images. The higher this number, the more edges are found in the
+   intensity image. That means, for lower numbers, only the most
+   significant edges are considered for template matching. A large
+   number of edges in the image might increase the detection time.
+
+   Via the REST-API, this parameter can be set as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?edge_sensitivity=<value>
+
+Status values
+
+This component reports the following status values:
+
+The rc_silhouettematch component's status values      Name
+Description  calibrate_service_time  Processing time of the base-plane
+calibration, including data acquisition time  data_acquisition_time
+Time in seconds required by the last active service to acquire images
+load_carrier_detection_time  Processing time of the last load carrier
+detection in seconds  detect_service_time  Processing time of the
+object dection, including data acquisition time
+last_timestamp_processed  The timestamp of the last processed dataset
+
+Services
+
+The user can explore and call the "rc_silhouettematch" component's
+services, e.g. for development and testing, using the
+
+REST-API interface
+
+ or the
+
+rc_visard
+
+
+Web GUI
+
+.
+
+Each service response contains a "return_code", which consists of a
+"value" plus an optional "message". A successful service returns with
+a "return_code" value of "0". Negative "return_code" values indicate
+that the service failed. Positive "return_code" values indicate that
+the service succeeded with additional information.
+
+Return codes of the SilhouetteMatch component services      Code
+Description  0  Success  -1  An invalid argument was provided  -3  An
+internal timeout occurred, e.g. during object detection  -4  Data
+acquisition took longer than the maximum allowed time of 5.0 seconds
+-7  Data could not be read or written to persistent storage  -8
+Component is not in a state in which this service can be called. E.g.
+detect_object cannot be called if there is no base-plane calibration.
+-10  New element could not be added as the maximum storage capacity of
+regions of interest or templates has been exceeded  -100  An internal
+error occurred  -101  Detection of the base plane failed  -102  The
+hand-eye calibration changed since the last base-plane calibration
+-104  Offset between the base plane normal and the camera's line of
+sight exceeds 10 degrees  10  The maximum storage capacity of regions
+of interest or templates has been reached  11  An existing element was
+overwritten  100  The requested load carrier was not detected in the
+scene  101  None of the detected grasps is reachable  102  The
+detected load carrier is empty  103  All detected grasps are in
+collision  107  The base plane was not transformed to the current
+camera pose, e.g. because no robot pose was provided during base-plane
+calibration  108  The template is deprecated.  151  The object
+template has a continuous symmetry  999  Additional hints for
+application development
+
+The SilhouetteMatch component offers the following services.
+
+calibrate_base_plane
+
+   Triggers the calibration of the base plane, as described in
+
+   Base-plane calibration
+
+   . A successful base-plane calibration is stored persistently on the
+
+   rc_visard
+
+    and returned by this service. The base-plane calibration is
+   persistent over firmware updates and rollbacks.
+
+   All images used by the service are guaranteed to be newer than the
+   service trigger time.
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/calibrate_base_plane
+
+   Request:
+
+         The definition for the request arguments with corresponding
+         datatypes is:
+
+            {
+              "args": {
+                "offset": "float64",
+                "plane": {
+                  "distance": "float64",
+                  "normal": {
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  }
+                },
+                "plane_estimation_method": "string",
+                "pose_frame": "string",
+                "region_of_interest_2d_id": "string",
+                "robot_pose": {
+                  "orientation": {
+                    "w": "float64",
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  },
+                  "position": {
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  }
+                },
+                "stereo": {
+                  "plane_preference": "string"
+                }
+              }
+            }
+
+      Required arguments:
+
+         "plane_estimation_method": method to use for base-plane
+         calibration. Valid values are "STEREO", "APRILTAG", "MANUAL".
+
+         "pose_frame": see
+
+         Hand-eye calibration
+
+         .
+
+      Potentially required arguments:
+
+         "plane" if "plane_estimation_method" is "MANUAL": plane that
+         will be set as base-plane calibration.
+
+         "robot_pose": see
+
+         Hand-eye calibration
+
+         .
+
+         "region_of_interest_2d_id": ID of the region of interest for
+         base-plane calibration.
+
+      Optional arguments:
+
+         "offset": offset in meters by which the estimated plane will
+         be shifted towards the camera.
+
+         "plane_preference" in "stereo": whether the plane closest to
+         or farthest from the camera should be used as base plane.
+         This option can be set only if "plane_estimation_method" is
+         "STEREO". Valid values are "CLOSEST" and "FARTHEST". If not
+         set, the default is "FARTHEST".
+
+   Response:
+
+      The definition for the response with corresponding datatypes is:
+
+         {
+           "name": "calibrate_base_plane",
+           "response": {
+             "plane": {
+               "distance": "float64",
+               "normal": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "pose_frame": "string"
+             },
+             "return_code": {
+               "message": "string",
+               "value": "int16"
+             },
+             "timestamp": {
+               "nsec": "int32",
+               "sec": "int32"
+             }
+           }
+         }
+
+      "plane": calibrated base plane.
+
+      "timestamp": timestamp of the image set the calibration ran on.
+
+      "return_code": holds possible warnings or error codes and
+      messages.
+
+get_base_plane_calibration
+
+   Returns the configured base-plane calibration.
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_base_plane_calibration
+
+   Request:
+
+      The definition for the request arguments with corresponding
+      datatypes is:
+
+         {
+           "args": {
+             "pose_frame": "string",
+             "robot_pose": {
+               "orientation": {
+                 "w": "float64",
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "position": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               }
+             }
+           }
+         }
+
+      Required arguments:
+
+         "pose_frame": see
+
+         Hand-eye calibration
+
+         .
+
+      Potentially required arguments:
+
+         "robot_pose": see
+
+         Hand-eye calibration
+
+         .
+
+   Response:
+
+      The definition for the response with corresponding datatypes is:
+
+         {
+           "name": "get_base_plane_calibration",
+           "response": {
+             "plane": {
+               "distance": "float64",
+               "normal": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "pose_frame": "string"
+             },
+             "return_code": {
+               "message": "string",
+               "value": "int16"
+             }
+           }
+         }
+
+delete_base_plane_calibration
+
+   Deletes the configured base-plane calibration.
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/delete_base_plane_calibration
+
+   This service has no arguments.
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "delete_base_plane_calibration",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_region_of_interest_2d
+
+   Persistently stores a 2D region of interest on the
+
+   rc_visard
+
+   . All configured 2D regions of interest are persistent over
+   firmware updates and rollbacks.
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/set_region_of_interest_2d
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "region_of_interest_2d": {
+            "height": "uint32",
+            "id": "string",
+            "offset_x": "uint32",
+            "offset_y": "uint32",
+            "width": "uint32"
+          }
+        }
+      }
+
+   "region_of_interest_2d": see
+
+   Setting a region of interest
+
+   .
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_region_of_interest_2d",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_regions_of_interest_2d
+
+   Returns the configured 2D regions of interest with the requested
+   "region_of_interest_2d_ids". If no "region_of_interest_2d_ids" are
+   provided, all configured 2D regions of interest are returned.
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_regions_of_interest_2d
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "region_of_interest_2d_ids": [
+            "string"
+          ]
+        }
+      }
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_regions_of_interest_2d",
+        "response": {
+          "regions_of_interest": [
+            {
+              "height": "uint32",
+              "id": "string",
+              "offset_x": "uint32",
+              "offset_y": "uint32",
+              "width": "uint32"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_regions_of_interest_2d
+
+   Deletes the configured 2D regions of interest with the requested
+   "region_of_interest_2d_ids". All 2D regions of interest to be
+   deleted must be explicitly specified in
+   "region_of_interest_2d_ids".
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/delete_regions_of_interest_2d
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "region_of_interest_2d_ids": [
+            "string"
+          ]
+        }
+      }
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "delete_regions_of_interest_2d",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_load_carrier
+
+   see
+
+   set_load_carrier
+
+   .
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/set_load_carrier
+
+get_load_carriers
+
+   see
+
+   get_load_carriers
+
+   .
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_load_carriers
+
+delete_load_carriers
+
+   see
+
+   delete_load_carriers
+
+   .
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/delete_load_carriers
+
+detect_load_carriers
+
+   see
+
+   detect_load_carriers
+
+   .
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/detect_load_carriers
+
+detect_filling_level
+
+   see
+
+   detect_filling_level
+
+   .
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/detect_filling_level
+
+set_preferred_orientation
+
+   Persistently stores the preferred orientation of the gripper to
+   compute the reachability of the grasps, which is used for filtering
+   and sorting the grasps returned by the "detect_object" service (see
+
+   Setting the preferred orientation of the TCP
+
+   ).
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/set_preferred_orientation
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose_frame": "string"
+        }
+      }
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_preferred_orientation",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_preferred_orientation
+
+   Returns the preferred orientation of the gripper to compute the
+   reachability of the grasps, which is used for filtering and sorting
+   the grasps returned by the "detect_object" service (see
+
+   Setting the preferred orientation of the TCP
+
+   ).
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_preferred_orientation
+
+   This service has no arguments.
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_preferred_orientation",
+        "response": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose_frame": "string",
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_grasp
+
+   Persistently stores a grasp for the given object template on the
+
+   rc_visard
+
+   . All configured grasps are persistent over firmware updates and
+   rollbacks.
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/set_grasp
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "grasp": {
+            "id": "string",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "template_id": "string"
+          }
+        }
+      }
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_grasp",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+   Details for the definition of the "grasp" type are given in
+
+   Setting of grasp points
+
+   .
+
+set_all_grasps
+
+   Replaces the list of grasps for the given object template on the
+
+   rc_visard
+
+   .
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/set_all_grasps
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "grasps": [
+            {
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "template_id": "string"
+            }
+          ],
+          "template_id": "string"
+        }
+      }
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_all_grasps",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+   Details for the definition of the "grasp" type are given in
+
+   Setting of grasp points
+
+   .
+
+get_grasps
+
+   Returns all configured grasps which have the requested "grasp_ids"
+   and belong to the requested "template_ids". If no "grasp_ids" are
+   provided, all grasps belonging to the requested "template_ids" are
+   returned. If no "template_ids" are provided, all grasps with the
+   requested "grasp_ids" are returned. If neither IDs are provided,
+   all configured grasps are returned.
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_grasps
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "grasp_ids": [
+            "string"
+          ],
+          "template_ids": [
+            "string"
+          ]
+        }
+      }
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_grasps",
+        "response": {
+          "grasps": [
+            {
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "template_id": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_grasps
+
+   Deletes all grasps with the requested "grasp_ids" that belong to
+   the requested "template_ids". If no "grasp_ids" are provided, all
+   grasps belonging to the requested "template_ids" are deleted. The
+   "template_ids" list must not be empty.
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/delete_grasps
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "grasp_ids": [
+            "string"
+          ],
+          "template_ids": [
+            "string"
+          ]
+        }
+      }
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "delete_grasps",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_symmetric_grasps
+
+   Returns all grasps that are symmetric to the given grasp. The first
+   grasp in the returned list is the one that was passed with the
+   service call. If the object template does not have an exact
+   symmetry, only the grasp passed with the service call will be
+   returned. If the object template has a continuous symmetry (e.g. a
+   cylindrical object), only 12 equally spaced sample grasps will be
+   returned.
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_symmetric_grasps
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "grasp": {
+            "id": "string",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "template_id": "string"
+          }
+        }
+      }
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_symmetric_grasps",
+        "response": {
+          "grasps": [
+            {
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "template_id": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+   Details for the definition of the "grasp" type are given in
+
+   Setting of grasp points
+
+   .
+
+detect_object
+
+   Triggers an object detection as described in
+
+   Detection of objects
+
+    and returns the pose of all found object instances. The maximum
+   number of returned instances can be controlled with the
+   "max_number_of_detected_objects" parameter.
+
+   All images used by the service are guaranteed to be newer than the
+   service trigger time.
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/detect_object
+
+   Request:
+
+      The definition for the request arguments with corresponding
+      datatypes is:
+
+         {
+           "args": {
+             "collision_detection": {
+               "gripper_id": "string",
+               "pre_grasp_offset": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               }
+             },
+             "load_carrier_id": "string",
+             "object_to_detect": {
+               "object_id": "string",
+               "region_of_interest_2d_id": "string"
+             },
+             "offset": "float64",
+             "pose_frame": "string",
+             "robot_pose": {
+               "orientation": {
+                 "w": "float64",
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               },
+               "position": {
+                 "x": "float64",
+                 "y": "float64",
+                 "z": "float64"
+               }
+             }
+           }
+         }
+
+      Required arguments:
+
+         "object_id" in "object_to_detect": ID of the template which
+         should be detected.
+
+         "pose_frame": see
+
+         Hand-eye calibration
+
+         .
+
+      Potentially required arguments:
+
+         "robot_pose": see
+
+         Hand-eye calibration
+
+         .
+
+      Optional arguments:
+
+         "offset": offset in meters by which the base-plane
+         calibration will be shifted towards the camera.
+
+         "load_carrier_id": ID of the load carrier which contains the
+         items to be detected.
+
+         "collision_detection": see
+
+         Collision checking within other modules
+
+         .
+
+   Response:
+
+      The definition for the response with corresponding datatypes is:
+
+         {
+           "name": "detect_object",
+           "response": {
+             "grasps": [
+               {
+                 "id": "string",
+                 "instance_uuid": "string",
+                 "pose": {
+                   "orientation": {
+                     "w": "float64",
+                     "x": "float64",
+                     "y": "float64",
+                     "z": "float64"
+                   },
+                   "position": {
+                     "x": "float64",
+                     "y": "float64",
+                     "z": "float64"
+                   }
+                 },
+                 "pose_frame": "string",
+                 "timestamp": {
+                   "nsec": "int32",
+                   "sec": "int32"
+                 },
+                 "uuid": "string"
+               }
+             ],
+             "instances": [
+               {
+                 "grasp_uuids": [
+                   "string"
+                 ],
+                 "id": "string",
+                 "object_id": "string",
+                 "pose": {
+                   "orientation": {
+                     "w": "float64",
+                     "x": "float64",
+                     "y": "float64",
+                     "z": "float64"
+                   },
+                   "position": {
+                     "x": "float64",
+                     "y": "float64",
+                     "z": "float64"
+                   }
+                 },
+                 "pose_frame": "string",
+                 "timestamp": {
+                   "nsec": "int32",
+                   "sec": "int32"
+                 },
+                 "uuid": "string"
+               }
+             ],
+             "load_carriers": [
+               {
+                 "id": "string",
+                 "inner_dimensions": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "outer_dimensions": {
+                   "x": "float64",
+                   "y": "float64",
+                   "z": "float64"
+                 },
+                 "overfilled": "bool",
+                 "pose": {
+                   "orientation": {
+                     "w": "float64",
+                     "x": "float64",
+                     "y": "float64",
+                     "z": "float64"
+                   },
+                   "position": {
+                     "x": "float64",
+                     "y": "float64",
+                     "z": "float64"
+                   }
+                 },
+                 "pose_frame": "string",
+                 "rim_thickness": {
+                   "x": "float64",
+                   "y": "float64"
+                 }
+               }
+             ],
+             "object_id": "string",
+             "return_code": {
+               "message": "string",
+               "value": "int16"
+             },
+             "timestamp": {
+               "nsec": "int32",
+               "sec": "int32"
+             }
+           }
+         }
+
+      "object_id": ID of the detected template.
+
+      "instances": list of detected object instances.
+
+      "grasps": list of grasps on the detected objects. The grasps are
+      ordered by their reachability starting with the grasp that can
+      be reached most easily by the robot. The "instance_uuid" gives
+      the reference to the detected object in "instances" this grasp
+      belongs to.
+
+      "load_carriers": list of detected load carriers.
+
+      "timestamp": timestamp of the image set the detection ran on.
+
+      "return_code": holds possible warnings or error codes and
+      messages.
+
+save_parameters
+
+   This service saves the currently set parameters persistently.
+   Thereby, the same parameters will still apply after a reboot of the
+
+   rc_visard
+
+   . The node parameters are not persistent over firmware updates and
+   rollbacks.
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/save_parameters
+
+   This service has no arguments.
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "save_parameters",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+reset_defaults
+
+   This service resets all parameters of the component to its default
+   values, as listed in above table. The reset does not apply to
+   regions of interest and base-plane calibration.
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/reset_defaults
+
+   This service has no arguments.
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+Template Upload
+
+For template upload, download and listing, special REST-API endpoints
+are provided. Up to 50 templates can be stored persistently on the
+
+rc_visard
+
+.
+
+GET /nodes/rc_silhouettematch/templates
+
+   Get list of all rc_silhouettematch templates.
+
+   Template request
+
+      GET /api/v1/nodes/rc_silhouettematch/templates HTTP/1.1
+
+   Template response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "id": "string"
+        }
+      ]
+
+   Response Headers:
+      Content-Type -- application/json
+
+   Status Codes:
+      200 OK -- successful operation (returns array of Template)
+
+      404 Not Found -- node not found
+
+   Referenced Data Models:
+      Template\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      template})
+
+GET /nodes/rc_silhouettematch/templates/{id}
+
+   Get a rc_silhouettematch template. If the requested content-type is
+   application/octet-stream, the template is returned as file.
+
+   Template request
+
+      GET /api/v1/nodes/rc_silhouettematch/templates/<id> HTTP/1.1
+
+   Template response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "id": "string"
+      }
+
+   Parameters:
+      id (string) -- id of the template (required)
+
+   Response Headers:
+      Content-Type -- application/json application/octet-stream
+
+   Status Codes:
+      200 OK -- successful operation (returns Template)
+
+      404 Not Found -- node or template not found
+
+   Referenced Data Models:
+      Template\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      template})
+
+PUT /nodes/rc_silhouettematch/templates/{id}
+
+   Create or update a rc_silhouettematch template.
+
+   Template request
+
+      PUT /api/v1/nodes/rc_silhouettematch/templates/<id> HTTP/1.1
+      Accept: multipart/form-data application/json
+
+   Template response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "id": "string"
+      }
+
+   Parameters:
+      id (string) -- id of the template (required)
+
+   Form Parameters:
+      file -- template file (required)
+
+   Request Headers:
+      Accept -- multipart/form-data application/json
+
+   Response Headers:
+      Content-Type -- application/json
+
+   Status Codes:
+      200 OK -- successful operation (returns Template)
+
+      400 Bad Request -- Template is not valid or max number of
+      templates reached
+
+      403 Forbidden -- forbidden, e.g. because there is no valid
+      license for this component.
+
+      404 Not Found -- node or template not found
+
+      413 Request Entity Too Large -- Template too large
+
+   Referenced Data Models:
+      Template\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      template})
+
+DELETE /nodes/rc_silhouettematch/templates/{id}
+
+   Remove a rc_silhouettematch template.
+
+   Template request
+
+      DELETE /api/v1/nodes/rc_silhouettematch/templates/<id> HTTP/1.1
+      Accept: application/json
+
+   Parameters:
+      id (string) -- id of the template (required)
+
+   Request Headers:
+      Accept -- application/json
+
+   Response Headers:
+      Content-Type -- application/json
+
+   Status Codes:
+      200 OK -- successful operation
+
+      403 Forbidden -- forbidden, e.g. because there is no valid
+      license for this component.
+
+      404 Not Found -- node or template not found

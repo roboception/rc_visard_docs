@@ -1,0 +1,533 @@
+.. include:: global_rst.glb
+
+.. _sect-collision:
+
+CollisionCheck
+================
+
+.. index:: ! CollisionCheck
+   single: collision check
+
+Introduction
+------------
+
+The CollisionCheck component is an optional on-board component of the |rcxxx|.
+
+
+
+.. only:: rc_visard
+
+   .. Note::
+
+      The component is optional and is licensed with any of the modules ItemPick, BoxPick or SilhouetteMatch. 
+      Otherwise it requires a separate CollisionCheck :ref:`license<sect-updating-license>`
+      :latex:`(Section \ref{maintenance:sect-updating-license})` to be purchased.
+
+   The component provides an easy way to check if a gripper is in collision with a load carrier or other detected objects 
+   (only in combination with :doc:`silhouettematch`:latex:`, Section \ref{silhouettematch:sect-silhouettematch}`). It is integrated
+   with the :ref:`sect-itempick`:latex:`\:(Section \ref{itempick:sect-itempick})` and 
+   :ref:`sect-silhouettematch`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch})` modules, but can 
+   be used as standalone product.
+
+.. only:: rc_cube
+
+   .. Note::
+
+      The component is optional and is licensed with any of the modules ItemPick, BoxPick, SilhouetteMatch or CADMatch. 
+      Otherwise it requires a separate CollisionCheck :ref:`license<sect-updating-license>`
+      :latex:`(Section \ref{maintenance:sect-updating-license})` to be purchased.
+
+   The component provides an easy way to check if a gripper is in collision with a load carrier or other detected objects 
+   (only in combination with :doc:`cadmatch`:latex:`, Section \ref{cadmatch:sect-cadmatch},` 
+   and :doc:`silhouettematch`:latex:`, Section \ref{silhouettematch:sect-silhouettematch}`). It is integrated
+   with the :ref:`sect-itempick`:latex:`\:(Section \ref{itempick:sect-itempick})`, 
+   :ref:`sect-silhouettematch`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch})` and
+   :ref:`sect-cadmatch`:latex:`\:(Section \ref{cadmatch:sect-cadmatch})` modules, but can be used as standalone product.
+
+.. only:: rc_cube
+
+   .. Warning::
+
+      Collisions are checked only between the load carrier and the gripper, not the robot itself, the flange, other objects or
+      the item located in the robot gripper. Only in combination with :doc:`cadmatch`:latex:`\:(Section \ref{cadmatch:sect-cadmatch})`
+      and :doc:`silhouettematch`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch})`, and only in case the selected template contains a collision 
+      geometry, also collisions between the gripper and other *detected* objects are checked. Collisions with objects that are
+      not returned as detected objects will not be checked.
+
+.. only:: rc_visard
+
+   .. Warning::
+
+      Collisions are checked only between the load carrier and the gripper, not the robot itself, the flange, other objects or
+      the item located in the robot gripper. Only in combination with 
+      :doc:`silhouettematch`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch})`, 
+      and only in case the selected template contains a collision 
+      geometry, also collisions between the gripper and other *detected* objects are checked. Collisions with objects that are
+      not returned as detected objects will not be checked.
+
+.. _sect-collisioncheck-gripper:
+
+Setting a gripper
+------------------
+
+The gripper is a collision geometry used to determine whether the grasp is in collision with the load carrier.
+The gripper consists of up to 15 elements connected to each other.
+
+At this point, the gripper can be built of elements of the following types:
+
+ - ``BOX``, with dimensions ``box.x``, ``box.y``, ``box.z``.
+ - ``CYLINDER``, with radius ``cylinder.radius`` and height ``cylinder.height``.
+
+Additionally, for each gripper the flange radius, and information about the Tool Center Point (TCP) have to
+be defined.
+
+The configuration of the gripper is normally performed offline during the setup of the desired application.
+This can be done via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or the |rcxxx|
+:ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+
+.. _sect-collisioncheck-flange:
+
+Robot flange radius
+^^^^^^^^^^^^^^^^^^^
+
+Collisions are checked only with the gripper, the robot body is not considered.
+As a safety feature, to prevent collisions between the load carrier and the robot, all grasps having any part of the
+robot's flange inside the load carrier can be designated as colliding (see :numref:`fig-collision-check-gripper-flange-radius`).
+This check is based on the defined gripper geometry and the flange radius value. It is optional to use
+this functionality, and it can be turned on and off with the run-time parameter ``check_flange`` as described
+in :ref:`sect-collisioncheck-parameters`:latex:`\:(Section \ref{collisioncheck:sect-collisioncheck-parameters})`.
+
+.. _fig-collision-check-gripper-flange-radius:
+.. figure:: images/check_flange.*
+   :width: 50%
+   :align: center
+
+   Case A would be marked as collision only if ``check_flange`` is true, because the robot's flange (red) is inside the 
+   load carrier. Case B is collision free independent of ``check_flange``.
+
+
+Creating a gripper via the |rest-api|
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When creating a gripper via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`,
+each element of the gripper has a `parent` element, which defines how they are connected.
+The gripper is always built in the direction from the robot flange to the TCP, and at least one element must
+have 'flange' as parent. The elements' IDs must be unique and must not be 'tcp' or 'flange'.
+The pose of the child element has to be given in the coordinate frame of the parent element.
+In the |rest-api| representation, the coordinate frame of an element is always in its
+geometric center. Accordingly, for a child element to be exactly below the parent element, the position of
+the child element must be computed from the heights of both parent and child element
+(see :numref:`fig-collision-check-gripper-frames-restapi`).
+
+.. _fig-collision-check-gripper-frames-restapi:
+.. figure:: images/gripper_frames_restapi.*
+   :width: 50%
+   :align: center
+
+   Reference frames for gripper creation via the |rest-api|
+
+The reference frame for the first element for the gripper creation is always the center of the robot's flange
+with the z axis pointing outwards. Via the |rest-api| it is possible to create a gripper with a tree structure,
+corresponding to multiple elements having the same parent element, as long as they are all connected.
+
+
+Creating a gripper in the |webgui|
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The tab *CollisionCheck* on the |rcxxx| :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+offers a simplified interface to create grippers. It is possible to select
+the type, the size, as well as the position of each element. In the |webgui|
+representation the position of each element originates from the bottom of the parent element. Therefore, a child
+element with position (0, 0, 0) will always be placed exactly below its parent element, irrespective of the
+elements' heights. Grippers which have a tree structure or which have rotated elements
+cannot be created via the |webgui|.
+
+Calculated TCP position
+^^^^^^^^^^^^^^^^^^^^^^^
+
+After gripper creation via the ``set_gripper`` service call, the TCP position in the flange coordinate
+system is calculated and returned as ``tcp_pose_flange``.
+It is important to check if this value is the same as the robot's true TCP position.
+
+Creating rotationally asymmetric grippers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For grippers which are not rotationally symmetric around the z axis, it is crucial to ensure that the gripper is properly mounted,
+so that the representation stored in the CollisionCheck module corresponds to reality.
+
+
+Collision checking
+------------------
+
+.. _sect-collision-check-pre-grasp-offset:
+
+Stand-alone collision checking
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``check_collisions`` service call triggers collision checking between the chosen gripper and the provided load carriers
+for each of the provided grasps. Checking collisions with other objects is not possible with the stand-alone ``check_collisions`` service.
+The CollisionCheck module checks if the chosen gripper is
+in collision with at least one of the load carriers, when the TCP of the gripper is positioned in the
+grasp position. It is possible to check the collision with multiple load carriers simultaneously. The grasps
+which are in collision with any of the defined load carriers will be returned as colliding.
+
+The ``pre_grasp_offset`` can be used for additional collision checking.
+The pre-grasp offset :math:`P_{off}` is the offset  between the grasp point :math:`P_{grasp}` and the pre-grasp position :math:`P_{pre}`
+in the grasp's coordinate frame (see :numref:`fig-collision-check-pre-grasp-offset`).
+If the pre-grasp offset is defined, the grasp will be detected as colliding
+if the gripper is in collision at any point
+during motion from the pre-grasp position to the grasp position (assuming
+a linear movement).
+
+.. _fig-collision-check-pre-grasp-offset:
+.. figure:: images/pre_grasp_offset.*
+   :width: 300 px
+   :align: center
+
+   Illustration of the pre-grasp offset parameter for collision checking. In this case, the pre-grasp position as
+   well as the grasp position are collision free. However, the trajectory between these poses would have collisions.
+   Thus, this grasp pose would be marked as colliding.
+
+.. _sect-collision-check-other-modules:
+
+Collision checking within other modules
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Collision checking is integrated in the following modules' services:
+
+.. only:: rc_cube
+
+   - :ref:`sect-itempick`:latex:`\:(Section \ref{itempick:sect-itempick})`: ``compute_grasps``
+     (see :ref:`compute_grasps for ItemPick<expl-itempick-srv-compute-grasps>`:latex:`, Section \ref{itempick:expl-itempick-srv-compute-grasps}` and 
+     :ref:`compute_grasps for BoxPick<expl-itempick-srv-compute-grasps-boxpick>`:latex:`, Section \ref{itempick:expl-itempick-srv-compute-grasps-boxpick}`)
+ 
+   - :ref:`sect-silhouettematch`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch})`: ``detect_object``
+     (see :ref:`expl-silhouettematch-srv-detect-objects`:latex:`, Section \ref{silhouettematch:expl-silhouettematch-srv-detect-objects}`)
+
+   - :ref:`sect-cadmatch`:latex:`\:(Section \ref{cadmatch:sect-cadmatch})`: ``detect_object``
+     (see :ref:`expl-cadmatch-srv-detect-object`:latex:`, Section \ref{cadmatch:expl-cadmatch-srv-detect-object}`)
+
+   Each of these services can take a ``collision_detection`` argument consisting of the ``gripper_id`` of the gripper
+   and optionally the ``pre_grasp_offset`` as described in the previous section 
+   :ref:`sect-collision-check-pre-grasp-offset`:latex:`\:(Section \ref{collisioncheck:sect-collision-check-pre-grasp-offset})`.
+   When the ``collision_detection`` argument is given, these services only return the 
+   grasps at which the gripper is not in collision with the load carrier detected by these services. For this,
+   a load carrier ID has to be provided to these services as well. Only for :doc:`cadmatch`:latex:`\:(Section \ref{cadmatch:sect-cadmatch})` 
+   and :doc:`silhouettematch`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch})`, and only in case the selected template contains a collision 
+   geometry, grasp points at which the gripper would be in collision with other *detected* objects are also rejected. The object
+   on which the grasp point to be checked is located, is excluded from the collision check.
+
+   .. Warning::
+
+      Collisions are checked only between the load carrier and the gripper, not the robot itself, the flange, other objects or
+      the item located in the robot gripper. Only in combination with :doc:`cadmatch`:latex:`\:(Section \ref{cadmatch:sect-cadmatch})` 
+      and :doc:`silhouettematch`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch})`, and only in case the selected template contains a collision 
+      geometry, also collisions between the gripper and other *detected* objects are checked. Collisions with objects that are
+      not returned as detected objects will not be checked.
+
+.. only:: rc_visard
+
+   - :ref:`sect-itempick`:latex:`\:(Section \ref{itempick:sect-itempick})`: ``compute_grasps``
+     (see :ref:`compute_grasps for ItemPick<expl-itempick-srv-compute-grasps>`:latex:`, Section \ref{itempick:expl-itempick-srv-compute-grasps}` and 
+     :ref:`compute_grasps for BoxPick<expl-itempick-srv-compute-grasps-boxpick>`:latex:`, Section \ref{itempick:expl-itempick-srv-compute-grasps-boxpick}`)
+ 
+   - :ref:`sect-silhouettematch`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch})`: ``detect_object``
+     (see :ref:`expl-silhouettematch-srv-detect-objects`:latex:`, Section \ref{silhouettematch:expl-silhouettematch-srv-detect-objects}`)
+
+
+   Each of these services can take a ``collision_detection`` argument consisting of the ``gripper_id`` of the gripper
+   and optionally the ``pre_grasp_offset`` as described in the previous section 
+   :ref:`sect-collision-check-pre-grasp-offset`:latex:`\:(Section \ref{collisioncheck:sect-collision-check-pre-grasp-offset})`.
+   When the ``collision_detection`` argument is given, these services only return the 
+   grasps at which the gripper is not in collision with the load carrier detected by these services. For this,
+   a load carrier ID has to be provided to these services as well. Only for :doc:`silhouettematch`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch})`, 
+   and only in case the selected template contains a collision 
+   geometry, grasp points at which the gripper would be in collision with other *detected* objects are also rejected. The object
+   on which the grasp point to be checked is located, is excluded from the collision check.
+
+   .. Warning::
+
+      Collisions are checked only between the load carrier and the gripper, not the robot itself, the flange, other objects or
+      the item located in the robot gripper. Only in combination with :doc:`silhouettematch`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch})`,
+      and only in case the selected template contains a collision 
+      geometry, also collisions between the gripper and other *detected* objects are checked. Collisions with objects that are
+      not returned as detected objects will not be checked.
+
+The collision-check results are affected by run-time parameters, which are listed
+and explained further below.
+
+Parameters
+----------
+
+The CollisionCheck component is called ``rc_collision_check``
+in the |rest-api| and is represented by the *CollisionCheck* page in the *Modules* tab of the
+:ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`. 
+The user can explore and configure the ``rc_collision_check``
+component's run-time parameters, e.g. for development and testing, using the |webgui| or the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+.. _sect-collisioncheck-parameters:
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. include:: _gen/nodes/params/rc_collision_check.txt
+
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each run-time parameter is represented by a row on the |webgui|'s Module tab.
+The name in the |webgui| is given in brackets behind the parameter name:
+
+.. _expl-collisioncheck-collision-dist:
+
+``collision_dist`` (*Collision Distance*)
+'''''''''''''''''''''''''''''''''''''''''
+    Minimal distance in meters between any part of the gripper and any of the collision geometries (load carrier and/or detected objects) 
+    for a grasp to be considered collision free.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+    .. code-block:: bash
+
+       PUT http://<host>/api/v1/nodes/rc_collision_check/parameters?collision_dist=<value>
+
+.. _expl-collisioncheck-check-flange:
+
+``check_flange`` (*Check Flange*)
+'''''''''''''''''''''''''''''''''
+    Performs an additional safety check as described in
+    :ref:`sect-collisioncheck-flange`:latex:`\:(Section \ref{collisioncheck:sect-collisioncheck-flange})`.
+    If this parameter is set, all positions in which any part of the robot's flange is inside the load carrier are marked as colliding.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+    .. code-block:: bash
+
+       PUT http://<host>/api/v1/nodes/rc_collision_check/parameters?check_flange=<value>
+
+.. _expl-collisioncheck-check-bottom:
+
+``check_bottom`` (*Check Bottom*)
+'''''''''''''''''''''''''''''''''
+    When this check is enabled the collisions will be checked not only with the side walls of the load carrier but also with its bottom. It might be necessary to disable this check if the TCP is inside the collision geometry (e.g. is defined inside a suction cup).
+
+    Via the |restapi|, this parameter can be set as follows.
+
+    .. code-block:: bash
+
+       PUT http://<host>/api/v1/nodes/rc_collision_check/parameters?check_bottom=<value>
+
+.. _sect-collisioncheck-status-values:
+
+Status values
+-------------
+
+The ``rc_collision_check`` component reports the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_collision_check`` component status values
+	:header:  Name, Description
+
+	"``last_evaluated_grasps``","Number of evaluated grasps"
+	"``last_collision_free_grasps``","Number of collision-free grasps"
+
+.. _sect-collisioncheck-services:
+
+Services
+--------
+
+The user can explore and call the ``rc_collision_check`` component's services,
+e.g. for development and testing, using
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or
+the |rc_xxx|
+:ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+
+Each service response contains a ``return_code``,
+which consists of a ``value`` plus an optional ``message``.
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+The smaller value is selected in case a service has multiple ``return_code`` values,
+but all messages are appended in the ``return_code`` message.
+
+The following table contains a list of common codes:
+
+.. tabularcolumns:: |c|L|
+.. _tab-collisioncheck-return-codes:
+.. csv-table:: Return codes of the CollisionCheck services
+    :header:  Code, Description
+
+    "0",    "Success"
+    "-1",   "An invalid argument was provided"
+    "-7",   "Data could not be read or written to persistent storage"
+    "-9",   "No valid license for the module"
+    "-10",  "New gripper could not be added as the maximum storage capacity of grippers has been exceeded"
+    "10",  "The maximum storage capacity of grippers has been reached"
+    "11",  "Existing gripper was overwritten"
+
+
+The CollisionCheck component offers the following services.
+
+.. _expl-collisioncheck-srv-set-grippers:
+
+``set_gripper``
+^^^^^^^^^^^^^^^
+
+   Persistently stores a gripper on the |rc_xxx|.
+   All configured grippers are persistent over firmware updates and rollbacks.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_collision_check/services/set_gripper
+
+   **Request:**
+
+      .. include:: _gen/nodes/services/rc_collision_check_set_gripper_request.txt
+
+      Required arguments:
+
+        ``elements``: list of geometric elements for the gripper.
+        Each element must be of ``type`` 'CYLINDER' or 'BOX' with the corresponding dimensions in
+        the ``cylinder`` or ``box`` field. The pose of each element must be given in the coordinate frame
+        of the parent element (see :ref:`sect-collisioncheck-gripper`:latex:`\:(Section \ref{collisioncheck:sect-collisioncheck-gripper})`
+        for an explanation of the coordinate frames). The element's ``id`` must be unique and must not be
+        'tcp' or 'flange'. The ``parent_id`` is the ID of the parent element. It can either be 'flange'
+        or it must correspond to another element in list.
+
+        ``flange_radius``: radius of the flange used in case the ``check_flange`` run-time parameter is active.
+
+        ``id``: unique name of the gripper
+
+        ``tcp_parent_id``: ID of the element on which the TCP is defined
+
+        ``tcp_pose_parent``: The pose of the TCP with respect to the coordinate frame of the element specified in ``tcp_parent_id``.
+
+
+   **Response:**
+
+      .. include:: _gen/nodes/services/rc_collision_check_set_gripper_response.txt
+
+      ``gripper``: returns the gripper as defined in the request with an additional field ``tcp_pose_flange``.
+      This gives the coordinates of the TCP in the flange coordinate frame for comparison with the true
+      settings of the robot's TCP.
+
+      ``return_code``: holds possible warnings or error codes and messages.
+
+
+.. _expl-collisioncheck-srv-get-grippers:
+
+``get_grippers``
+^^^^^^^^^^^^^^^^
+
+   Returns the configured grippers with the requested ``gripper_ids``.
+   If no ``gripper_ids`` are provided, all configured grippers are returned.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_collision_check/services/get_grippers
+
+   .. include:: _gen/nodes/services/rc_collision_check_get_grippers.txt
+
+.. _expl-collisioncheck-srv-delete-grippers:
+
+``delete_grippers``
+^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured grippers with the requested ``gripper_ids``.
+   All grippers to be deleted must be explicitly stated in ``gripper_ids``.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_collision_check/services/delete_grippers
+
+   .. include:: _gen/nodes/services/rc_collision_check_delete_grippers.txt
+
+
+.. _expl-collisioncheck-srv-check-collision:
+
+``check_collisions``
+^^^^^^^^^^^^^^^^^^^^
+
+   Triggers a collision check between a gripper and a load carrier.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_collision_check/services/check_collisions
+
+   **Request:**
+
+      .. include:: _gen/nodes/services/rc_collision_check_check_collisions_request.txt
+
+      Required arguments:
+
+        ``grasps``: list of grasps that should be checked.
+
+        ``load_carriers``: list of load carriers against which the collision should be checked.
+        The fields of the load carrier definition are described in
+        :ref:`sect-loadcarrier-detect-lc`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-detect-lc})`.
+        The position frame of the grasps and load carriers has to be the same.
+
+        ``gripper_id``: the id of the gripper that is used to check the collisions. The gripper has to be configured beforehand.
+
+      Optional arguments:
+
+        ``pre_grasp_offset``: the offset in meters from the grasp position to the pre-grasp position in the grasp frame.
+        If this argument is set, the collisions will not only be checked in the grasp point, but also on the path from the
+        pre-grasp position to the grasp position (assuming a linear movement).
+
+
+   **Response:**
+
+      .. include:: _gen/nodes/services/rc_collision_check_check_collisions_response.txt
+
+      ``colliding_grasps``: list of grasps in collision with one or more load carriers.
+
+      ``collision_free_grasps``: list of collision-free grasps.
+
+      ``return_code``: holds possible warnings or error codes and messages.
+
+
+.. _expl-collisioncheck-srv-save-params:
+
+``save_parameters``
+^^^^^^^^^^^^^^^^^^^
+
+   This service saves the currently set parameters persistently.
+   Thereby, the same parameters will still apply after a reboot of
+   the |rc_xxx|.
+   The node parameters are not persistent over firmware updates and rollbacks.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_collision_check/services/save_parameters
+
+   .. include:: _gen/nodes/services/rc_collision_check_save_parameters.txt
+
+.. _expl-collisioncheck-srv-reset-params:
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   This service resets all parameters of the component to its default values,
+   as listed in above table.
+   The reset does not apply to grippers.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/rc_collision_check/services/reset_defaults
+
+   .. include:: _gen/nodes/services/rc_collision_check_reset_defaults.txt
