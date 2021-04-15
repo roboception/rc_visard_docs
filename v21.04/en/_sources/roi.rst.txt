@@ -1,0 +1,453 @@
+Region of interest
+
+Introduction
+
+The region of interest (ROI) functionality is contained in an internal
+ROI module and can only be used through the software modules providing
+a ROI functionality.
+
+The 3D ROI functionality is provided by the
+
+ItemPick and BoxPick
+
+ and
+
+LoadCarrier
+
+ modules.
+
+The 2D ROI functionality is provided by the
+
+SilhouetteMatch
+
+, and
+
+LoadCarrier
+
+ modules.
+
+Region of interest
+
+A region of interest (ROI) defines a volume in space (3D region of
+interest, "region_of_interest"), or a rectangular region in the left
+camera image (2D region of interest, "region_of_interest_2d") which is
+of interest for a specific user-application.
+
+A ROI can narrow the volume where a load carrier is searched for, or
+select a volume which only contains items to be detected and/or
+grasped. Processing times can significantly decrease when using a ROI.
+
+3D regions of interest of the following types ("type") are supported:
+
+   BOX, with dimensions box.x, box.y, box.z.
+
+   SPHERE, with radius sphere.radius.
+
+The user can specify the 3D region of interest "pose" in the "camera"
+or the "external" coordinate system. "External" can only be chosen if
+a
+
+Hand-eye calibration
+
+ is available. When the
+
+rc_visard
+
+ is robot mounted, and the region of interest is defined in the
+external frame, the current robot pose must be given to every detect
+service call that uses this region of interest.
+
+A 2D ROI is defined as a rectangular part of the left camera image,
+and can be set via the
+
+REST-API interface
+
+ or the
+
+rc_visard
+
+
+Web GUI
+
+ on the page
+
+Regions of Interest
+
+ in the
+
+Configuration
+
+ tab. The Web GUI offers an easy-to-use selection tool. Each ROI must
+have a unique name to address a specific 2D ROI.
+
+In the REST-API, a 2D ROI is defined by the following values:
+
+id: Unique name of the region of interest
+
+offset_x, offset_y: offset in pixels along the x-axis and y-axis from
+the top-left corner of the image, respectively
+
+width, height: width and height in pixels
+
+The
+
+rc_visard
+
+ can persistently store up to 50 different 3D regions of interest and
+the same number of 2D regions of interest. The configuration of
+regions of interest is normally performed offline, during the set up
+of the desired application. This can be done via the
+
+REST-API interface
+
+ of the module offering the region of interest functionality, or in
+the
+
+rc_visard
+
+
+Web GUI
+
+ on the page
+
+Regions of Interest
+
+ in the
+
+Configuration
+
+ tab.
+
+Note: The configured regions of interest are persistent even over
+  firmware updates and rollbacks.
+
+Parameters
+
+The ROI module does not have any parameters.
+
+Services
+
+The user can explore and call the ROI module's services, e.g. for
+development and testing, using the
+
+REST-API interface
+
+ of the module offering the ROI functionality, or the
+
+rc_visard
+
+
+Web GUI
+
+ page
+
+Regions of Interest
+
+ under the tab
+
+Configuration
+
+.
+
+Each service response contains a "return_code", which consists of a
+"value" plus an optional "message". A successful service returns with
+a "return_code" value of "0". Negative "return_code" values indicate
+that the service failed. Positive "return_code" values indicate that
+the service succeeded with additional information. The smaller value
+is selected in case a service has multiple "return_code" values, but
+all messages are appended in the "return_code" message.
+
+The following table contains a list of common codes:
+
+Return codes of the region of interest services      Code  Description
+0  Success  -1  An invalid argument was provided  -10  New element
+could not be added as the maximum storage capacity of regions of
+interest has been exceeded  10  The maximum storage capacity of
+regions of interest has been reached  11  An existent persistent model
+was overwritten by the call to set_region_of_interest or
+set_region_of_interest_2d
+
+All software modules providing the ROI functionality offer the
+following services.
+
+set_region_of_interest
+
+   Persistently stores a 3D region of interest on the
+
+   rc_visard
+
+   . All configured 3D regions of interest are persistent over
+   firmware updates and rollbacks.
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/<module>/services/set_region_of_interest
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "region_of_interest": {
+            "box": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "id": "string",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "sphere": {
+              "radius": "float64"
+            },
+            "type": "string"
+          }
+        }
+      }
+
+   Details for the definition of the "region_of_interest" type are
+   given in
+
+   Region of interest
+
+   .
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_region_of_interest",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_region_of_interest_2d
+
+   Persistently stores a 2D region of interest on the
+
+   rc_visard
+
+   . All configured 2D regions of interest are persistent over
+   firmware updates and rollbacks.
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/<module>/services/set_region_of_interest_2d
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "region_of_interest_2d": {
+            "height": "uint32",
+            "id": "string",
+            "offset_x": "uint32",
+            "offset_y": "uint32",
+            "width": "uint32"
+          }
+        }
+      }
+
+   Details for the definition of the "region_of_interest_2d" type are
+   given in
+
+   Region of interest
+
+   .
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_region_of_interest_2d",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_regions_of_interest
+
+   Returns the configured 3D regions of interest with the requested
+   "region_of_interest_ids". If no "region_of_interest_ids" are
+   provided, all configured 3D regions of interest are returned.
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/<module>/services/get_regions_of_interest
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "region_of_interest_ids": [
+            "string"
+          ]
+        }
+      }
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_regions_of_interest",
+        "response": {
+          "regions_of_interest": [
+            {
+              "box": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "sphere": {
+                "radius": "float64"
+              },
+              "type": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_regions_of_interest_2d
+
+   Returns the configured 2D regions of interest with the requested
+   "region_of_interest_2d_ids". If no "region_of_interest_2d_ids" are
+   provided, all configured 2D regions of interest are returned.
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/<module>/services/get_regions_of_interest_2d
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "region_of_interest_2d_ids": [
+            "string"
+          ]
+        }
+      }
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_regions_of_interest_2d",
+        "response": {
+          "regions_of_interest": [
+            {
+              "height": "uint32",
+              "id": "string",
+              "offset_x": "uint32",
+              "offset_y": "uint32",
+              "width": "uint32"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_regions_of_interest
+
+   Deletes the configured 3D regions of interest with the requested
+   "region_of_interest_ids". All regions of interest to be deleted
+   must be explicitly stated in "region_of_interest_ids".
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/<module>/services/delete_regions_of_interest
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "region_of_interest_ids": [
+            "string"
+          ]
+        }
+      }
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "delete_regions_of_interest",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_regions_of_interest_2d
+
+   Deletes the configured 2D regions of interest with the requested
+   "region_of_interest_2d_ids". All 2D regions of interest to be
+   deleted must be explicitly stated in "region_of_interest_2d_ids".
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v1/nodes/<module>/services/delete_regions_of_interest_2d
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "region_of_interest_2d_ids": [
+            "string"
+          ]
+        }
+      }
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "delete_regions_of_interest_2d",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }

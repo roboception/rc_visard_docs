@@ -1,0 +1,40 @@
+.. include:: global_rst.glb
+
+.. _sect-modules:
+
+Software modules
+================
+
+The |rc_xxx| comes with several on-board software modules, each of which
+corresponds to a certain functionality and can be interfaced via its respective
+*node* in the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+The |rc_xxx|'s software modules can be divided into
+
+- :doc:`camera_modules`:latex:`, Section \ref{camera_modules:sect-3d-camera-modules}`
+   which acquire stereo image pairs and compute 3D depth information such as disparity,
+   error, and confidence images, and are also accessible via the |rc_xxx|'s
+   :doc:`GigE Vision/GenICam interface<gigevision>`,
+
+   .. only:: rc_visard
+
+    - :doc:`navigation_modules`:latex:`, Section \ref{navigation_modules:sect-navigation-modules}`
+       which provide estimates of |rc_visard|'s current pose,
+       velocity, and acceleration,
+
+- :doc:`detection_modules`:latex:`, Section \ref{detection_modules:sect-detection-modules}`
+   which provide a variety of detection functionalities, such as grasp point computation and object detection,
+
+- :doc:`configuration_modules`:latex:`, Section \ref{configuration_modules:sect-configuration-modules}`
+   which enable the user to configure the |rc_xxx| for specific applications.
+
+
+.. toctree-filt::
+   :maxdepth: 2
+   :hidden:
+
+   camera_modules
+   :rc_cube_exclude:navigation_modules
+   detection_modules
+   configuration_modules
+

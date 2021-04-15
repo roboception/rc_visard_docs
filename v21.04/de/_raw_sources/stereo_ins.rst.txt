@@ -1,0 +1,55 @@
+.. include:: global_rst.glb
+
+.. _sect-stereo-ins:
+
+Stereo INS
+==========
+
+The stereo-vision-aided Inertial Navigation System (:term:`INS`) module 
+is a base module which is available on every |rc_visard| and is part
+of the sensor dynamics module. It combines visual-odometry measurements
+with inertial measurement unit (:term:`IMU`) data and provides robust, low latency,
+real-time state estimates at a high rate. The IMU consists of three
+accelerometers and three gyroscopes, which measure accelerations and turn
+rates in all three dimensions. By fusing IMU and visual-odometry measurements,
+the state estimate has the same frequency as the IMU (|imu-rate|) and is
+very robust even under challenging lighting conditions and for fast motions.
+
+.. NOTE:: To achieve high-quality pose estimates, it must be ensured that sufficient
+          texture is visible during runtime of the stereo INS module. In case
+          no texture is visible for a longer period of time, the stereo INS module
+          will stop instead of providing highly erroneous data.
+
+
+Self-Calibration
+----------------
+
+During startup of the stereo INS module, it will self-calibrate the IMU
+using the visual-odometry measurements. For the self-calibration to succeed, it
+is required that
+
+- the |rc_visard| is not moving and
+- sufficient texture is visible
+
+during startup of the stereo INS module. Failure to meet these requirements
+will most likely result in a constant drift of the pose estimates.
+
+
+Parameters
+----------
+
+The stereo INS module's node name is ``rc_stereo_ins``.
+
+.. include:: _gen/nodes/params/rc_stereo_ins.txt
+
+Status values
+-------------
+
+This module reports the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_stereo_ins`` module's status values
+	:header:  Name, Description
+
+	"``freq``","Frequency of the stereo INS process in Hertz. This value is shown as *Update Rate* in the |webgui| *Overview* tab in the *Dynamics* area"
+	"``state``","String representing the internal state"

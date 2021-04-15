@@ -1,0 +1,44 @@
+.. include:: global_rst.glb
+
+.. _sect-configuration-modules:
+
+Configuration modules
+=====================
+
+The |rc_xxx| provides several configuration modules which enable the user to configure 
+the |rc_xxx| for specific applications.
+
+The configuration modules are:
+
+- :doc:`handeye_calibration` (``rc_hand_eye_calibration``:latex:`, Section \ref{handeye_calibration:sect-handeye-calibration}`)
+   enables the user to calibrate the camera with respect to a robot,
+   either via the |webgui| or the |restapi|.
+   
+- :doc:`roi`:latex:`\:(Section \ref{roi:sect-roi})`
+   allows setting and retrieving 2D and 3D regions of interest.
+
+- :doc:`collisioncheck` (``rc_collision_check``:latex:`, Section \ref{collisioncheck:sect-collision}`)
+   allows setting and retrieving grippers and provides an easy way to check if a gripper is in collision.
+
+.. only:: rc_visard
+
+   - :doc:`camera_calibration` (``rc_stereocalib``:latex:`, Section \ref{camera_calibration:sect-camera-calibration}`)
+      automatically checks and performs the self-calibration of the |rc_visard|'s
+      stereo camera in case it has been decalibrated. It furthermore
+      enables the user to check and perform recalibration manually via the
+      :ref:`WEB GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+
+- :doc:`iocontrol` (``rc_iocontrol``:latex:`, Section \ref{iocontrol:sect-iocontrol}`)
+   provides control over the |rc_visard|'s general purpose inputs and outputs with special modes
+   for controlling an external random dot projector.
+
+.. toctree-filt::
+   :maxdepth: 2
+   :hidden:
+   
+   handeye_calibration
+   roi
+   collisioncheck
+   :rc_cube_exclude:camera_calibration
+   iocontrol
+   

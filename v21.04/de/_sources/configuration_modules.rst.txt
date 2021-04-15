@@ -1,0 +1,40 @@
+Konfigurationsmodule
+
+Der
+
+rc_visard
+
+ bietet mehrere verschiedene Konfigurationsmodule, welche es dem
+Nutzer ermöglichen, den
+
+rc_visard
+
+ für spezielle Anwendungen zu konfigurieren.
+
+Die Konfigurationsmodule sind:
+
+Hand-Auge-Kalibrierung (rc_hand_eye_calibration, Abschnitt
+\ref{handeye_calibration:sect-handeye-calibration})  ermöglicht dem
+Benutzer, die Kamera entweder über die Web GUI oder die REST-API zu
+einem Roboter zu kalibrieren.
+
+Region of Interest\:(Abschnitt \ref{roi:sect-roi})  ermöglicht das
+Setzen und Abrufen von 2D und 3D Regions of Interest
+
+CollisionCheck (rc_collision_check, Abschnitt \ref{collisioncheck
+:sect-collision})  erlaubt, Greifer zu konfigurieren und abzufragen,
+und bietet eine einfache Möglichkeit zu prüfen, ob ein Greifer in
+Kollision ist.
+
+Kamerakalibrierung (rc_stereocalib, Abschnitt \ref{camera_calibration
+:sect-camera-calibration})  überprüft automatisch die Kalibrierung der
+Stereokamera des rc_visard und führt die Selbstkalibrierung durch,
+sofern sich diese verstellt hat. Mit diesem Modul kann der Benutzer
+zudem eine manuelle Neukalibrierung über die Web GUI\:(Abschnitt
+\ref{webgui:sect-web-gui}) vornehmen.
+
+IOControl und Projektor-Kontrolle (rc_iocontrol, Abschnitt
+\ref{iocontrol:sect-iocontrol})  bietet die Kontrolle über die Ein-
+und Ausgänge des rc_visard mit speziellen Betriebsarten zur Kontrolle
+eines externen Musterprojektors.
+

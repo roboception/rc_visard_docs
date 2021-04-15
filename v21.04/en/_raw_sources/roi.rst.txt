@@ -1,0 +1,240 @@
+
+.. include:: global_rst.glb
+
+.. _sect-roi:
+
+Region of interest
+==================
+
+.. index:: ! Region of Interest
+   single: ROI
+   single: BoxPick; region of interest
+   single: ItemPick; region of interest
+
+.. only:: rc_cube
+
+   .. index::
+      single: CADMatch; region of interest
+
+Introduction
+------------
+
+The region of interest (ROI) functionality is contained in an internal ROI module
+and can only be used through the software modules providing a ROI functionality.
+
+.. only:: rc_visard
+
+   The 3D ROI functionality is provided by the :ref:`sect-itempick`:latex:`\:(Section \ref{itempick:sect-itempick})`
+   and :ref:`sect-loadcarrier`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier})` modules.
+
+.. only:: rc_cube
+
+   The 3D ROI functionality is provided by the :ref:`sect-itempick`:latex:`\:(Section \ref{itempick:sect-itempick})`,
+   :ref:`sect-cadmatch`:latex:`\:(Section \ref{cadmatch:sect-cadmatch})` and
+   :ref:`sect-loadcarrier`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier})` modules.
+
+The 2D ROI functionality is provided by the :ref:`sect-silhouettematch`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch})`,
+and :ref:`sect-loadcarrier`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier})` modules.
+
+.. _sect-roi-definition:
+
+Region of interest
+------------------
+
+A region of interest (ROI) defines a volume in space (3D region of interest, ``region_of_interest``),
+or a rectangular region in the left camera image (2D region of interest, ``region_of_interest_2d``) which is of interest for
+a specific user-application.
+
+A ROI can narrow the volume where a load carrier is searched for, or select a volume
+which only contains items to be detected and/or grasped.
+Processing times can significantly decrease when using a ROI.
+
+3D regions of interest of the following types (``type``) are supported:
+
+ - ``BOX``, with dimensions ``box.x``, ``box.y``, ``box.z``.
+ - ``SPHERE``, with radius ``sphere.radius``.
+
+The user can specify the 3D region of interest ``pose`` in the ``camera`` or the ``external`` coordinate system.
+``External`` can only be chosen if a 
+:doc:`handeye_calibration`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})` is available. 
+When the |rc_visard| is robot mounted, and the region of interest is defined in the external frame, the current 
+robot pose must be given to every detect service call that uses this region of interest. 
+
+A 2D ROI is defined as a rectangular part of the left camera image, and can be set via the 
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+or the |rcxxx| :ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})` on the page
+*Regions of Interest* in the *Configuration* tab.
+The |webgui| offers an easy-to-use selection tool.
+Each ROI must have a unique name to address a specific 2D ROI.
+
+In the |restapi|, a 2D ROI is defined by the following values:
+
+- ``id``: Unique name of the region of interest
+- ``offset_x``, ``offset_y``: offset in pixels along the x-axis and y-axis from the top-left corner of the image, respectively
+- ``width``, ``height``: width and height in pixels
+
+
+The |rcxxx| can persistently store up to 50 different 3D regions of interest and the same number of 2D regions of interest.
+The configuration of regions of interest is normally performed offline, during
+the set up of the desired application.
+This can be done via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` 
+of the module offering the region of interest functionality, or in 
+the |rcxxx| :ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})` on the page
+*Regions of Interest* in the *Configuration* tab.
+
+.. Note::
+  The configured regions of interest
+  are persistent even over firmware updates and rollbacks.
+
+.. _sect-roi-parameters:
+
+Parameters
+----------
+
+The ROI module does not have any parameters.
+
+.. _sect-roi-services:
+
+Services
+--------
+
+.. index::
+   single: region of interest; services
+
+The user can explore and call the ROI module's services,
+e.g. for development and testing, using the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` 
+of the module offering the ROI functionality, or
+the |rc_xxx|
+:ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+page *Regions of Interest* under the tab *Configuration*.
+
+Each service response contains a ``return_code``,
+which consists of a ``value`` plus an optional ``message``.
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+The smaller value is selected in case a service has multiple ``return_code`` values,
+but all messages are appended in the ``return_code`` message.
+
+The following table contains a list of common codes:
+
+.. tabularcolumns:: |c|L|
+.. _tab-roi-return-codes:
+.. csv-table:: Return codes of the region of interest services
+    :header:  Code, Description
+
+    "0",    "Success"
+    "-1",   "An invalid argument was provided"
+    "-10",  "New element could not be added as the maximum storage capacity of regions of interest has been exceeded"
+    "10",   "The maximum storage capacity of regions of interest has been reached"
+    "11",  "An existent persistent model was overwritten by the call to ``set_region_of_interest`` or ``set_region_of_interest_2d``"
+
+All software modules providing the ROI functionality offer the following services.
+
+.. _expl-roi-srv-set-roi:
+
+``set_region_of_interest``
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores a 3D region of interest on the |rc_xxx|.
+   All configured 3D regions of interest are persistent over firmware updates and rollbacks.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/<module>/services/set_region_of_interest
+
+   .. include:: _gen/nodes/services/rc_load_carrier_set_region_of_interest_request.txt
+
+   Details for the definition of the ``region_of_interest`` type are given in 
+   :ref:`sect-roi-definition`:latex:`\:(Section \ref{roi:sect-roi-definition})`.
+
+   .. include:: _gen/nodes/services/rc_load_carrier_set_region_of_interest_response.txt
+
+.. _expl-roi-srv-set-roi-2d:
+
+``set_region_of_interest_2d``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores a 2D region of interest on the |rc_xxx|.
+   All configured 2D regions of interest are persistent over firmware updates and rollbacks.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/<module>/services/set_region_of_interest_2d
+
+   .. include:: _gen/nodes/services/rc_load_carrier_set_region_of_interest_2d_request.txt
+
+   Details for the definition of the ``region_of_interest_2d`` type are given in 
+   :ref:`sect-roi-definition`:latex:`\:(Section \ref{roi:sect-roi-definition})`.
+
+   .. include:: _gen/nodes/services/rc_load_carrier_set_region_of_interest_2d_response.txt
+
+
+.. _expl-roi-srv-get-roi:
+
+``get_regions_of_interest``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the configured 3D regions of interest with the requested ``region_of_interest_ids``.
+   If no ``region_of_interest_ids`` are provided, all configured 3D regions of interest are returned.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/<module>/services/get_regions_of_interest
+
+   .. include:: _gen/nodes/services/rc_load_carrier_get_regions_of_interest.txt
+
+.. _expl-roi-srv-get-roi-2d:
+
+``get_regions_of_interest_2d``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the configured 2D regions of interest with the requested ``region_of_interest_2d_ids``.
+   If no ``region_of_interest_2d_ids`` are provided, all configured 2D regions of interest are returned.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/<module>/services/get_regions_of_interest_2d
+
+   .. include:: _gen/nodes/services/rc_load_carrier_get_regions_of_interest_2d.txt
+
+.. _expl-roi-srv-delete-roi:
+
+``delete_regions_of_interest``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured 3D regions of interest with the requested ``region_of_interest_ids``.
+   All regions of interest to be deleted must be explicitly stated in ``region_of_interest_ids``.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/<module>/services/delete_regions_of_interest
+
+   .. include:: _gen/nodes/services/rc_load_carrier_delete_regions_of_interest.txt
+
+.. _expl-roi-srv-delete-roi-2d:
+
+``delete_regions_of_interest_2d``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured 2D regions of interest with the requested ``region_of_interest_2d_ids``.
+   All 2D regions of interest to be deleted must be explicitly stated in ``region_of_interest_2d_ids``.
+
+   This service can be called as follows.
+
+   .. code-block:: bash
+
+      PUT http://<host>/api/v1/nodes/<module>/services/delete_regions_of_interest_2d
+
+   .. include:: _gen/nodes/services/rc_load_carrier_delete_regions_of_interest_2d.txt

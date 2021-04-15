@@ -1,0 +1,32 @@
+.. include:: global_rst.glb
+
+.. _sect-3d-camera-modules:
+
+3D camera modules
+=================
+
+The |rc_xxx|'s 3D camera software consists of the following modules:
+
+- :doc:`stereo_camera` (``rc_stereocamera``:latex:`, Section \ref{stereo_camera:sect-stereo-camera}`)
+   acquires stereo image pairs and performs planar rectification for using the
+   stereo camera as a measurement device.
+   Images are provided both for further internal processing by other modules
+   and for external use as :ref:`GenICam image streams <sect-genicam>`.
+
+- :doc:`stereo_matching` (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`)
+   uses the rectified stereo image pairs to compute 3D depth
+   information such as disparity, error, and confidence images.
+   These are provided as GenICam streams, too.
+
+The :doc:`stereo_camera` and the :doc:`stereo_matching` modules, which
+acquire stereo image pairs and compute 3D depth information such as disparity,
+error, and confidence images, are also accessible via the |rc_xxx|'s
+:doc:`GigE Vision/GenICam interface<gigevision>`.
+
+
+.. toctree-filt::
+   :maxdepth: 2
+   :hidden:
+
+   stereo_camera
+   stereo_matching
