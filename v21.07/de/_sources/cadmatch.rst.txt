@@ -1,0 +1,1729 @@
+CADMatch
+
+Einleitung
+
+Das CADMatch Modul ist ein optionales Modul des
+
+rc_visard
+
+ und benötigt eine eigene
+
+Lizenz
+
+, welche erworben werden muss.
+
+Dieses Modul bietet eine gebrauchsfertige Lösung für die 3D-
+Objekterkennung anhand von CAD-Templates und liefert Greifpunkte für
+allgemeine Greifer. Die Objekte können sich in einer Kiste (Bin, Load
+Carrier) oder frei platziert im Erfassungsbereich der Kamera befinden.
+
+Für jedes Objekt, das mit dem CADMatch-Modul erkannt werden soll, wird
+ein Template benötigt. Um Templates zu erhalten, setzen Sie sich bitte
+mit dem Roboception Support (
+
+Kontakt
+
+) in Verbindung.
+
+Das CADMatch-Modul bietet darüber hinaus:
+
+eine intuitiv gestaltete Bedienoberfläche für Inbetriebnahme,
+Konfiguration und Test auf der rc_visard Web GUI\:(Abschnitt
+\ref{webgui:sect-web-gui})
+
+eine REST-API-Schnittstelle\:(Abschnitt \ref{rest_api:sect-rest-api})
+und eine KUKA Ethernet KRL Schnittstelle\:(Abschnitt \ref{eki:sect-
+eki})
+
+die Möglichkeit, sogenannte Regions of Interest (ROIs) zu definieren,
+um relevante Teilbereiche der Szene auszuwählen (siehe Region of
+Interest, Abschnitt \ref{roi:sect-roi})
+
+eine integrierte Load Carrier Erkennung (siehe LoadCarrier, Abschnitt
+\ref{loadcarrier:sect-loadcarrier}), um in Bin-Picking-Anwendungen
+("Griff in die Kiste") Greifpunkte nur für Objekte in dem erkannten
+Load Carrier zu berechnen
+
+die Unterstützung von Load Carriern mit Abteilen, sodass Greifpunkte
+für Objekte nur in einem definierten Teilvolumen des Load Carriers
+berechnet werden
+
+die Speicherung von bis zu 30 Templates
+
+die Definition von bis zu 50 Greifpunkten für jedes Template über eine
+interaktive Visualisierung in der Web GUI
+
+die Unterstützung von sowohl statisch montierten als auch
+robotergeführten Kameras. Optional kann es mit der Hand-Auge-
+Kalibrierung (Abschnitt \ref{handeye_calibration:sect-handeye-
+calibration}) kombiniert werden, um Greifposen in einem
+benutzerdefinierten externen Koordinatensystem zu liefern.
+
+Auswahl einer Sortierstrategie zum Sortieren der zurückgelieferten
+Greifpunkte
+
+Setzen von Greifpunkten
+
+Das CADMatch-Modul erkent 3D-Objekte in einer Szene basierend auf
+einem CAD-Template und liefert die Posen der Objektursprünge zurück.
+Um das CADMatch-Modul direkt in einer Roboteranwendung zu nutzen,
+können für jedes Template Greifpunkte definiert werden. Ein Greifpunkt
+repräsentiert die gewünschte Position und Orientierung des Roboter-
+TCPs (Tool Center Point), mit der das Objekt gegriffen werden kann
+(siehe "fig-cadmatch-grasp-points").
+
+
+Jeder Greifpunkt enthält eine "id", die eindeutig über alle
+Greifpunkte eines Objekt-Templates sein muss, die ID des Templates
+("template_id"), zu dem der Greifpunkt hinzugefügt wird, und die
+Greifpose ("pose") im Koordinatensystem des Templates. Greifpunkte
+können über die
+
+REST-API-Schnittstelle
+
+, oder über die interaktive Visualisierung in der Web GUI definiert
+werden. Der
+
+rc_visard
+
+ kann bis zu 50 Greifpunkte pro Template speichern.
+
+Setzen von Greifpunken in der Web GUI
+
+Die
+
+rc_visard
+
+ Web GUI bietet eine interaktive und intuitive Möglichkeit,
+Greifpunkte für Objekt-Templates zu setzen. Im ersten Schritt muss das
+Objekt-Template auf den
+
+rc_visard
+
+ hochgeladen werden. Das kann über die
+
+CADMatch
+
+-Seite (unter dem Menüpunkt
+
+Module
+
+) in der Web GUI erfolgen, indem im Abschnitt
+
+Templates und Greifpunkte
+
+ auf
+
+neues Template hinzufügen
+
+ geklickt wird. Wenn der Upload abgeschlossen ist, erscheint ein
+Fenster mit einer 3D-Visualisierung des Objekts, in dem Greifpunkte
+hinzugefügt oder existierende Greifpunkte bearbeitet werden können.
+Dasselbe Fenster erscheint, wenn ein vorhandenes Template bearbeitet
+wird.
+
+Dieses Fenster bietet zwei Möglichkeiten, um Greifpunkte zu setzen:
+
+Greifpunkte manuell hinzufügen: Durch Klicken auf das + Symbol wird
+ein neuer Greifpunkt im Ursprung des Templates angelegt. Diesem
+Greifpunkt kann ein eindeutiger Name gegeben werden, der seiner ID
+entspricht. Die gewünschte Pose des Greifpunkts im Koordinatensystem
+des Templates kann in den Feldern für Position und Roll/Pitch/Yaw
+eingegeben werden. Die Greifpunkte können frei platziert werden, auch
+außerhalb oder innerhalb des Templates, und werden mit ihrer
+Orientierung zur Überprüfung in der Visualisierung veranschaulicht.
+
+Greifpunkte interaktiv hinzufügen: Greifpunkte können interaktiv zu
+einem Template hinzugefügt werden, indem zuerst auf den Button
+Greifpunkt hinzufügen oben rechts in der Visualisierung und
+anschließend auf den gewünschten Punkt auf dem Template geklickt wird.
+Der Greifpunkt wird an die Oberfläche angeheftet und seine
+Orientierung entspricht einem rechtshändigen Koordinatensystem, sodass
+die z-Achse senkrecht auf der Template-Oberfläche steht und in das
+Template hineingerichtet ist. Die Position und Orientierung des
+Greifpunkts im Koordinatensystem des Templates ist auf der rechten
+Seite angezeigt. Die Position und Orientierung des Greifpunkts kann
+auch interaktiv verändert werden. Für den Fall, dass An Oberfläche
+anheften in der Visualisierung aktiv ist (das ist der Standardwert),
+kann der Greifpunkt durch Klicken auf Verschieben und anschließendes
+Klicken auf den Greifpunkt über die Oberfläche des Templates zur
+gewünschten Position bewegt werden. Die Orientierung des Greifpunkts
+um die Oberflächennormale kann ebenfalls interaktiv verändert werden,
+in dem auf Rotieren geklickt wird und anschließend der Greifpunkt mit
+der Maus rotiert wird. Wenn An Oberfläche anheften nicht aktiv ist,
+kann der Greifpunkt mit der Maus frei in allen drei Raumrichtungen
+verschoben und rotiert werden.
+
+Wenn das Template Symmetrien hat, können die Greifpunkte, die
+symmetrisch zum definierten Greifpunkt sind, durch Klick auf
+
+Symmetrische Greifpunkte anzeigen
+
+ angezeigt werden.
+
+Setzen von Greifpunkten über die REST-API
+
+Greifpunkte können über die
+
+REST-API-Schnittstelle
+
+ mithilfe des "set_grasp" oder "set_all_grasps" Services gesetzt
+werden (siehe
+
+Services
+
+). Im CADMatch-Modul besteht ein Greifpunkt aus der "id", die
+eindeutig über alle Greifpunkte eines Objekt-Templates sein muss, der
+ID des Templates ("template_id"), zu dem der Greifpunkt hinzugefügt
+wird, und der Greifpose ("pose") mit Position ("position") in Metern
+und Orientierung ("orientation") als Quaternion im Koordinatensystem
+des Templates.
+
+Setzen der bevorzugten TCP-Orientierung
+
+Das CADMatch-Modul berechnet die Erreichbarkeit von Greifpunkten
+basierend auf der bevorzugten Orientierung des Greifers oder TCPs. Die
+bevorzugte Orientierung kann über den Service
+"set_preferred_orientation" oder über die
+
+CADMatch
+
+-Seite in der Web GUI gesetzt werden. Die bevorzugten Orientierung des
+TCPs wird genutzt, um Greifpunkte zu verwerfen, die der Greifer nicht
+erreichen kann, und kann auch zur Sortierung der Greifpunkte genutzt
+werden.
+
+Die bevorzugte TCP-Orientierung kann im Kamerakoordinatensystem oder
+im externen Koordinatensystem gesetzt werden, wenn eine Hand-Auge-
+Kalibrierung verfügbar ist. Wenn die bevorzugte TCP-Orientierung im
+externen Koordinatensystem definiert ist, und der Sensor am Roboter
+montiert ist, muss bei jedem Aufruf der Objekterkennung die aktuelle
+Roboterpose angegeben werden, damit die bevorzugte Orientierung zur
+Filterung und optional zur Sortierung der Greifpunkte auf den
+erkannten Objekten genutzt werden kann. Wenn keine bevorzugte TCP-
+Orientierung gesetzt wird, wird die Orientierung der linken Kamera als
+die bevorzugte TCP-Orientierung genutzt.
+
+Setzen der Sortierstrategie für Greifpunkte
+
+Die Sortierung der zurückgelieferten Greifpunkte basiert auf der
+ausgewählten Sortierstrategie. Folgende Sortierstrategien sind
+verfügbar und können über die
+
+Web GUI
+
+ oder über den "set_sorting_strategies" Service gesetzt werden:
+
+gravity: höchste Greifpunkte entlang der Gravitationsrichtung werden
+zuerst zurückgeliefert.
+
+match_score: Greifpunkte auf Objekten mit dem höchsten Match Score
+werden zuerst zurückgeliefert.
+
+preferred_orientation: Greifpunkte mit der geringsten
+Rotationsänderung  zwischen Greifpunkt und bevorzugter TCP-
+Orientierung werden zuerst zurückgeliefert.
+
+direction: Greifpunkte mit dem kleinsten Abstand entlang der gesetzten
+Richtung vector im angegebenen Referenzkoordinatensystem pose_frame
+werden zuerst zurückgeliefert.
+
+Wenn keine Sortierstrategie gesetzt ist, oder die Standard-
+Sortierstrategie in der Web GUI ausgewählt ist, geschieht die
+Sortierung der Greifpunkte basierend auf einer Kombination von
+"match_score" und dem kleinsten Abstand entlang der z-Achse der
+bevorzugten TCP-Orientierung von der Kamera.
+
+Objekterkennung
+
+Das CADMatch-Modul benötigt ein Objekt-Template für die
+Objekterkennung. Dieses Template enthält Informationen über die
+dreidimensionale Form des Objekts und markante Kanten, die im
+Kamerabild sichtbar sein können.
+
+Die Objekterkennung ist ein zweistufiger Prozess bestehend aus einem
+initialen Schätzungsschritt und einem Posenverfeinerungsschritt. Als
+erstes wird die initiale Pose des Objekts anhand der Erscheinung des
+Objekts im Kamerabild berechnet. Als zweiter Schritt wird die
+geschätzte Pose anhand der 3D-Punktwolke und der Kanten im Kamerabild
+verfeinert. Damit das funktionieren kann, müssen die zu detektierenden
+Objekte im linken und rechten Kamerabild sichtbar sein.
+
+Um eine Objekterkennung durchzuführen, müssen im Allgemeinen die
+folgenden Serviceargumente an das CADMatch-Modul übergeben werden:
+
+die ID des Objekt-Templates, welches in der Szene erkannt werden soll
+
+das Koordinatensystem, in dem die Posen der detektierten Objekte
+zurückgegeben werden sollen (siehe Hand-Auge-Kalibrierung, Abschnitt
+\ref{cadmatch:sect-cadmatch-hand-eye-dep})
+
+Optional können auch folgende Serviceargumente an das CADMatch-Modul
+übergeben werden:
+
+die ID des Load Carriers, der die zu detektierenden Objekte enthält
+
+ein Unterabteil (load_carrier_compartment) innerhalb eines Load
+Carriers, in dem Objekte erkannt werden sollen (siehe Load Carrier
+Abteil, Abschnitt \ref{loadcarrier:sect-loadcarrier-compartment}).
+
+die ID der Region of Interest, innerhalb der nach dem Load Carrier
+gesucht wird, oder -- falls kein Load Carrier angegeben ist -- die
+Region of Interest, innerhalb der Objekte erkannt werden sollen
+
+die aktuelle Roboterpose, wenn die Kamera am Roboter montiert ist und
+als Koordinatensystem external gewählt wurde, oder die bevorzugte TCP-
+Orientierung im externen Koordinatensystem angegeben ist, oder die
+gewählte Region of Interest im externen Koordinatensystem definiert
+ist
+
+Informationen für die Kollisionsprüfung: Die ID des Greifers, um die
+Kollisionsprüfung zu aktivieren, und optional ein Greif-Offset, der
+die Vorgreifposition definiert. Details zur Kollisionsprüfung sind in
+CollisionCheck\:(Abschnitt \ref{cadmatch:sect-cadmatch-collision-
+check-dep}) gegeben.
+
+In der Web GUI kann die Objekterkennung in Bereich
+
+Ausprobieren
+
+ auf der
+
+CADMatch
+
+-Seite getestet werden.
+
+Die erkannten Objekte werden in einer Liste von "matches"
+zurückgeliefert. Jedes erkannte Objekt enthält seine "uuid"
+(Universally Unique Identifier) und den Zeitstempel ("timestamp") des
+ältesten Bildes, das zur Erkennung benutzt wurde. Die Pose ("pose")
+eines erkannten Objekts entspricht der Pose des Ursprungs des
+Koordinatensystems des Objekt-Templates, das zur Detektion verwendet
+wurde. Weiterhin wird ein Matching-Score zurückgegeben, der die
+Qualität der Erkennung angibt.
+
+Wenn das ausgewählte Template auch Greifpunkte hat (siehe
+
+Setzen von Greifpunkten
+
+), dann wird zusätzlich zu den erkannten Objekten auch eine Liste von
+Greifpunkten ("grasps") für alle erkannten Objekte zurückgegeben.
+Diese Liste ist gemäß der gewählten Sortierstrategie sortiert (siehe
+
+Setzen der Sortierstrategie für Greifpunkte
+
+). Die Posen der Greifpunkte sind im gewünschten Koordinatensystem
+angegeben. Die erkannten Objekte und die Greifpunkte können einander
+über ihre UUIDs zugeordnet werden.
+
+Bemerkung: Der erste Aufruf der Objekterkennung mit einem neuen
+  Objekt-Template dauert etwas länger als die nachfolgenden Aufrufe,
+  weil das Template erst in das CADMatch-Modul geladen werden muss.
+
+Wechselwirkung mit anderen Modulen
+
+Die folgenden, intern auf dem
+
+rc_visard
+
+ laufenden Module liefern Daten für das CADMatch-Modul oder haben
+Einfluss auf die Datenverarbeitung.
+
+Bemerkung: Jede Konfigurationsänderung dieser Module kann direkte
+  Auswirkungen auf die Qualität oder das Leistungsverhalten des
+  CADMatch-Moduls haben.
+
+Stereokamera und Stereo-Matching
+
+Folgende Daten werden vom CADMatch-Modul verarbeitet:
+
+die rektifizierten Bilder des Stereokamera-Moduls (rc_stereocamera,
+Abschnitt \ref{stereo_camera:sect-stereo-camera})
+
+die Disparitäts-, Konfidenz- und Fehlerbilder des Stereo-Matching-
+Moduls (rc_stereomatching, Abschnitt \ref{stereo_matching:sect-stereo-
+matching})
+
+Der Parameter
+
+Qualität
+
+ ("quality") des Stereo-Matching-Moduls muss auf "Medium" oder höher
+gesetzt werden (siehe
+
+Parameter
+
+). Die Einstellung "Full" oder "High" wird für CADMatch empfohlen.
+
+Für alle genutzten Bilder ist garantiert, dass diese nach dem Auslösen
+des Services aufgenommen wurden.
+
+Schätzung der Gravitationsrichtung
+
+Jedes Mal, wenn eine Load Carrier Erkennung oder eine Objekterkennung
+innerhalb eines Load Carriers durchgeführt wird, schätzt das CADMatch-
+Modul die Gravitationsrichtung basierend auf den IMU-Daten des
+
+rc_visard
+
+.
+
+Bemerkung: Die Richtung des Gravitationsvektors wird durch Messungen
+  der linearen Beschleunigung der IMU bestimmt. Für eine korrekte
+  Schätzung des Gravitationsvektors muss der
+
+  rc_visard
+
+   stillstehen.
+
+IOControl und Projektor-Kontrolle
+
+Für den Anwendungsfall, dass der
+
+rc_visard
+
+ zusammen mit einem externen Musterprojektor und dem Modul für
+
+IOControl und Projektor-Kontrolle
+
+ ("rc_iocontrol") betrieben wird, wird empfohlen, den Projektor an
+GPIO Out 1 anzuschließen und den Aufnahmemodus des Stereokamera-Moduls
+auf "SingleFrameOut1" zu setzen (siehe
+
+Stereomatching-Parameter
+
+), damit bei jedem Aufnahme-Trigger ein Bild mit und ohne
+Projektormuster aufgenommen wird.
+
+Alternativ kann der verwendete digitale Ausgang in den Betriebsmodus
+"ExposureAlternateActive" geschaltet werden (siehe
+
+Beschreibung der Laufzeitparameter
+
+).
+
+In beiden Fällen sollte die Belichtungszeitregelung ("exp_auto_mode")
+auf "AdaptiveOut1" gesetzt werden, um die Belichtung beider Bilder zu
+optimieren (siehe
+
+Stereokamera-Parameter
+
+).
+
+Hand-Auge-Kalibrierung
+
+Falls die Kamera zu einem Roboter kalibriert wurde, kann das CADMatch-
+Modul automatisch Posen im Roboterkoordinatensystem ausgeben. Für die
+
+Services
+
+ kann das Koordinatensystem der berechneten Posen mit dem Argument
+"pose_frame" spezifiziert werden.
+
+Zwei verschiedene Werte für "pose_frame" können gewählt werden:
+
+Kamera-Koordinatensystem (camera): Alle Posen sind im Kamera-
+Koordinatensystem angegeben und es ist kein zusätzliches Wissen über
+die Lage der Kamera in seiner Umgebung notwendig. Das bedeutet
+insbesondere, dass sich ROIs oder Load Carrier, welche in diesem
+Koordinatensystem angegeben sind, mit der Kamera bewegen. Es liegt
+daher in der Verantwortung des Anwenders, in solchen Fällen die
+entsprechenden Posen der Situation entsprechend zu aktualisieren
+(beispielsweise für den Anwendungsfall einer robotergeführten Kamera).
+
+Benutzerdefiniertes externes Koordinatensystem (external): Alle Posen
+sind im sogenannten externen Koordinatensystem angegeben, welches vom
+Nutzer während der Hand-Auge-Kalibrierung gewählt wurde. In diesem
+Fall bezieht das CADMatch-Modul alle notwendigen Informationen über
+die Kameramontage und die kalibrierte Hand-Auge-Transformation
+automatisch vom Modul Hand-Auge-Kalibrierung\:(Abschnitt
+\ref{handeye_calibration:sect-handeye-calibration}). Für den Fall
+einer robotergeführten Kamera ist vom Nutzer zusätzlich die jeweils
+aktuelle Roboterpose robot_pose anzugeben.
+
+Bemerkung: Wenn keine Hand-Auge-Kalibrierung durchgeführt wurde bzw.
+  zur Verfügung steht, muss als Referenzkoordinatensystem "pose_frame"
+  immer "camera" angegeben werden.
+
+Zulässige Werte zur Angabe des Referenzkoordinatensystems sind
+"camera" und "external". Andere Werte werden als ungültig
+zurückgewiesen.
+
+CollisionCheck
+
+Die Kollisionsprüfung kann für die Greifpunktberechnung des CADMatch-
+Moduls aktiviert werden, indem das "collision_detection" Argument an
+den "detect_object" Service übergeben wird. Es enthält die ID des
+benutzten Greifers und optional einen Greif-Offset. Der Greifer muss
+im CollisionCheck-Modul definiert werden (siehe
+
+Erstellen eines Greifers
+
+) und Details über die Kollisionsprüfung werden in
+
+Integrierte Kollisionsprüfung in anderen Modulen
+
+ gegeben. Wenn das ausgewählte CADMatch Template eine
+Kollisionsgeometrie enthält und der Laufzeitparameter
+"check_collisions_with_matches" auf true gesetzt ist, werden auch
+Kollisionen zwischen dem Greifer und den anderen detektierten Objekten
+(nicht limitiert auf die Anzahl *max_matches`*) geprüft. Dabei ist das
+Objekt, auf dem sich der jeweilige Greifpunkt befindet, von der
+Prüfung ausgenommen.
+
+Wenn die Kollisionsprüfung aktiviert ist, werden nur kollisionsfreie
+Greifpunkte zurückgeliefert. Jedoch werden in der Ergebnis-
+Visualisierung oben auf der
+
+CADMatch
+
+-Seite der Web GUI kollidierende Greifpunkte als rote Punkte
+dargestellt. Die Objekte, die bei der Kollisionsprüfung betrachtet
+werden, werden auch mit roten Kanten visualisiert.
+
+Die Laufzeitparameter des CollisionCheck-Moduls beeinflussen die
+Kollisionserkennung wie in
+
+CollisionCheck-Parameter
+
+ beschrieben.
+
+Parameter
+
+Das CADMatch-Modul wird in der REST-API als "rc_cadmatch" bezeichnet
+und in der
+
+Web GUI
+
+ auf der Seite
+
+CADMatch
+
+ (unter dem Menüpunkt
+
+Module
+
+) dargestellt. Der Benutzer kann die Parameter entweder dort oder über
+die
+
+REST-API-Schnittstelle
+
+ ändern.
+
+Übersicht über die Parameter
+
+Dieses Softwaremodul bietet folgende Laufzeitparameter:
+
+Laufzeitparameter des rc_cadmatch-Moduls (Load Carrier Parameter sind
+veraltet)              Name  Typ  Min.  Max.  Default  Beschreibung
+check_collisions_with_matches  bool  false  true  true  Gibt an, ob
+die Kollisionen zwischen Greifer und anderen Matches geprüft werden
+edge_max_distance  float64  0.5  5.0  2.0  Der maximale tolerierte
+Abstand zwischen den Templatekanten und den detektierten Kanten im
+Bild in Pixeln  edge_sensitivity  float64  0.0  1.0  0.5
+Empfindlichkeit des Kantendetektors
+grasp_filter_-orientation_threshold  float64  0.0  180.0  45.0
+Maximal erlaubte Orientierungsabweichung zwischen Greifpunkt und
+bevorzugter TCP-Orientierung in Grad  load_carrier_crop_distance
+float64  0.0  0.05  0.005  Sicherheitsspielraum um den das Load
+Carrier Innenmaß verringert wird, um eine Region of Interest für die
+Erkennung zu definieren  load_carrier_model_tolerance  float64  0.003
+0.025  0.008  Gibt an, wie weit die Abmessungen des Load Carriers von
+den Werten im Modell abweichen dürfen  max_matches  int32  1  20  10
+Maximale Anzahl von Matches  min_score  float64  0.05  1.0  0.3
+Minimaler Score für Matches
+
+Beschreibung der Laufzeitparameter
+
+Die Laufzeitparameter werden zeilenweise auf der
+
+CADMatch
+
+-Seite in der Web GUI dargestellt. Im folgenden wird der Name des
+Parameters in der Web GUI in Klammern hinter dem eigentlichen
+Parameternamen angegeben. Die Parameter sind in derselben Reihenfolge
+wie in der Web GUI aufgelistet:
+
+max_matches (Maximale Matches)
+
+   ist die maximale Anzahl der zu erkennenden Objekte.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?max_matches=<value>
+
+min_score (Minimaler Score)
+
+   ist der minimale Score für die Erkennung nach der
+   Posenverfeinerung. Umso höher dieser Wert ist, umso besser müssen
+   die 2D-Kanten und die 3D-Punktwolke mit dem angegebenen Template
+   übereinstimmen.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?min_score=<value>
+
+edge_sensitivity (Kantenempfindlichkeit)
+
+   ist die Empfindlichkeit des Kantendetektors. Umso höher dieser Wert
+   ist, umso mehr Kanten werden für die Posenverfeinerung genutzt.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?edge_sensitivity=<value>
+
+edge_max_distance (Maximale Kantendistanz)
+
+   ist die maximal erlaubte Distanz in Pixeln zwischen den
+   Templatekanten und den detektierten Kanten im Bild während der
+   Posenverfeinerung.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?edge_max_distance=<value>
+
+grasp_filter_orientation_threshold (Maximale Abweichung)
+
+   ist die maximale Abweichung der TCP-z-Achse am Greifpunkt von der
+   z-Achse der bevorzugten TCP-Orientierung in Grad. Es werden nur
+   Greifpunkte zurückgeliefert, deren Orientierungsabweichung kleiner
+   als der angegebene Wert ist.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?grasp_filter_orientation_threshold=<value>
+
+check_collisions_with_matches (Kollisionsprüfung mit Matches)
+
+   Wenn dieser Parameter auf true gesetzt ist und die
+   Kollisionsprüfung durch Übergabe eines Greifers an den
+   "detect_object" Service aktiviert ist, werden alle Greifpunkte auf
+   Kollisionen zwischen dem Greifer und den anderen Matches (nicht
+   begrenzt auf die Anzahl "max_matches") geprüft. Nur Greifpunkte,
+   bei denen der Greifer nicht in Kollision mit anderen Matches wäre,
+   werden zurückgeliefert.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?check_collisions_with_matches=<value>
+
+Veraltet: load_carrier_model_tolerance
+
+   Nutzen Sie stattdessen "model_tolerance" in "rc_load_carrier"
+   (siehe
+
+   Parameter der Load Carrier Funktionalität
+
+   ).
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?load_carrier_model_tolerance=<value>
+
+Veraltet: load_carrier_crop_distance
+
+   Nutzen Sie stattdessen "crop_distance" in "rc_load_carrier" (siehe
+
+   Parameter der Load Carrier Funktionalität
+
+   ).
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?load_carrier_crop_distance=<value>
+
+Statuswerte
+
+Das CADMatch-Modul meldet folgende Statuswerte.
+
+Statuswerte des rc_cadmatch-Moduls      Name  Beschreibung
+data_acquisition_time  Zeit in Sekunden, für die beim letzten Aufruf
+auf Bilddaten gewartet werden musste  last_timestamp_processed
+Zeitstempel des letzten verarbeiteten Bilddatensatzes
+load_carrier_detection_time  Berechnungszeit für die letzte Load
+Carrier Detektion in Sekunden  object_detection_time  Berechnungszeit
+für die letzte Objekterkennung in Sekunden  state  Aktueller Zustand
+des CADMatch-Moduls
+
+Folgende "state"-Werte werden gemeldet.
+
+Mögliche Werte für den Zustand des CADMatch-Moduls      Zustand
+Beschreibung  IDLE  Das Modul ist inaktiv.  RUNNING  Das Modul wurde
+gestartet und ist bereit, Load Carrier und Objekte zu erkennen.  FATAL
+Ein schwerwiegender Fehler ist aufgetreten.
+
+Services
+
+Die angebotenen Services von "rc_cadmatch" können mithilfe der
+
+REST-API-Schnittstelle
+
+ oder der
+
+rc_visard
+
+
+Web GUI
+
+ ausprobiert und getestet werden.
+
+Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen
+sogenannten "return_code" bestehend aus einem Integer-Wert und einer
+optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden
+mit einem Wert von "0" quittiert. Positive Werte bedeuten, dass die
+Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche
+Informationen zur Verfügung stehen. Negative Werte bedeuten, dass
+Fehler aufgetreten sind. Für den Fall, dass mehrere Rückgabewerte
+zutreffend wären, wird der kleinste zurückgegeben, und die
+entsprechenden Textnachrichten werden in "return_code.message"
+akkumuliert.
+
+Die folgende Tabelle führt die möglichen Rückgabe-Codes an:
+
+Rückgabecodes der Services des CADMatch-Moduls      Code  Beschreibung
+0  Erfolgreich  -1  Ungültige(s) Argument(e)  -2  Ein interner Fehler
+ist aufgetreten.  -3  Ein interner Timeout ist aufgetreten,
+beispielsweise während der Objekterkennung.  -4  Die maximal erlaubte
+Zeitspanne von 5.0 Sekunden für die interne Akquise der Bilddaten
+wurde überschritten.  -8  Das Modul befindet sich in einem Zustand, in
+welchem dieser Service nicht aufgerufen werden kann. Beispielsweise
+muss die Stereo-Matching Qualität quality mindestens Medium sein.  -9
+Ungültige Lizenz  -10  Das neue Element konnte nicht hinzugefügt
+werden, da die maximal speicherbare Anzahl an Load Carriern oder ROIs
+überschritten wurde.  -11  Sensor nicht verbunden, nicht unterstützt
+oder nicht bereit  10  Die maximal speicherbare Anzahl an Load
+Carriern oder ROIs wurde erreicht.  11  Existierende Daten wurden
+überschrieben.  100  Die angefragten Load Carrier wurden in der Szene
+nicht gefunden.  101  Keiner der gefundenen Greifpunkte ist
+erreichbar.  102  Der erkannte Load Carrier ist leer.  103  Alle
+berechneten Greifpunkte sind in Kollision.  151  Das Objekt-Template
+hat eine kontinuierliche Symmetrie.  999  Zusätzliche Hinweise für die
+Anwendungsentwicklung
+
+Das CADMatch-Modul stellt folgende Services zur Verfügung.
+
+detect_object
+
+   führt eine Objekterkennung basierend auf einem Template durch, wie
+   in
+
+   Objekterkennung
+
+    beschrieben.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/detect_object
+
+   Request
+
+   Obligatorische Serviceargumente:
+
+      "pose_frame": siehe
+
+      Hand-Auge-Kalibrierung
+
+      .
+
+      "template_id": ID des Templates, welches erkannt werden soll.
+
+   Möglicherweise benötigte Serviceargumente:
+
+      "robot_pose": siehe
+
+      Hand-Auge-Kalibrierung
+
+      .
+
+   Optionale Serviceargumente:
+
+      "load_carrier_id": ID des Load Carriers, welcher die zu
+      erkennenden Objekte enthält.
+
+      "load_carrier_compartment": Teilvolumen (Fach oder Abteil) in
+      einem zu detektierenden Load Carrier (Behälter), in dem Objekte
+      erkannt werden sollen (siehe
+
+      Load Carrier Abteil
+
+      ).
+
+      "region_of_interest_id": Falls "load_carrier_id" gesetzt ist,
+      die ID der 3D Region of Interest, innerhalb welcher nach dem
+      Load Carrier gesucht wird. Andernfalls die ID der 3D Region of
+      Interest, in der nach Objekten gesucht wird.
+
+      "collision_detection": siehe
+
+      Integrierte Kollisionsprüfung in anderen Modulen
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "collision_detection": {
+            "gripper_id": "string",
+            "pre_grasp_offset": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "load_carrier_compartment": {
+            "box": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            }
+          },
+          "load_carrier_id": "string",
+          "pose_frame": "string",
+          "region_of_interest_id": "string",
+          "robot_pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "template_id": "string"
+        }
+      }
+
+   Response
+
+   "grasps": Liste von Greifpunkten auf den erkannten Objekten. Die
+   Greifpunkte sind gemäß der gewählten Sortierstrategie sortiert. Die
+   "match_uuid" gibt eine Referenz auf das detektierte Objekt in
+   "matches" an, zu dem dieser Greifpunkt gehört.
+
+   "load_carriers": Liste der erkannten Load Carrier (Behälter).
+
+   "matches": Liste der erkannten Objekte für das angegebene Template.
+   Der "score" gibt an, wie gut das Objekt mit dem Template
+   übereinstimmt. Die "grasp_uuids" geben die Greifpunkte in der
+   "grasps"-Liste an, die auf diesem Objekt erreichbar sind.
+
+   "timestamp": Zeitstempel des Bildes, auf dem die Erkennung
+   durchgeführt wurde.
+
+   "return_code": enthält mögliche Warnungen oder Fehlercodes und
+   Nachrichten.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "detect_object",
+        "response": {
+          "grasps": [
+            {
+              "id": "string",
+              "match_uuid": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "timestamp": {
+                "nsec": "int32",
+                "sec": "int32"
+              },
+              "uuid": "string"
+            }
+          ],
+          "load_carriers": [
+            {
+              "id": "string",
+              "inner_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "outer_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "overfilled": "bool",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "rim_ledge": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "rim_step_height": "float64",
+              "rim_thickness": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "type": "string"
+            }
+          ],
+          "matches": [
+            {
+              "grasp_uuids": [
+                "string"
+              ],
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "score": "float32",
+              "template_id": "string",
+              "timestamp": {
+                "nsec": "int32",
+                "sec": "int32"
+              },
+              "uuid": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          },
+          "timestamp": {
+            "nsec": "int32",
+            "sec": "int32"
+          }
+        }
+      }
+
+set_grasp
+
+   speichert einen Greifpunkt für das angegebene Template auf dem
+
+   rc_visard
+
+   . Alle Greifpunkte sind dauerhaft gespeichert, auch über Firmware-
+   Updates und -Wiederherstellungen hinweg.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/set_grasp
+
+   Request
+
+   Die Definition des Typs "grasp" wird in
+
+   Setzen von Greifpunkten
+
+    beschrieben.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "grasp": {
+            "id": "string",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "template_id": "string"
+          }
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "set_grasp",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_all_grasps
+
+   Ersetzt die gesamte Liste von Greifpunkten auf dem
+
+   rc_visard
+
+    für das angegebene Template.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/set_all_grasps
+
+   Request
+
+   Die Definition des Typs "grasp" wird in
+
+   Setzen von Greifpunkten
+
+    beschrieben.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "grasps": [
+            {
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "template_id": "string"
+            }
+          ],
+          "template_id": "string"
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "set_all_grasps",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_grasps
+
+   gibt alle definierten Greifpunkte mit den angegebenen IDs
+   ("grasp_ids") zurück, die zu den Templates mit den angegebenen
+   "template_ids" gehören.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/get_grasps
+
+   Request
+
+   Wenn keine "grasp_ids" angegeben werden, werden alle Greifpunkte zu
+   den angegebenen "template_ids" zurückgeliefert. Wenn keine
+   "template_ids" angegeben werden, werden alle Greifpunkte mit den
+   geforderten "grasp_ids" zurückgeliefert. Wenn gar keine IDs
+   angegeben werden, werden alle gespeicherten Greifpunkte
+   zurückgeliefert.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "grasp_ids": [
+            "string"
+          ],
+          "template_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "get_grasps",
+        "response": {
+          "grasps": [
+            {
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "template_id": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_grasps
+
+   löscht alle Greifpunkte mit den angegebenen "grasp_ids", die zu den
+   Templates mit den angegebenen "template_ids" gehören.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/delete_grasps
+
+   Request
+
+   Wenn keine "grasp_ids" angegeben werden, werden alle Greifpunkte
+   gelöscht, die zu den Templates mit den angegebenen "template_ids"
+   gehören. Die Liste "template_ids" darf nicht leer sein.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "grasp_ids": [
+            "string"
+          ],
+          "template_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "delete_grasps",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_symmetric_grasps
+
+   gibt alle Greifpunkte zurück, die symmetrisch zum angegebenen
+   Greifpunkt sind."
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/get_symmetric_grasps
+
+   Request
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "grasp": {
+            "id": "string",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "template_id": "string"
+          }
+        }
+      }
+
+   Response
+
+   Der erste Greifpunkt in der Rückgabeliste ist derselbe, der dem
+   Service übergeben wurde. Wenn das Template keine exakte Symmetrie
+   hat, wird nur der übergebene Greifpunkt zurückgeliefert. Wenn das
+   Template eine kontinuierliche Symmetrie hat (z.B. ein zylindrisches
+   Objekt), werden nur 12 gleichverteilte Greifpunkte zurückgeliefert.
+
+   Die Definition des Typs "grasp" wird in
+
+   Setzen von Greifpunkten
+
+    beschrieben.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "get_symmetric_grasps",
+        "response": {
+          "grasps": [
+            {
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "template_id": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_preferred_orientation
+
+   speichert die bevorzugte TCP-Orientierung zum Berechnen der
+   Erreichbarkeit der Greifpunkte, die zur Filterung und optional zur
+   Sortierung der vom "detect_object" Service zurückgelieferten
+   Greifpunkte verwendet wird (siehe
+
+   Setzen der bevorzugten TCP-Orientierung
+
+   ).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/set_preferred_orientation
+
+   Request
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose_frame": "string"
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "set_preferred_orientation",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_preferred_orientation
+
+   gibt die bevorzugte TCP-Orientierung zurück, die für die Filterung
+   und optional für die Sortierung der vom "detect_object" Service
+   zurückgelieferten Greifpunkte verwendet wird (siehe
+
+   Setzen der bevorzugten TCP-Orientierung
+
+   ).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/get_preferred_orientation
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "get_preferred_orientation",
+        "response": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose_frame": "string",
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_sorting_strategies
+
+   speichert die gewählte Strategie zur Sortierung der Greifpunkte,
+   die vom "detect_object" Service zurückgeliefert werden (siehe
+
+   Objekterkennung
+
+   ).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/set_sorting_strategies
+
+   Request
+
+   Nur eine Sortierstrategie darf einen Gewichtswert "weight" größer
+   als 0 haben. Wenn alle Werte für "weight" auf 0 gesetzt sind, wird
+   die Standardsortierstrategie verwendet.
+
+   Wenn der Wert "weight" für "direction" gesetzt ist, muss "vector"
+   den Richtungsvektor enthalten und "pose_frame" auf "camera" oder
+   "external" gesetzt sein.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "direction": {
+            "pose_frame": "string",
+            "vector": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "weight": "float64"
+          },
+          "gravity": {
+            "weight": "float64"
+          },
+          "match_score": {
+            "weight": "float64"
+          },
+          "preferred_orientation": {
+            "weight": "float64"
+          }
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "set_sorting_strategies",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_sorting_strategies
+
+   gibt die gewählte Sortierstrategie zurück, die zur Sortierung der
+   vom "detect_object" Service zurückgelieferten Greifpunkte verwendet
+   wird (siehe
+
+   Objekterkennung
+
+   ).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/get_sorting_strategies
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Wenn alle Werte für "weight" 0 sind, wird die
+   Standardsortierstrategie verwendet.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "get_sorting_strategies",
+        "response": {
+          "direction": {
+            "pose_frame": "string",
+            "vector": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "weight": "float64"
+          },
+          "gravity": {
+            "weight": "float64"
+          },
+          "match_score": {
+            "weight": "float64"
+          },
+          "preferred_orientation": {
+            "weight": "float64"
+          },
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_region_of_interest
+
+   siehe
+
+   set_region_of_interest
+
+   .
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/set_region_of_interest
+
+get_regions_of_interest
+
+   siehe
+
+   get_regions_of_interest
+
+   .
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/get_regions_of_interest
+
+delete_regions_of_interest
+
+   siehe
+
+   delete_regions_of_interest
+
+   .
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/delete_regions_of_interest
+
+set_load_carrier (veraltet)
+
+   Nutzen Sie stattdessen "set_load_carrier" in "rc_load_carrier"
+   (siehe
+
+   set_load_carrier
+
+   ).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/set_load_carrier
+
+get_load_carriers (veraltet)
+
+   Nutzen Sie stattdessen "get_load_carriers" in "rc_load_carrier"
+   (siehe
+
+   get_load_carriers
+
+   ).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/get_load_carriers
+
+delete_load_carriers (veraltet)
+
+   Nutzen Sie stattdessen "delete_load_carriers" in "rc_load_carrier"
+   (siehe
+
+   delete_load_carriers
+
+   ).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/delete_load_carriers
+
+detect_load_carriers (veraltet)
+
+   Nutzen Sie stattdessen "detect_load_carriers" in "rc_load_carrier"
+   (siehe
+
+   detect_load_carriers
+
+   ).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/detect_load_carriers
+
+detect_filling_level (veraltet)
+
+   Nutzen Sie stattdessen "detect_filling_level" in "rc_load_carrier"
+   (siehe
+
+   detect_filling_level
+
+   ).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/detect_filling_level
+
+start
+
+   versetzt das CADMatch-Modul in den Zustand "RUNNING"."
+
+   Details
+
+   Es kann vorkommen, dass der Zustandsübergang noch nicht vollständig
+   abgeschlossen ist, wenn die Serviceantwort generiert wird. In
+   diesem Fall liefert diese den entsprechenden, sich von "RUNNING"
+   unterscheidenden Zustand zurück.
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/start
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "start",
+        "response": {
+          "accepted": "bool",
+          "current_state": "string"
+        }
+      }
+
+stop
+
+   stoppt das Modul und versetzt es in den Zustand "IDLE".
+
+   Details
+
+   Es kann vorkommen, dass der Zustandsübergang noch nicht vollständig
+   abgeschlossen ist, wenn die Serviceantwort generiert wird. In
+   diesem Fall liefert diese den entsprechenden, sich von "IDLE"
+   unterscheidenden Zustand zurück.
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/stop
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "stop",
+        "response": {
+          "accepted": "bool",
+          "current_state": "string"
+        }
+      }
+
+save_parameters
+
+   speichert die aktuellen Parametereinstellungen auf dem
+
+   rc_visard
+
+   . Das bedeutet, dass diese Werte selbst nach einem Neustart
+   angewandt werden. Sie bleiben auch bei Firmware-Updates oder
+   -Wiederherstellungen bestehen.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/save_parameters
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "save_parameters",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+reset_defaults
+
+   stellt die Werkseinstellungen der Parameter dieses Moduls wieder
+   her und wendet sie an ("factory reset"). Dies betrifft nicht die
+   konfigurierten Templates, die bevorzugte TCP-Orientierung und die
+   gewählte Sortierstrategie.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/reset_defaults
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+Template API
+
+Für den Upload, Download, das Auflisten und Löschen von Templates
+werden spezielle REST-API-Endpunkte zur Verfügung gestellt. Templates
+können auch über die Web GUI hoch- und runtergeladen werden. Die
+Templates beinhalten die Greifpunkte, falls Greifpunkte konfiguriert
+wurden. Bis zu 30 Templates können gleichzeitig auf dem
+
+rc_visard
+
+ gespeichert werden.

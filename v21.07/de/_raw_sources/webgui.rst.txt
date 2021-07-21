@@ -1,0 +1,159 @@
+.. include:: global_rst.glb
+
+.. _sect-web-gui:
+
+Web GUI
+=======
+
+.. index:: ! Web GUI
+
+The |rc_xxx|'s |webgui| can be used to test, calibrate, and configure the device.
+
+Accessing the Web GUI
+---------------------
+
+The Web GUI can be accessed from any web browser, such as Firefox, Google Chrome, or Microsoft Edge, via
+the |rc_xxx|'s IP address. The easiest way to access the |webgui| is to simply double click on the
+desired device using the ``rcdiscover-gui`` tool as explained in :ref:`sect-discovery-of-rcvisard-devices`:latex:`\:(Section \ref{installation:sect-discovery-of-rcvisard-devices})`.
+
+Alternatively, some network environments automatically configure the unique host name of
+the |rc_xxx| in their Domain Name Server (:term:`DNS`). In this case, the |webgui| can also be
+accessed directly using the :term:`URL` ``http://<host-name>`` by
+replacing ``<host-name>`` with the device's host name.
+
+For Linux and Mac operating systems, this even works without DNS via the multicast
+Domain Name System (:term:`mDNS`), which is automatically used if ``.local`` is appended to the
+host name. Thus, the URL simply becomes ``http://<host-name>.local``.
+
+.. only:: rc_cube
+
+    Access to the |rc_visard| |webgui|
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    For troubleshooting, users can
+    also directly access the |webgui| of the |rc_visard| device that
+    is connected to the |rc_xxx|.
+    It is available at port ``2342`` of the |rc_xxx|, and hence at
+    the :term:`URL` ``http://<host>:2342``
+    where ``<host>`` is the IP address or host
+    name of the |rc_xxx| that the |rc_visard| is connected to.
+
+    By this means, users have access to |rc_visard|'s device information
+    or log files.
+
+    .. note:: If a computer screen is directly connected to the |rc_xxx|,
+              it shows the |webgui| with a small additional menu from which
+              the |rc_visard|'s |webgui| can be accessed as well.
+
+
+Exploring the Web GUI
+---------------------
+
+The |webgui|'s overview page gives the most important information about the device
+and the software modules.
+
+.. figure:: images/webgui_overview.png
+    :align: center
+
+    Overview page of the |rc_xxx|'s |webgui|
+
+The page's top row permits access to the individual pages of the |rc_xxx|'s |webgui|:
+
+*Camera*
+  shows a live stream of the left and right rectified camera images.
+  The frame rate can be reduced to save bandwidth when streaming to a
+  GigE Vision\ |reg| client. Furthermore, exposure can be set manually or automatically.
+  See :ref:`sect-cam-params`:latex:`\:(Section \ref{stereo_camera:sect-cam-params})` for more information.
+
+*Depth Image*
+  shows a live stream of the left rectified, depth, and
+  confidence images. The page contains various settings for depth-image
+  computation and filtering. See :ref:`sect-disp-image-parameters`:latex:`\:(Section \ref{stereo_matching:sect-disp-image-parameters})` for more information.
+
+.. only:: rc_visard
+
+    *Dynamics*
+      shows the location and movement of image features that are
+      used to compute the |rcvisard|'s egomotion. Settings include the number of corners
+      and features that should be used. See :ref:`sect-vo-parameters`:latex:`\:(Section \ref{stereo_visodo:sect-vo-parameters})` for more information.
+
+..    *Camera Calibration*
+      permits the camera to be checked for proper calibration.
+      In rare cases when the camera is no longer sufficiently calibrated, calibration also
+      can be performed using this module. See :ref:`sect-camera-calibration`:latex:`\:(Section \ref{camera_calibration:sect-camera-calibration})` for more information.
+
+.. *Hand-Eye-Calibration*
+  allows the computation of the static transformation between the
+  camera and a coordinate system known in the robot system.
+  This can be the flange coordinate system of a
+  robotic arm if the camera is attached to the flange. Alternatively, the camera may be mounted
+  statically in the robot environment and calibrated to any other static frame known in the robot
+  system.
+  See :doc:`handeye_calibration`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})`
+  for more information.
+
+*Modules*
+  gives access to the detection modules of the |rcxxx|
+  (see :doc:`detection_modules`:latex:`, Section \ref{detection_modules:sect-detection-modules}`).
+
+*Configuration*
+  gives access to the configuration modules of the |rcxxx|
+  (see :doc:`configuration_modules`:latex:`, Section \ref{configuration_modules:sect-configuration-modules}`).
+
+*Logs*
+  permits access to the log files on the |rcxxx|. The log
+  files are typically checked if errors are suspected.
+
+*System*
+  gives access to general settings and device information,
+  and permits the firmware or the license file to be updated.
+
+.. Note:: Changed parameters are not persistent and will be lost when restarting the |rcxxx| unless
+          they are saved by pressing the *Save* button before leaving the corresponding page.
+
+.. Note:: Further information on all parameters in the |webgui| can be obtained by pressing the *Info*
+          button next to each parameter.
+
+.. _sect-webgui-camera-snapshot:
+
+Downloading stereo camera images
+--------------------------------
+
+The Web GUI
+provides an easy way to download a snapshot of the current scene as a .tar.gz file
+by clicking on the camera icon below the image live streams on the *Camera* tab. This snapshot contains:
+
+-  the rectified left and right camera images in full resolution as .png files,
+-  a camera parameter file containing the camera matrix, image dimensions, exposure time,
+   gain value and the stereo baseline,
+-  the current IMU readings as imu.csv file,
+-  a nodes.json file containing information about all nodes running on the |rc_xxx|,
+-  a system_info.json file containing system information about the |rc_xxx|.
+
+The filenames contain the timestamps.
+
+.. _sect-webgui-depth-snapshot:
+
+Downloading depth images and point clouds
+-----------------------------------------
+
+The Web GUI provides an easy way to download the depth data of the current scene as a .tar.gz file
+by clicking on the camera icon below the image live streams on the *Depth image* tab. This snapshot contains:
+
+-  the rectified left and right camera images in full resolution as .png files,
+-  an image parameter file corresponding to the left image containing the camera matrix, image dimensions, exposure time,
+   gain value and the stereo baseline,
+-  the disparity, error and confidence images in the resolution corresponding to the currently chosen quality as .png files,
+-  a disparity parameter file corrsponding to the disparity image containing the camera matrix, image dimensions, exposure time,
+   gain value and the stereo baseline, and information about the disparity values (i.e. invalid values, scale, offset),
+-  a point cloud in the current depth quality (resolution) as .ply file,
+-  the current IMU readings as imu.csv file,
+-  a nodes.json file containing information about all nodes running on the |rc_xxx|,
+-  a system_info.json file containing system information about the |rc_xxx|.
+
+The filenames contain the timestamps.
+
+.. note::
+   Downloading a depth snapshot will trigger an acquisition in the same way as clicking on the "Acquire" button on the
+   *Depth Image* page of the Web GUI, and, thus, might affect running applications.
+

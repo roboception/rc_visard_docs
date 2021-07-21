@@ -1,0 +1,39 @@
+Configuration modules
+
+The
+
+rc_visard
+
+ provides several configuration modules which enable the user to
+configure the
+
+rc_visard
+
+ for specific applications.
+
+The configuration modules are:
+
+Hand-eye calibration (rc_hand_eye_calibration, Section
+\ref{handeye_calibration:sect-handeye-calibration})  enables the user
+to calibrate the camera with respect to a robot, either via the Web
+GUI or the REST-API.
+
+Region of interest\:(Section \ref{roi:sect-roi})  allows setting and
+retrieving 2D and 3D regions of interest.
+
+CollisionCheck (rc_collision_check, Section \ref{collisioncheck:sect-
+collision})  allows setting and retrieving grippers and provides an
+easy way to check if a gripper is in collision.
+
+Camera calibration (rc_stereocalib, Section \ref{camera_calibration
+:sect-camera-calibration})  automatically checks and performs the
+self-calibration of the rc_visard's stereo camera in case it has been
+decalibrated. It furthermore enables the user to check and perform
+recalibration manually via the WEB GUI\:(Section \ref{webgui:sect-web-
+gui}).
+
+IO and Projector Control (rc_iocontrol, Section \ref{iocontrol:sect-
+iocontrol})  provides control over the rc_visard's general purpose
+inputs and outputs with special modes for controlling an external
+random dot projector.
+

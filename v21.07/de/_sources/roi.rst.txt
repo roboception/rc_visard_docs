@@ -1,0 +1,514 @@
+Region of Interest
+
+Einleitung
+
+Die Region of Interest (ROI) Funktionalität wird von einer internen
+ROI-Komponente bereitgestellt und kann nur über die Softwaremodule
+genutzt werden, die diese Funktionalität anbieten.
+
+Die 3D ROI-Funktionalität wird von den Modulen
+
+ItemPick und BoxPick
+
+ angeboten.
+
+Die 2D ROI-Funktionalität wird vom
+
+SilhouetteMatch
+
+ Modul und dem
+
+LoadCarrier
+
+ Modul angeboten.
+
+Spezifikationen der ROI-Funktionalität      Unterstützte ROI Typen
+2D, 3D  Unterstützte ROI Geometrien  2D ROI: Rechteck, 3D ROI: Box,
+Kugel  Max. Anzahl von ROIs  2D: 50, 3D: 50  ROIs verfügbar in  2D:
+SilhouetteMatch\:(Abschnitt \ref{silhouettematch:sect-
+silhouettematch}), LoadCarrier\:(Abschnitt \ref{loadcarrier:sect-
+loadcarrier}), 3D: ItemPick und BoxPick\:(Section \ref{itempick:sect-
+itempick})  Unterstützte Referenzkoordinatensysteme  camera, external
+
+Region of Interest
+
+Eine sogenannte Region of Interest (ROI) definiert ein abgegrenztes
+Raumvolumen (3D ROI, "region_of_interest") oder eine rechteckige
+Region im linken Kamerabild (2D ROI, "region_of_interest_2d"), welche
+für eine spezifische Anwendung relevant sind.
+
+Eine ROI kann das Volumen, in dem ein Load Carrier gesucht wird,
+einschränken, oder einen Bereich definieren, der nur die zu
+erkennenden oder zu greifenden Objekte enthält. Die Verarbeitungszeit
+kann sich deutlich verringern, wenn eine ROI genutzt wird.
+
+Folgende Arten von 3D ROIs ("type") werden unterstützt:
+
+   BOX, für quaderförmige ROIs mit den Abmessungen box.x, box.y,
+   box.z.
+
+   SPHERE, für kugelförmige ROIs mit dem  Radius sphere.radius.
+
+Die Pose "pose" einer 3D ROI kann entweder relativ zum
+
+Kamera
+
+-Koordinatensystem "camera" oder mithilfe der Hand-Auge-Kalibrierung
+im
+
+externen
+
+ Koordinatensystem "external" angegeben werden. Das externe
+Koordinatensystem steht nur zur Verfügung, wenn eine
+
+Hand-Auge-Kalibrierung
+
+ durchgeführt wurde. Wenn der
+
+rc_visard
+
+ am Roboter montiert ist, und die ROI im externen Koordinatensystem
+definiert ist, dann muss jedem Detektions-Service, der diese ROI
+benutzt, die aktuelle Roboterpose übergeben werden.
+
+Eine 2D ROI ist als rechteckiger Teil des linken Kamerabilds definiert
+und kann sowohl über die
+
+REST-API-Schnittstelle
+
+ als auch über die
+
+rc_visard
+
+
+Web GUI
+
+ auf der Seite
+
+Regions of Interest
+
+ unter dem Menüpunkt
+
+Konfiguration
+
+ gesetzt werden. Die Web GUI bietet hierfür ein einfach zu benutzendes
+Werkzeug an. Jeder ROI muss ein eindeutiger Name zugewiesen werden, um
+diese später adressieren zu können.
+
+In der REST-API ist eine 2D-ROI über folgende Werte spezifiziert:
+
+id: Eindeutiger Name der ROI
+
+offset_x, offset_y: Abstand in Pixeln von der oberen rechten Bildecke
+entlang der x- bzw. y-Achse
+
+width, height: Breite und Höhe in Pixeln
+
+Der
+
+rc_visard
+
+ erlaubt das Speichern von bis zu 50 verschiedenen 3D ROIs und der
+gleichen Anzahl von 2D ROIs. Die Konfiguration von ROIs erfolgt in der
+Regel offline während der Einrichtung der gewünschten Anwendung. Die
+Konfiguration kann mithilfe der
+
+REST-API-Schnittstelle
+
+ des Moduls, das die Region of Interest Funktionalität anbietet,
+vorgenommen werden, oder über die
+
+rc_visard
+
+
+Web GUI
+
+ auf der Seite
+
+Regions of Interest
+
+ unter dem Menüpunkt
+
+Konfiguration
+
+.
+
+Bemerkung: Die erstellten ROIs sind persistent auf dem
+
+  rc_visard
+
+   gespeichert und auch nach Firmware-Updates und -Wiederherstellungen
+  verfügbar.
+
+Parameter
+
+Die ROI-Komponente hat keine Laufzeitparameter.
+
+Services
+
+Die angebotenen Services der ROI-Funktionalität können mithilfe der
+
+REST-API-Schnittstelle
+
+ des Moduls, das die ROI Funktionalität anbietet, oder über die
+
+rc_visard
+
+
+Web GUI
+
+ auf der Seite
+
+Regions of Interest
+
+ unter dem Menüpunkt
+
+Konfiguration
+
+ ausprobiert und getestet werden.
+
+Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen
+sogenannten "return_code" bestehend aus einem Integer-Wert und einer
+optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden
+mit einem Wert von "0" quittiert. Positive Werte bedeuten, dass die
+Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche
+Informationen zur Verfügung stehen. Negative Werte bedeuten, dass
+Fehler aufgetreten sind. Für den Fall, dass mehrere Rückgabewerte
+zutreffend wären, wird der kleinste zurückgegeben, und die
+entsprechenden Textnachrichten werden in "return_code.message"
+akkumuliert.
+
+Die folgende Tabelle führt die möglichen Rückgabe-Codes an:
+
+Rückgabe-Codes der Region of Interest Funktionalität      Code
+Beschreibung  0  Erfolgreich  -1  Ungültige(s) Argument(e)  -10  Das
+neue Element konnte nicht hinzugefügt werden, da die maximal
+speicherbare Anzahl an ROIs überschritten wurde.  10  Die maximal
+speicherbare Anzahl an ROIs wurde erreicht.  11  Mit dem Aufruf von
+set_region_of_interest oder set_region_of_interest_2d wurde ein
+bereits existierendes Objekt mit derselben id überschrieben.
+
+Alle Softwaremodule, die die ROI-Funktionalität anbieten, stellen
+folgende Services zur Verfügung.
+
+set_region_of_interest
+
+   speichert eine 3D ROI auf dem
+
+   rc_visard
+
+   . Alle ROIs sind dauerhaft gespeichert, auch über Firmware-Updates
+   und -Wiederherstellungen hinweg.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/<module>/services/set_region_of_interest
+
+   Request
+
+   Die Definition des Typs "region_of_interest" wird in
+
+   Region of Interest
+
+    beschrieben.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "region_of_interest": {
+            "box": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "id": "string",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "sphere": {
+              "radius": "float64"
+            },
+            "type": "string"
+          }
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "set_region_of_interest",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_region_of_interest_2d
+
+   speichert eine 2D ROI auf dem
+
+   rc_visard
+
+   . Alle ROIs sind dauerhaft gespeichert, auch über Firmware-Updates
+   und -Wiederherstellungen hinweg.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/<module>/services/set_region_of_interest_2d
+
+   Request
+
+   Die Definition des Typs "region_of_interest_2d" wird in
+
+   Region of Interest
+
+    beschrieben.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "region_of_interest_2d": {
+            "height": "uint32",
+            "id": "string",
+            "offset_x": "uint32",
+            "offset_y": "uint32",
+            "width": "uint32"
+          }
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "set_region_of_interest_2d",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_regions_of_interest
+
+   gibt die mit "region_of_interest_ids" spezifizierten, gespeicherten
+   3D ROIs zurück.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/<module>/services/get_regions_of_interest
+
+   Request
+
+   Werden keine "region_of_interest_ids" angegeben, enthält die
+   Serviceantwort alle gespeicherten ROIs.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "region_of_interest_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "get_regions_of_interest",
+        "response": {
+          "regions_of_interest": [
+            {
+              "box": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "sphere": {
+                "radius": "float64"
+              },
+              "type": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_regions_of_interest_2d
+
+   gibt die mit "region_of_interest_2d_ids" spezifizierten,
+   gespeicherten 2D ROIs zurück.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/<module>/services/get_regions_of_interest_2d
+
+   Request
+
+   Werden keine "region_of_interest_2d_ids" angegeben, enthält die
+   Serviceantwort alle gespeicherten ROIs.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "region_of_interest_2d_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "get_regions_of_interest_2d",
+        "response": {
+          "regions_of_interest": [
+            {
+              "height": "uint32",
+              "id": "string",
+              "offset_x": "uint32",
+              "offset_y": "uint32",
+              "width": "uint32"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_regions_of_interest
+
+   löscht die mit "region_of_interest_ids" spezifizierten,
+   gespeicherten 3D ROIs.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/<module>/services/delete_regions_of_interest
+
+   Request
+
+   Alle zu löschenden ROIs müssen explizit angegeben werden.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "region_of_interest_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "delete_regions_of_interest",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_regions_of_interest_2d
+
+   löscht die mit "region_of_interest_2d_ids" spezifizierten,
+   gespeicherten 2D ROIs.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/<module>/services/delete_regions_of_interest_2d
+
+   Request
+
+   Alle zu löschenden ROIs müssen explizit angegeben werden.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "region_of_interest_2d_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "delete_regions_of_interest_2d",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }

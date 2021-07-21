@@ -1,0 +1,282 @@
+
+.. include:: global_rst.glb
+
+.. _sect-visual-odometry:
+
+Visual odometry
+===============
+
+.. index:: !visual odometry
+   see: VO; visual odometry
+   pair: visual odometry; image features
+   pair: visual odometry; corners
+   single: egomotion
+   pair: visual odometry; keyframes
+   see: pose estimation; state estimation
+
+The visual odometry module is a base module which is available on every |rc_visard|. 
+
+Visual odometry is part of the sensor dynamics module. It is used to estimate the
+camera's motion from the motion of characteristic
+image points (so-called image features) in left camera images. Image
+features are computed from image corners, which are image regions with high
+intensity gradients. Image features are used to look for matches between subsequent images
+to find correspondences. Their 3D coordinates are computed by stereo matching
+(independent from the disparity image). The camera's motion is computed from a set of
+corresponding 3D points between two images. To increase the
+robustness of visual odometry, correspondences are not only computed
+to the previous camera image but to a certain number of previous images, which are called
+*keyframes*. The best result is then chosen.
+
+.. index::
+   single: keyframes
+   pair: IMU; inertial measurement unit
+   single: sensor fusion
+
+The visual-odometry frame rate is independent of the user setting in the stereo camera
+module. It is internally limited to 12 Hz but can be lower, depending on the number
+of features and keyframes. To ensure good pose-estimation quality, the frame rate should
+not drop significantly under 10 Hz.
+
+.. NOTE:: Using :doc:`stereo_matching` in parallel to the dynamics module
+  may lead to a decreased frame rate of the visual odometry. In this case, we
+  recommend to decrease the frame rate of the :doc:`stereo_camera` (effectively
+  decreasing the frame rate of the depth image computation), to lower the
+  computational load of stereo matching.
+
+The visual odometry module's measurements are not directly accessible on the |rc_visard|.
+Instead, they are internally fused with measurements from the integrated inertial measurement
+unit to increase robustness and frequency and reduce latency. The result of the sensor data
+fusion is provided in the form of different streams (see :doc:`stereo_ins`:latex:`, Section \ref{stereo_ins:sect-stereo-ins}`).
+
+.. _sect-vo-parameters:
+
+Parameters
+----------
+
+.. index::
+   pair: visual odometry; image features
+   pair: visual odometry; correspondences
+   pair: visual odometry; parameters
+   pair: visual odometry; Web GUI
+   pair: dynamics; Web GUI
+   pair: visual odometry; frame rate
+
+The visual odometry software module is called ``rc_stereovisodo`` and it is represented by the
+*Dynamics* tab in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+The user can change the visual odometry parameters there, or use the |rest-api|
+(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`).
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. include:: _gen/nodes/params/rc_stereovisodo.txt
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Run-time parameters influence the number of features used to
+compute visual odometry. More features increase the visual odometry's
+robustness at the expense of more run time, which can reduce the
+frame rate. Although the resulting state estimate will always have a
+high frequency due to fusion with IMU measurements, high visual-odometry
+frame rates are nevertheless desirable, since these measurements are
+much more accurate than IMU measurements alone. A visual-odometry
+rate of at least 10 Hz should thus be aimed for. The visual-odometry
+frame rate is provided as a status parameter and is shown below the camera image on
+the :ref:`Web GUI<sect-web-gui>`'s *Dynamics* tab.
+
+.. figure:: images/webgui_dynamics.png
+   :width: 100 %
+   :align: center
+
+   The |webgui|'s *Dynamics* tab
+
+The camera image shown on this page depicts image features as small green dots.
+The bold green dots are the features in the current image for which
+correspondences could be found in a previous keyframe. Green lines depict the motion of these
+features relative to the previous keyframe. This
+visualization should help to find a good set of parameters for visual
+odometry. The number of correspondences is reported as a status parameter and is shown below the camera image on
+the :ref:`Web GUI<sect-web-gui>`'s *Dynamics* tab. For robust visual-odometry measurements, the
+parameters should be adjusted so that the resulting number of
+correspondences in the target environment is around at least 50 when the sensor is
+moving. The correspondence count will be larger when the |rc_visard| is
+static, and the number will change when the |rc_visard| moves through the
+environment. Short failures of the visual odometry are tolerated due to the
+fusion with IMU measurements. Longer failures should be avoided because they
+lead to large pose uncertainties and can lead to errors in the state estimation.
+
+Each run-time parameter is represented by a row on the |webgui|'s *Dynamics* tab. The name of the
+row is given in brackets behind the parameter name, and the parameters are listed in the order they
+appear in the |webgui|:
+
+.. _expl-vo-disp-range:
+
+.. index::
+   pair: visual odometry; disparity range
+
+``disprange`` (*Disparity Range*)
+'''''''''''''''''''''''''''''''''
+   The disparity range gives the maximum disparity value
+   for each image feature related to the resolution of the high-quality disparity
+   image (640 x 480 pixels). The disparity range determines the minimum working
+   distance of the visual odometry. When the disparity range is narrow, only
+   more distant features are considered in the visual-odometry
+   estimation. When choosing a broader disparity range, close features
+   can also be used. Broader disparity ranges increase processing time, which
+   can reduce the visual odometry's frame rate.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+    .. code-block:: bash
+
+       PUT http://<host>/api/v1/nodes/rc_stereovisodo/parameters?disprange=<value>
+
+.. _expl-vo-no-keyframes:
+
+.. index::
+   pair: visual odometry; keyframes
+
+``nkey`` (*Number of Keyframes*)
+'''''''''''''''''''''''''''''''''
+   More keyframes can increase the robustness
+   and accuracy of the visual odometry, but they also increase processing time
+   and can decrease the visual-odometry frame rate.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+    .. code-block:: bash
+
+       PUT http://<host>/api/v1/nodes/rc_stereovisodo/parameters?nkey=<value>
+
+.. _expl-vo-no-corners:
+
+.. index::
+   pair: visual odometry; corners
+
+``ncorner`` (*Number of Corners*)
+'''''''''''''''''''''''''''''''''
+   This value gives the approximate number of corners that will be
+   detected in the left image. Larger numbers make visual odometry more robust
+   and accurate but can lead to lower frame rates of the visual odometry.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+    .. code-block:: bash
+
+       PUT http://<host>/api/v1/nodes/rc_stereovisodo/parameters?ncorner=<value>
+
+.. _expl-vo-no-features:
+
+.. index::
+   pair: visual odometry; features
+
+``nfeature`` (*Number of Features*)
+'''''''''''''''''''''''''''''''''''
+   This value is the maximum number of features that will be derived from the corners.
+   It is useful to detect more corners and select the best subset as
+   features. Larger numbers make visual odometry more robust and accurate but can lead
+   to lower visual-odometry frame rates. Fewer features might be
+   computed, depending on the scene and movement. The actual number of features is
+   reported below the camera image on the :ref:`Web GUI<sect-web-gui>`'s *Dynamics* tab.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+    .. code-block:: bash
+
+       PUT http://<host>/api/v1/nodes/rc_stereovisodo/parameters?nfeature=<value>
+
+.. Note:: Increasing the number of keyframes, corners, or features will also increase
+   robustness but will require more computation time and may reduce the frame rate,
+   depending on other modules active on the |rc_visard|. The visual-odometry frame
+   rate should be at least 10 Hz.
+
+.. _sect-vo-status-values:
+
+Status values
+-------------
+
+This module reports the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_stereovisodo`` module's status values
+	:header:  Name, Description
+
+	"``corner``","Number of detected corners. This value is shown as *Corners* below the image preview in the |webgui|."
+	"``correspondences``","Number of correspondences. This value is shown as *Correspondences* below the image preview in the |webgui|."
+	"``feature``","Number of features. This value is shown as *Features* below the image preview in the |webgui|."
+	"``fps``","Frame rate of the visual odometry in Hertz. This value is shown below the image preview as *Visual Odometry FPS (Hz)* in the |webgui|."
+	"``time_frame``","Processing time in seconds to compute corners and features for each frame"
+	"``time_vo``","Processing time in seconds to compute the motion"
+
+.. _sect-vo-services:
+
+Services
+--------
+
+.. index::
+   pair: visual odometry; services
+
+This module offers no start or stop services itself, because the
+:doc:`dynamics module<dynamics>`:latex:`\:(Section \ref{dynamics:sect-dynamics})`
+starts and stops it.
+
+The visual odometry module offers the following services for persisting and
+restoring parameter settings. 
+
+
+.. _expl-slam-srv-save-parameters:
+
+``save_parameters``
+^^^^^^^^^^^^^^^^^^^
+
+   Saves the currently set parameters persistently to the |rcvisard|. That means, these values are applied
+   even after reboot. The parameters are also
+   persistent over firmware updates and rollbacks.
+
+   .. toggle-header::
+      :header: **Details**
+         
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_stereovisodo/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_stereovisodo_save_parameters_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_stereovisodo_save_parameters_response.txt
+
+.. _expl-slam-srv-reset-defaults:
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+   Restores and applies the default values for this module's parameters
+   ("factory reset").
+
+   .. toggle-header::
+      :header: **Details**
+         
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_stereovisodo/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_stereovisodo_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_stereovisodo_reset_defaults_response.txt
+

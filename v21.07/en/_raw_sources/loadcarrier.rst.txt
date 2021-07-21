@@ -1,0 +1,827 @@
+
+.. include:: global_rst.glb
+
+.. _sect-loadcarrier:
+
+LoadCarrier
+===========
+
+.. index:: ! LoadCarrier
+   single: load carrier detection
+   pair: BoxPick; load carrier
+   pair: ItemPick; load carrier
+   pair: SilhouetteMatch; load carrier
+
+.. only:: rc_cube
+
+   .. index::
+      single: CADMatch; load carrier
+
+Introduction
+------------
+
+The LoadCarrier module allows the detection of load carriers, which is usually the first step
+when objects or grasp points inside a bin should be found. 
+
+The LoadCarrier module is an optional on-board module of the |rc_xxx| and is licensed with 
+any of the modules |pick_modules| or |match_modules|. Otherwise it requires a 
+separate LoadCarrier 
+:ref:`license<sect-updating-license>`:latex:`\:(Section \ref{maintenance:sect-updating-license})`
+to be purchased.
+
+The load carrier functionality is provided by the LoadCarrier module itself, 
+but also by the |pick_modules| and |match_modules| modules.
+
+.. tabularcolumns:: |l|L|
+.. _tab-lc-spec:
+.. csv-table:: Specifications of the LoadCarrier module 
+
+    "Supported load carrier types",    "Standard 4-sided, with solid rim or stepped rim"
+    "Min. load carrier dimensions",    "0.1 m x 0.1 m x 0.1 m"
+    "Max. load carrier dimensions",    "2 m x 2 m x 2 m"
+    "Max. number of load carriers",   "50"
+    "Load carriers available in",   "|pick_modules| and |match_modules|"
+    "Supported pose types", "no pose, orientation prior, exact pose"
+    "Supported reference frames", "camera, external"
+    "Support for", "2D ROI, 3D ROI (see :doc:`roi`:latex:`, Section \ref{roi:sect-roi}`)"
+    "Detection types", "detect load carrier, detect filling level" 
+
+
+.. _sect-loadcarrier-definition:
+
+Load carrier definition
+-----------------------
+
+.. index::
+   pair: load carrier; definition
+   pair: load carrier; rim
+   pair: load carrier; dimensions
+   pair: load carrier; inner volume
+   pair: load carrier; pose
+   pair: load carrier; pose prior
+
+A load carrier (bin) is a container with four walls, a floor and a rectangular rim,
+which can contain objects. It can be used to limit the volume in which to search
+for objects or grasp points. 
+
+A load carrier is defined by its ``outer_dimensions`` and ``inner_dimensions``.
+The maximum ``outer_dimensions`` are 2.0 meters in every dimension.
+
+The origin of the load carrier reference frame is in the center of the load carrier's
+*outer* box and its z axis is perpendicular to the load carrier's floor 
+pointing outwards (see :numref:`fig-loadcarrier-load-carrier`).
+
+.. _fig-loadcarrier-load-carrier:
+.. figure:: images/itempick_load_carrier_reference.*
+   :width: 100%
+   :align: center
+
+   Load carrier with reference frame and inner and outer dimensions
+
+.. Note::
+  Typically, outer and inner dimensions of a load carrier are available in the
+  specifications of the load carrier manufacturer.
+
+The inner volume of the load carrier is defined by its inner dimensions, but includes a region 
+of 10 cm height above the load carrier, so that also items protruding from the load carrier 
+are considered for detection or grasp computation. Furthermore, an additional
+``crop_distance`` is subtracted from the inner volume in every dimension, which acts as a safety margin and can 
+be configured as run-time parameter (see :ref:`sect-loadcarrier-parameters`:latex:`, Section 
+\ref{loadcarrier:sect-loadcarrier-parameters})`).
+:numref:`fig-loadcarrier-inside-volume` visualizes the inner volume of a load carrier. Only 
+points which are inside this volume are considered for detections.
+
+.. _fig-loadcarrier-inside-volume:
+.. figure:: images/load_carrier_inside_volume.*
+  :width: 50%
+  :align: center
+
+  Visualization of the inner volume of a load carrier. Only 
+  points which are inside this volume are considered for detections. 
+
+Since the load carrier detection is based on the detection of the load carrier's rim,
+the rim geometry must be specified if it cannot be determined from the difference between
+outer and inner dimensions. For this, the ``rim_thickness`` can be explicitly set. The rim 
+thickness gives the thickness of the outer part of the rim in in x and y direction.
+When a rim thickness is given, an optional ``rim_step_height`` can also be
+specified, which gives the height of the step between the outer and the inner part of the rim.
+Examples of load carriers which require the rim thickness to be set are given in :numref:`fig-loadcarrier-load-carrier-rim-types`.
+
+.. _fig-loadcarrier-load-carrier-rim-types:
+.. figure:: images/rim_types.*
+   :width: 80%
+   :align: center
+
+   Examples of load carriers which require a rim thickness to be specified
+
+.. WARNING:: The rim step height is not considered for collision checking
+   (see :doc:`collisioncheck`:latex:`, Section \ref{collisioncheck:sect-collision}`), but always
+   assumed to be 0. 
+
+A load carrier can be specified with a full 3D ``pose`` consisting of a ``position`` and
+an ``orientation`` quaternion, given in a ``pose_frame``. Based on the given ``pose_type``
+this pose is either used as an orientation prior (``pose_type`` is ``ORIENTATION_PRIOR`` or empty),
+or as the exact pose of the load carrier (``pose_type`` is ``EXACT_POSE``). 
+
+In case the pose serves as orientation prior, the detected load carrier pose is guaranteed
+to have the minimum rotation with respect to the load carrier's prior pose. This pose type 
+is useful for detecting tilted load carriers and for resolving the orientation ambiguity in
+the x and y direction caused by the symmetry of the load carrier model.
+
+In case the pose type is set to ``EXACT_POSE``, no load carrier detection will be performed on the scene data,
+but the given pose will be used in exactly the same way as if the load carrier is detected at 
+that pose. This pose type is especially useful in cases where load carriers do not change their positions
+and/or are hard to detect (e.g. because their rim is too thin or the material is too shiny).
+
+The |rcxxx| can persistently store up to 50 different
+load carrier models, each one identified by a different ``id``.
+The configuration of a load carrier model is normally performed offline,
+during the set up the desired application.
+This can be done via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or in the |rcxxx| |webgui|.
+
+.. Note::
+  The configured load carrier models
+  are persistent even over firmware updates and rollbacks.
+
+.. _sect-loadcarrier-compartment:
+
+Load carrier compartments
+-------------------------
+
+.. index::
+   pair: load carrier; compartment
+
+Some detection modules can make use of a ``load_carrier_compartment`` to further limit the volume for the detection,
+for example :ref:`ItemPick's compute_grasps service<expl-itempick-srv-compute-grasps>`:latex:`\:(see \ref{itempick:expl-itempick-srv-compute-grasps})`.
+A load carrier compartment is a box whose ``pose`` is defined as the transformation from the load carrier reference frame to the compartment 
+reference frame, which is located in the center of the compartment box (see :numref:`fig-loadcarrier-compartment`).
+
+.. _fig-loadcarrier-compartment:
+.. figure:: images/itempick_load_carrier_compartment.*
+   :width: 100%
+   :align: center
+
+   Sample compartment inside a load carrier. The coordinate frame shown in the image is the
+   reference frame of the compartment.
+
+The compartment volume is intersected with the load carrier inner volume to compute the volume for the detection. 
+If this intersection should also contain the 10 cm region above the load carrier, the height of the compartment box
+must be increased accordingly.
+
+
+.. _sect-loadcarrier-detect-lc:
+
+Detection of load carriers
+--------------------------
+
+.. index::
+   pair: load carrier; detection
+
+The load carrier detection algorithm is based on the detection of the load carrier's
+rectangular rim. By default, the algorithm searches for a load carrier whose rim plane
+is perpendicular to the measured gravity vector. To detect tilted load carriers, its
+approximate orientation must be specified as ``pose`` and the ``pose_type`` should be 
+set to ``ORIENTATION_PRIOR``. 
+
+When a 3D region of interest (see :ref:`sect-roi`:latex:`, Section \ref{roi:sect-roi}`)
+is used to limit the volume in which a load carrier should be detected,
+only the load carrier's rim must be fully included in the region of interest.
+
+The detection algorithm returns the pose of the load carrier's origin 
+(see :ref:`sect-loadcarrier-definition`:latex:`, Section \ref{loadcarrier:sect-loadcarrier-definition}`)
+in the desired pose frame.
+
+The detection functionality also determines if the detected load carrier is ``overfilled``,
+which means, that objects protrude from the plane defined by the load carrier's outer part of the rim.
+
+.. _fig-loadcarrier-load-carrier-models:
+.. figure:: images/itempick_load_carrier_reference_rim_sidebyside.*
+   :width: 100%
+   :align: center
+
+   Load carrier models and reference frames
+
+
+.. Because of the symmetry of the load carrier model, there is an ambiguity
+.. in the definition of the x axis sense.
+.. :numref:`fig-loadcarrier-load-carrier-orientation` visualizes how the sense of
+.. the load carrier x axis is defined for rectangular load carriers.
+..
+.. .. _fig-loadcarrier-load-carrier-orientation:
+.. .. figure:: images/itempick_load_carrier_orientation.png
+..    :width: 600 px
+..    :align: center
+..
+..    Disambiguation of the coordinate system for a rectangular load carrier.
+..    All load carrier are viewed from the left eye of the |rc_visard|.
+..    The dashed line represents the orientation where the x axis flips
+..    (-45 degrees on the image plane).
+
+.. _sect-loadcarrier-detect-filling-level:
+
+Detection of filling level
+--------------------------
+
+.. index::
+   pair: BoxPick; filling level
+   pair: ItemPick; filling level
+   pair: SilhouetteMatch; filling level
+   pair: LoadCarrier; filling level
+
+.. only:: rc_cube
+
+   .. index::
+      single: CADMatch; filling level
+
+The LoadCarrier module offers the ``detect_filling_level``
+service to compute the filling level of a detected load carrier.
+
+The load carrier is subdivided in a configurable number of cells in a 2D grid.
+The maximum number of cells is 10x10.
+For each cell, the following values are reported:
+
+- ``level_in_percent``: minimum, maximum and mean cell filling level in percent
+  from the load carrier floor.
+  These values can be larger than 100% if the cell is overfilled.
+- ``level_free_in_meters``: minimum, maximum and mean cell free level in meters
+  from the load carrier rim. These values can be negative if the cell is overfilled.
+- ``cell_size``: dimensions of the 2D cell in meters.
+- ``cell_position``: position of the cell center in meters
+  (either in ``camera`` or ``external`` frame, see :ref:`sect-loadcarrier-hand-eye-dep`:latex:`, Section \ref{loadcarrier:sect-loadcarrier-hand-eye-dep}`).
+  The z-coordinate is on the level of the load carrier rim.
+- ``coverage``: represents the proportion of valid pixels in this cell.
+  It varies between 0 and 1 with steps of 0.1.
+  A low coverage indicates that the cell contains several missing data
+  (i.e. only a few points were actually measured in this cell).
+
+These values are also calculated for the whole load carrier itself.
+If no cell subdivision is specified, only the overall filling level is computed.
+
+.. _fig-loadcarrier-lc-filling-level:
+.. figure:: images/itempick_lc_filling_level.png
+   :width: 100%
+   :align: center
+
+   Visualizations of the load carrier filling level: overall filling level without
+   grid (left), 4x3 grid (center), 8x8 grid (right).
+   The load carrier content is shown in a green gradient from white
+   (on the load carrier floor) to dark green.
+   The overfilled regions are visualized in red. Numbers indicate cell IDs.
+
+.. _sect-loadcarrier-dependencies:
+
+Interaction with other modules
+------------------------------
+
+Internally, the LoadCarrier module depends on, and interacts with other on-board
+modules as listed below.
+
+.. Note::
+  All changes and configuration updates to these modules will affect
+  the performance of the LoadCarrier module.
+
+.. For each load carrier detection, the LoadCarrier module
+.. acquires datasets of synchronized images and estimates the gravity vector.
+.. The data acquisition step normally takes between 500 ms and 600 ms
+.. with "High" depth image quality.
+
+.. _sect-loadcarrier-stereo-camera-matching:
+
+Stereo camera and Stereo matching
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The LoadCarrier module makes internally use of the following data:
+
+- Rectified images from the :doc:`stereo_camera` module
+  (``rc_stereocamera``:latex:`, Section \ref{stereo_camera:sect-stereo-camera}`);
+
+- Disparity, error, and confidence images from the :doc:`stereo_matching` module
+  (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`).
+
+All processed images are guaranteed to be captured after the module trigger time.
+
+.. _sect-loadcarrier-dynamics:
+
+Estimation of gravity vector
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For each load carrier detection, the module
+estimates the gravity vector by subscribing to the |rc_visard|'s IMU data stream.
+
+.. Note::
+   The gravity vector is estimated from linear acceleration readings from the on-board IMU.
+   For this reason, the LoadCarrier module requires the |rc_visard| to remain
+   still while the gravity vector is being estimated.
+
+.. _sect-loadcarrier-iocontrol-dep:
+
+IO and Projector Control
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+In case the |rc_xxx| is used in conjunction with an external random dot 
+projector and the :doc:`iocontrol` module (``rc_iocontrol``:latex:`, 
+Section \ref{iocontrol:sect-iocontrol}`), it is recommended to connect 
+the projector to GPIO Out 1 and set the stereo-camera module's 
+acquisition mode to ``SingleFrameOut1`` (see :ref:`Stereo matching 
+parameters<sect-disp-image-parameters>`:latex:`, Section 
+\ref{stereo_matching:sect-disp-image-parameters})`, so that on each 
+image acquisition trigger an image with and without projector pattern is 
+acquired.
+
+Alternatively, the output mode for the GPIO output in use should be set 
+to ``ExposureAlternateActive`` (see :ref:`sect-iocontrol-params`:latex:`,
+Section \ref{iocontrol:sect-iocontrol-params}`).
+
+In either case,
+the *Auto Exposure Mode* ``exp_auto_mode`` should be set to ``AdaptiveOut1`` to optimize the exposure
+of both images (see :ref:`Stereo camera parameters<sect-cam-params>`:latex:`, Section \ref{stereo_camera:sect-cam-params})`.
+
+No additional changes are required to use the LoadCarrier module
+in combination with a random dot projector.
+
+.. _sect-loadcarrier-hand-eye-dep:
+
+Hand-eye calibration
+^^^^^^^^^^^^^^^^^^^^
+
+In case the camera has been calibrated to a robot, the loadcarrier module
+can automatically provide poses in the robot coordinate frame.
+For the loadcarrier nodes' :ref:`sect-loadcarrier-services`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-services})`, the frame of the
+output poses can be controlled with the ``pose_frame`` argument.
+
+Two different ``pose_frame`` values can be chosen:
+
+1. **Camera frame** (``camera``).
+   All poses provided by the modules are in the camera frame,
+   and no prior knowledge about the pose of the camera in the environment is required.
+   This means that the configured load carriers move with the camera.
+   It is the user's responsibility to update the configured poses
+   if the camera frame moves (e.g. with a robot-mounted camera).
+
+2. **External frame** (``external``).
+   All poses provided by the modules are in the external frame,
+   configured by the user during the hand-eye calibration process.
+   The module relies on the on-board 
+   :doc:`Hand-eye calibration module<handeye_calibration>`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})`
+   to retrieve the sensor mounting (static or robot mounted) and
+   the hand-eye transformation.
+   If the mounting is static, no further information is needed.
+   If the sensor is robot-mounted, the ``robot_pose`` is required
+   to transform poses to and from the ``external`` frame.
+
+.. Note::
+   If no hand-eye calibration is available, all ``pose_frame`` values should be set to ``camera``.
+
+All ``pose_frame`` values that are not ``camera`` or ``external`` are rejected.
+
+.. _sect-loadcarrier-parameters:
+
+Parameters
+----------
+
+.. index::
+   single: LoadCarrier; parameters
+
+The LoadCarrier module is called ``rc_load_carrier``
+in the |rest-api| and is used internally by several other modules. 
+The user can explore and configure the LoadCarrier
+module's run-time parameter, e.g. for development and testing, using the
+*LoadCarrier* page under the *Modules* tab in the 
+:ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`,
+or the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. include:: _gen/nodes/params/rc_load_carrier.txt
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each run-time parameter is represented by a row on the *LoadCarrier Settings* section 
+of the |webgui|'s *LoadCarrier* page.
+The name in the |webgui| is given in brackets behind the parameter name and the parameters are
+listed in the order they appear in the |webgui|. The parameters are prefixed with ``load_carrier_``
+when they are used outside the ``rc_load_carrier`` module from another detection module
+using the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+.. _expl-loadcarrier-model-tolerance:
+
+``model_tolerance`` (*Model Tolerance*)
+'''''''''''''''''''''''''''''''''''''''
+    indicates how much the estimated load carrier dimensions are allowed to differ from the load carrier model dimensions in meters.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+    .. code-block:: bash
+
+       PUT http://<host>/api/v1/nodes/rc_load_carrier/parameters?model_tolerance=<value>
+
+.. _expl-loadcarrier-crop-distance:
+
+``crop_distance`` (*Crop Distance*)
+'''''''''''''''''''''''''''''''''''
+    sets the safety margin in meters by which the load carrier's inner dimensions are
+    reduced to define the region of interest for detection (ref. :numref:`fig-loadcarrier-inside-volume`).
+
+    Via the |restapi|, this parameter can be set as follows.
+
+    .. code-block:: bash
+
+       PUT http://<host>/api/v1/nodes/rc_load_carrier/parameters?crop_distance=<value>
+
+.. _sect-loadcarrier-services:
+
+Services
+--------
+
+.. index::
+   single: LoadCarrier; services
+
+The user can explore and call the LoadCarrier module's services,
+e.g. for development and testing, using the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or
+the |rc_xxx|
+:ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})` on the
+*LoadCarrier* page under the *Modules* tab.
+
+Each service response contains a ``return_code``,
+which consists of a ``value`` plus an optional ``message``.
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+The smaller value is selected in case a service has multiple ``return_code`` values,
+but all messages are appended in the ``return_code`` message.
+
+The following table contains a list of common codes:
+
+.. tabularcolumns:: |c|L|
+.. _tab-loadcarrier-return-codes:
+.. csv-table:: Return codes of the LoadCarrier module's services
+    :header:  Code, Description
+
+    "0",    "Success"
+    "-1",   "An invalid argument was provided"
+    "-4",   "Data acquisition took longer than the maximum allowed time of 5.0 seconds"
+    "-10",  "New element could not be added as the maximum storage capacity of load carriers has been exceeded"
+    "-11",  "Sensor not connected, not supported or not ready"
+    "-302", "More than one load carrier provided to the ``detect_load_carriers`` or ``detect_filling_level`` services, but only one is supported"
+    "10",   "The maximum storage capacity of load carriers has been reached"
+    "11",  "An existent persistent model was overwritten by the call to ``set_load_carrier``"
+    "100",  "The requested load carriers were not detected in the scene"
+    "102",  "The detected load carrier is empty"
+    "300",  "A valid ``robot_pose`` was provided as argument but it is not required"
+    
+
+All software modules providing the load carrier functionality offer the following services.
+
+.. _expl-loadcarrier-srv-set-lc:
+
+``set_load_carrier``
+^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores a load carrier on the |rc_xxx|.
+   All configured load carriers are persistent over firmware updates and rollbacks.
+
+   .. toggle-header::
+      :header: **Details**
+         
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_load_carrier/services/set_load_carrier
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Details for the definition of the ``load_carrier`` type are given in 
+            :ref:`sect-loadcarrier-detect-lc`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-detect-lc})`.
+
+            The field ``type`` is optional and currently only accepts ``STANDARD``.
+            
+            The field ``rim_ledge`` is optional and currently only accepts 0.
+
+            .. include:: _gen/nodes/services/rc_load_carrier_set_load_carrier_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_set_load_carrier_response.txt
+
+.. _expl-loadcarrier-srv-get-lc:
+
+``get_load_carriers``
+^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the configured load carriers with the requested ``load_carrier_ids``.
+   If no ``load_carrier_ids`` are provided, all configured load carriers are returned.
+
+   .. toggle-header::
+      :header: **Details**
+         
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_load_carrier/services/get_load_carriers
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_get_load_carriers_request.txt
+
+         .. tab:: **Response**
+
+            The field ``type`` will always be ``STANDARD`` and ``rim_ledge`` will always be 0.
+
+            .. include:: _gen/nodes/services/rc_load_carrier_get_load_carriers_response.txt
+
+      
+
+.. _expl-loadcarrier-srv-delete-lc:
+
+``delete_load_carriers``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured load carriers with the requested ``load_carrier_ids``.
+   All load carriers to be deleted must be explicitly stated in ``load_carrier_ids``.
+
+   .. toggle-header::
+      :header: **Details**
+         
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_load_carrier/services/delete_load_carriers
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_delete_load_carriers_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_delete_load_carriers_response.txt
+
+.. _expl-loadcarrier-srv-detect-lc:
+
+``detect_load_carriers``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Triggers a load carrier detection as described in 
+   :ref:`sect-loadcarrier-detect-lc`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-detect-lc})`.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_load_carrier/services/detect_load_carriers
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Required arguments:
+
+               ``pose_frame``: see :ref:`sect-loadcarrier-hand-eye-dep`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-hand-eye-dep})`.
+
+               ``load_carrier_ids``: IDs of the load carriers which should be detected.
+
+            Potentially required arguments:
+
+               ``robot_pose``: see :ref:`sect-loadcarrier-hand-eye-dep`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-hand-eye-dep})`.
+
+            Optional arguments:
+
+               ``region_of_interest_id``: ID of the 3D region of interest where to search for the load carriers.
+
+               ``region_of_interest_2d_id``: ID of the 2D region of interest where to search for the load carriers.
+
+               .. Warning:: Only one type of region of interest can be set.
+
+            .. include:: _gen/nodes/services/rc_load_carrier_detect_load_carriers_request.txt
+
+         .. tab:: **Response**
+
+            ``load_carriers``: list of detected load carriers.
+
+            ``timestamp``: timestamp of the image set the detection ran on.
+
+            ``return_code``: holds possible warnings or error codes and messages.
+
+            .. include:: _gen/nodes/services/rc_load_carrier_detect_load_carriers_response.txt
+            
+
+.. _expl-loadcarrier-srv-detect-filling-level:
+
+``detect_filling_level``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Triggers a load carrier filling level detection as described in 
+   :ref:`sect-loadcarrier-detect-filling-level`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-detect-filling-level})`.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_load_carrier/services/detect_filling_level
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Required arguments:
+
+               ``pose_frame``: see :ref:`sect-loadcarrier-hand-eye-dep`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-hand-eye-dep})`.
+
+               ``load_carrier_ids``: IDs of the load carriers which should be detected.
+
+            Potentially required arguments:
+
+               ``robot_pose``: see :ref:`sect-loadcarrier-hand-eye-dep`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-hand-eye-dep})`.
+
+            Optional arguments:
+
+               ``filling_level_cell_count``: Number of cells in the filling level grid.
+
+               ``region_of_interest_id``: ID of the 3D region of interest where to search for the load carriers.
+               
+               ``region_of_interest_2d_id``: ID of the 2D region of interest where to search for the load carriers.
+
+               .. Warning:: Only one type of region of interest can be set.
+
+            .. include:: _gen/nodes/services/rc_load_carrier_detect_filling_level_request.txt
+
+         .. tab:: **Response**
+
+            ``load_carriers``: list of detected load carriers and their filling levels.
+
+            ``timestamp``: timestamp of the image set the detection ran on.
+
+            ``return_code``: holds possible warnings or error codes and messages.
+
+            .. include:: _gen/nodes/services/rc_load_carrier_detect_filling_level_response.txt
+
+
+
+.. _expl-loadcarrier-srv-set-roi:
+
+``set_region_of_interest``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   see :ref:`expl-roi-srv-set-roi`:latex:`\:(Section \ref{roi:expl-roi-srv-set-roi})`.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_load_carrier/services/set_region_of_interest
+
+.. _expl-loadcarrier-srv-get-rois:
+
+``get_regions_of_interest``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  
+   see :ref:`expl-roi-srv-get-roi`:latex:`\:(Section \ref{roi:expl-roi-srv-get-roi})`.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_load_carrier/services/get_regions_of_interest
+
+.. _expl-loadcarrier-srv-delete-rois:
+
+``delete_regions_of_interest``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   see :ref:`expl-roi-srv-delete-roi`:latex:`\:(Section \ref{roi:expl-roi-srv-delete-roi})`.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_load_carrier/services/delete_regions_of_interest
+
+.. _expl-loadcarrier-srv-set-roi-2d:
+
+``set_region_of_interest_2d``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   see :ref:`expl-roi-srv-set-roi-2d`:latex:`\:(Section \ref{roi:expl-roi-srv-set-roi-2d})`.
+
+   .. toggle-header::
+      :header: **Details**
+         
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_load_carrier/services/set_region_of_interest_2d
+
+.. _expl-loadcarrier-srv-get-rois-2d:
+
+``get_regions_of_interest_2d``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  
+   see :ref:`expl-roi-srv-get-roi-2d`:latex:`\:(Section \ref{roi:expl-roi-srv-get-roi-2d})`.
+
+   .. toggle-header::
+      :header: **Details**
+         
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_load_carrier/services/get_regions_of_interest_2d
+
+.. _expl-loadcarrier-srv-delete-rois-2d:
+
+``delete_regions_of_interest_2d``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   see :ref:`expl-roi-srv-delete-roi-2d`:latex:`\:(Section \ref{roi:expl-roi-srv-delete-roi-2d})`.
+
+   .. toggle-header::
+      :header: **Details**
+         
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_load_carrier/services/delete_regions_of_interest_2d
+
+
+.. _expl-loadcarrier-srv-save-parameters:
+
+``save_parameters``
+^^^^^^^^^^^^^^^^^^^
+
+   Saves the currently set parameters persistently. That means, these values are applied
+   even after reboot. The parameters are also
+   persistent over firmware updates and rollbacks.
+
+   .. toggle-header::
+      :header: **Details**
+         
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_load_carrier/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_save_parameters_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_save_parameters_response.txt
+
+.. _expl-loadcarrier-srv-reset-defaults:
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+   Restores and applies the default values for this module's parameters
+   ("factory reset").
+
+   .. toggle-header::
+      :header: **Details**
+         
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_load_carrier/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_reset_defaults_response.txt
+

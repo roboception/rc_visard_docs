@@ -1,0 +1,1203 @@
+LoadCarrier
+
+Einleitung
+
+Das LoadCarrier Modul ermöglicht die Erkennung von Load Carriern, was
+oftmals der erste Schritt für die Erkennung con Objekten oder
+Berechnung von Greifpunkten in einem Behälter ist.
+
+Das LoadCarrier Modul ist ein optionales Modul, welches intern auf dem
+
+rc_visard
+
+ läuft, und ist freigeschaltet, sobald eine gültige Lizenz für eines
+der Module
+
+ItemPick und BoxPick
+
+ oder
+
+SilhouetteMatch
+
+ vorhanden ist. Andernfalls benötigt es eine gesonderte LoadCarrier
+
+Lizenz
+
+ , welche erworben werden muss.
+
+Die Load Carrier Funktionalität wird vom LoadCarrier Modul selbst,
+aber auch von
+
+ItemPick und BoxPick
+
+ und
+
+SilhouetteMatch
+
+ angeboten.
+
+Spezifikationen des LoadCarrier-Moduls      Unterstützte Load Carrier
+Typen  Standard 4-seitig, mit durchgängigem oder abgestuftem Rand
+Min. Load Carrier Abmessungen  0.1 m x 0.1 m x 0.1 m  Max. Load
+Carrier Abmessungen  2 m x 2 m x 2 m  Max. Anzahl von Load Carriern
+50  Load Carrier verfügbar in  ItemPick und BoxPick\:(Section
+\ref{itempick:sect-itempick}) und SilhouetteMatch\:(Section
+\ref{silhouettematch:sect-silhouettematch})  Mögliche Posen-Arten
+keine Pose, Orientierungsprior, exakte Pose  Mögliche
+Referenzkoordinatensysteme  camera, external  Unterstützt  2D ROI, 3D
+ROI (siehe Region of Interest, Abschnitt \ref{roi:sect-roi})
+Detektionsarten  Load Carrier Erkennung, Füllstandserkennung
+
+Load Carrier Definition
+
+Ein sogenannter Load Carrier ist ein Behälter mit vier Wänden, einem
+Boden und einem rechteckigen Rand, der Objekte enthalten kann. Er kann
+genutzt werden, um das Volumen, in dem nach Objekten oder Greifpunkten
+gesucht wird, zu begrenzen.
+
+Seine Geometrie ist durch die inneren und äußeren Abmessungen
+("inner_dimensions" und "outer_dimensions") definiert. Die maximalen
+"outer_dimensions" betragen 2.0 m in allen Dimensionen.
+
+Der Ursprung des Load Carrier Koordinatensystems liegt im Zentrum des
+durch die
+
+Außenmaße
+
+ definierten Quaders. Dabei ist die z-Achse senkrecht zum Boden des
+Load Carriers und zeigt aus dem Load Carrier heraus (siehe
+
+Abb. 26
+
+).
+
+
+Bemerkung: Die Innen- und Außenmaße eines Load Carriers sind
+  typischerweise in den Angaben des jeweiligen Herstellers
+  spezifiziert, und können im Produktblatt oder auf der Produktseite
+  nachgeschlagen werden.
+
+Das Innenvolumen eines Load Carriers ist durch seine Innenmaße
+definiert, aber enthält zusätzlich einen Bereich von 10 cm oberhalb
+des Load Carriers, damit Objekte, die aus dem Load Carrier
+herausragen, auch für die Detektion oder Greifpunktberechnung
+berücksichtigt werden. Weiterhin wird vom Innenvolumen in jeder
+Richtung ein zusätzlicher Sicherheitsabstand "crop_distance"
+abgezogen, welcher als Laufzeitparameter konfiguriert werden kann
+(siehe
+
+Parameter
+
+).
+
+Abb. 27
+
+ zeigt das Innenvolumen eines Load Carriers. Nur Punkte, die sich
+innerhalb dieses Volumens  befinden, werden für Detektionen
+berücksichtigt.
+
+
+Da die Erkennung von Load Carriern auf der Erkennung des Load Carrier
+Rands basiert, muss die Geometrie des Randes angegeben werden, wenn
+sie nicht aus der Differenz zwischen Außen- und Innenmaßen bestimmt
+werden kann. Dazu kann die Randstärke "rim_thickness" explizit gesetzt
+werden. Die Randstärke gibt die Breite des äußeren Rands in x- und
+y-Richtung an. Wenn eine Randstärke gesetzt ist, kann optional auch
+die Randstufenhöhe "rim_step_height" angegeben werden. Die
+Randstufenhöhe gibt die Höhe der Stufe zwischen dem äußeren und dem
+inneren Teil des Load Carrier Rands an. Beispiele für Load Carrier,
+bei denen die Angabe der Randstärke für die Erkennung notwendig ist,
+werden in
+
+Abb. 28
+
+ gezeigt.
+
+
+Warnung: Die Randstufenhöhe wird für die Kollisionsprüfung (siehe
+
+  CollisionCheck
+
+  ) nicht berücksichtigt, sondern als 0 angenommen.
+
+Für einen Load Carrier kann eine Pose bestehend aus "position" und
+"orientation" als Quaternion in einem Referenzkoordinatensystem
+angegeben werden. Basierend auf dem Posentyp "pose_type" wird diese
+Pose entweder als Prior für die Load Carrier Orientierung ("pose_type"
+ist "ORIENTATION_PRIOR" oder leer) oder als exakte Pose ("pose_type"
+ist "EXACT_POSE") verwendet.
+
+Falls die angegebene Pose als Prior für die Orientierung dient, wird
+garantiert, dass die zurückgelieferte Pose des erkannten Load Carriers
+die minimale Rotation bezogen auf den gesetzten Prior hat. Dieser
+Posentyp ist nützlich für die Erkennung von geneigten Load Carriern,
+oder um Mehrdeutigkeiten in der x- und y-Richtung aufzulösen, die
+durch die Symmetrie des Load Carriers verursacht werden.
+
+Falls der Posentyp auf "EXACT_POSE" gesetzt ist, wird keine Load
+Carrier Erkennung auf den Szenendaten durchgeführt, sondern die
+angegebene Pose wird so verwendet, als wäre der Load Carrier in dieser
+Pose in der Szene erkannt worden. Dieser Posentyp ist nützlich, wenn
+Load Carrier ihre Position nicht verändern und/oder schwer zu erkennen
+sind (z.B. weil ihr Rand zu schmal ist oder das Material zu stark
+reflektiert).
+
+Der
+
+rc_visard
+
+ erlaubt das Speichern von bis zu 50 verschiedenen Load Carriern, von
+denen jeder mit einer "id" versehen ist. Die für eine spezifische
+Anwendung relevanten Load Carrier können mithilfe der
+
+rc_visard
+
+ Web GUI oder der
+
+REST-API-Schnittstelle
+
+ konfiguriert werden.
+
+Bemerkung: Die konfigurierten Load Carrier sind persistent auf dem
+
+  rc_visard
+
+   gespeichert und auch nach Firmware-Updates und -Wiederherstellungen
+  verfügbar.
+
+Load Carrier Abteil
+
+Bei einigen Detektionsmodulen kann ein Load Carrier Abteil
+("load_carrier_compartment") angegeben werden, um das Volumen für die
+Erkennung zu begrenzen, zum Beispiel in
+
+ItemPick's compute_grasps Service
+
+. Ein Load Carrier Abteil ist eine Box, deren Pose "pose" als
+Transformation vom Load Carrier Koordinatensystem in das
+Abteilkoordinatensystem, welches im Zentrum der durch das Abteil
+definierten Box liegt, angegeben wird (siehe
+
+Abb. 29
+
+).
+
+
+Als Volumen für die Detektion wird der Durchschnitt des Abteil-
+Volumens und des Load Carrier Innenraums verwendet. Wenn dieser
+Durchschnitt ebenfalls den Bereich von 10 cm oberhalb des Load
+Carriers enthalten soll, muss die Höhe der Box, die das Abteil
+definiert, entsprechend vergrößert werden.
+
+Erkennung von Load Carriern
+
+Der Algorithmus zur Erkennung von Load Carriern basiert auf der
+Erkennung des rechteckigen Load Carrier Rands. Standardmäßig wird nach
+einem Load Carrier gesucht, dessen durch den Rand definierte Ebene
+senkrecht zur gemessenen Gravitationsrichtung ausgerichtet ist. Um
+einen geneigten Load Carrier zu erkennen, muss seine ungefähre
+Orientierung als Pose "pose" in einem Referenzkoordinatensystem
+"pose_frame" angegeben werden, und der Posentyp "pose_type" auf
+"ORIENTATION_PRIOR" gesetzt werden.
+
+Wenn eine 3D Region of Interest (siehe
+
+Region of Interest
+
+) genutzt wird, um das Volumen für die Load Carrier Erkennung
+einzuschränken, muss nur der Rand des Load Carriers vollständig in der
+Region of Interest enthalten sein.
+
+Die Erkennung liefert die Pose des Load Carrier Koordinatensystems
+(siehe
+
+Load Carrier Definition
+
+) im gewünschten Referenzkoordinatensystem zurück.
+
+Bei der Erkennung wird auch ermittelt, ob der Load Carrier überfüllt
+("overfilled") ist, was bedeutet, dass Objekte aus dem Load Carrier
+herausragen.
+
+
+Füllstandserkennung
+
+Das LoadCarrier Modul bietet den Service "detect_filling_level" an, um
+den Füllstand eines erkannten Load Carriers zu berechnen.
+
+Dazu wird der Load Carrier in eine konfigurierbare Anzahl von Zellen
+unterteilt, welche in einem 2D-Raster angeordnet sind. Die maximale
+Anzahl der Zellen beträgt 10x10. Für jede Zelle werden folgende Werte
+ermittelt:
+
+level_in_percent: Minimum, Maximum und Mittelwert des Füllstands vom
+Boden in Prozent. Diese Werte können größer als 100% sein, falls die
+Zelle überfüllt ist.
+
+level_free_in_meters: Minimum, Maximum und Mittelwert in Metern des
+freien Teils der Zelle vom Rand des Load Carriers gemessen. Diese
+Werte können negativ sein, falls die Zelle überfüllt ist.
+
+cell_size: Abmessungen der 2D-Zelle in Metern.
+
+cell_position: Position des Mittelpunkts der Zelle in Metern (entweder
+im Koordinatensystem camera oder external, siehe Hand-Auge-
+Kalibrierung, Abschnitt \ref{itempick:sect-itempick-hand-eye-dep}).
+Die z-Koordinate liegt auf der Ebene des Load Carrier Randes.
+
+coverage: Anteil der gültigen Pixel in dieser Zelle. Dieser Wert
+reicht von 0 bis 1 in Schritten von 0.1. Ein niedriger Wert besagt,
+dass die Zelle fehlende Daten beinhaltet (d.h. nur wenige Punkte
+konnten in der Zelle gemessen werden).
+
+Diese Werte werden auch für den gesamten Load Carrier berechnet. Falls
+keine Zellunterteilung angegeben ist, wird nur der Gesamtfüllstand
+("overall_filling_level") berechnet.
+
+
+Wechselwirkung mit anderen Modulen
+
+Die folgenden, intern auf dem
+
+rc_visard
+
+ laufenden Module liefern Daten für das LoadCarrier Modul oder haben
+Einfluss auf die Datenverarbeitung.
+
+Bemerkung: Jede Konfigurationsänderung dieser Module kann direkte
+  Auswirkungen auf die Qualität oder das Leistungsverhalten des
+  LoadCarrier Moduls haben.
+
+Stereokamera und Stereo-Matching
+
+Folgende Daten werden vom LoadCarrier Modul verarbeitet:
+
+Die rektifizierten Bilder des Stereokamera-Moduls (rc_stereocamera,
+Abschnitt \ref{stereo_camera:sect-stereo-camera});
+
+Die Disparitäts-, Konfidenz- und Fehlerbilder des Stereo-Matching-
+Moduls (rc_stereomatching, Abschnitt \ref{stereo_matching:sect-stereo-
+matching}).
+
+Für alle genutzten Bilder ist garantiert, dass diese nach dem Auslösen
+des Services aufgenommen wurden.
+
+Schätzung der Gravitationsrichtung
+
+Jedes Mal, wenn eine Load Carrier oder Füllstandserkennung
+durchgeführt wird, wird die Gravitationsrichtung basierend auf den
+IMU-Daten des
+
+rc_visard
+
+ geschätzt.
+
+Bemerkung: Die Richtung des Gravitationsvektors wird durch Messungen
+  der linearen Beschleunigung der IMU bestimmt. Für eine korrekte
+  Schätzung des Gravitationsvektors muss der
+
+  rc_visard
+
+   stillstehen.
+
+IOControl und Projektor-Kontrolle
+
+Für den Anwendungsfall, dass der
+
+rc_visard
+
+ zusammen mit einem externen Musterprojektor und dem Modul für
+
+IOControl und Projektor-Kontrolle
+
+ ("rc_iocontrol") betrieben wird, wird empfohlen, den Projektor an
+GPIO Out 1 anzuschließen und den Aufnahmemodus des Stereokamera-Moduls
+auf "SingleFrameOut1" zu setzen (siehe
+
+Stereomatching-Parameter
+
+, damit bei jedem Aufnahme-Trigger ein Bild mit und ohne
+Projektormuster aufgenommen wird.
+
+Alternativ kann der verwendete digitale Ausgang in den Betriebsmodus
+"ExposureAlternateActive" geschaltet werden (siehe
+
+Beschreibung der Laufzeitparameter
+
+).
+
+In beiden Fällen sollte die Belichtungszeitregelung ("exp_auto_mode")
+auf "AdaptiveOut1" gesetzt werden, um die Belichtung beider Bilder zu
+optimieren (siehe
+
+Stereokamera-Parameter
+
+.
+
+Darüber hinaus sind keine weiteren Änderungen für diesen
+Anwendungsfall notwendig.
+
+Hand-Auge-Kalibrierung
+
+Falls die Kamera zu einem Roboter kalibriert wurde, kann die Load
+Carrier Komponente automatisch Posen im Roboterkoordinatensystem
+ausgeben. Für die
+
+Services
+
+ kann das Koordinatensystem der berechneten Posen mit dem Argument
+"pose_frame" spezifiziert werden.
+
+Zwei verschiedene Werte für "pose_frame" können gewählt werden:
+
+Kamera-Koordinatensystem (camera): Alle Posen sind im Kamera-
+Koordinatensystem angegeben und es ist kein zusätzliches Wissen über
+die Lage der Kamera in seiner Umgebung notwendig. Das bedeutet
+insbesondere, dass sich Load Carrier, welche in diesem
+Koordinatensystem angegeben sind, mit der Kamera bewegen. Es liegt
+daher in der Verantwortung des Anwenders, in solchen Fällen die
+entsprechenden Posen der Situation entsprechend zu aktualisieren
+(beispielsweise für den Anwendungsfall einer robotergeführten Kamera).
+
+Benutzerdefiniertes externes Koordinatensystem (external): Alle Posen
+sind im sogenannten externen Koordinatensystem angegeben, welches vom
+Nutzer während der Hand-Auge-Kalibrierung gewählt wurde. In diesem
+Fall bezieht die Load Carrier Funktionalität alle notwendigen
+Informationen über die Kameramontage und die kalibrierte Hand-Auge-
+Transformation automatisch vom Modul Hand-Auge-
+Kalibrierung\:(Abschnitt \ref{handeye_calibration:sect-handeye-
+calibration}). Für den Fall einer robotergeführten Kamera ist vom
+Nutzer zusätzlich die jeweils aktuelle Roboterpose robot_pose
+anzugeben.
+
+Bemerkung: Wenn keine Hand-Auge-Kalibrierung durchgeführt wurde bzw.
+  zur Verfügung steht, muss als Referenzkoordinatensystem "pose_frame"
+  immer "camera" angegeben werden.
+
+Zulässige Werte zur Angabe des Referenzkoordinatensystems sind
+"camera" und "external". Andere Werte werden als ungültig
+zurückgewiesen.
+
+Parameter
+
+Das LoadCarrier Modul wird in der REST-API als "rc_load_carrier"
+bezeichnet und wird intern von mehreren anderen Softwaremodulen
+genutzt. Seine Parameter und Services werden von diesen Modulen und
+von "rc_load_carrier" selbst zur Verfügung gestellt. Sie können auch
+in der
+
+Web GUI
+
+ auf der Seite
+
+LoadCarrier
+
+ (unter dem Menüpunkt
+
+Module
+
+) genutzt werden. Der Benutzer kann die Parameter entweder dort oder
+über die
+
+REST-API-Schnittstelle
+
+ ändern.
+
+Übersicht über die Parameter
+
+Dieses Modul bietet folgende Laufzeitparameter:
+
+Laufzeitparameter des rc_load_carrier Moduls              Name  Typ
+Min.  Max.  Default  Beschreibung  crop_distance  float64  0.0  0.05
+0.005  Sicherheitsspielraum um den das Load Carrier Innenmaß
+verringert wird, um eine Region of Interest für die Erkennung zu
+definieren  model_tolerance  float64  0.003  0.025  0.008  Gibt an,
+wie weit die Abmessungen des Load Carriers von den Werten im Modell
+abweichen dürfen
+
+Beschreibung der Laufzeitparameter
+
+Die Laufzeitparameter werden in der Web GUI zeilenweise im Abschnitt
+
+LoadCarrier Einstellungen
+
+ auf der Seite
+
+LoadCarrier
+
+ dargestellt. Im folgenden wird der Name des Parameters in der Web GUI
+in Klammern hinter dem eigentlichen Parameternamen angegeben. Die
+Parameter sind in derselben Reihenfolge wie in der Web GUI
+aufgelistet. Wenn die Parameter außerhalb des "rc_load_carrier" Moduls
+über die
+
+REST-API-Schnittstelle
+
+ eines anderen Moduls verwendet werden, sind sie durch den Präfix
+"load_carrier_" gekennzeichnet.
+
+model_tolerance (Modelltoleranz)
+
+   Gibt an, wie weit die Abmessungen des Load Carriers von den Werten
+   im Modell abweichen dürfen.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+      PUT http://<host>/api/v1/nodes/rc_load_carrier/parameters?model_tolerance=<value>
+
+crop_distance (Cropping)
+
+   setzt den Sicherheitsspielraum, um den das Load Carrier Innenmaß
+   verringert wird, um eine Region of Interest für die Erkennung zu
+   definieren (siehe
+
+   Abb. 27
+
+   ).
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+      PUT http://<host>/api/v1/nodes/rc_load_carrier/parameters?crop_distance=<value>
+
+Services
+
+Die angebotenen Services des LoadCarrier Moduls können mithilfe der
+
+REST-API-Schnittstelle
+
+ oder der
+
+rc_visard
+
+
+Web GUI
+
+ auf der Seite
+
+LoadCarrier
+
+ unter dem Menüpunkt
+
+Module
+
+ ausprobiert und getestet werden.
+
+Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen
+sogenannten "return_code" bestehend aus einem Integer-Wert und einer
+optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden
+mit einem Wert von "0" quittiert. Positive Werte bedeuten, dass die
+Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche
+Informationen zur Verfügung stehen. Negative Werte bedeuten, dass
+Fehler aufgetreten sind. Für den Fall, dass mehrere Rückgabewerte
+zutreffend wären, wird der kleinste zurückgegeben, und die
+entsprechenden Textnachrichten werden in "return_code.message"
+akkumuliert.
+
+Die folgende Tabelle führt die möglichen Rückgabe-Codes an:
+
+Rückgabecodes der Services des LoadCarrier Moduls      Code
+Beschreibung  0  Erfolgreich  -1  Ungültige(s) Argument(e)  -4  Die
+maximal erlaubte Zeitspanne von 5.0 Sekunden für die interne Akquise
+der Bilddaten wurde überschritten.  -10  Das neue Element konnte nicht
+hinzugefügt werden, da die maximal speicherbare Anzahl an Load
+Carriern überschritten wurde.  -11  Sensor nicht verbunden, nicht
+unterstützt oder nicht bereit  -302  Es wurde mehr als ein Load
+Carrier an den detect_load_carriers oder detect_filling_level Service
+übergeben, aber nur einer wird unterstützt.  10  Die maximal
+speicherbare Anzahl an Load Carriern wurde erreicht.  11  Mit dem
+Aufruf von set_load_carrier wurde ein bereits existierendes Objekt mit
+derselben id überschrieben.  100  Die angefragten Load Carrier wurden
+in der Szene nicht gefunden.  102  Der erkannte Load Carrier ist leer.
+300  Ein gültiges robot_pose-Argument wurde angegeben, ist aber nicht
+erforderlich.
+
+Alle Softwaremodule, die die Load Carrier Funktionalität anbieten,
+stellen folgende Services zur Verfügung.
+
+set_load_carrier
+
+   speichert einen Load Carrier auf dem
+
+   rc_visard
+
+   . Alle Load Carrier sind dauerhaft gespeichert, auch über Firmware-
+   Updates und -Wiederherstellungen hinweg.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_load_carrier/services/set_load_carrier
+
+   Request
+
+   Die Definition des Typs "load_carrier" wird in
+
+   Erkennung von Load Carriern
+
+    beschrieben.
+
+   Das Feld "type" ist optional und akzeptiert derzeit nur "STANDARD".
+
+   Das Feld "rim_ledge" ist optional und akzeptiert derzeit nur 0.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "load_carrier": {
+            "id": "string",
+            "inner_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "outer_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "pose_type": "string",
+            "rim_ledge": {
+              "x": "float64",
+              "y": "float64"
+            },
+            "rim_step_height": "float64",
+            "rim_thickness": {
+              "x": "float64",
+              "y": "float64"
+            },
+            "type": "string"
+          }
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "set_load_carrier",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_load_carriers
+
+   gibt die mit "load_carrier_ids" spezifizierten, gespeicherten Load
+   Carrier zurück. Werden keine "load_carrier_ids" angegeben, enthält
+   die Serviceantwort alle gespeicherten Load Carrier.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_load_carrier/services/get_load_carriers
+
+   Request
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "load_carrier_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Das Feld "type" ist immer "STANDARD" und "rim_ledge" ist immer 0.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "get_load_carriers",
+        "response": {
+          "load_carriers": [
+            {
+              "id": "string",
+              "inner_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "outer_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "pose_type": "string",
+              "rim_ledge": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "rim_step_height": "float64",
+              "rim_thickness": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "type": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_load_carriers
+
+   löscht die mit "load_carrier_ids" spezifizierten, gespeicherten
+   Load Carrier. Alle zu löschenden Load Carrier müssen explizit
+   angegeben werden.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_load_carrier/services/delete_load_carriers
+
+   Request
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "load_carrier_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "delete_load_carriers",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+detect_load_carriers
+
+   löst die Erkennung von Load Carriern aus,  wie in
+
+   Erkennung von Load Carriern
+
+    beschrieben.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_load_carrier/services/detect_load_carriers
+
+   Request
+
+   Obligatorische Serviceargumente:
+
+      "pose_frame": siehe
+
+      Hand-Auge-Kalibrierung
+
+      .
+
+      "load_carrier_ids": IDs der zu erkennenden Load Carrier.
+
+   Möglicherweise benötigte Serviceargumente:
+
+      "robot_pose": siehe
+
+      Hand-Auge-Kalibrierung
+
+      .
+
+   Optionale Serviceargumente:
+
+      "region_of_interest_id": Die ID der 3D Region of Interest,
+      innerhalb welcher nach den Load Carriern gesucht wird.
+
+      "region_of_interest_2d_id": Die ID der 2D Region of Interest,
+      innerhalb welcher nach den Load Carriern gesucht wird.
+
+      Warnung: Es kann nur eine Art von Region of Interest kann
+        angegeben werden.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "load_carrier_ids": [
+            "string"
+          ],
+          "pose_frame": "string",
+          "region_of_interest_2d_id": "string",
+          "region_of_interest_id": "string",
+          "robot_pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          }
+        }
+      }
+
+   Response
+
+   "load_carriers": Liste der erkannten Load Carrier (Behälter).
+
+   "timestamp": Zeitstempel des Bildes, auf dem die Erkennung
+   durchgeführt wurde.
+
+   "return_code": enthält mögliche Warnungen oder Fehlercodes und
+   Nachrichten.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "detect_load_carriers",
+        "response": {
+          "load_carriers": [
+            {
+              "id": "string",
+              "inner_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "outer_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "overfilled": "bool",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "rim_ledge": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "rim_step_height": "float64",
+              "rim_thickness": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "type": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          },
+          "timestamp": {
+            "nsec": "int32",
+            "sec": "int32"
+          }
+        }
+      }
+
+detect_filling_level
+
+   löst eine Load Carrier Füllstandserkennung aus, wie in
+
+   Füllstandserkennung
+
+    beschrieben.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_load_carrier/services/detect_filling_level
+
+   Request
+
+   Obligatorische Serviceargumente:
+
+      "pose_frame": siehe
+
+      Hand-Auge-Kalibrierung
+
+      .
+
+      "load_carrier_ids": IDs der zu erkennenden Load Carrier.
+
+   Möglicherweise benötigte Serviceargumente:
+
+      "robot_pose": siehe
+
+      Hand-Auge-Kalibrierung
+
+      .
+
+   Optionale Serviceargumente:
+
+      "filling_level_cell_count": Anzahl der Zellen im
+      Füllstandsraster.
+
+      "region_of_interest_id": Die ID der 3D Region of Interest,
+      innerhalb welcher nach den Load Carriern gesucht wird.
+
+      "region_of_interest_2d_id": Die ID der 2D Region of Interest,
+      innerhalb welcher nach den Load Carriern gesucht wird.
+
+      Warnung: Es kann nur eine Art von Region of Interest kann
+        angegeben werden.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "filling_level_cell_count": {
+            "x": "uint32",
+            "y": "uint32"
+          },
+          "load_carrier_ids": [
+            "string"
+          ],
+          "pose_frame": "string",
+          "region_of_interest_2d_id": "string",
+          "region_of_interest_id": "string",
+          "robot_pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          }
+        }
+      }
+
+   Response
+
+   "load_carriers": Liste an erkannten Load Carriern und deren
+   Füllstand.
+
+   "timestamp": Zeitstempel des Bildes, auf dem die Erkennung
+   durchgeführt wurde.
+
+   "return_code": enthält mögliche Warnungen oder Fehlercodes und
+   Nachrichten.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "detect_filling_level",
+        "response": {
+          "load_carriers": [
+            {
+              "cells_filling_levels": [
+                {
+                  "cell_position": {
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  },
+                  "cell_size": {
+                    "x": "float64",
+                    "y": "float64"
+                  },
+                  "coverage": "float64",
+                  "level_free_in_meters": {
+                    "max": "float64",
+                    "mean": "float64",
+                    "min": "float64"
+                  },
+                  "level_in_percent": {
+                    "max": "float64",
+                    "mean": "float64",
+                    "min": "float64"
+                  }
+                }
+              ],
+              "filling_level_cell_count": {
+                "x": "uint32",
+                "y": "uint32"
+              },
+              "id": "string",
+              "inner_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "outer_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "overall_filling_level": {
+                "cell_position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "cell_size": {
+                  "x": "float64",
+                  "y": "float64"
+                },
+                "coverage": "float64",
+                "level_free_in_meters": {
+                  "max": "float64",
+                  "mean": "float64",
+                  "min": "float64"
+                },
+                "level_in_percent": {
+                  "max": "float64",
+                  "mean": "float64",
+                  "min": "float64"
+                }
+              },
+              "overfilled": "bool",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "rim_ledge": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "rim_step_height": "float64",
+              "rim_thickness": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "type": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          },
+          "timestamp": {
+            "nsec": "int32",
+            "sec": "int32"
+          }
+        }
+      }
+
+set_region_of_interest
+
+   siehe
+
+   set_region_of_interest
+
+   .
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_load_carrier/services/set_region_of_interest
+
+get_regions_of_interest
+
+   siehe
+
+   get_regions_of_interest
+
+   .
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_load_carrier/services/get_regions_of_interest
+
+delete_regions_of_interest
+
+   siehe
+
+   delete_regions_of_interest
+
+   .
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_load_carrier/services/delete_regions_of_interest
+
+set_region_of_interest_2d
+
+   siehe
+
+   set_region_of_interest_2d
+
+   .
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_load_carrier/services/set_region_of_interest_2d
+
+get_regions_of_interest_2d
+
+   siehe
+
+   get_regions_of_interest_2d
+
+   .
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_load_carrier/services/get_regions_of_interest_2d
+
+delete_regions_of_interest_2d
+
+   siehe
+
+   delete_regions_of_interest_2d
+
+   .
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_load_carrier/services/delete_regions_of_interest_2d
+
+save_parameters
+
+   speichert die aktuellen Parametereinstellungen auf dem
+
+   rc_visard
+
+   . Das bedeutet, dass diese Werte selbst nach einem Neustart
+   angewandt werden. Sie bleiben auch bei Firmware-Updates oder
+   -Wiederherstellungen bestehen.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_load_carrier/services/reset_defaults
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "save_parameters",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+reset_defaults
+
+   stellt die Werkseinstellungen der Parameter dieses Moduls wieder
+   her und wendet sie an („factory reset“).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_load_carrier/services/reset_defaults
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }

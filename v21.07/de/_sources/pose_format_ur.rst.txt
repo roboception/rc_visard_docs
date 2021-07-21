@@ -1,0 +1,48 @@
+Universal Robots Posenformat
+
+Das Posenformat, welches von Universal Robots verwendet wird, besteht
+aus einer Position XYZ in Millimetern und einer Orientierung im Angle-
+Axis Format mit dem Winkel \theta im Bogenmaß als Länge der
+Rotationsachse U.
+
+   V = \left(\begin{array}{c}\theta u_x \\ \theta u_y \\ \theta
+   u_z\end{array}\right)
+
+Dies wird als Rotationsvektor bezeichnet.
+
+Umrechnung vom Angle-Axis Format in Quaternionen
+
+Die Umrechnung von einem Rotationsvektor V in eine Quaternion
+q=(\begin{array}{cccc}x & y & z & w\end{array})^T kann wie folgt
+durchgeführt werden.
+
+Zunächst wird der Winkel \theta im Bogenmaß aus dem Rotationsvektor V
+gewonnen durch
+
+   \theta = \sqrt{v_x^2 + v_y^2 + v_z^2}\text{.}
+
+Wenn \theta = 0, dann ist die Quaternion gleich
+q=(\begin{array}{cccc}0 & 0 & 0 & 1\end{array})^T, sonst wird sie
+berechnet durch
+
+   x = v_x \frac{\sin(\theta/2)}{\theta}\text{,} \\ y = v_y
+   \frac{\sin(\theta/2)}{\theta}\text{,} \\ z = v_z
+   \frac{\sin(\theta/2)}{\theta}\text{,} \\ w = \cos(\theta/2)\text{.}
+
+Umrechnung von Quaternionen ins Angle-Axis Format
+
+Die Umrechnung von einer Quaternion q=(\begin{array}{cccc}x & y & z &
+w\end{array})^T mit ||q||=1 in einen Rotationsvektor im Angle-Axis
+Format kann wie folgt durchgeführt werden.
+
+Zunächst wird der Winkel \theta im Bogenmaß aus dem Quaternion
+gewonnen durch
+
+   \theta = 2*\text{acos}(w)\text{.}
+
+Wenn \theta = 0, dann ist der Rotationsvektor V=(\begin{array}{ccc}0 &
+0 & 0\end{array})^T, sonst wird er berechnet durch
+
+   v_x = \theta \frac{x}{\sqrt{1-w^2}}\text{,} \\ v_y = \theta
+   \frac{y}{\sqrt{1-w^2}}\text{,} \\ v_z = \theta
+   \frac{z}{\sqrt{1-w^2}}\text{.}
