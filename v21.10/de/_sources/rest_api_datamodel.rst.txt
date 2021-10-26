@@ -1,0 +1,809 @@
+Datentyp-Definitionen
+
+Die REST-API definiert folgende Datenmodelle, die verwendet werden, um
+auf die
+
+verfügbaren Ressourcen
+
+  zuzugreifen oder diese zu ändern, entweder als benötigte
+Attribute/Parameter oder als Rückgabewerte.
+
+FirmwareInfo:
+   Informationen zu aktuell aktiven und inaktiven Firmware-Images und
+   dazu, welches Image für den Boot-Vorgang verwendet wird.
+
+   Ein Objekt des Typs FirmwareInfo besitzt folgende Eigenschaften:
+
+   active_image (ImageInfo): siehe Beschreibung von ImageInfo.
+
+   fallback_booted (boolean): TRUE, wenn das gewünschte Image nicht
+   hochgefahren werden konnte und ein Fallback auf das zuvor genutzte
+   Image vorgenommen wurde.
+
+   inactive_image (ImageInfo): siehe Beschreibung von ImageInfo.
+
+   next_boot_image (string): Firmware-Image, das beim nächsten
+   Neustart geladen wird (entweder active_image oder inactive_image).
+
+   Musterobjekt
+
+      {
+        "active_image": {
+          "image_version": "string"
+        },
+        "fallback_booted": false,
+        "inactive_image": {
+          "image_version": "string"
+        },
+        "next_boot_image": "string"
+      }
+
+   FirmwareInfo-Objekte sind in
+
+   SysInfo
+
+    enthalten und werden für folgende Anfragen verwendet:
+
+      GET /system/rollback
+
+      GET /system/update
+
+ImageInfo:
+   Informationen zu einem bestimmten Firmware-Image.
+
+   Ein Objekt des Typs ImageInfo besitzt folgende Eigenschaften:
+
+   image_version (string): Image-Version.
+
+   Musterobjekt
+
+      {
+        "image_version": "string"
+      }
+
+   ImageInfo-Objekte sind in
+
+   FirmwareInfo
+
+    enthalten.
+
+LicenseComponentConstraint:
+   Einschränkungen für die Modul-Version.
+
+   Ein Objekt des Typs LicenseComponentConstraint besitzt folgende
+   Eigenschaften:
+
+   max_version (string) - optionale höchste unterstützte Version
+   (exclusive)
+
+   min_version (string) - optionale minimale unterstützte Version
+   (inclusive)
+
+   Musterobjekt
+
+      {
+        "max_version": "string",
+        "min_version": "string"
+      }
+
+   LicenseComponentConstraint-Objekte sind in
+
+   LicenseConstraints
+
+    enthalten.
+
+LicenseComponents:
+   Liste der Lizenzstatus-Angaben der einzelnen Softwaremodule: Der
+   zugehörige Statusindikator ist auf TRUE gesetzt, wenn das
+   entsprechende Modul mit einer installierten Softwarelizenz
+   entsperrt ist.
+
+   Ein Objekt des Typs LicenseComponents besitzt folgende
+   Eigenschaften:
+
+   calibration (boolean): Modul zur Kamerakalibrierung.
+
+   fusion (boolean): Modul zur Stereo-INS/Datenfusion.
+
+   hand_eye_calibration (boolean): Modul zur Hand-Auge-Kalibrierung.
+
+   rectification (boolean): Modul zur Bildrektifizierung.
+
+   self_calibration (boolean):  Modul zur Selbstkalibrierung der
+   Kamera.
+
+   slam (boolean): SLAM-Modul.
+
+   stereo (boolean): Stereo-Matching-Modul.
+
+   svo (boolean): visuelle Odometrie-Modul.
+
+   Musterobjekt
+
+      {
+        "calibration": false,
+        "fusion": false,
+        "hand_eye_calibration": false,
+        "rectification": false,
+        "self_calibration": false,
+        "slam": false,
+        "stereo": false,
+        "svo": false
+      }
+
+   LicenseComponents-Objekte sind in
+
+   LicenseInfo
+
+    enthalten.
+
+LicenseConstraints:
+   Versionseinschränkungen für Module.
+
+   Ein Objekt des Typs LicenseConstraints besitzt folgende
+   Eigenschaften:
+
+   image_version (LicenseComponentConstraint) - siehe Beschreibung von
+   LicenseComponentConstraint
+
+   Musterobjekt
+
+      {
+        "image_version": {
+          "max_version": "string",
+          "min_version": "string"
+        }
+      }
+
+   LicenseConstraints-Objekte sind in
+
+   LicenseInfo
+
+    enthalten.
+
+LicenseInfo:
+   Informationen zur aktuell auf dem Sensor angewandten
+   Softwarelizenz.
+
+   Ein Objekt des Typs LicenseInfo besitzt folgende Eigenschaften:
+
+   components (LicenseComponents): siehe Beschreibung von
+   LicenseComponents.
+
+   components_constraints (LicenseConstraints) - siehe Beschreibung
+   von LicenseConstraints
+
+   valid (boolean): Angabe, ob eine Lizenz gültig ist oder nicht.
+
+   Musterobjekt
+
+      {
+        "components": {
+          "calibration": false,
+          "fusion": false,
+          "hand_eye_calibration": false,
+          "rectification": false,
+          "self_calibration": false,
+          "slam": false,
+          "stereo": false,
+          "svo": false
+        },
+        "components_constraints": {
+          "image_version": {
+            "max_version": "string",
+            "min_version": "string"
+          }
+        },
+        "valid": false
+      }
+
+   LicenseInfo-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /system/license
+
+Log:
+   Inhalt einer bestimmten Logdatei im JSON-Format.
+
+   Ein Objekt des Typs Log besitzt folgende Eigenschaften:
+
+   date (float): UNIX-Uhrzeit, zu der das Log zuletzt geändert wurde.
+
+   log (LogEntry-Array): die eigentlichen Logeinträge.
+
+   name (string): Name der Logdatei.
+
+   size (Integer): Größe der Logdatei in Bytes.
+
+   Musterobjekt
+
+      {
+        "date": 0,
+        "log": [
+          {
+            "component": "string",
+            "level": "string",
+            "message": "string",
+            "timestamp": 0
+          },
+          {
+            "component": "string",
+            "level": "string",
+            "message": "string",
+            "timestamp": 0
+          }
+        ],
+        "name": "string",
+        "size": 0
+      }
+
+   Log-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /logs/{log}
+
+LogEntry:
+   Darstellung eines einzelnen Logeintrags in einer Logdatei.
+
+   Ein Objekt des Typs LogEntry besitzt folgende Eigenschaften:
+
+   component (string): Name des Moduls, das diesen Eintrag angelegt
+   hat.
+
+   level (string): Logstufe (mögliche Werte: DEBUG, INFO, WARN, ERROR
+   oder FATAL)
+
+   message (string): eigentliche Lognachricht.
+
+   timestamp (float): UNIX-Uhrzeit des Logeintrags.
+
+   Musterobjekt
+
+      {
+        "component": "string",
+        "level": "string",
+        "message": "string",
+        "timestamp": 0
+      }
+
+   LogEntry-Objekte sind in
+
+   Log
+
+    enthalten.
+
+LogInfo:
+   Informationen zu einer bestimmten Logdatei.
+
+   Ein Objekt des Typs LogInfo besitzt folgende Eigenschaften:
+
+   date (float): UNIX-Uhrzeit, zu der das Log zuletzt geändert wurde.
+
+   name (string): Name der Logdatei.
+
+   size (Integer): Größe der Logdatei in Bytes.
+
+   Musterobjekt
+
+      {
+        "date": 0,
+        "name": "string",
+        "size": 0
+      }
+
+   LogInfo-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /logs
+
+NetworkInfo:
+   Aktuelle Netzwerk Konfiguration.
+
+   Ein Objekt des Typs NetworkInfo besitzt folgende Eigenschaften:
+
+   current_method (string) - Methode mit der die aktuellen
+   Einstellungen gesetzt wurden (eine von INIT, LinkLocal, DHCP,
+   PersistentIP, TemporaryIP)
+
+   default_gateway (string) - aktueller Default Gateway
+
+   ip_address (string) - aktuelle IP-Adresse
+
+   settings (NetworkSettings) - siehe Beschreibung von NetworkSettings
+
+   subnet_mask (string) - aktuelle Subnetzmaske
+
+   Musterobjekt
+
+      {
+        "current_method": "string",
+        "default_gateway": "string",
+        "ip_address": "string",
+        "settings": {
+          "dhcp_enabled": false,
+          "persistent_default_gateway": "string",
+          "persistent_ip_address": "string",
+          "persistent_ip_enabled": false,
+          "persistent_subnet_mask": "string"
+        },
+        "subnet_mask": "string"
+      }
+
+   NetworkInfo-Objekte sind in
+
+   SysInfo
+
+    enthalten und werden für folgende Anfragen verwendet:
+
+      GET /system/network
+
+NetworkSettings:
+   Aktuelle Netzwerk Einstellungen.
+
+   Ein Objekt des Typs NetworkSettings besitzt folgende Eigenschaften:
+
+   dhcp_enabled (boolean) - DHCP eingeschaltet
+
+   persistent_default_gateway (string) - Persistenter Default Gateway
+
+   persistent_ip_address (string) - Persistente IP-Adresse
+
+   persistent_ip_enabled (boolean) - Persistente IP aktiviert
+
+   persistent_subnet_mask (string) - Persistente Subnetzmaske
+
+   Musterobjekt
+
+      {
+        "dhcp_enabled": false,
+        "persistent_default_gateway": "string",
+        "persistent_ip_address": "string",
+        "persistent_ip_enabled": false,
+        "persistent_subnet_mask": "string"
+      }
+
+   NetworkSettings-Objekte sind in
+
+   NetworkInfo
+
+    enthalten und werden für folgende Anfragen verwendet:
+
+      GET /system/network/settings
+
+      PUT /system/network/settings
+
+NodeInfo:
+   Beschreibung eines auf dem Sensor laufenden Softwaremoduls.
+
+   Ein Objekt des Typs NodeInfo besitzt folgende Eigenschaften:
+
+   name (string): Name des Moduls.
+
+   parameters (string-Array): Liste der Laufzeitparameter des Moduls.
+
+   services (string-Array): Liste der von diesem Modul angebotenen
+   Services.
+
+   status (string): Status des Moduls (mögliche Werte: unknown, down,
+   idle oder running).
+
+   Musterobjekt
+
+      {
+        "name": "string",
+        "parameters": [
+          "string",
+          "string"
+        ],
+        "services": [
+          "string",
+          "string"
+        ],
+        "status": "string"
+      }
+
+   NodeInfo-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /nodes
+
+      GET /nodes/{node}
+
+NodeStatus:
+   Detaillierter aktueller Status des Moduls, einschließlich
+   Laufzeitstatistik.
+
+   Ein Objekt des Typs NodeStatus besitzt folgende Eigenschaften:
+
+   status (string): Status des Moduls (mögliche Werte: unknown, down,
+   idle oder running).
+
+   timestamp (float): UNIX-Uhrzeit, zu der die Werte zuletzt
+   aktualisiert wurden.
+
+   values (object): Dictionary (Schlüssel-Werte-Auflistung) mit den
+   aktuellen Statuswerten/Statistiken des Moduls.
+
+   Musterobjekt
+
+      {
+        "status": "string",
+        "timestamp": 0,
+        "values": {}
+      }
+
+   NodeStatus-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /nodes/{node}/status
+
+NtpStatus:
+   Status der NTP-Zeitsynchronisierung.
+
+   Ein Objekt des Typs NtpStatus besitzt folgende Eigenschaften:
+
+   accuracy (string): vom Network Time Protocol (NTP) gemeldete
+   Genauigkeit der Zeitsynchronisierung.
+
+   synchronized (boolean): synchronisiert mit dem NTP-Server.
+
+   Musterobjekt
+
+      {
+        "accuracy": "string",
+        "synchronized": false
+      }
+
+   NtpStatus-Objekte sind in
+
+   SysInfo
+
+    enthalten.
+
+Parameter:
+   Darstellung der Laufzeitparameter eines Moduls: Der Datentyp des
+   Werts („value“) eines Parameters (und damit der Datentyp der Felder
+   „min“, „max“ und „default“) lässt sich vom Feld „type“ ableiten und
+   kann ein primitiver Datentyp sein.
+
+   Ein Objekt des Typs Parameter besitzt folgende Eigenschaften:
+
+   default (Typ nicht definiert): ab Werk voreingestellter Wert des
+   Parameters.
+
+   description (string): Beschreibung des Parameters.
+
+   max (Typ nicht definiert): Höchstwert, der diesem Parameter
+   zugewiesen werden kann.
+
+   min (Typ nicht definiert): Mindestwert, der diesem Parameter
+   zugewiesen werden kann.
+
+   name (string): Name des Parameters.
+
+   type (string): als Zeichenfolge dargestellter primitiver Datentyp
+   des Parameters (mögliche Werte: bool, int8, uint8, int16, uint16,
+   int32, uint32, int64, uint64, float32, float64 oder string).
+
+   value (Typ nicht definiert): aktueller Wert des Parameters.
+
+   Musterobjekt
+
+      {
+        "default": {},
+        "description": "string",
+        "max": {},
+        "min": {},
+        "name": "string",
+        "type": "string",
+        "value": {}
+      }
+
+   Parameter-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /nodes/{node}/parameters
+
+      PUT /nodes/{node}/parameters
+
+      GET /nodes/{node}/parameters/{param}
+
+      PUT /nodes/{node}/parameters/{param}
+
+ParameterNameValue:
+   Parametername und -wert. Der Typ des Parameterwerts (Felder 'value'
+   und 'min', 'max', 'default') ist durch das Feld 'type' angegeben
+   und kann einer der eingebauten primitiven Datentypen sein.
+
+   Ein Objekt des Typs ParameterNameValue besitzt folgende
+   Eigenschaften:
+
+   name (string): Name des Parameters.
+
+   value (Typ nicht definiert): aktueller Wert des Parameters.
+
+   Musterobjekt
+
+      {
+        "name": "string",
+        "value": {}
+      }
+
+   ParameterNameValue-Objekte werden in folgenden Anfragen verwendet:
+
+      PUT /nodes/{node}/parameters
+
+ParameterValue:
+   Parameterwert. Der Typ des Parameterwerts (Felder 'value' und
+   'min', 'max', 'default') ist durch das Feld 'type' angegeben und
+   kann einer der eingebauten primitiven Datentypen sein.
+
+   Ein Objekt des Typs ParameterValue besitzt folgende Eigenschaften:
+
+   value (Typ nicht definiert): aktueller Wert des Parameters.
+
+   Musterobjekt
+
+      {
+        "value": {}
+      }
+
+   ParameterValue-Objekte werden in folgenden Anfragen verwendet:
+
+      PUT /nodes/{node}/parameters/{param}
+
+PtpStatus:
+   Status der PTP-Zeitsynchronisierung gemäß IEEE 1588.
+
+   Ein Objekt des Typs PtpStatus besitzt folgende Eigenschaften:
+
+   master_ip (string): IP-Adresse des Haupttaktgebers.
+
+   offset (float): zeitlicher Versatz zum Haupttaktgeber in Sekunden.
+
+   offset_dev (float): Standardabweichung des zeitlichen Versatzes zum
+   Haupttaktgeber in Sekunden.
+
+   offset_mean (float): mittlere Zeitverschiebung in Sekunden zum
+   Haupttaktgeber.
+
+   state (string): PTP-Zustand (mögliche Werte: off, unknown,
+   INITIALIZING, FAULTY, DISABLED, LISTENING, PASSIVE, UNCALIBRATED
+   oder SLAVE).
+
+   Musterobjekt
+
+      {
+        "master_ip": "string",
+        "offset": 0,
+        "offset_dev": 0,
+        "offset_mean": 0,
+        "state": "string"
+      }
+
+   PtpStatus-Objekte sind in
+
+   SysInfo
+
+    enthalten.
+
+Service:
+   Darstellung eines von einem Modul angebotenen Services.
+
+   Ein Objekt des Typs Service besitzt folgende Eigenschaften:
+
+   args (ServiceArgs): siehe Beschreibung von ServiceArgs.
+
+   description (string): Kurzbeschreibung des Services.
+
+   name (string): Name des Services.
+
+   response (ServiceResponse): siehe Beschreibung von ServiceResponse.
+
+   Musterobjekt
+
+      {
+        "args": {},
+        "description": "string",
+        "name": "string",
+        "response": {}
+      }
+
+   Service-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /nodes/{node}/services
+
+      GET /nodes/{node}/services/{service}
+
+      PUT /nodes/{node}/services/{service}
+
+ServiceArgs:
+   Argumente, die für den Aufruf eines Services benötigt werden: Diese
+   Argumente werden in der Regel in einem (verschachtelten) Dictionary
+   (Schlüssel-Werte-Auflistung) dargestellt. Der genaue Inhalt dieses
+   Dictionarys hängt vom jeweiligen Modul und vom Serviceaufruf ab.
+
+   ServiceArg-Objekte sind in
+
+   Service
+
+    enthalten.
+
+ServiceResponse:
+   Die von dem Serviceaufruf zurückgegebene Antwort: Die Antwort wird
+   in der Regel in einem (verschachtelten) Dictionary (Schlüssel-
+   Werte-Auflistung) dargestellt. Der genaue Inhalt dieses Dictionarys
+   hängt vom jeweiligen Modul und von dem Serviceaufruf ab.
+
+   ServiceResponse-Objekte sind in
+
+   Service
+
+    enthalten.
+
+Stream:
+   Darstellung eines von der rc_dynamics-Schnittstelle
+   bereitgestellten Datenstroms.
+
+   Ein Objekt des Typs Stream besitzt folgende Eigenschaften:
+
+   destinations (StreamDestination-Array): Liste der Ziele, an welche
+   diese Daten aktuell gestreamt werden.
+
+   name (string): Name des Datenstroms, der angibt, welche
+   rc_dynamics-Daten gestreamt werden.
+
+   type (StreamType): siehe Beschreibung von StreamType.
+
+   Musterobjekt
+
+      {
+        "destinations": [
+          "string",
+          "string"
+        ],
+        "name": "string",
+        "type": {
+          "protobuf": "string",
+          "protocol": "string"
+        }
+      }
+
+   Stream-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /datastreams
+
+      GET /datastreams/{stream}
+
+      PUT /datastreams/{stream}
+
+      DELETE /datastreams/{stream}
+
+StreamDestination:
+   Ein Ziel eines rc_dynamics-Datenstroms, dargestellt als
+   Zeichenfolge wie z.B. 'IP:Port'.
+
+   Ein Objekt des Typs StreamDestination ist eine Zeichenfolge.
+
+   StreamDestination-Objekte sind in
+
+   Stream
+
+    enthalten.
+
+StreamType:
+   Beschreibung eines Datenstromprotokolls.
+
+   Ein Objekt des Typs StreamType besitzt folgende Eigenschaften:
+
+   protobuf (string): Datenformat zur Serialisierung, d.h. Name der
+   ProtoBuf-Nachrichtendefinition.
+
+   protocol (string): Netzwerkprotokoll des Streams (UDP).
+
+   Musterobjekt
+
+      {
+        "protobuf": "string",
+        "protocol": "string"
+      }
+
+   StreamType-Objekte sind in
+
+   Stream
+
+    enthalten.
+
+SysInfo:
+   Systeminformation zum Sensor.
+
+   Ein Objekt des Typs SysInfo besitzt folgende Eigenschaften:
+
+   firmware (FirmwareInfo): siehe Beschreibung von FirmwareInfo.
+
+   hostname (string): Host-Name.
+
+   link_speed (Integer): Ethernet-Verbindungsgeschwindigkeit in
+   Mb/Sekunde.
+
+   mac (string): MAC-Adresse.
+
+   network (NetworkInfo): siehe Beschreibung von NetworkInfo
+
+   ntp_status (NtpStatus): siehe Beschreibung von NtpStatus.
+
+   ptp_status (PtpStatus): siehe Beschreibung von PtpStatus.
+
+   ready (boolean): Das System ist vollständig hochgefahren und
+   betriebsbereit.
+
+   serial (string): Seriennummer des Sensors.
+
+   time (float): Systemzeit als UNIX-Zeitstempel.
+
+   uptime (float):  Betriebszeit in Sekunden.
+
+   Musterobjekt
+
+      {
+        "firmware": {
+          "active_image": {
+            "image_version": "string"
+          },
+          "fallback_booted": false,
+          "inactive_image": {
+            "image_version": "string"
+          },
+          "next_boot_image": "string"
+        },
+        "hostname": "string",
+        "link_speed": 0,
+        "mac": "string",
+        "network": {
+          "current_method": "string",
+          "default_gateway": "string",
+          "ip_address": "string",
+          "settings": {
+            "dhcp_enabled": false,
+            "persistent_default_gateway": "string",
+            "persistent_ip_address": "string",
+            "persistent_ip_enabled": false,
+            "persistent_subnet_mask": "string"
+          },
+          "subnet_mask": "string"
+        },
+        "ntp_status": {
+          "accuracy": "string",
+          "synchronized": false
+        },
+        "ptp_status": {
+          "master_ip": "string",
+          "offset": 0,
+          "offset_dev": 0,
+          "offset_mean": 0,
+          "state": "string"
+        },
+        "ready": false,
+        "serial": "string",
+        "time": 0,
+        "uptime": 0
+      }
+
+   SysInfo-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /system
+
+Template:
+   Template für die Erkennung
+
+   Ein Objekt des Typs Template besitzt folgende Eigenschaften:
+
+   id (string): Eindeutiger Name des Templates
+
+   Musterobjekt
+
+      {
+        "id": "string"
+      }
+
+   Template-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /nodes/rc_silhouettematch/templates
+
+      GET /nodes/rc_silhouettematch/templates/{id}
+
+      PUT /nodes/rc_silhouettematch/templates/{id}

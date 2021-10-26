@@ -1,0 +1,175 @@
+UserSpace
+
+The UserSpace enables users to deploy and manage containers running on
+the
+
+rc_cube
+
+.
+
+Note: The UserSpace is available on the
+
+  rc_cube I
+
+   hardware model.
+
+Note: Familiarity with Docker containers is required.
+
+If available and enabled, the UserSpace can be accessed by clicking
+
+UserSpace
+
+ in the
+
+Web GUI
+
+.
+
+Configuration
+
+Note: The UserSpace is not enabled by default and can only be
+  enabled/disabled or reset via a locally connected screen for
+  security reasons.
+
+Please connect a monitor, keyboard, and mouse to the
+
+rc_cube
+
+ and then boot the
+
+rc_cube
+
+.
+
+Enable UserSpace
+
+The UserSpace can be enabled in two steps:
+
+Navigate to the pane UserSpace configuration and click enable
+UserSpace.
+
+If the UserSpace is enabled for the first time, a user for the
+portainer UI needs to be created: Click on the portainer pane, and
+register a user account for the administrator. It is required to
+complete this step within five minutes after clicking enable UserSpace
+
+Disable UserSpace
+
+The UserSpace can also be disabled. To disable the UserSpace, navigate
+to the pane
+
+UserSpace configuration
+
+ and click
+
+disable UserSpace
+
+. Disabling will stop all running containers and the portainer UI, but
+not delete existing container images and their configurations. The
+UserSpace can be enabled again at any time.
+
+Reset UserSpace
+
+The UserSpace can also be reset. To reset the UserSpace, navigate to
+the pane
+
+UserSpace configuration
+
+ click
+
+Reset UserSpace
+
+ and answer the security question. Resetting will delete all
+containers, volumes, and the portainer configuration, including
+secrets and users.
+
+Examples
+
+An example container, called
+
+hello_rc_cube
+
+ can be found under
+
+App Templates
+
+ inside the UserSpace pane. Clicking
+
+Deploy the container
+
+ under
+
+Actions
+
+ starts the container. The running container is listed under
+
+Containers
+
+. The example container publishes information about itself on a
+website. The website's address is a combination of the
+
+rc_cube
+
+'s IP address and the port listed under
+
+Published Ports
+
+. For example, the website will be located at *10.0.2.33:8888* if the
+published port is *8888* and the
+
+rc_cube
+
+'s IP address is *10.0.2.33*.
+
+The repository with the
+
+hello_rc_cube
+
+ template container is also publicly available at
+
+https://github.com/roboception/hello_rc_cube
+
+.
+
+Interfaces
+
+Docker containers managed in the UserSpace can use the public
+interfaces of the
+
+rc_cube
+
+. In particular, Docker containers can access synchronized image sets
+via
+
+gRPC
+
+ and can call the
+
+REST-API interface
+
+. The
+
+rc_cube
+
+ (the host) can be accessed under the Docker bridge IP (in default
+Docker bridge network *172.17.0.1*).
+
+Restrictions
+
+Some restrictions for containers apply:
+
+Containers cannot be privileged.
+
+No access to the host network (a Docker bridge network is used
+instead).
+
+Host folders cannot be mounted.
+
+Host devices cannot be accessed. This includes e.g. USB and GPU
+devices.
+
+Used and known ports on the host cannot be bound. This includes ports
+below 1024, the ports 2342, 2343, 2344, 2345, 3956, 4242, 4840, 5000,
+5001, 5002, 5353, 6379, 7000, 8000, 8080, 9000, 9001, 9002, 9090,
+9100, 9118, 9256, 9445, 9446, 11311, 50010, 50051, 50052, 50053, and
+50054.

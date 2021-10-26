@@ -1,0 +1,214 @@
+Web GUI
+
+Die Web GUI des
+
+rc_visard
+
+ dient dazu, das Gerät zu testen, zu kalibrieren und zu konfigurieren.
+
+Zugriff auf die Web GUI
+
+Auf die Web GUI kann über die IP-Adresse des
+
+rc_visard
+
+ von jedem Webbrowser aus zugegriffen werden, z.B. Firefox, Google
+Chrome oder Microsoft Edge. Am einfachsten lässt sich die Web GUI über
+die "rcdiscover-gui" aufrufen, wenn, wie in
+
+Aufspüren von rc_visard-Geräten
+
+ beschrieben, ein Doppelklick auf das gewünschte Gerät vorgenommen
+wird.
+
+Alternativ konfigurieren einige Netzwerkumgebungen den eindeutigen
+Host-Namen des
+
+rc_visard
+
+ automatisch in ihrem Domain Name Server (
+
+DNS
+
+). In diesem Fall kann die Web GUI auch direkt über folgende
+
+URL
+
+ aufgerufen werden: "http://<host-name>", wobei der Platzhalter
+"<host-name>" gegen den Host-Namen des Geräts auszutauschen ist.
+
+Für Linux und macOS funktioniert das ohne DNS über das Multicast-DNS-
+Protokoll (
+
+mDNS
+
+), das automatisch aktiviert wird, wenn ".local" zum Host-Namen
+hinzugefügt wird. So wird die URL einfach zu: "http://<host-
+name>.local".
+
+Kennenlernen der Web GUI
+
+Die Überblicksseite der Web GUI enthält die wichtigsten Informationen
+über das Gerät und die Softwaremodule.
+
+
+Über Registerkarten im oberen Abschnitt der Seite kann auf die
+einzelnen Seiten der Web GUI des
+
+rc_visard
+
+ zugegriffen werden:
+
+Kamera
+
+   zeigt einen Live-Stream der rektifizierten linken und rechten
+   Kamerabilder. Die Bildwiederholrate lässt sich reduzieren, um
+   Bandbreite zu sparen, wenn über einen GigE Vision®-Client gestreamt
+   wird. Außerdem lässt sich die Belichtung manuell oder automatisch
+   einstellen. Für nähere Informationen siehe
+
+   Parameter
+
+   .
+
+Tiefenbild
+
+   bietet einen Live-Stream der rektifizierten Bilder der linken
+   Kamera sowie Tiefen- und Konfidenzbilder. Auf der Seite lassen sich
+   verschiedene Einstellungen zur Berechnung und Filterung von
+   Tiefenbildern vornehmen. Für nähere Informationen siehe
+
+   Parameter
+
+   .
+
+Dynamik
+
+   zeigt die für die Schätzung der Eigenbewegung des
+
+   rc_visard
+
+    relevante Position und Bewegung visueller Merkmale. Über
+   entsprechende Einstellungen lässt sich u. a. die Anzahl der zu
+   dieser Schätzung herangezogenen Merkmale anpassen. Für nähere
+   Informationen siehe
+
+   Parameter
+
+   .
+
+Module
+
+   ermöglicht den Zugriff auf die Detektionsmodule des
+
+   rc_visard
+
+    (siehe
+
+   Detektionsmodule
+
+   ).
+
+Konfiguration
+   ermöglicht den Zugriff auf die Konfigurationsmodule des
+
+   rc_visard
+
+    (siehe
+
+   Konfigurationsmodule
+
+   ).
+
+Logs
+
+   ermöglicht den Zugriff auf die Logdateien des
+
+   rc_visard
+
+   . Die Logdateien werden in der Regel überprüft, wenn Fehler
+   vermutet werden.
+
+System
+
+   ermöglicht dem Nutzer den Zugriff auf allgemeine
+   Systemeinstellungen und Informationen zum Gerät, sowie die
+   Möglichkeit, die Firmware oder Lizenzdatei zu aktualisieren.
+
+Bemerkung: Weitere Informationen zu den einzelnen Parametern der Web
+  GUI lassen sich über die jeweils daneben angezeigte Schaltfläche
+
+  Info
+
+   aufrufen.
+
+Herunterladen von Stereo-Bildern
+
+Die Web GUI bietet eine einfache Möglichkeit, einen Schnappschuss der
+aktuellen Szene als .tar.gz-Datei zu speichern. Dazu dient das
+Kamerasymbol unterhalb der Live-Streams auf der Seite
+
+Kamera
+
+. Dieser Schnappschuss beinhaltet:
+
+die rektifizierten linken und rechten Kamerabilder in voller Auflösung
+als .png-Dateien,
+
+eine Kameraparameter-Datei mit Kameramatrix, Bildabmessungen,
+Belichtungszeit, Verstärkungsfaktor und Basisabstand der Kameras.
+
+die aktuellen IMU-Messungen als imu.csv-Datei,
+
+eine nodes.json-Datei mit Informationen aller Module auf dem
+rc_visard,
+
+eine system_info.json-Datei mit Systeminformationen des rc_visard.
+
+Die Dateinamen enthalten die Zeitstempel.
+
+Herunterladen von Tiefenbildern und Punktwolken
+
+Die Web GUI bietet eine einfache Möglichkeit, die Tiefendaten der
+aktuellen Szene als .tar.gz-Datei zu speichern. Dazu dient das
+Kamerasymbol unterhalb der Live-Streams auf der Seite
+
+Tiefenbild
+
+. Dieser Schnappschuss beinhaltet:
+
+die rektifizierten linken und rechten Kamerabilder in voller Auflösung
+als .png-Dateien,
+
+eine Parameterdatei für das linke Kamerabild mit Kameramatrix,
+Bildabmessungen, Belichtungszeit, Verstärkungsfaktor und Basisabstand
+der Kameras,
+
+die Disparitäts-, Fehler- und Konfidenzbilder in der Auflösung, die
+der aktuell eingestellten Qualität entspricht, als .png-Dateien,
+
+eine Parameterdatei zum Disparitätsbild mit Kameramatrix,
+Bildabmessungen, Belichtungszeit, Verstärkungsfaktor und Basisabstand
+der Kameras, sowie Informationen über die Disparitätswerte (ungültige
+Werte, Skalierung, Offset),
+
+eine Punktwolke in der aktuell eingestellten Auflösung (Qualität) as
+.ply-Datei,
+
+die aktuellen IMU-Messungen als imu.csv-Datei,
+
+eine nodes.json-Datei mit Informationen aller Module auf dem
+rc_visard,
+
+eine system_info.json-Datei mit Systeminformationen des rc_visard.
+
+Die Dateinamen enthalten die Zeitstempel.
+
+Bemerkung: Das Herunterladen der Tiefenbilder löst eine Bildaufnahme
+  aus, in der gleichen Weise wie ein Klick auf den "Aufnehmen"-Button
+  auf der
+
+  Tiefenbild
+
+  -Seite der Web GUI. Dies kann einen Einfluss auf laufende
+  Anwendungen haben.

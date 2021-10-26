@@ -1,0 +1,180 @@
+UserSpace
+
+Der UserSpace ermöglicht es Benutzern, Container auf dem
+
+rc_cube
+
+ bereitzustellen und zu verwalten.
+
+Bemerkung: Der UserSpace is auf dem
+
+  rc_cube I
+
+   verfügbar.
+
+Bemerkung: Kenntnisse von Docker-Containern werden vorausgesetzt.
+
+Falls der UserSpace verfügbar und aktiviert ist, kann er durch Klicken
+des Reiters
+
+UserSpace
+
+ in der
+
+Web GUI
+
+ angesteuert werden.
+
+Konfiguration
+
+Bemerkung: Der UserSpace ist standardmäßig nicht aktiviert und kann
+  aus Sicherheitsgründen ausschließlich über einen lokal
+  angeschlossenen Bildschirm aktiviert, deaktiviert oder zurückgesetzt
+  werden.
+
+Bitte schließen Sie einen Monitor, eine Tastatur und eine Maus an den
+
+rc_cube
+
+ an und starten Sie anschließend den
+
+rc_cube
+
+.
+
+Aktivieren des UserSpace
+
+Der UserSpace kann in zwei Schritten aktiviert werden.
+
+Klicken Sie auf den Reiter UserSpace configuration und klicken Sie
+enable UserSpace.
+
+Wenn der UserSpace zum ersten Mal aktiviert wird, muss ein Benutzer
+für Portainer erstellt werden: Klicken Sie auf den portainer Reiter
+und registrieren Sie das Benutzerkonto des Administrators. Dieser
+Schritt muss innerhalb von fünf Minuten abgeschlossen werden, nachdem
+Sie den UserSpace aktiviert haben.
+
+Deaktivieren des UserSpace
+
+Der UserSpace kann auch deaktiviert werden. Um den UserSpace zu
+deaktivieren, navigieren Sie zum Reiter
+
+UserSpace configuration
+
+ und klicken Sie auf
+
+disable UserSpace
+
+. Durch die Deaktivierung werden alle laufenden Container und die
+Benutzeroberfläche von Portainer angehalten, vorhandene Container-
+Images und deren Konfigurationen jedoch nicht gelöscht. Der UserSpace
+kann jederzeit wieder aktiviert werden.
+
+Zurücksetzen des UserSpace
+
+Der UserSpace kann auch zurückgesetzt werden. Navigieren Sie zum
+Bereich
+
+UserSpace configuration
+
+, klicken Sie auf
+
+Reset UserSpace
+
+ und beantworten Sie die Sicherheitsfrage um den UserSpace
+zurückzusetzen. Beim Zurücksetzen werden alle Container, Datenspeicher
+und die Portainer-Konfiguration gelöscht, einschließlich Secrets und
+Benutzerkonten.
+
+Beispiel
+
+Unter
+
+App Templates
+
+ im UserSpace finden Sie den Beispielcontainer
+
+hello_rc_cube
+
+. Wenn Sie
+
+Deploy the container
+
+ unter
+
+Actions
+
+ klicken, wird der Container gestartet. Der ausgeführte Container wird
+unter
+
+Containers
+
+ aufgelistet. Der Container veröffentlicht Informationen über sich
+selbst auf einer Webseite. Die Adresse der Webseite ist eine
+Kombination aus der IP-Adresse des
+
+rc_cube
+
+ und dem unter
+
+Published Ports
+
+ aufgeführten Port. Die Webseite liegt beispielsweise auf der Adresse
+10.0.2.33:8888, wenn der Port 8888 und die IP-Adresse des
+
+rc_cube
+
+ 10.0.2.33 lauten.
+
+Das Repository mit dem Beispielcontainer
+
+hello_rc_cube
+
+ ist auch öffentlich unter
+
+https://github.com/roboception/hello_rc_cube
+
+ verfügbar.
+
+Schnittstellen
+
+Im UserSpace verwaltete Container können auf öffentliche
+Schnittstellen des
+
+rc_cube
+
+ zugreifen. Insbesondere können die Container über
+
+gRPC
+
+ auf die Bilddaten zugreifen und die
+
+REST-API-Schnittstelle
+
+ aufrufen. Auf den
+
+rc_cube
+
+ (den Host) kann durch die Docker-Bridge-IP zugegriffen werden (im
+Standard-Docker-Bridge-Netzwerk 172.17.0.1).
+
+Einschränkungen
+
+Container unterliegen bestimmten Einschränkungen:
+
+Container können nicht privilegiert ausgeführt werden.
+
+Keinen Zugriff auf das Host-Netzwerk (das Docker Bridge-Netzwerk wird
+benutzt).
+
+Host-Verzeichnisse können nicht eingebunden werden.
+
+Auf Hostgeräte kann nicht zugegriffen werden. Dazu gehören z.B  USB-
+und GPU-Geräte.
+
+Verwendete und bekannte Ports des Hosts können nicht benutzt werden.
+Dazu gehören Ports unter 1024, und die Ports 2342, 2343, 2344, 2345,
+3956, 4242, 4840, 5000, 5001, 5002, 5353, 6379, 7000, 8000, 8080,
+9000, 9001, 9002, 9090, 9100, 9118, 9256, 9445, 9446, 11311, 50010,
+50051, 50052, 50053, und 50054.

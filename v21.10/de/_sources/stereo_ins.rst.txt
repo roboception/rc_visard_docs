@@ -1,0 +1,59 @@
+Stereo-INS
+
+Das Modul zur stereobildgestützten inertialen Navigation (
+
+INS
+
+) ist ein Basismodul, das auf jedem
+
+rc_visard
+
+ verfügbar ist, und ist Teil des Dynamik-Moduls. Das System kombiniert
+die Messwerte der visuellen Odometrie mit den Daten aus der inertialen
+Messeinheit (
+
+IMU
+
+), um so robuste und hochfrequente Echtzeit-Zustandsschätzungen mit
+geringer Latenz anbieten zu können. Das IMU-Modul, das zur Messung der
+Linearbeschleunigungen und Drehraten in allen drei Dimensionen dient,
+besteht aus drei Beschleunigungsaufnehmern und drei Gyroskopen. Durch
+Kombination der Messdaten aus IMU und visueller Odometrie werden die
+Zustandsschätzungen mit der gleichen Frequenz wie die IMU-Messungen
+(200 Hz) vorgenommen und sind so selbst unter anspruchsvollen
+Lichtbedingungen und bei schnellen Bewegungen sehr robust.
+
+Bemerkung: Um genaue Posenschätzungen zu erhalten, muss
+  sichergestellt sein, dass ausreichend viel Textur während der
+  Laufzeit des Stereo-INS- Moduls sichtbar ist. Falls für einen
+  längeren Zeitraum keine Textur sichtbar ist, beendet sich das
+  Stereo-INS-Modul, anstatt stark fehlerbehaftete Daten zu liefern.
+
+Selbstkalibrierung
+
+Das Stereo-INS-Modul führt während seines Startvorgangs eine
+Selbstkalibrierung der IMU anhand von visuellen Odometriemessungen
+durch. Für eine erfolgreiche Selbstkalibrierung muss während des
+Startvorgangs des Stereo-INS-Moduls folgendes erfüllt sein:
+
+Der rc_visard darf sich nicht bewegen und
+
+ausreichend viel Textur muss sichtbar sein.
+
+Sind diese Bedingungen nicht erfüllt, kann das zu einem konstanten
+Drift in der Posenschätzung führen.
+
+Parameter
+
+Das Stereo-INS-Modul heißt "rc_stereo_ins".
+
+Dieses Modul besitzt keine Laufzeitparameter.
+
+Statuswerte
+
+Dieses Modul meldet folgende Statuswerte:
+
+Statuswerte des rc_stereo_ins-Moduls      Name  Beschreibung  freq
+Frequenz des Stereo-INS-Prozesses in Hertz. Dieser Wert wird auf der
+Seite Überblick der Web GUI in der Rubrik Dynamik als Wiederholrate
+angezeigt.  state  Interner Zustand als Zeichenkette
