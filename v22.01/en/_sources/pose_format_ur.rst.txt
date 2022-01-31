@@ -1,0 +1,45 @@
+Universal Robots pose format
+
+The pose format that is used by Universal Robots consists of a
+position XYZ in millimeters and an orientation in angle-axis format
+with angle \theta in radians as length of the rotation axis U.
+
+   V = \left(\begin{array}{c}\theta u_x \\ \theta u_y \\ \theta
+   u_z\end{array}\right)
+
+This is called a rotation vector.
+
+Conversion from angle-axis format to quaternion
+
+The conversion from a rotation vector V to a quaternion
+q=(\begin{array}{cccc}x & y & z & w\end{array})^T can be done as
+follows.
+
+We first recover the angle \theta in radians from the rotation vector
+V by
+
+   \theta = \sqrt{v_x^2 + v_y^2 + v_z^2}\text{.}
+
+If \theta = 0, then the quaternion is q=(\begin{array}{cccc}0 & 0 & 0
+& 1\end{array})^T, otherwise it is
+
+   x = v_x \frac{\sin(\theta/2)}{\theta}\text{,} \\ y = v_y
+   \frac{\sin(\theta/2)}{\theta}\text{,} \\ z = v_z
+   \frac{\sin(\theta/2)}{\theta}\text{,} \\ w = \cos(\theta/2)\text{.}
+
+Conversion from quaternion to angle-axis format
+
+The conversion from a quaternion q=(\begin{array}{cccc}x & y & z &
+w\end{array})^T with ||q||=1 to a rotation vector in angle-axis form
+can be done as follows.
+
+We first recover the angle \theta in radians from the quaternion by
+
+   \theta = 2*\text{acos}(w)\text{.}
+
+If \theta = 0, then the rotation vector V=(\begin{array}{ccc}0 & 0 &
+0\end{array})^T, otherwise it is
+
+   v_x = \theta \frac{x}{\sqrt{1-w^2}}\text{,} \\ v_y = \theta
+   \frac{y}{\sqrt{1-w^2}}\text{,} \\ v_z = \theta
+   \frac{z}{\sqrt{1-w^2}}\text{.}
