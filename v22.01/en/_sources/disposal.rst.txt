@@ -1,4 +1,4 @@
-Information on Disposal
+Information on disposal
 
 
 Disposal of Waste Electrical & Electronic Equipment  This symbol on
@@ -18,8 +18,8 @@ the rc_visard: None
 
 Options for returning old equipment  Owners of old devices can return
 them to the manufacturer to ensure proper disposal.  Please contact
-contact support\:(Section \ref{contact:sect-contact}) about returning
-the device for disposal.
+support\:(Section \ref{contact:sect-contact}) about returning the
+device for disposal.
 
 Data protection  End users of Electrical & Electronic Equipment are
 responsible for deleting personal data on the waste equipment to be

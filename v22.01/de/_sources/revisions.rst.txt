@@ -9,7 +9,7 @@ angegebene Versionsnummer.
 
 DOKUMENTATIONSVERSION
 
-  22.01.4  31.01.2022
+  22.01.4-2-g9ad05af  01.02.2022
 
 Gültig für
 

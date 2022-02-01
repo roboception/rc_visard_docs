@@ -17,8 +17,8 @@ rc_visard enthalten: Keine
 
 Möglichkeiten der Rückgabe von Altgeräten  Besitzer von Altgeräten
 können diese an den Hersteller zurückgeben, damit eine ordnungsgemäße
-Entsorgung sichergestellt ist."  Bitte kontaktieren Sie contact
-support\:(Section \ref{contact:sect-contact}) wegen der Rücknahme des
+Entsorgung sichergestellt ist."  Bitte kontaktieren Sie den
+Support\:(Section \ref{contact:sect-contact}) wegen der Rücknahme des
 Gerätes.
 
 Datenschutz  Endnutzer von Elektro- und Elektronikaltgeräten werden

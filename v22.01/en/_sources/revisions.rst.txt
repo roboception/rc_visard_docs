@@ -8,7 +8,7 @@ revision information.
 
 DOCUMENTATION REVISION
 
-  22.01.4  Jan 31, 2022
+  22.01.4-2-g9ad05af  Feb 01, 2022
 
 Applicable to
 

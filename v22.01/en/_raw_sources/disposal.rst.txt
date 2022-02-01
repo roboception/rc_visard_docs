@@ -2,7 +2,7 @@
 
 .. _sect-disposal:
 
-Information on Disposal
+Information on disposal
 =======================
 
 .. image:: images/weee-mark_small.*
@@ -29,7 +29,7 @@ Information on Disposal
 
    Owners of old devices can return them to the manufacturer to ensure proper disposal.
 
-   Please contact :ref:`contact support<sect-contact>`:latex:`\:(Section \ref{contact:sect-contact})` about returning the device for disposal.
+   Please :ref:`contact support<sect-contact>`:latex:`\:(Section \ref{contact:sect-contact})` about returning the device for disposal.
 
 
 #. **Data protection**
