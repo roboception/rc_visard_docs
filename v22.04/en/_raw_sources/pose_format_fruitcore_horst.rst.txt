@@ -1,0 +1,7 @@
+.. include:: global_rst.glb
+
+Fruitcore HORST pose format
+---------------------------
+
+Fruitcore HORST robots use a position in meters and a quaternion for describing a pose, like |rc_xxx|
+devices. There is no conversion needed.

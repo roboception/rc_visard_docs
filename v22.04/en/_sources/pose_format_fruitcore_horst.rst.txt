@@ -1,0 +1,8 @@
+Fruitcore HORST pose format
+
+Fruitcore HORST robots use a position in meters and a quaternion for
+describing a pose, like
+
+rc_visard
+
+ devices. There is no conversion needed.

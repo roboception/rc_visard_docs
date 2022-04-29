@@ -1,0 +1,208 @@
+Datenströme
+
+Über die folgenden Ressourcen und Anfragen ist es möglich, auf die
+Datenströme der
+
+rc_dynamics-Schnittstelle
+
+ zuzugreifen und diese zu konfigurieren. Mit diesen REST-API-Anfragen
+ist es möglich,
+
+   die verfügbaren und laufenden Datenströme anzuzeigen, z.B.  curl -X
+   GET http://<host>/api/v1/datastreams
+
+   einen Datenstrom in Richtung eines Ziels zu starten, z.B.  curl -X
+   PUT --header 'Content-Type: application/x-www-form-urlencoded' -d
+   'destination=<target-ip>:<target-port>'
+   http://<host>/api/v1/datastreams/pose
+
+   Datenströme zu stoppen, z.B.  curl -X DELETE
+   http://<host>/api/v1/datastreams/pose?destination=<target-ip
+   >:<target-port>
+
+Die folgende Liste enthält alle REST-API-Anfragen zu Datenströmen:
+
+GET /datastreams
+
+   Abruf einer Liste aller verfügbaren Datenströme.
+
+   Musteranfrage
+
+      GET /api/v2/datastreams HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "description": "Pose of left camera at VisualOdometry rate (~10Hz)",
+          "destinations": [
+            "192.168.1.13:30000"
+          ],
+          "name": "pose",
+          "protobuf": "Frame",
+          "protocol": "UDP"
+        },
+        {
+          "description": "Pose of left camera (RealTime 200Hz)",
+          "destinations": [
+            "192.168.1.100:20000",
+            "192.168.1.42:45000"
+          ],
+          "name": "pose_rt",
+          "protobuf": "Frame",
+          "protocol": "UDP"
+        },
+        {
+          "description": "Raw IMU (InertialMeasurementUnit) values (RealTime 200Hz)",
+          "destinations": [],
+          "name": "imu",
+          "protobuf": "Imu",
+          "protocol": "UDP"
+        },
+        {
+          "description": "Dynamics of sensor (pose, velocity, acceleration) (RealTime 200Hz)",
+          "destinations": [
+            "192.168.1.100:20001"
+          ],
+          "name": "dynamics",
+          "protobuf": "Dynamics",
+          "protocol": "UDP"
+        }
+      ]
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabe: Datenstrom-Array)
+
+   Referenzierte Datenmodelle:
+      Stream\:(Abschnitt \ref{rest_api_datamodel:sect-rest-datamodel-
+      stream})
+
+GET /datastreams/{stream}
+
+   Abruf der Datenstrom-Konfiguration.
+
+   Musteranfrage
+
+      GET /api/v2/datastreams/<stream> HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "description": "Pose of left camera at VisualOdometry rate (~10Hz)",
+        "destinations": [
+          "192.168.1.13:30000"
+        ],
+        "name": "pose",
+        "protobuf": "Frame",
+        "protocol": "UDP"
+      }
+
+   Parameter:
+      stream (string) -- Name des Datenstroms (obligatorisch)
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabe: Datenstrom)
+
+      404 Not Found -- Datenstrom nicht gefunden
+
+   Referenzierte Datenmodelle:
+      Stream\:(Abschnitt \ref{rest_api_datamodel:sect-rest-datamodel-
+      stream})
+
+PUT /datastreams/{stream}
+
+   Aktualisierung einer Datenstrom-Konfiguration.
+
+   Musteranfrage
+
+      PUT /api/v2/datastreams/<stream> HTTP/1.1
+      Accept: application/x-www-form-urlencoded
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "description": "Pose of left camera at VisualOdometry rate (~10Hz)",
+        "destinations": [
+          "192.168.1.13:30000",
+          "192.168.1.25:40000"
+        ],
+        "name": "pose",
+        "protobuf": "Frame",
+        "protocol": "UDP"
+      }
+
+   Parameter:
+      stream (string) -- Name des Datenstroms (obligatorisch)
+
+   Formularparameter:
+      destination -- Hinzuzufügendes Ziel ("IP:Port") (obligatorisch)
+
+   Anfrage-Header:
+      Accept -- application/x-www-form-urlencoded
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabe: Datenstrom)
+
+      404 Not Found -- Datenstrom nicht gefunden
+
+   Referenzierte Datenmodelle:
+      Stream\:(Abschnitt \ref{rest_api_datamodel:sect-rest-datamodel-
+      stream})
+
+DELETE /datastreams/{stream}
+
+   Löschen eines Ziels aus der Datenstrom-Konfiguration.
+
+   Musteranfrage
+
+      DELETE /api/v2/datastreams/<stream>?destination=<destination> HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "description": "Pose of left camera at VisualOdometry rate (~10Hz)",
+        "destinations": [],
+        "name": "pose",
+        "protobuf": "Frame",
+        "protocol": "UDP"
+      }
+
+   Parameter:
+      stream (string) -- Name des Datenstroms (obligatorisch)
+
+   Anfrageparameter:
+      destination (string) -- Zu löschendes Ziel ("IP:Port"): Fehlt
+      die Angabe, werden alle Ziele gelöscht (optional).
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabe: Datenstrom)
+
+      404 Not Found -- Datenstrom nicht gefunden
+
+   Referenzierte Datenmodelle:
+      Stream\:(Abschnitt \ref{rest_api_datamodel:sect-rest-datamodel-
+      stream})
