@@ -1,0 +1,189 @@
+UserSpace
+
+Der UserSpace ermöglicht es Benutzern, Container auf dem
+
+rc_cube
+
+ bereitzustellen und zu verwalten. Es werden Standalone-Container und
+docker-compose Stacks unterstützt.
+
+Bemerkung: Kenntnisse von Docker-Containern werden vorausgesetzt.
+
+Falls der UserSpace verfügbar und aktiviert ist, kann er durch Klicken
+des Menüeintrags
+
+UserSpace
+
+ in der
+
+Web GUI
+
+ angesteuert werden. Diese Seite zeigt die laufenden Apps und
+Container mit ihrem aktuellen Status und, falls verfügbar, einem
+Health-Check. Jeder Container listet die veröffentlichten Ports. Falls
+deren Protokoll http oder https ist, können diese Container direkt in
+der Web GUI erreicht werden.
+
+Konfiguration
+
+Bemerkung: Der UserSpace ist standardmäßig nicht aktiviert und kann
+  aus Sicherheitsgründen ausschließlich über einen lokal
+  angeschlossenen Bildschirm aktiviert, deaktiviert oder zurückgesetzt
+  werden.
+
+Bitte schließen Sie einen Monitor, eine Tastatur und eine Maus an den
+
+rc_cube
+
+ an und starten Sie anschließend den
+
+rc_cube
+
+.
+
+Aktivieren des UserSpace
+
+Der UserSpace kann in zwei Schritten aktiviert werden:
+
+Klicken Sie auf den Reiter UserSpace configuration und klicken Sie
+enable UserSpace.
+
+Wenn der UserSpace zum ersten Mal aktiviert wird, muss ein Benutzer
+für Portainer erstellt werden: Klicken Sie auf den portainer Reiter
+und registrieren Sie das Benutzerkonto des Administrators. Dieser
+Schritt muss innerhalb von fünf Minuten abgeschlossen werden, nachdem
+Sie den UserSpace aktiviert haben.
+
+Deaktivieren des UserSpace
+
+Der UserSpace kann auch deaktiviert werden. Um den UserSpace zu
+deaktivieren, navigieren Sie zum Reiter
+
+UserSpace configuration
+
+ und klicken Sie auf disable UserSpace. Durch die Deaktivierung werden
+alle laufenden Container und die Benutzeroberfläche von Portainer
+angehalten, vorhandene Container-Images und deren Konfigurationen
+jedoch nicht gelöscht. Der UserSpace kann jederzeit wieder aktiviert
+werden.
+
+Zurücksetzen des UserSpace
+
+Der UserSpace kann auch zurückgesetzt werden. Navigieren Sie zum
+Bereich
+
+UserSpace configuration
+
+, klicken Sie auf Reset UserSpace und beantworten Sie die
+Sicherheitsfrage um den UserSpace zurückzusetzen. Beim Zurücksetzen
+werden alle Container, Datenspeicher und die Portainer-Konfiguration
+gelöscht, einschließlich Secrets und Benutzerkonten.
+
+Netzwerkzugriff auf die UserSpace Anwendungen
+
+Um die Container über Netzwerk zu erreichen, müssen die Container-
+Ports für den Host veröffentlicht sein.
+
+UserSpace Informationen einschließlich laufender Apps und ihre
+veröffentlichten Ports können über den
+
+REST-API userspace Endpunkt
+
+ abgefragt werden, oder in der
+
+Web GUI
+
+ im Menü unter
+
+UserSpace
+
+ angezeigt werden.
+
+Alle Ports, die für den Host veröffentlicht sind, werden mit ihrem
+Protokoll (UDP oder TCP) aufgelistet. Um ein Protokoll explizit für
+einen App-Port zu setzen (z.B. http oder https), können Container-
+Labels verwendet werden:
+
+com.roboception.app.http: alle öffentlichen TCP-Ports nutzen http
+
+com.roboception.app.https.port=1234,5678: Komma-separierte Liste mit
+https-Ports
+
+Beispiele
+
+Zwei Bespiele liegen unter
+
+App Templates
+
+ im Reiter UserSpace:
+
+hello_rc_cube: Einzelner Container, der eine Webseite mit einigen
+Informationen über sich selbst veröffentlicht. Siehe auch
+https://github.com/roboception/hello_rc_cube.
+
+rc_cube_monitoring: Ein Compose-Stack mit Prometheus und Grafana zur
+Überwachung des rc_cube. Siehe auch
+https://github.com/roboception/rc_cube_monitoring.
+
+Durch Klicken auf Deploy the container/stack unter
+
+Actions
+
+ wird das Dockerimage gepullt und die App gestartet. Die laufenden
+App-Container können dann unter
+
+Containers
+
+ eingesehen werden. Die Adresse der Webseite ist eine Kombination der
+IP-Adresse des
+
+rc_cube
+
+ und dem Port, der unter
+
+Published Ports
+
+ aufgelistet ist.
+
+Schnittstellen
+
+Im UserSpace verwaltete Container können auf öffentliche
+Schnittstellen des
+
+rc_cube
+
+ zugreifen. Insbesondere können die Container über
+
+gRPC
+
+ auf die Bilddaten zugreifen und die
+
+REST-API-Schnittstelle
+
+ aufrufen. Auf den
+
+rc_cube
+
+ (den Host) kann durch die Docker-Bridge-IP zugegriffen werden (im
+Standard-Docker-Bridge-Netzwerk 172.17.0.1).
+
+Einschränkungen
+
+Container unterliegen bestimmten Einschränkungen:
+
+Container können nicht privilegiert ausgeführt werden.
+
+Keinen Zugriff auf das Host-Netzwerk (das Docker Bridge-Netzwerk wird
+benutzt).
+
+Nur Pfade innerhalb geklonter git Repositories mit einem docker-
+compose Stack können eingebunden werden, alle anderen Hostpfade nicht.
+
+Auf Hostgeräte kann nicht zugegriffen werden. Dazu gehören z.B  USB-
+und GPU-Geräte.
+
+System Ports und intern verwendete Ports des Hosts können nicht
+gebunden werden. Dazu gehören Ports unter 1024, Ports von 4200 bis
+4299 und die Ports 2342, 2343, 2344, 2345, 3956, 4840, 5353, 6379,
+7000, 7001, 7002, 7003, 9100, 9118, 9256, 9445, 9446, 11311, 50010,
+50051, 50052, 50053 und 50054.
