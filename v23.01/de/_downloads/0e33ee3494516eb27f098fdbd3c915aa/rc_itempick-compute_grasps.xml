@@ -61,8 +61,8 @@
       <ELEMENT Tag="res/grasps/le/pose/@C" Type="REAL"/>
       <ELEMENT Tag="res/grasps/le/pose_frame" Type="STRING"/>
       <ELEMENT Tag="res/grasps/le/quality" Type="REAL"/>
-      <ELEMENT Tag="res/grasps/le/timestamp/@nsec" Type="INT"/>
       <ELEMENT Tag="res/grasps/le/timestamp/@sec" Type="INT"/>
+      <ELEMENT Tag="res/grasps/le/timestamp/@nsec" Type="INT"/>
       <ELEMENT Tag="res/grasps/le/type" Type="STRING"/>
       <ELEMENT Tag="res/grasps/le/uuid" Type="STRING"/>
       <ELEMENT Tag="res/load_carriers/le/height_open_side" Type="REAL"/>
@@ -89,8 +89,8 @@
       <ELEMENT Tag="res/load_carriers/le/type" Type="STRING"/>
       <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
       <ELEMENT Tag="res/return_code/@value" Type="INT"/>
-      <ELEMENT Tag="res/timestamp/@nsec" Type="INT"/>
       <ELEMENT Tag="res/timestamp/@sec" Type="INT"/>
+      <ELEMENT Tag="res/timestamp/@nsec" Type="INT"/>
       <ELEMENT Tag="res" Set_Flag="998"/>
     </XML>
   </RECEIVE>

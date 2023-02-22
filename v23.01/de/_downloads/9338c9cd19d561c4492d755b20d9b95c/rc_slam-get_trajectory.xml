@@ -14,11 +14,11 @@
     <XML>
       <ELEMENT Tag="req/node/rc_slam" Type="STRING"/>
       <ELEMENT Tag="req/service/get_trajectory" Type="STRING"/>
-      <ELEMENT Tag="req/args/end_time/@nsec" Type="INT"/>
       <ELEMENT Tag="req/args/end_time/@sec" Type="INT"/>
+      <ELEMENT Tag="req/args/end_time/@nsec" Type="INT"/>
       <ELEMENT Tag="req/args/end_time_relative" Type="BOOL"/>
-      <ELEMENT Tag="req/args/start_time/@nsec" Type="INT"/>
       <ELEMENT Tag="req/args/start_time/@sec" Type="INT"/>
+      <ELEMENT Tag="req/args/start_time/@nsec" Type="INT"/>
       <ELEMENT Tag="req/args/start_time_relative" Type="BOOL"/>
       <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
     </XML>
@@ -36,10 +36,10 @@
       <ELEMENT Tag="res/trajectory/poses/le/pose/@A" Type="REAL"/>
       <ELEMENT Tag="res/trajectory/poses/le/pose/@B" Type="REAL"/>
       <ELEMENT Tag="res/trajectory/poses/le/pose/@C" Type="REAL"/>
-      <ELEMENT Tag="res/trajectory/poses/le/timestamp/@nsec" Type="INT"/>
       <ELEMENT Tag="res/trajectory/poses/le/timestamp/@sec" Type="INT"/>
-      <ELEMENT Tag="res/trajectory/timestamp/@nsec" Type="INT"/>
+      <ELEMENT Tag="res/trajectory/poses/le/timestamp/@nsec" Type="INT"/>
       <ELEMENT Tag="res/trajectory/timestamp/@sec" Type="INT"/>
+      <ELEMENT Tag="res/trajectory/timestamp/@nsec" Type="INT"/>
       <ELEMENT Tag="res" Set_Flag="998"/>
     </XML>
   </RECEIVE>

@@ -81,8 +81,8 @@
       <ELEMENT Tag="res/load_carriers/le/type" Type="STRING"/>
       <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
       <ELEMENT Tag="res/return_code/@value" Type="INT"/>
-      <ELEMENT Tag="res/timestamp/@nsec" Type="INT"/>
       <ELEMENT Tag="res/timestamp/@sec" Type="INT"/>
+      <ELEMENT Tag="res/timestamp/@nsec" Type="INT"/>
       <ELEMENT Tag="res" Set_Flag="998"/>
     </XML>
   </RECEIVE>
