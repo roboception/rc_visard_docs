@@ -1,0 +1,208 @@
+Datastreams
+
+The following resources and requests allow access to and configuration
+of the
+
+rc_dynamics interface
+
+ data streams. These REST-API requests offer
+
+   showing available and currently running data streams, e.g.,  curl
+   -X GET http://<host>/api/v1/datastreams
+
+   starting a data stream to a destination, e.g.,  curl -X PUT
+   --header 'Content-Type: application/x-www-form-urlencoded' -d
+   'destination=<target-ip>:<target-port>'
+   http://<host>/api/v1/datastreams/pose
+
+   and stopping data streams, e.g.,  curl -X DELETE
+   http://<host>/api/v1/datastreams/pose?destination=<target-ip
+   >:<target-port>
+
+The following list includes all REST-API requests associated with data
+streams:
+
+GET /datastreams
+
+   Get list of available data streams.
+
+   Template request
+
+      GET /api/v2/datastreams HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "description": "Pose of left camera at VisualOdometry rate (~10Hz)",
+          "destinations": [
+            "192.168.1.13:30000"
+          ],
+          "name": "pose",
+          "protobuf": "Frame",
+          "protocol": "UDP"
+        },
+        {
+          "description": "Pose of left camera (RealTime 200Hz)",
+          "destinations": [
+            "192.168.1.100:20000",
+            "192.168.1.42:45000"
+          ],
+          "name": "pose_rt",
+          "protobuf": "Frame",
+          "protocol": "UDP"
+        },
+        {
+          "description": "Raw IMU (InertialMeasurementUnit) values (RealTime 200Hz)",
+          "destinations": [],
+          "name": "imu",
+          "protobuf": "Imu",
+          "protocol": "UDP"
+        },
+        {
+          "description": "Dynamics of sensor (pose, velocity, acceleration) (RealTime 200Hz)",
+          "destinations": [
+            "192.168.1.100:20001"
+          ],
+          "name": "dynamics",
+          "protobuf": "Dynamics",
+          "protocol": "UDP"
+        }
+      ]
+
+   Response Headers:
+      Content-Type -- application/json
+
+   Status Codes:
+      200 OK -- successful operation (returns array of Stream)
+
+   Referenced Data Models:
+      Stream\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      stream})
+
+GET /datastreams/{stream}
+
+   Get datastream configuration.
+
+   Template request
+
+      GET /api/v2/datastreams/<stream> HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "description": "Pose of left camera at VisualOdometry rate (~10Hz)",
+        "destinations": [
+          "192.168.1.13:30000"
+        ],
+        "name": "pose",
+        "protobuf": "Frame",
+        "protocol": "UDP"
+      }
+
+   Parameters:
+      stream (string) -- name of the stream (required)
+
+   Response Headers:
+      Content-Type -- application/json
+
+   Status Codes:
+      200 OK -- successful operation (returns Stream)
+
+      404 Not Found -- datastream not found
+
+   Referenced Data Models:
+      Stream\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      stream})
+
+PUT /datastreams/{stream}
+
+   Update a datastream configuration.
+
+   Template request
+
+      PUT /api/v2/datastreams/<stream> HTTP/1.1
+      Accept: application/x-www-form-urlencoded
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "description": "Pose of left camera at VisualOdometry rate (~10Hz)",
+        "destinations": [
+          "192.168.1.13:30000",
+          "192.168.1.25:40000"
+        ],
+        "name": "pose",
+        "protobuf": "Frame",
+        "protocol": "UDP"
+      }
+
+   Parameters:
+      stream (string) -- name of the stream (required)
+
+   Form Parameters:
+      destination -- destination ("IP:port") to add (required)
+
+   Request Headers:
+      Accept -- application/x-www-form-urlencoded
+
+   Response Headers:
+      Content-Type -- application/json
+
+   Status Codes:
+      200 OK -- successful operation (returns Stream)
+
+      404 Not Found -- datastream not found
+
+   Referenced Data Models:
+      Stream\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      stream})
+
+DELETE /datastreams/{stream}
+
+   Delete a destination from the datastream configuration.
+
+   Template request
+
+      DELETE /api/v2/datastreams/<stream>?destination=<destination> HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "description": "Pose of left camera at VisualOdometry rate (~10Hz)",
+        "destinations": [],
+        "name": "pose",
+        "protobuf": "Frame",
+        "protocol": "UDP"
+      }
+
+   Parameters:
+      stream (string) -- name of the stream (required)
+
+   Query Parameters:
+      destination (string) -- destination IP:port to delete, if not
+      specified all destinations are deleted (optional)
+
+   Response Headers:
+      Content-Type -- application/json
+
+   Status Codes:
+      200 OK -- successful operation (returns Stream)
+
+      404 Not Found -- datastream not found
+
+   Referenced Data Models:
+      Stream\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      stream})
