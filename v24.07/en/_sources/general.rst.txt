@@ -1,0 +1,91 @@
+Overview
+
+The 3D sensor
+
+rc_visard
+
+ is an IP54-protected , self-registering stereo-camera with on-board
+computing capabilities.
+
+The
+
+rc_visard
+
+ provides real-time camera images and depth images, which can be used
+to compute 3D point clouds. Additionally, it provides confidence and
+error images as quality measures for each image acquisition. It offers
+an intuitive web UI (user interface) and a standardized GenICam
+interface, making it compatible with all major image processing
+libraries.
+
+With optionally available software modules the
+
+rc_visard
+
+ provides out-of-the-box solutions for object detection and robotic
+pick-and-place applications.
+
+The
+
+rc_visard
+
+ also provides self-localization based on image and inertial data. A
+mobile navigation solution can be established with the optional on-
+board SLAM module.
+
+The
+
+rc_visard
+
+ is offered with two different stereo baselines: The
+
+rc_visard
+
+ 65 is optimally suited for mounting on robotic manipulators, whereas
+the
+
+rc_visard
+
+ 160 can be employed as a navigation or as externally-fixed sensor.
+
+The
+
+rc_visard
+
+'s intuitive calibration, configuration, and use enable 3D vision for
+everyone.
+
+
+The terms "sensor," "
+
+rc_visard
+
+ 65," and "
+
+rc_visard
+
+ 160" used throughout the manual all refer to the Roboception
+
+rc_visard
+
+ family of self-registering cameras. Installation and control for all
+sensors are exactly the same, and all use the same mounting base.
+
+Note: Unless specified, the information provided in this manual
+  applies to both the
+
+  rc_visard
+
+   65 and
+
+  rc_visard
+
+   160 versions of the Roboception
+
+  rc_visard
+
+   sensor.
+
+Note: This manual uses the metric system and mostly uses the units
+  meter and millimeter. Unless otherwise specified, all dimensions in
+  technical drawings are in millimeters.
