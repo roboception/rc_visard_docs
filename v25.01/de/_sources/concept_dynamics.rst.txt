@@ -1,0 +1,101 @@
+Sensordynamik
+
+Neben 3D-Informationen zu einer Szene kann der
+
+rc_visard
+
+ auch Echtzeit-Schätzungen seiner
+
+Eigenbewegung
+
+ oder seines
+
+dynamischen Zustands
+
+ bereitstellen. Hierfür misst er seine aktuelle Pose, d.h. seine
+Position und Orientierung in Bezug auf ein Referenzkoordinatensystem,
+sowie seine Geschwindigkeit und Beschleunigung. Für diese Messungen
+werden die Messungen aus der SVO (stereobasierte visuelle Odometrie)
+mit den Werten des integrierten inertialen Messsystems (
+
+IMU
+
+) kombiniert. Diese Kombination wird auch als visuelles
+Trägheitsnavigationssystem (V
+
+INS
+
+) bezeichnet .
+
+Die visuelle Odometrie verfolgt die Bewegung charakteristischer Punkte
+in Kamerabildern, um auf dieser Grundlage die Kamerabewegung
+abzuschätzen. Objektpunkte werden je nach Blickrichtung der Kamera auf
+verschiedene Pixel projiziert. Die 3D-Koordinaten jedes dieser
+Objektpunkte lassen sich über Stereo-Matching der Punktprojektionen im
+linken und rechten Kamerabild errechnen. So werden für zwei
+unterschiedliche Betrachtungspositionen A und B zwei zugehörige 3D-
+Punktwolken errechnet. Nimmt man eine statische Umgebung an,
+entspricht die Bewegung, die die eine Punktwolke in die andere
+Punktwolke transformiert, der Kamerabewegung. Das Prinzip wird in
+
+Abb. 17
+
+ für einen vereinfachten 2D-Anwendungsfall dargestellt.
+
+
+Da die visuelle Odometrie auf eine gute Qualität der Bilddaten
+angewiesen ist, verschlechtern sich die Bewegungsschätzungen, wenn
+Bilder verschwommen oder schlecht beleuchtet sind. Zudem ist die
+Frequenz der visuellen Odometrie zu gering für Regelungsanwendungen.
+Aus diesem Grund verfügt der
+
+rc_visard
+
+ über eine integrierte inertiale Messeinheit (IMU), die
+Beschleunigungen und Winkelgeschwindigkeiten misst, die auftreten wenn
+sich der
+
+rc_visard
+
+ bewegt. Das System misst zudem die Erdbeschleunigung, was die globale
+Orientierung entlang der vertikalen Achse ermöglicht. Außerdem werden
+für IMU-Messungen hohe Messraten von 200 Hz genutzt.
+Lineargeschwindigkeit, Position und Orientierung des
+
+rc_visard
+
+ lassen sich durch Aufintegrieren der IMU-Messungen errechnen. Die
+Integrationsergebnisse führen jedoch im Laufe der Zeit zu einem
+Abdriften. Um eine akkurate, robuste und hochfrequente Schätzung der
+aktuellen Position, Orientierung, Geschwindigkeit und Beschleunigung
+des
+
+rc_visard
+
+ bereitzustellen, die in einem Regelkreis verwendet werden kann,
+kombiniert der
+
+rc_visard
+
+ die akkuraten, niederfrequenten und manchmal unzuverlässigen
+Odometriemessungen mit den robusten hochfrequenten IMU-Messungen.
+
+Für die Berechnung der Zustandsschätzungen sind neben dem
+Stereokamera-Modul und dem Kalibriermodul auch folgende
+
+rc_visard
+
+-Softwaremodule erforderlich:
+
+Sensordynamik: Mit diesem Modul lassen sich die für die einzelnen
+Submodule benötigten Schätzungen starten und stoppen und
+verwalten\:(Abschnitt \ref{dynamics:sect-dynamics}).  Visuelle
+Odometrie: Dieses Modul errechnet eine Bewegungsschätzung anhand von
+Kamerabildern\:(Abschnitt \ref{stereo_visodo:sect-visual-odometry}).
+Stereo-INS: Dieses Modul kombiniert die von der visuellen Odometrie
+bereitgestellten Bewegungsschätzungen mit den Messungen der
+integrierten IMU, um so hochfrequente Echtzeit-Lageschätzungen
+bereitstellen zu können\:(Abschnitt \ref{stereo_ins:sect-stereo-ins}).
+SLAM: Dieses Modul, das optional für den rc_visard erhältlich ist,
+erstellt eine interne Karte der Umgebung, auf deren Grundlage
+Posenfehler korrigiert werden\:(Abschnitt \ref{slam:sect-slam}).
