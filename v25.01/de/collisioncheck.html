@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>CollisionCheck &mdash; rc_visard 25.01.2
+  <title>CollisionCheck &mdash; rc_visard 25.01.3
  Dokumentation</title>
   
 
@@ -60,7 +60,7 @@
         <link rel="index" title="Stichwortverzeichnis"
               href="genindex.html"/>
         <link rel="search" title="Suche" href="search.html"/>
-    <link rel="top" title="rc_visard 25.01.2
+    <link rel="top" title="rc_visard 25.01.3
  Dokumentation" href="index.html"/>
         <link rel="up" title="Konfigurationsmodule" href="configuration_modules.html"/>
         <link rel="next" title="Kamerakalibrierung" href="camera_calibration.html"/>
@@ -292,22 +292,6 @@
 <li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#internal-services">Interne Services</a></li>
 <li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#return-codes">Rückgabecodes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#template-api">Template API</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="cadmatch.html">CADMatch</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#introduction">Einleitung</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-grasp-points">Setzen von Greifpunkten</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-pose-priors">Setzen von Posenvorgaben</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-sorting-strategies">Setzen der Sortierstrategie</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#detection-of-objects">Objekterkennung</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#parameters">Parameter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#status-values">Statuswerte</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#services">Services</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#internal-services">Interne Services</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#return-codes">Rückgabecodes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#template-api">Template API</a></li>
 </ul>
 </li>
 </ul>
@@ -626,7 +610,7 @@
 <p class="last">Es werden nur Kollisionen zwischen dem Load Carrier und dem Greifer geprüft, aber nicht Kollisionen mit dem Roboter, dem Flansch oder anderen Objekten. Nur in Kombination mit <a class="reference internal" href="silhouettematch.html"><span class="doc">SilhouetteMatch</span></a>, und nur wenn das gewählte Template eine Kollisionsgeometrie enthält und <code class="docutils literal notranslate"><span class="pre">check_collisions_with_matches</span></code> im entsprechenden Modul aktiviert ist, werden auch Kollisionen zwischen dem Greifer und den anderen <em>detektierten</em> Objekten geprüft. Kollisionen mit Objekten, die nicht detektiert werden können, werden nicht geprüft. Nur in Kombination mit <a class="reference internal" href="silhouettematch.html"><span class="doc">SilhouetteMatch</span></a>, und nur wenn <code class="docutils literal notranslate"><span class="pre">check_collisions_with_point_cloud</span></code> im entsprechenden Modul aktiviert ist, werden auch Kollisionen zwischen dem Greifer und einer wasserdichten Version der Punktwolke geprüft.</p>
 </div>
 <span id="tab-collisioncheck-spec"></span><table border="1" class="docutils" id="spezifikationen-des-collisioncheck-moduls">
-<caption><span class="caption-number">Tab. 58 </span><span class="caption-text">Spezifikationen des CollisionCheck-Moduls</span><a class="headerlink" href="#spezifikationen-des-collisioncheck-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<caption><span class="caption-number">Tab. 54 </span><span class="caption-text">Spezifikationen des CollisionCheck-Moduls</span><a class="headerlink" href="#spezifikationen-des-collisioncheck-moduls" title="Link zu dieser Tabelle">¶</a></caption>
 <colgroup>
 <col width="50%" />
 <col width="50%" />
@@ -679,7 +663,7 @@
 <span id="sect-collisioncheck-parameters"></span><h3>Übersicht der Parameter<a class="headerlink" href="#parameter-overview" title="Link zu dieser Überschrift">¶</a></h3>
 <p>Dieses Softwaremodul bietet folgende Laufzeitparameter:</p>
 <table border="1" class="docutils" id="applikationsspezifische-laufzeitparameter-des-rc-collision-check-moduls">
-<caption><span class="caption-number">Tab. 59 </span><span class="caption-text">Applikationsspezifische Laufzeitparameter des <code class="docutils literal notranslate"><span class="pre">rc_collision_check</span></code> Moduls</span><a class="headerlink" href="#applikationsspezifische-laufzeitparameter-des-rc-collision-check-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<caption><span class="caption-number">Tab. 55 </span><span class="caption-text">Applikationsspezifische Laufzeitparameter des <code class="docutils literal notranslate"><span class="pre">rc_collision_check</span></code> Moduls</span><a class="headerlink" href="#applikationsspezifische-laufzeitparameter-des-rc-collision-check-moduls" title="Link zu dieser Tabelle">¶</a></caption>
 <colgroup>
 <col width="17%" />
 <col width="17%" />
@@ -822,7 +806,7 @@
 <span id="sect-collisioncheck-status-values"></span><h2>Statuswerte<a class="headerlink" href="#status-values" title="Link zu dieser Überschrift">¶</a></h2>
 <p>Statuswerte des <code class="docutils literal notranslate"><span class="pre">rc_collision_check</span></code>-Moduls:</p>
 <table border="1" class="docutils" id="statuswerte-des-rc-collision-check-moduls">
-<caption><span class="caption-number">Tab. 60 </span><span class="caption-text">Statuswerte des <code class="docutils literal notranslate"><span class="pre">rc_collision_check</span></code>-Moduls</span><a class="headerlink" href="#statuswerte-des-rc-collision-check-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<caption><span class="caption-number">Tab. 56 </span><span class="caption-text">Statuswerte des <code class="docutils literal notranslate"><span class="pre">rc_collision_check</span></code>-Moduls</span><a class="headerlink" href="#statuswerte-des-rc-collision-check-moduls" title="Link zu dieser Tabelle">¶</a></caption>
 <colgroup>
 <col width="50%" />
 <col width="50%" />
@@ -1171,7 +1155,7 @@ Dieser Service ist in API Version 2 nicht verfügbar. Nutzen Sie stattdessen <a 
 <p id="index-1">Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen sogenannten <code class="docutils literal notranslate"><span class="pre">return_code</span></code> bestehend aus einem Integer-Wert und einer optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden mit einem Wert von <code class="docutils literal notranslate"><span class="pre">0</span></code> quittiert. Positive Werte bedeuten, dass die Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche Informationen zur Verfügung stehen. Negative Werte bedeuten, dass Fehler aufgetreten sind. Für den Fall, dass mehrere Rückgabewerte zutreffend wären, wird der kleinste zurückgegeben, und die entsprechenden Textnachrichten werden in <code class="docutils literal notranslate"><span class="pre">return_code.message</span></code> akkumuliert.</p>
 <p>Die folgende Tabelle listet die möglichen Rückgabecodes auf:</p>
 <span id="tab-collisioncheck-return-codes"></span><table border="1" class="docutils" id="fehlercodes-des-collisioncheck-services">
-<caption><span class="caption-number">Tab. 61 </span><span class="caption-text">Fehlercodes des CollisionCheck-Services</span><a class="headerlink" href="#fehlercodes-des-collisioncheck-services" title="Link zu dieser Tabelle">¶</a></caption>
+<caption><span class="caption-number">Tab. 57 </span><span class="caption-text">Fehlercodes des CollisionCheck-Services</span><a class="headerlink" href="#fehlercodes-des-collisioncheck-services" title="Link zu dieser Tabelle">¶</a></caption>
 <colgroup>
 <col width="50%" />
 <col width="50%" />
@@ -1347,7 +1331,7 @@ Dieser Service ist in API Version 2 nicht verfügbar. Nutzen Sie stattdessen <a 
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'25.01.2',
+            VERSION:'25.01.3',
             LANGUAGE:'de',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

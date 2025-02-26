@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>CollisionCheck &mdash; rc_visard 25.01.2
+  <title>CollisionCheck &mdash; rc_visard 25.01.3
  documentation</title>
   
 
@@ -60,7 +60,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rc_visard 25.01.2
+    <link rel="top" title="rc_visard 25.01.3
  documentation" href="index.html"/>
         <link rel="up" title="Configuration modules" href="configuration_modules.html"/>
         <link rel="next" title="Camera calibration" href="camera_calibration.html"/>
@@ -292,22 +292,6 @@
 <li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#internal-services">Internal services</a></li>
 <li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#return-codes">Return codes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#template-api">Template API</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="cadmatch.html">CADMatch</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#introduction">Introduction</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-grasp-points">Setting of grasp points</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-pose-priors">Setting of pose priors</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-preferred-orientation-of-the-tcp">Setting the preferred orientation of the TCP</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-sorting-strategies">Setting the sorting strategies</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#detection-of-objects">Detection of objects</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#interaction-with-other-modules">Interaction with other modules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#parameters">Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#status-values">Status values</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#services">Services</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#internal-services">Internal services</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#return-codes">Return codes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#template-api">Template API</a></li>
 </ul>
 </li>
 </ul>
@@ -642,7 +626,7 @@ only if <code class="docutils literal notranslate"><span class="pre">check_colli
 collisions between the gripper and a watertight version of the point cloud will be checked.</p>
 </div>
 <span id="tab-collisioncheck-spec"></span><table border="1" class="docutils" id="id1">
-<caption><span class="caption-number">Table 58 </span><span class="caption-text">Specifications of the CollisionCheck module</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 54 </span><span class="caption-text">Specifications of the CollisionCheck module</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="50%" />
 <col width="50%" />
@@ -746,7 +730,7 @@ module’s run-time parameters, e.g. for development and testing, using the Web 
 <span id="sect-collisioncheck-parameters"></span><h3>Parameter overview<a class="headerlink" href="#parameter-overview" title="Permalink to this headline">¶</a></h3>
 <p>This module offers the following run-time parameters:</p>
 <table border="1" class="docutils" id="id3">
-<caption><span class="caption-number">Table 59 </span><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">rc_collision_check</span></code> module’s run-time parameters</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 55 </span><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">rc_collision_check</span></code> module’s run-time parameters</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="17%" />
 <col width="17%" />
@@ -898,7 +882,7 @@ It might be necessary to disable this check if the TCP is inside the collision g
 <span id="sect-collisioncheck-status-values"></span><h2>Status values<a class="headerlink" href="#status-values" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">rc_collision_check</span></code> module reports the following status values:</p>
 <table border="1" class="docutils" id="id4">
-<caption><span class="caption-number">Table 60 </span><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">rc_collision_check</span></code> module status values</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 56 </span><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">rc_collision_check</span></code> module status values</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="50%" />
 <col width="50%" />
@@ -1275,7 +1259,7 @@ The smaller value is selected in case a service has multiple <code class="docuti
 but all messages are appended in the <code class="docutils literal notranslate"><span class="pre">return_code</span></code> message.</p>
 <p>The following table contains a list of common codes:</p>
 <span id="tab-collisioncheck-return-codes"></span><table border="1" class="docutils" id="id5">
-<caption><span class="caption-number">Table 61 </span><span class="caption-text">Return codes of the CollisionCheck services</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 57 </span><span class="caption-text">Return codes of the CollisionCheck services</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="50%" />
 <col width="50%" />
@@ -1451,7 +1435,7 @@ but all messages are appended in the <code class="docutils literal notranslate">
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'25.01.2',
+            VERSION:'25.01.3',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

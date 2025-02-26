@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>GripperDB &mdash; rc_visard 25.01.2
+  <title>GripperDB &mdash; rc_visard 25.01.3
  Dokumentation</title>
   
 
@@ -60,7 +60,7 @@
         <link rel="index" title="Stichwortverzeichnis"
               href="genindex.html"/>
         <link rel="search" title="Suche" href="search.html"/>
-    <link rel="top" title="rc_visard 25.01.2
+    <link rel="top" title="rc_visard 25.01.3
  Dokumentation" href="index.html"/>
         <link rel="up" title="Datenbankmodule" href="database_modules.html"/>
         <link rel="next" title="Schnittstellen" href="interfaces.html"/>
@@ -292,22 +292,6 @@
 <li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#internal-services">Interne Services</a></li>
 <li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#return-codes">Rückgabecodes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#template-api">Template API</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="cadmatch.html">CADMatch</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#introduction">Einleitung</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-grasp-points">Setzen von Greifpunkten</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-pose-priors">Setzen von Posenvorgaben</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-sorting-strategies">Setzen der Sortierstrategie</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#detection-of-objects">Objekterkennung</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#parameters">Parameter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#status-values">Statuswerte</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#services">Services</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#internal-services">Interne Services</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#return-codes">Rückgabecodes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#template-api">Template API</a></li>
 </ul>
 </li>
 </ul>
@@ -622,7 +606,7 @@
 <p>Das GripperDB Modul ist ein optionales Modul, welches intern auf dem <em>rc_visard</em> läuft, und ist freigeschaltet, sobald eine gültige Lizenz für eines der Module <a class="reference internal" href="itempick.html#sect-itempick"><span class="std std-ref">ItemPick</span></a> und <a class="reference internal" href="boxpick.html#sect-boxpick"><span class="std std-ref">BoxPick</span></a> oder <a class="reference internal" href="silhouettematch.html"><span class="doc">SilhouetteMatch</span></a> vorhanden ist. Andernfalls benötigt dieses Modul eine separate <a class="reference internal" href="maintenance.html#sect-updating-license"><span class="std std-ref">Lizenz</span></a>.</p>
 <p>Das Modul bietet Services zum Anlegen, Abfragen und Löschen von Greifern, die dann für die Kollisionsprüfung mit einem Load Carrier oder anderen erkannten Objekten (nur in Kombination mit <a class="reference internal" href="silhouettematch.html"><span class="doc">SilhouetteMatch</span></a>) genutzt werden können. Die angelegten Greifer sind in allen Modulen auf dem <em>rc_visard</em> verfügbar, die eine Kollisionsprüfung anbieten.</p>
 <span id="tab-collisioncheck-spec"></span><table border="1" class="docutils" id="spezifikationen-des-gripperdb-moduls">
-<caption><span class="caption-number">Tab. 67 </span><span class="caption-text">Spezifikationen des GripperDB Moduls</span><a class="headerlink" href="#spezifikationen-des-gripperdb-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<caption><span class="caption-number">Tab. 63 </span><span class="caption-text">Spezifikationen des GripperDB Moduls</span><a class="headerlink" href="#spezifikationen-des-gripperdb-moduls" title="Link zu dieser Tabelle">¶</a></caption>
 <colgroup>
 <col width="50%" />
 <col width="50%" />
@@ -1038,7 +1022,7 @@
 <p id="index-1">Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen sogenannten <code class="docutils literal notranslate"><span class="pre">return_code</span></code> bestehend aus einem Integer-Wert und einer optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden mit einem Wert von <code class="docutils literal notranslate"><span class="pre">0</span></code> quittiert. Positive Werte bedeuten, dass die Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche Informationen zur Verfügung stehen. Negative Werte bedeuten, dass Fehler aufgetreten sind. Für den Fall, dass mehrere Rückgabewerte zutreffend wären, wird der kleinste zurückgegeben, und die entsprechenden Textnachrichten werden in <code class="docutils literal notranslate"><span class="pre">return_code.message</span></code> akkumuliert.</p>
 <p>Die folgende Tabelle listet die möglichen Rückgabecodes auf:</p>
 <span id="tab-collisioncheck-return-codes"></span><table border="1" class="docutils" id="ruckgabecodes-der-gripperdb-services">
-<caption><span class="caption-number">Tab. 68 </span><span class="caption-text">Rückgabecodes der GripperDB Services</span><a class="headerlink" href="#ruckgabecodes-der-gripperdb-services" title="Link zu dieser Tabelle">¶</a></caption>
+<caption><span class="caption-number">Tab. 64 </span><span class="caption-text">Rückgabecodes der GripperDB Services</span><a class="headerlink" href="#ruckgabecodes-der-gripperdb-services" title="Link zu dieser Tabelle">¶</a></caption>
 <colgroup>
 <col width="50%" />
 <col width="50%" />
@@ -1409,7 +1393,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'25.01.2',
+            VERSION:'25.01.3',
             LANGUAGE:'de',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
