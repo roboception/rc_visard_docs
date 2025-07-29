@@ -1,0 +1,54 @@
+Softwaremodule
+
+Der
+
+rc_visard
+
+ wird mit einer Reihe von On-Board-Softwaremodulen mit verschiedenen
+Funktionalitäten ausgeliefert. Jedes Softwaremodul bietet über seinen
+zugehörigen
+
+Node
+
+ eine
+
+REST-API-Schnittstelle
+
+ als Programmierschnittstelle an.
+
+Die Softwaremodule des
+
+rc_visard
+
+ können unterteilt werden in
+
+Kamera Modul\:(Abschnitt \ref{camera:sect-camera})  erfasst Bildpaare
+und führt die planare Rektifizierung durch, wodurch die Kamera als
+Messinstrument verwendet werden kann. Bilder werden sowohl für die
+weitere interne Verarbeitung durch andere Module als auch als GenICam-
+Bild-Streams für die externe Verwendung bereitgestellt.
+
+Stereo-Matching Modul\:(Abschnitt \ref{stereo_matching:sect-stereo-
+matching})  welche 3D Tiefeninformationen, wie Disparitäts-, Fehler-
+und Konfidenzbilder, bereitstellen, und auch über die GigE Vision
+/GenICam-Schnittstelle des rc_visard konfigurierbar sind.
+
+Navigationsmodule\:(Abschnitt \ref{navigation_modules:sect-navigation-
+modules})  welche Schätzungen der momentanen Pose, Geschwindigkeit und
+Beschleunigung des rc_visard bereitstellen,
+
+Detektions- und Messmodule\:(Abschnitt \ref{detection_modules:sect-
+detection-modules})  welche eine Vielzahl verschiedener
+Detektionsfunktionen, wie Greifpunktberechnungen und Objekterkennung
+anbieten.
+
+Konfigurationsmodule\:(Abschnitt \ref{configuration_modules:sect-
+configuration-modules})  welche es dem Nutzer ermöglichen,
+Kalibrierungen durchzuführen und den rc_visard für spezielle
+Anwendungen zu konfigurieren.
+
+Datenbankmodule\:(Abschnitt \ref{database_modules:sect-database-
+modules})  welche dem Nutzer die Konfiguration globaler Daten
+ermöglichen, die in allen anderen Modulen verfügbar sind, wie Load
+Carrier, Regions of Interest und Greifer.
+

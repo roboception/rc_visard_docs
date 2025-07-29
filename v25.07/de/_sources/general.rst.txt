@@ -1,0 +1,93 @@
+Überblick
+
+Der 3D-Sensor
+
+rc_visard
+
+ ist eine selbstregistrierende Stereokamera, die über eine integrierte
+Recheneinheit verfügt und der Schutzklasse IP 54 angehört.
+
+Der
+
+rc_visard
+
+ stellt Echtzeit-Kamerabilder und Tiefenbilder bereit, die zur
+Berechnung von 3D-Punktwolken verwendet werden können. Zudem erstellt
+er Konfidenz- und Fehlerbilder, mit denen sich die Qualität der
+Bilderfassung messen lässt. Dank der standardisierten GenICam-
+Schnittstelle ist er mit allen großen Bildverarbeitungsbibliotheken
+kompatibel und bietet darüber hinaus eine intuitive, web-basierte
+Bedienoberfläche an.
+
+Mit optional erhältlichen Softwaremodulen bietet der
+
+rc_visard
+
+ Standardlösungen für Anwendungen in der Objekterkennung oder für
+robotische Pick-and-Place-Applikationen.
+
+Der
+
+rc_visard
+
+ kann sich darüber hinaus aufgrund von Bild- und Trägheitsdaten selbst
+lokalisieren. Mit dem integrierten SLAM-Modul lässt sich eine mobile
+Navigationslösung umsetzen.
+
+Der
+
+rc_visard
+
+ wird mit zwei verschiedenen Basisabständen angeboten: Der
+
+rc_visard
+
+ 65 eignet sich ideal für die Montage auf Roboter-Manipulatoren,
+wohingegen der
+
+rc_visard
+
+ 160 als Navigationsgerät oder extern befestigter Sensor eingesetzt
+werden kann.
+
+Dank der intuitiven Kalibrierung, Konfiguration und Bedienung macht
+der
+
+rc_visard
+
+ 3D-Wahrnehmung für jedermann möglich.
+
+
+Werden im vorliegenden Handbuch die Begriffe "Sensor",  "
+
+rc_visard
+
+ 65" und "
+
+rc_visard
+
+ 160" verwendet, so beziehen sich diese auf die von Roboception
+angebotene
+
+rc_visard
+
+-Produktfamilie an selbstregistrierenden Kameras. Die Installation und
+Steuerung all dieser Sensoren sind absolut identisch. Zudem verwenden
+alle den gleichen Montagesockel.
+
+Bemerkung: Sofern nicht anders angegeben, gelten die in diesem
+  Handbuch enthaltenen Informationen für beide Versionen des
+  Roboception- Sensors, d.h. für den
+
+  rc_visard
+
+   65 und den
+
+  rc_visard
+
+   160.
+
+Bemerkung: Das vorliegende Handbuch nutzt das metrische System und
+  verwendet vorrangig die Maßeinheiten Meter und Millimeter. Sofern
+  nicht anders angegeben, sind Abmessungen in technischen Zeichnungen
+  in Millimetern angegeben.
