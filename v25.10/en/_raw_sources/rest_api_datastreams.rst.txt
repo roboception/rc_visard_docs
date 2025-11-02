@@ -1,6 +1,6 @@
 .. include:: global_rst.glb
 
-.. _sect-rest-datastreams:
+.. _sect-rest-api-datastreams:
 
 Datastreams
 ~~~~~~~~~~~
@@ -34,4 +34,6 @@ The following resources and requests allow access to and configuration of the
 
 The following list includes all |restapi| requests associated with data streams:
 
-.. include:: _gen/swagger/rc_visard/datastreams.txt
+.. only:: rc_visard or rc_visard_ng
+
+   .. include:: _gen/swagger/rc_visard/datastreams.txt

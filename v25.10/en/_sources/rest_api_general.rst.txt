@@ -28,9 +28,10 @@ For actual HTTP requests, the
 
 current API version is appended
 
- to the entry point of the API, i.e., "http://<host>/api/v2". All data
-sent to and received by the REST-API follows the JavaScript Object
-Notation (JSON). The API is designed to let the user
+ to the entry point of the API, i.e., "http://<host>/api/v2".
+
+All data sent to and received by the REST-API follows the JavaScript
+Object Notation (JSON). The API is designed to let the user
 
 create, retrieve, modify, and delete
 
@@ -182,15 +183,17 @@ status, parameters, and offered services, for storing data used in
 multiple modules, such as load carriers, grippers and regions of
 interest.
 
-/pipelines  Access to the status and configuration of the camera
-pipelines. There is always only one camera pipeline with number 0.
-
 /pipelines/0/nodes  Access the rc_visard's 3D-camera, navigation,
 detection and configuration software modules \:(Section \ref{modules
 :sect-modules}) with their run-time status, parameters, and offered
 services.
 
+/pipelines  Access to the status and configuration of the camera
+pipelines. There is always only one camera pipeline with number 0.
+
 /templates  Access the object templates on the rc_visard.
+
+/cad  Access the cad elements, e.g. for grippers, on the rc_visard.
 
 /datastreams  Access and manage data streams of the rc_visard's
 rc_dynamics interface\ (Section \ref{rc_dynamics:sect-rc-dynamics-
@@ -200,4 +203,7 @@ interface}).
 manage licenses as well as firmware updates.
 
 /logs  Access the log files on the rc_visard.
+
+/generic_robot_interface  Access the job and hec_configs for the
+Generic Robot Interface on the rc_visard.
 

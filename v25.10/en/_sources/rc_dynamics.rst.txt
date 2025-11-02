@@ -48,8 +48,11 @@ and configured by the
 
 rc_visard
 
-'s *REST-API*, e.g., a list of all available data streams can be
-requested with
+'s
+
+REST-API
+
+, e.g., a list of all available data streams can be requested with
 
 GET /datastreams
 

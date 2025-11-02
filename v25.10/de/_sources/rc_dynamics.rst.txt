@@ -41,7 +41,11 @@ Bemerkung: Um Rechenressourcen zu sparen, wird empfohlen, die
 Konfiguration von Datenströmen
 
 Verfügbare Datenströme, d.h. Dynamik-Zustandsschätzungen, lassen sich
-über die *REST-API* des
+über die
+
+REST-API
+
+ des
 
 rc_visard
 

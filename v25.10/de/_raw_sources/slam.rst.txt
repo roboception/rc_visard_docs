@@ -11,9 +11,9 @@ SLAM
   single: loop closure
   pair: pose; error
 
-The SLAM module is an optional on-board module of the |rc_visard| and requires a separate SLAM :ref:`license<sect-updating-license>`
-:latex:`(Section \ref{maintenance:sect-updating-license})` to be purchased. If a SLAM license 
-is stored on the |rc_visard|, then
+The SLAM module is an optional on-board module of the |rc_visard| and requires a separate SLAM
+:ref:`license<sect-updating-license>`:latex:`\:(Section \ref{maintenance:sect-updating-license})` to be purchased. 
+If a SLAM license is stored on the |rc_visard|, then
 the SLAM module is shown as *Available* on the :ref:`Web GUI<sect-web-gui>`'s
 *License* section of the *System* page.
 

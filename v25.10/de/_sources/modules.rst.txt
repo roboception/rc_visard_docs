@@ -4,17 +4,20 @@ Der
 
 rc_visard
 
- wird mit einer Reihe von On-Board-Softwaremodulen mit verschiedenen
-Funktionalitäten ausgeliefert. Jedes Softwaremodul bietet über seinen
-zugehörigen
+ beinhaltet eine Reihe von Softwaremodulen mit verschiedenen
+Funktionalitäten. Jedes Softwaremodul bietet über seine zugehörige
 
 Node
 
- eine
+ eine Schnittstelle über
 
 REST-API-Schnittstelle
 
- als Programmierschnittstelle an.
+ oder das
+
+Generic Robot Interface
+
+ an.
 
 Die Softwaremodule des
 
@@ -30,8 +33,7 @@ Bild-Streams für die externe Verwendung bereitgestellt.
 
 Stereo-Matching Modul\:(Abschnitt \ref{stereo_matching:sect-stereo-
 matching})  welche 3D Tiefeninformationen, wie Disparitäts-, Fehler-
-und Konfidenzbilder, bereitstellen, und auch über die GigE Vision
-/GenICam-Schnittstelle des rc_visard konfigurierbar sind.
+und Konfidenzbilder, bereitstellen.
 
 Navigationsmodule\:(Abschnitt \ref{navigation_modules:sect-navigation-
 modules})  welche Schätzungen der momentanen Pose, Geschwindigkeit und

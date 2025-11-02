@@ -8,7 +8,7 @@ rc_visard
 
 license
 
-  to be purchased. If a SLAM license is stored on the
+ to be purchased. If a SLAM license is stored on the
 
 rc_visard
 

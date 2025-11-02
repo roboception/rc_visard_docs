@@ -8,7 +8,7 @@ rc_visard
 
 Lizenz
 
-  benötigt, die erworben werden muss. Sobald eine SLAM-Lizenz auf dem
+ benötigt, die erworben werden muss. Sobald eine SLAM-Lizenz auf dem
 
 rc_visard
 

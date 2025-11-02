@@ -43,8 +43,8 @@ Configuring data streams
 
 Available data streams, i.e., dynamic-state estimates, can be listed and
 configured by the |rcvisard|'s
-:ref:`REST-API <sect-rest-datastreams>`:latex:`\:(Section
-\ref{rest_api_datastreams:sect-rest-datastreams})`, e.g., a list of all available data
+:ref:`REST-API <sect-rest-api-datastreams>`:latex:`\:(Section
+\ref{rest_api_datastreams:sect-rest-api-datastreams})`, e.g., a list of all available data
 streams can be requested with :http:get:`/datastreams`. For a detailed
 description of the following data streams, please refer to
 :ref:`sect-dynamics-streams`:latex:`\:(Section
