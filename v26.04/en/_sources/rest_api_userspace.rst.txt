@@ -1,0 +1,6 @@
+UserSpace
+
+UserSpace information including running apps and their published ports
+can be queried via the userspace endpoint. An app can be of "type"
+"container" or "compose" (compose stack with potentially multiple
+containers).
