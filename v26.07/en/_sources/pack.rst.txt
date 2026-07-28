@@ -1,0 +1,860 @@
+Pack
+
+Introduction
+
+The Pack module provides an out-of-the-box perception solution for
+robotic pick-and-place applications that need to place previously
+picked objects inside a packing volume, such as a box, bin or onto a
+pallet. Given the bounding box of the object to be placed and the
+grasp(s) that can be used to pick it up, Pack computes a pose at which
+the object can be placed, taking the current filling state of the
+packing volume into account. The place pose is chosen to be the lowest
+position that provides stable support for the object, thereby
+maximizing the residual space left after placing.
+
+In addition, the module offers:
+
+A dedicated page on the rc_visard Web GUI\:(Section \ref{webgui:sect-
+web-gui}) for easy setup, configuration, testing, and application
+tuning.
+
+The definition of a region of interest to specify the relevant packing
+volume in the scene, or to restrict the search area for the load
+carrier (see RoiDB, Section \ref{roi:sect-roi}).
+
+A load carrier detection functionality (see LoadCarrier, Section
+\ref{loadcarrier:sect-loadcarrier}), to place objects inside a
+detected load carrier only.
+
+A configurable starting point to control where packing begins.
+
+Support for static and robot-mounted cameras and optional integration
+with the Hand-eye calibration (Section \ref{handeye_calibration:sect-
+handeye-calibration}) module, to provide place poses in the user-
+configured external reference frame.
+
+3D visualization of the packing volume and the computed place pose in
+the Web GUI.
+
+The module is an optional on-board module of the
+
+rc_visard
+
+ and requires a separate Pack
+
+license
+
+  to be purchased.
+
+Computation of place poses
+
+The Pack module offers a service for computing a place pose for an
+object, regardless of whether it has already been picked or is yet to
+be picked. The object to be placed is described by its "bounding_box".
+Optionally, the object's current "pose" and one or more "grasps" that
+can be used to pick it up can be given as well; this pose and these
+grasps can originate from another detection module, such as ItemPick
+or BoxPick. Alternatively, the "grasps" can be given relative to the
+center of the object's bounding box.
+
+The module discretizes the packing volume in x and y direction
+according to the run-time parameter "resolution". Starting from the
+corner of the packing volume closest to the configured
+
+starting point
+
+, it searches for the lowest position at which the object, padded by
+the run-time parameter "object_padding" as a safety margin, fits
+without overlapping already placed objects or the load carrier. This
+maximizes the residual space left after placing, keeping as many
+packing options open as possible for the next object to be placed.
+
+Optionally, further information can be given to the module in a place
+pose computation request:
+
+The ID of the load carrier that defines the packing volume.
+
+The ID of the 3D region of interest that defines the packing volume,
+if no load carrier is set, or that restricts the search area for the
+load carrier.
+
+The place pose definition is complemented by the "timestamp" of the
+oldest image that was used to compute it.
+
+Setting the starting point
+
+The Pack module determines where to begin filling the packing volume
+based on the
+
+starting point
+
+. The module compares the configured starting point against the
+corners of the packing volume, defined by the configured load carrier
+or region of interest, and begins filling from whichever corner is
+closest to it.
+
+The starting point can be set via the "set_starting_point" service or
+on the Pack page in the Web GUI, and is persistently stored. It can be
+set in the camera coordinate frame or in the external coordinate
+frame, in case a hand-eye calibration is available.
+
+Setting the preferred orientation
+
+When placing a box, each place pose has a 180° rotation ambiguity
+around the z axis. Among the given "grasps", the Pack module selects
+the ones whose orientations for placing the object are closest to the
+
+preferred orientation
+
+, thus resolving the 180° placing ambiguity. The preferred orientation
+can be set via the "set_preferred_orientation" service or on the Pack
+page in the Web GUI. Grasps that deviate from it by more than the run-
+time parameter "grasp_filter_orientation_threshold" are discarded.
+
+The preferred orientation can be set in the camera coordinate frame or
+in the external coordinate frame, in case a hand-eye calibration is
+available. If the preferred orientation is specified in the external
+coordinate frame and the sensor is robot mounted, the current robot
+pose has to be given to each place pose computation call.
+
+If no preferred orientation is set, the orientation of the left camera
+(see
+
+Coordinate frames
+
+ ) will be used as the preferred orientation.
+
+Interaction with other modules
+
+Internally, the Pack module depends on, and interacts with other on-
+board modules as listed below.
+
+Note: All changes and configuration updates to these modules will
+  affect the performance of the Pack module.
+
+Camera and depth data
+
+The Pack module makes internally use of the following data:
+
+Rectified images from the Camera module (rc_camera, Section
+\ref{camera:sect-camera});
+
+Disparity, error, and confidence images from the Stereo matching
+module (rc_stereomatching, Section \ref{stereo_matching:sect-stereo-
+matching})
+
+All processed images are guaranteed to be captured after the module
+trigger time.
+
+IO and Projector Control
+
+In case the
+
+rc_visard
+
+ is used in conjunction with an external random dot projector and the
+
+IO and Projector Control
+
+ module ("rc_iocontrol"), it is recommended to connect the projector
+to GPIO Out 1 and set the stereo-camera module's acquisition mode to
+"SingleFrameOut1" (see
+
+Stereo matching parameters
+
+), so that on each image acquisition trigger an image with and without
+projector pattern is acquired.
+
+Alternatively, the output mode for the GPIO output in use should be
+set to "ExposureAlternateActive" (see
+
+Description of run-time parameters
+
+).
+
+In either case, the
+
+Auto Exposure Mode
+
+ "exp_auto_mode" should be set to "AdaptiveOut1" to optimize the
+exposure of both images.
+
+Hand-eye calibration
+
+In case the camera has been calibrated to a robot, the Pack module can
+automatically provide poses in the robot coordinate frame. For the
+Pack node's
+
+Services
+
+, the frame of the output poses can be controlled with the
+"pose_frame" argument.
+
+Two different "pose_frame" values can be chosen:
+
+Camera frame (camera). All poses provided by the module are in the
+camera frame, and no prior knowledge about the pose of the camera in
+the environment is required. This means that the configured regions of
+interest and load carriers move with the camera. It is the user's
+responsibility to update the configured poses if the camera frame
+moves (e.g. with a robot-mounted camera).
+
+External frame (external). All poses provided by the module are in the
+external frame, configured by the user during the hand-eye calibration
+process. The module relies on the on-board Hand-eye calibration
+module\:(Section \ref{handeye_calibration:sect-handeye-calibration})
+to retrieve the sensor mounting (static or robot mounted) and the
+hand-eye transformation. If the mounting is static, no further
+information is needed. If the sensor is robot-mounted, the robot_pose
+is required to transform poses to and from the external frame.
+
+Note: If no hand-eye calibration is available, all "pose_frame"
+  values should be set to "camera".
+
+All "pose_frame" values that are not "camera" or "external" are
+rejected.
+
+If the sensor is robot-mounted, the current "robot_pose" has to be
+provided depending on the value of "pose_frame":
+
+If pose_frame is set to external, providing the robot pose is
+obligatory.
+
+In all other cases, providing the robot pose is optional.
+
+LoadCarrier
+
+The Pack module uses the load carrier detection functionality provided
+by the
+
+LoadCarrier
+
+ module ("rc_load_carrier"), with the run-time parameters specified
+for this module, to determine the boundaries of the packing volume.
+However, only one load carrier will be used in case multiple matching
+load carriers could be found in the scene. In case multiple load
+carriers of the same type are visible, a 3D region of interest should
+be set to ensure that always the same load carrier is used for the
+Pack module.
+
+Parameters
+
+Pack is represented by the "rc_pack" node in the REST-API and are
+reached in the
+
+Web GUI
+
+  under Modules ‣ Pack. The user can explore and configure the
+"rc_pack" module's run-time parameters, e.g. for development and
+testing, using the Web GUI or the
+
+REST-API interface
+
+.
+
+Parameter overview
+
+This module offers the following run-time parameters:
+
+The rc_pack module's run-time parameters              Name  Type  Min
+Max  Default  Description  drop_height  float64  0.0  0.5  0.0  height
+above target place position (in z direction of packing volume) to
+release object  grasp_filter_orientation_-threshold  float64  0.0
+180.0  45.0  Maximum allowed orientation change between grasp and
+preferred orientation in degrees  object_padding  float64  0.001  1.0
+0.005  width in meters for padding the object dimensions in x and y
+direction as safety margin  resolution  float64  0.001  0.1  0.005
+resolution for discretizing the packing volume in x and y direction
+
+Description of run-time parameters
+
+Each run-time parameter is represented by a row on the Web GUI's Pack
+page. The name in the Web GUI is given in brackets behind the
+parameter name and the parameters are listed in the order they appear
+in the Web GUI:
+
+resolution (Resolution)
+
+   is the resolution used to discretize the packing volume in x and y
+   direction when searching for a free placement position, in meters.
+   The smaller this value, the finer the search grid, at the cost of
+   additional computation time.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_pack/parameters/parameters?resolution=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_pack/parameters?resolution=<value>
+
+object_padding (Object Padding)
+
+   is the width, in meters, used to pad the object's "bounding_box" in
+   x and y direction as a safety margin when checking whether it fits
+   at a candidate placement position.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_pack/parameters/parameters?object_padding=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_pack/parameters?object_padding=<value>
+
+drop_height (Drop Height)
+
+   defines the height, in meters, above the target place position,
+   along the z axis of the packing volume, at which the gripper
+   releases the object, e.g. to let it drop a short distance instead
+   of being placed under full control all the way down to the surface.
+   The place pose provided by the Pack module represents the
+   recommended pose of the object at the moment of release.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_pack/parameters/parameters?drop_height=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_pack/parameters?drop_height=<value>
+
+grasp_filter_orientation_threshold (Grasp Orientation Threshold)
+
+   is the maximum deviation of the TCP's z axis at the grasp point
+   from the z axis of the TCP's preferred orientation (see
+
+   preferred orientation
+
+   ) in degrees. Only grasp points which are within this threshold are
+   returned. When set to zero, any deviations are valid.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_pack/parameters/parameters?grasp_filter_orientation_threshold=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_pack/parameters?grasp_filter_orientation_threshold=<value>
+
+Status values
+
+The "rc_pack" node reports the following status values:
+
+The rc_pack node's status values      Name  Description
+data_acquisition_time  Time in seconds required by the last active
+service to acquire images  last_return_code_message  Return code
+message of the last detection  last_return_code_value  Return code
+value of the last detection  last_timestamp_processed  The timestamp
+of the last processed dataset  load_carrier_detection_time  Processing
+time of the last load carrier detection in seconds  processing_time
+Processing time of the last detection (including load carrier
+detection) in seconds
+
+Services
+
+The user can explore and call the "rc_pack" node's services, e.g. for
+development and testing, using the
+
+REST-API interface
+
+ or the
+
+rc_visard
+
+
+Web GUI
+
+.
+
+The Pack module offers the following services.
+
+detect_place_pose
+
+   Triggers the computation of a place pose as described in
+
+   Computation of place poses
+
+   .
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_pack/services/detect_place_pose
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_pack/services/detect_place_pose
+
+   Request
+
+   Required arguments:
+
+      "pose_frame": see
+
+      Hand-eye calibration
+
+      .
+
+      "objects": the object to be placed, described by its
+      "bounding_box" and, optionally, the "pose" at which it is
+      positioned. Currently, only a single object is supported.
+
+      "grasps": one or more grasps that were used, or can be used, to
+      pick the object listed in "objects", referenced via "object_id".
+      If no "pose_frame" is given, each grasp's "pose" is interpreted
+      relative to the center of the object's bounding box. If a
+      "pose_frame" is given, the object also requires a "pose". This
+      allows detection results from other modules, such as ItemPick or
+      BoxPick, to be reused for Pack.
+
+   Potentially required arguments:
+
+      "robot_pose": see
+
+      Hand-eye calibration
+
+      .
+
+   Optional arguments:
+
+      "load_carrier_id": ID of the load carrier that defines the
+      packing volume.
+
+      "region_of_interest_id": ID of the 3D region of interest that
+      defines the packing volume, if "load_carrier_id" is not set, or
+      that restricts the area for detecting the load carrier.
+
+      At least one of "load_carrier_id" or "region_of_interest_id"
+      must be provided.
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "grasps": [
+            {
+              "gripper_id": "string",
+              "id": "string",
+              "object_id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "stroke_per_finger_approach_mm": "float64",
+              "stroke_per_finger_grasp_mm": "float64",
+              "tcp_id": "string"
+            }
+          ],
+          "load_carrier_id": "string",
+          "objects": [
+            {
+              "bounding_box": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string"
+            }
+          ],
+          "pose_frame": "string",
+          "region_of_interest_id": "string"
+        }
+      }
+
+   Response
+
+   "pose": the computed place pose.
+
+   "grasps": the grasp(s) passed in the request that can be used to
+   achieve the final placement.
+
+   "load_carriers": the list containing the detected load carrier.
+
+   "timestamp": timestamp of the image set the detection ran on.
+
+   "return_code": holds possible warnings or error codes and messages.
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "detect_place_pose",
+        "response": {
+          "grasps": [
+            {
+              "collision_checked": "bool",
+              "gripper_id": "string",
+              "id": "string",
+              "object_id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "timestamp": {
+                "nsec": "int32",
+                "sec": "int32"
+              }
+            }
+          ],
+          "load_carriers": [
+            {
+              "height_open_side": "float64",
+              "id": "string",
+              "inner_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "outer_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "overfilled": "bool",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "rim_ledge": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "rim_step_height": "float64",
+              "rim_thickness": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "type": "string"
+            }
+          ],
+          "pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "pose_frame": "string",
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          },
+          "timestamp": {
+            "nsec": "int32",
+            "sec": "int32"
+          }
+        }
+      }
+
+get_starting_point
+
+   Returns the starting point used to select the corner of the packing
+   volume from which filling begins (see
+
+   Setting the starting point
+
+   ).
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_pack/services/get_starting_point
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_pack/services/get_starting_point
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_starting_point",
+        "response": {
+          "point": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose_frame": "string",
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_starting_point
+
+   Persistently stores the starting point used to select the corner of
+   the packing volume from which filling begins (see
+
+   Setting the starting point
+
+   ).
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_pack/services/set_starting_point
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_pack/services/set_starting_point
+
+   Request
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "point": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose_frame": "string"
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_starting_point",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_preferred_orientation
+
+   Returns the preferred orientation used when selecting the grasp for
+   placing the object (see
+
+   Setting the preferred orientation
+
+   ).
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_pack/services/get_preferred_orientation
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_pack/services/get_preferred_orientation
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_preferred_orientation",
+        "response": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose_frame": "string",
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_preferred_orientation
+
+   Persistently stores the preferred orientation used when selecting
+   the grasp for placing the object (see
+
+   Setting the preferred orientation
+
+   ).
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_pack/services/set_preferred_orientation
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_pack/services/set_preferred_orientation
+
+   Request
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose_frame": "string"
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_preferred_orientation",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+reset_defaults
+
+   Resets all parameters of the module to its default values, as
+   listed in above table. Also resets the starting point and the
+   preferred orientation.
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_pack/services/reset_defaults
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_pack/services/reset_defaults
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+Return codes
+
+Each service response contains a "return_code", which consists of a
+"value" plus an optional "message". A successful service returns with
+a "return_code" value of "0". Negative "return_code" values indicate
+that the service failed. Positive "return_code" values indicate that
+the service succeeded with additional information. The smaller value
+is selected in case a service has multiple "return_code" values, but
+all messages are appended in the "return_code" message.
+
+The following table contains a list of common codes:
+
+Return codes of the Pack services      Code  Description  0  Success
+-1  An invalid argument was provided  -4  Data acquisition took longer
+than allowed  -11  Sensor not connected, not supported or not ready
+-12  Resource busy, e.g. when trigger_dump is called too frequently
+-200  Fatal internal error  100  The requested load carrier was not
+detected in the scene  115  No valid place pose was found within the
+packing volume  300  A valid robot_pose was provided as argument but
+it is not required  999  Additional hints for application development

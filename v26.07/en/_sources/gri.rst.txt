@@ -1,0 +1,1429 @@
+Generic Robot Interface
+
+The Generic Robot Interface (GRI) is an integration layer that bridges
+the
+
+REST-API v2
+
+ and provides a standardized way to communicate with the software
+modules using simple TCP socket communication on port 7100. It can be
+activated via a separate
+
+license
+
+ .
+
+Overview
+
+The GRI is used in two phases. In the configuration phase, the user
+creates
+
+jobs
+
+ and stores them under unique numeric IDs. A job contains everything
+needed for one operation: the module and service to call, the
+arguments to use, and the data to return to the robot. Jobs, and
+optionally
+
+hand-eye calibration configurations
+
+, are prepared once and are defined via the Web GUI or the REST-API
+(see
+
+Job types
+
+).
+
+At run time, the robot triggers these jobs by their ID over a TCP
+socket on port 7100, exchanging fixed-size binary messages (see
+
+GRI binary protocol specification
+
+). The GRI internally manages the REST-API communication and returns
+the selected pose results in a format that can be chosen specifically
+for the robot. A typical job trigger proceeds as follows:
+
+The robot sends a trigger action (TRIGGER_JOB_SYNC or
+TRIGGER_JOB_ASYNC, see Actions) together with the job ID, optionally
+providing run-time values in the request data fields.
+
+The GRI looks up the job and translates it into the corresponding
+REST-API call(s) to the selected module.
+
+The results of the module, such as grasp poses, are cached by the GRI,
+and the first pose is returned to the robot in the chosen pose format.
+
+The robot retrieves any further results one at a time with
+GET_NEXT_POSE and GET_RELATED_POSE.
+
+A job definition therefore serves as a reusable template that the
+robot triggers by its ID at run time. The following section describes
+how to define jobs; the binary protocol and the details of robot
+integration are described further below.
+
+Job definition
+
+Jobs are pre-configured tasks that can be triggered by the robot
+application. Each job has a unique ID and contains all the necessary
+information for a specific operation, e.g. computing grasps for bin
+picking or changing run-time parameters of a module. Once configured,
+the robot can execute these jobs using simple socket commands and, if
+applicable, receive the returned poses.
+
+The jobs can be defined via the Web GUI or via the REST-API (see
+
+Job and HEC_config API
+
+).
+
+Job types
+
+The Generic Robot Interface supports three types of jobs, selected via
+the "job_type" field:
+
+CALL_PIPELINE_SERVICE -- call a service on a specific camera pipeline
+(e.g. to detect objects or compute grasps) and return pose data to the
+robot.
+
+CALL_GLOBAL_SERVICE -- call a service that is not tied to a pipeline
+(e.g. database services for regions of interest, load carriers or
+grippers). Returns a pose only if explicitly configured to.
+
+SET_PIPELINE_PARAMETERS -- set run-time parameters on a pipeline node.
+Returns no pose.
+
+The fields "selected_return", "pose_path", "additional_return" and
+"dynamic_args" control
+
+which
+
+ pose a job returns and how the robot can influence the call. They are
+described in detail in
+
+Returning poses and extra data
+
+ and demonstrated on complete jobs in
+
+Worked examples
+
+.
+
+Pipeline service job (CALL_PIPELINE_SERVICE)
+
+This job calls a service on a specific camera pipeline, e.g. to detect
+objects or compute grasps, and returns pose data (e.g. grasp poses) to
+the robot.
+
+      Field  Presence  Description  job_type  required  the job type
+CALL_PIPELINE_SERVICE  name  required  descriptive name to distinguish
+jobs  pipeline  required  the camera pipeline to use for the job (e.g.
+"0")  node  required  the REST-API name of the pipeline node (e.g.
+rc_itempick)  service  required  the REST-API name of the service to
+call (e.g. compute_grasps)  args  required  the REST-API JSON
+arguments passed to the service  selected_return  required  the REST-
+API response field holding the poses to return (e.g. grasps or
+matches); see Choosing the returned pose: selected_return and
+pose_path  pose_path  optional  the field inside the selected_return
+object that holds the pose (defaults to pose); see Choosing the
+returned pose: selected_return and pose_path  additional_return
+optional  extra response fields to return in data_4 through data_10;
+see additional_return (module to robot)  dynamic_args  optional  fill
+args from the robot request fields data_1 through data_4; see
+dynamic_args (robot to module)
+
+A minimal pipeline service job definition is:
+
+   {
+      "args": {
+         "pose_frame": "external",
+         "suction_surface_length": 0.02,
+         "suction_surface_width": 0.02
+      },
+      "job_type": "CALL_PIPELINE_SERVICE",
+      "name": "Compute Grasps",
+      "node": "rc_itempick",
+      "pipeline": "0",
+      "selected_return": "grasps",
+      "service": "compute_grasps"
+   }
+
+The available values for "selected_return" depend on the chosen node
+and can be e.g. "grasps" or "matches". Refer to the service
+definitions of the corresponding module for details about "node",
+"service", "args" and "selected_return".
+
+Global service job (CALL_GLOBAL_SERVICE)
+
+This job calls a service that is not tied to a specific pipeline, e.g.
+database services for setting or retrieving regions of interest, load
+carriers or grippers. By default, global service jobs do not return
+any pose; they return a pose only if "selected_return" (and,
+typically, "pose_path") is configured.
+
+      Field  Presence  Description  job_type  required  the job type
+CALL_GLOBAL_SERVICE  name  required  descriptive name to distinguish
+jobs  node  required  the REST-API name of the global node (e.g.
+rc_load_carrier_db)  service  required  the REST-API name of the
+service to call  args  required  the REST-API JSON arguments passed to
+the service  selected_return  optional  the REST-API response field
+holding the pose(s) to return (e.g. to retrieve gripper or TCP
+definitions); without it the job returns no pose; see Choosing the
+returned pose: selected_return and pose_path  pose_path  optional  the
+field inside the selected_return object that holds the pose (defaults
+to pose); see Choosing the returned pose: selected_return and
+pose_path  additional_return  optional  extra response fields to
+return in data_4 through data_10; see additional_return (module to
+robot)  dynamic_args  optional  fill args from the robot request
+fields data_1 through data_4; see dynamic_args (robot to module)
+
+The field "pipeline" must not be set for global service jobs.
+
+A minimal global service job definition is:
+
+   {
+      "args": {
+         "region_of_interest_2d": {
+            "id": "2d_roi",
+            "width": 526,
+            "height": 501,
+            "offset_x": 558,
+            "offset_y": 307
+         }
+      },
+      "job_type": "CALL_GLOBAL_SERVICE",
+      "name": "Set 2D ROI",
+      "node": "rc_roi_db",
+      "service": "set_region_of_interest_2d"
+   }
+
+Refer to the service definitions of the corresponding module for
+details about "node", "service" and "args".
+
+Parameter setting job (SET_PIPELINE_PARAMETERS)
+
+This job sets run-time parameters on a pipeline node, e.g. for
+adjusting camera or detection module settings. Parameter setting jobs
+do not return any pose.
+
+      Field  Presence  Description  job_type  required  the job type
+SET_PIPELINE_PARAMETERS  name  required  descriptive name to
+distinguish jobs  pipeline  required  the camera pipeline to use for
+the job (e.g. "0")  node  required  the REST-API name of the pipeline
+node (e.g. rc_stereomatching)  parameters  required  the run-time
+parameters to set as key-value pairs
+
+A sample parameter setting job definition is:
+
+   {
+      "job_type": "SET_PIPELINE_PARAMETERS",
+      "name": "Set Stereo Parameters",
+      "node": "rc_stereomatching",
+      "parameters": {
+         "maxdepth": 2,
+         "quality": "High"
+      },
+      "pipeline": "0"
+   }
+
+Refer to the run-time parameter definitions of the corresponding
+module for details about "node" and "parameters".
+
+Primary and related objects
+
+Detection results often come in two linked kinds of objects. The
+
+primary objects
+
+ are the objects named by the job's "selected_return", e.g. "grasps".
+The
+
+related objects
+
+ are the objects that a primary object corresponds to, e.g. the
+"items" or "matches" a grasp was computed for.
+
+The robot iterates over the primary objects one at a time with
+"GET_NEXT_POSE". After each primary object, it can request the
+corresponding related object with "GET_RELATED_POSE" (see
+
+Actions
+
+). The link between the two is established by the REST-API response
+itself: for example, each "grasp" carries an "item_uuid" that matches
+the "uuid" of exactly one "item".
+
+A primary object
+
+grasp
+
+ therefore has exactly one related object, an
+
+item
+
+ or a
+
+match
+
+. Conversely, a primary object
+
+match
+
+ can have several related
+
+grasps
+
+. Because the relation is resolved per primary object, two grasps that
+belong to the same item each return that item on "GET_RELATED_POSE";
+the GRI does not filter out these repeated related objects.
+
+Returning poses and extra data
+
+Each result that a job delivers carries one pose in the response's
+pose fields ("pos_x" through "rot_4"). In addition, Protocol V1 leaves
+several request and response fields unused, and the job configuration
+uses them to exchange additional information between the robot and the
+REST-API:
+
+selected_return and pose_path choose which pose is returned.
+
+additional_return returns extra values from the REST-API response in
+the response fields data_4 through data_10 (module to robot, see
+Response body definition).
+
+dynamic_args injects robot-provided values from the request fields
+data_1 through data_4 into the args of the REST-API call (robot to
+module, see Request body definition).
+
+maps translates between the integers the robot exchanges and the
+string values the REST-API uses.
+
+All of these locate values inside the REST-API response or request
+through a "json_path", which is explained first.
+
+Locating values with json_path
+
+A "json_path" addresses a single value inside the REST-API response
+(or, for "dynamic_args", inside the request arguments). Two forms
+exist:
+
+Object-relative (no leading dot, e.g. quality): resolved inside the
+primary or related object that is currently being returned by
+GET_NEXT_POSE / GET_RELATED_POSE.
+
+Root-relative (leading dot, e.g. .timestamp.sec): resolved from the
+root of the entire REST-API response, which is useful for global
+metadata or for a parent property.
+
+To descend into a list, use bracket notation with a zero-based index,
+e.g. "item_models[0].type".
+
+The following annotated response shows how each form resolves,
+assuming the job returns "grasps" as primary objects and "items" as
+related objects:
+
+   {
+      "timestamp": {
+         "sec": 1719900000
+      },
+      "grasps": [
+         {
+            "quality": 0.85,
+            "item_uuid": "abc-123"
+         }
+      ],
+      "items": [
+         {
+            "uuid": "abc-123",
+            "bounding_box": { "x": 0.15 }
+         }
+      ]
+   }
+
+quality (object-relative, primary scope) resolves to 0.85.
+
+bounding_box.x (object-relative, related scope) resolves to 0.15.
+
+.timestamp.sec (root-relative) resolves to 1719900000.
+
+Note: Always use bracket notation ("item_models[0]") to access a
+  list element. Writing "item_models.0" makes the GRI search for a
+  dictionary key literally named ""0"" instead of the first list
+  element.
+
+Because "GET_NEXT_POSE" and "GET_RELATED_POSE" return one object at a
+time, an object-relative "json_path" is written for a
+
+single
+
+ object: use "quality", not "grasps[0].quality".
+
+Choosing the returned pose: selected_return and pose_path
+
+"selected_return" names the response field holding the primary objects
+to iterate over, e.g. "grasps", "matches", "items" or "load_carriers".
+It can also index into a list nested deeper in the response using
+bracket notation, for example to iterate over the TCPs of a specific
+gripper:
+
+   {
+      "selected_return": "grippers[0].tcps",
+      "pose_path": "pose_flange"
+   }
+
+"pose_path" tells the GRI where,
+
+inside
+
+ each selected object, to find the pose (an object with "position" and
+"orientation") to return to the robot. It follows the same path rules
+as "json_path" and defaults to "pose", which is why it is normally
+omitted: all built-in pipeline return types ("grasps", "matches",
+"items", "load_carriers") expose their pose in a field named "pose".
+
+Set "pose_path" explicitly when the selected object has no "pose"
+field, or when it exposes more than one candidate pose and a specific
+one has to be chosen. This is the case in the gripper example above,
+where each TCP has separate "pose_flange" and "pose_parent" fields
+instead of a single "pose". The same value is applied to both the
+primary and the related object, so it only needs to differ from the
+default when the relevant field is not named "pose". If the resolved
+value is missing, or is not an object with both a "position" and an
+"orientation", the job is rejected as misconfigured
+("MISCONFIGURED_JOB").
+
+additional_return (module to robot)
+
+"additional_return" maps extra values from the REST-API response into
+the response fields "data_4" through "data_10". Its mappings are
+grouped by the object they apply to:
+
+primary: applied to the primary object returned by GET_NEXT_POSE (the
+object type named by selected_return, e.g. grasps).
+
+related: applied to the corresponding related object returned by
+GET_RELATED_POSE (see Primary and related objects).
+
+Each mapping is an object with the following fields:
+
+target_field: the response field to write to (data_4 through data_10)
+
+json_path: where to read the value in the REST-API response (see
+Locating values with json_path)
+
+type: how to convert the value into the int32 response field:  int:
+written as-is (the default if type is omitted)  float: multiplied by
+1,000,000 (analogous to the pose scaling in Pose formats)  bool: 1 or
+0  map: translated to an integer via a maps lookup table (see Mapping
+tables (maps))
+
+If a "json_path" does not resolve to a value, that field is simply
+skipped ("MISSING_ADDITIONAL_DATA" warning, see
+
+Error codes and semantics
+
+). A failed "map" lookup or type conversion instead aborts the whole
+response with an error ("UNMAPPED_VALUE_ERROR" /
+"TYPE_CONVERSION_ERROR").
+
+dynamic_args (robot to module)
+
+"dynamic_args" maps values from the robot request into the "args" of
+the REST-API service call, letting the robot adjust detection
+arguments at trigger time without reconfiguring the job. It applies to
+"CALL_PIPELINE_SERVICE" and "CALL_GLOBAL_SERVICE" jobs;
+"SET_PIPELINE_PARAMETERS" jobs do not use it. It is a list of entries,
+each with:
+
+source_field: the request field to read from (data_1 through data_4,
+see Request body definition)
+
+json_path: the target key path within the REST-API args (same path
+rules as Locating values with json_path)
+
+type: how to convert the value before injecting it:  int: injected as-
+is (the default if type is omitted)  float: divided by 1,000,000
+bool: interpreted as 1 / 0  map: the integer sent by the robot is
+looked up in a maps table to inject the corresponding value
+
+The values are applied on top of the static "args" when the job is
+triggered, so a "json_path" pointing at an existing argument
+overwrites it. A failed "map" lookup or type conversion is rejected
+with an error ("UNMAPPED_VALUE_ERROR" / "TYPE_CONVERSION_ERROR", see
+
+Error codes and semantics
+
+).
+
+Mapping tables (maps)
+
+Some arguments and return values are strings (such as IDs) rather than
+numbers. "maps" translates between the integers the robot exchanges
+and these string values on the GRI server. The same table is used in
+both directions -- "dynamic_args" looks up
+
+robot ID to value
+
+, "additional_return" looks up
+
+value to robot ID
+
+ -- so each table must be a 1:1 (bijective) mapping. A "dynamic_args"
+or "additional_return" entry of "type" "map" selects the table to use
+via a "map" field:
+
+   {
+      "dynamic_args": [
+         { "source_field": "data_2", "json_path": "template_id", "type": "map", "map": "models" }
+      ],
+      "maps": {
+         "models": {
+            "1": "part_A_large",
+            "2": "part_B_small"
+         }
+      }
+   }
+
+If the robot sends "data_2 = 2", the template ID ""part_B_small"" is
+injected into the REST-API call.
+
+Worked examples
+
+The following complete job definitions combine the options above. For
+each one, the configuration is shown first, followed by what the robot
+sends or receives at run time.
+
+Example 1: pipeline service job with additional return
+
+This ItemPick job returns grasp poses and, alongside each pose, extra
+information about the grasp ("primary" scope) and about the item the
+grasp was computed for ("related" scope).
+
+   {
+      "name": "ItemPickAIJob",
+      "job_type": "CALL_PIPELINE_SERVICE",
+      "pipeline": "0",
+      "node": "rc_itempick",
+      "service": "compute_grasps",
+      "selected_return": "grasps",
+      "args": {
+         "collision_detection": {
+            "gripper_id": "MultiSuctionGripper",
+            "pre_grasp_offset": { "x": 0, "y": 0, "z": -0.1 }
+         },
+         "item_models": [ { "type": "BAG" } ],
+         "pose_frame": "external",
+         "region_of_interest_id": "ROI",
+         "suction_surface_length": 0.05,
+         "suction_surface_width": 0.05
+      },
+      "additional_return": {
+         "primary": [
+            { "json_path": "quality", "target_field": "data_4", "type": "float" },
+            { "json_path": "tcp_id",  "target_field": "data_5", "type": "map", "map": "gripper_tcps" }
+         ],
+         "related": [
+            { "json_path": "bounding_box.x", "target_field": "data_6", "type": "float" },
+            { "json_path": "bounding_box.y", "target_field": "data_7", "type": "float" },
+            { "json_path": "bounding_box.z", "target_field": "data_8", "type": "float" }
+         ]
+      },
+      "maps": {
+         "gripper_tcps": { "1": "TCP1", "2": "TCP2", "3": "TCP3" }
+      }
+   }
+
+selected_return is grasps, so each GET_NEXT_POSE returns one grasp
+pose.
+
+additional_return.primary reads two values from that grasp: its
+quality into data_4 (as a float) and its tcp_id into data_5
+(translated to an integer through the gripper_tcps table).
+
+additional_return.related reads the bounding box of the associated
+item into data_6 through data_8, available after GET_RELATED_POSE.
+
+At run time, for a grasp with "quality = 0.85" and "tcp_id = "TCP2""
+on an item with bounding box "(0.15, 0.10, 0.05)" m:
+
+GET_NEXT_POSE returns the grasp pose, data_4 = 850000 (0.85 x
+1,000,000) and data_5 = 2 (the key mapped to "TCP2" in gripper_tcps).
+
+GET_RELATED_POSE returns the item pose, data_6 = 150000, data_7 =
+100000 and data_8 = 50000 (each bounding-box dimension x 1,000,000).
+
+Example 2: global service job returning a pose
+
+Global service jobs return no pose by default. This job sets
+"selected_return" and "pose_path" so that it returns the TCP poses
+stored for a gripper in the gripper database.
+
+   {
+      "name": "GetMultiSuctionGripperTCPs",
+      "job_type": "CALL_GLOBAL_SERVICE",
+      "node": "rc_gripper_db",
+      "service": "get_grippers",
+      "selected_return": "grippers[0].tcps",
+      "pose_path": "pose_flange",
+      "args": {
+         "gripper_ids": [ "MultiSuctionGripper" ]
+      },
+      "additional_return": {
+         "primary": [
+            { "json_path": "id", "target_field": "data_4", "type": "map", "map": "tcp_names" },
+            { "json_path": ".grippers[0].flange_radius", "target_field": "data_5", "type": "float" }
+         ]
+      },
+      "maps": {
+         "tcp_names": { "1": "TCP1", "2": "TCP2", "3": "TCP3" }
+      }
+   }
+
+selected_return uses index addressing, grippers[0].tcps, to iterate
+over the TCPs of the first returned gripper as the primary objects.
+
+pose_path is set to pose_flange because a TCP has no plain pose field
+but separate pose_flange and pose_parent poses; pose_flange is the one
+returned.
+
+additional_return.primary mixes both path forms: the object-relative
+id (the current TCP's ID, mapped to an integer via tcp_names) and the
+root-relative .grippers[0].flange_radius (a property of the parent
+gripper, the same for every TCP).
+
+At run time, for a TCP with "id = "TCP1"" on a gripper with
+"flange_radius = 0.04" m, "GET_NEXT_POSE" returns the TCP's
+"pose_flange", "data_4 = 1" (""TCP1"" via "tcp_names") and "data_5 =
+40000" ("0.04 x 1,000,000").
+
+Example 3: pipeline service job with dynamic arguments
+
+This BoxPick job lets the robot choose the rectangle dimensions to
+detect at trigger time, so the same job can pick different box sizes
+without being reconfigured. The four dimensions of the "RECTANGLE"
+item model are filled from the request fields "data_1" through
+"data_4".
+
+   {
+      "name": "BoxPickDynamicRectangle",
+      "job_type": "CALL_PIPELINE_SERVICE",
+      "pipeline": "0",
+      "node": "rc_boxpick",
+      "service": "compute_grasps",
+      "selected_return": "grasps",
+      "args": {
+         "pose_frame": "external",
+         "item_models": [
+            {
+               "type": "RECTANGLE",
+               "rectangle": {
+                  "min_dimensions": { "x": 0.05, "y": 0.05 },
+                  "max_dimensions": { "x": 0.10, "y": 0.10 }
+               }
+            }
+         ],
+         "suction_surface_length": 0.05,
+         "suction_surface_width": 0.05
+      },
+      "dynamic_args": [
+         { "source_field": "data_1", "json_path": "item_models[0].rectangle.min_dimensions.x", "type": "float" },
+         { "source_field": "data_2", "json_path": "item_models[0].rectangle.min_dimensions.y", "type": "float" },
+         { "source_field": "data_3", "json_path": "item_models[0].rectangle.max_dimensions.x", "type": "float" },
+         { "source_field": "data_4", "json_path": "item_models[0].rectangle.max_dimensions.y", "type": "float" }
+      ],
+      "additional_return": {
+         "primary": [
+            { "json_path": "quality", "target_field": "data_4", "type": "float" }
+         ]
+      }
+   }
+
+dynamic_args uses the same json_path grammar as additional_return,
+here indexing into item_models[0] to reach the rectangle dimensions
+inside args.
+
+The dimensions given in args are placeholders: the values injected
+from the request overwrite them when the job is triggered.
+
+The request fields data_1 through data_4 (filled by dynamic_args) and
+the response fields data_4 through data_10 (filled by
+additional_return) belong to separate messages, so reusing data_4 for
+both the sent minimum-x dimension and the returned grasp quality is
+not a conflict.
+
+At run time, if the robot triggers the job with "data_1 = 50000",
+"data_2 = 50000", "data_3 = 100000" and "data_4 = 100000", the GRI
+divides each value by "1,000,000" and calls
+"rc_boxpick"/"compute_grasps" with "min_dimensions" "(0.05, 0.05)" m
+and "max_dimensions" "(0.10, 0.10)" m. Each subsequent "GET_NEXT_POSE"
+then returns a grasp pose with "data_4" set to that grasp's "quality x
+1,000,000".
+
+Execution modes
+
+The Generic Robot Interface supports two execution modes to optimize
+the robot's cycle time:
+
+Synchronous Execution: The robot triggers a job and waits for the
+first result to arrive. This mode should be chosen when results are
+required immediately.
+
+Asynchronous Execution: The robot starts a job and can continue with
+other operations while the job is running in the background. The job
+status can be queried and results can be retrieved when ready. This
+mode maximizes efficiency during long detection times.
+
+Hand-Eye Calibration
+
+A hand-eye calibration configuration can be defined for each camera
+pipeline to allow for programmatic hand-eye calibration using the GRI.
+Each hand-eye calibration configuration consists of the following
+information:
+
+grid_height: height of the calibration grid in meters
+
+grid_width:  width of the calibration grid in meters
+
+robot_mounted: boolean that determines whether the camera is mounted
+on the robot
+
+tcp_offset: 0 for 6DOF robots. For 4DOF robots: the signed offset from
+the TCP to the camera coordinate system (robot-mounted sensor) or the
+visible surface of the calibration grid (statically mounted sensor)
+along the TCP rotation axis in meters.
+
+tcp_rotation_axis: -1 for 6DOF robots. For 4DOF robots: determines the
+axis of the robot frame around which the robot can rotate its TCP (0
+is used for X, 1 for Y and 2 for the Z axis).
+
+More detailed information about these settings and the hand-eye
+calibration in general is given in
+
+Hand-eye calibration
+
+.
+
+The hand-eye calibration configurations can be set via the Web GUI or
+via the REST-API (see
+
+Job and HEC_config API
+
+).
+
+GRI binary protocol specification
+
+This specification defines the exact on-wire format for client-server
+messages. A message consists of a fixed 8-byte header and a body whose
+layout depends on the protocol version. Currently, there is only
+protocol version 1.
+
+Note: All multi-byte integers are
+
+  little-endian
+
+  . Types are "uint8" (8-bit unsigned), "int16" (16-bit signed),
+  "int32" (32-bit signed).
+
+Message header (8 bytes)
+
+Message header definition          Field  Type  Size  Description
+magic_number  uint32  4  ASCII tag "GRI0", bytes 47 52 49 00 (little-
+endian)  protocol_version  uint8  1  Protocol version: currently 1
+message_length  uint8  1  Total message size (bytes), incl. header +
+body  pose_format  uint8  1  Pose data format (see Pose formats)
+action  uint8  1  Command/action (see Actions)
+
+Pose formats
+
+The GRI always uses
+
+millimeters
+
+ for representing a position. The following tables show different
+rotation formats that can be chosen to match to the rotation
+representation of the used robot. The formats are grouped by non-Euler
+rotation formats, Tait-Bryan-Euler rotation formats (all three axes
+are used) and proper Euler rotation formats (first and last rotation
+axis are the same).
+
+Non-Euler rotation formats                  Name  Value  rot_1  rot_2
+rot_3  rot_4  Units  Robot Example  QUAT_WXYZ  1  w  x  y  z  --  ABB
+QUAT_XYZW  2  x  y  z  w  --  Fruitcore HORST  AXIS_ANGLE_RAD  3  rx
+ry  rz  --  rad  Universal Robots
+
+In the following notation primes indicate successive rotations in the
+intrinsic frame (e.g., Y' = rotation about Y-axis after first
+rotation). "_B" and "_F" determine the order in which the rotation
+components are given. "F" stands for
+
+forward
+
+, meaning that the rotation components are given in the same order as
+the rotation is applied, and "B" stands for
+
+backward
+
+, meaning the rotation components are given in reverse order. "_RAD"
+and "_DEG" determine whether the rotation components are given in
+radians or degrees, respectively, if applicable. So the format
+"EULER_ZYX_B_DEG" means that the intrinsic rotation order is z-y'-x''
+(first rotate around the z axis, then rotate around the new y axis,
+then rotate around the new x axis), the order in which the rotation
+components are given is backward (so the first rotation element is the
+angle around the x axis), and the angels are given in degrees.
+
+Tait-Bryan-Euler rotation formats. Primes indicate successive
+rotations in the intrinsic frame (e.g., Y' = rotation about Y-axis
+after first rotation). _F (Forward): [1st, 2nd, 3rd] | _B (Backward):
+[3rd, 2nd, 1st],  _DEG: degrees | _RAD: radian.                  Name
+Value  rot_1  rot_2  rot_3  rot_4  Units  Robot Example
+EULER_XYZ_F_DEG  4  X  Y'  Z''  --  deg    EULER_XYZ_F_RAD  5  X  Y'
+Z''  --  rad    EULER_XYZ_B_DEG  6  Z''  Y'  X  --  deg
+EULER_XYZ_B_RAD  7  Z''  Y'  X  --  rad    EULER_XZY_F_DEG  8  X  Z'
+Y''  --  deg    EULER_XZY_F_RAD  9  X  Z'  Y''  --  rad
+EULER_XZY_B_DEG  10  Y''  Z'  X  --  deg    EULER_XZY_B_RAD  11  Y''
+Z'  X  --  rad    EULER_YXZ_F_DEG  12  Y  X'  Z''  --  deg
+EULER_YXZ_F_RAD  13  Y  X'  Z''  --  rad    EULER_YXZ_B_DEG  14  Z''
+X'  Y  --  deg    EULER_YXZ_B_RAD  15  Z''  X'  Y  --  rad
+EULER_YZX_F_DEG  16  Y  Z'  X''  --  deg    EULER_YZX_F_RAD  17  Y  Z'
+X''  --  rad    EULER_YZX_B_DEG  18  X''  Z'  Y  --  deg
+EULER_YZX_B_RAD  19  X''  Z'  Y  --  rad    EULER_ZXY_F_DEG  20  Z  X'
+Y''  --  deg    EULER_ZXY_F_RAD  21  Z  X'  Y''  --  rad
+EULER_ZXY_B_DEG  22  Y''  X'  Z  --  deg    EULER_ZXY_B_RAD  23  Y''
+X'  Z  --  rad    EULER_ZYX_F_DEG  24  Z  Y'  X''  --  deg  KUKA
+EULER_ZYX_F_RAD  25  Z  Y'  X''  --  rad    EULER_ZYX_B_DEG  26  X''
+Y'  Z  --  deg  FANUC, Mitsubishi, Yaskawa  EULER_ZYX_B_RAD  27  X''
+Y'  Z  --  rad
+
+Euler rotation formats. Primes indicate successive rotations in the
+intrinsic frame (e.g., Y' = rotation about Y-axis after first
+rotation). _F (Forward): [1st, 2nd, 3rd] | _B (Backward): [3rd, 2nd,
+1st],  _DEG: degrees | _RAD: radian.                  Name  Value
+rot_1  rot_2  rot_3  rot_4  Units  Robot Example  EULER_XYX_F_DEG  28
+X  Y'  X''  --  deg    EULER_XYX_F_RAD  29  X  Y'  X''  --  rad
+EULER_XYX_B_DEG  30  X''  Y'  X  --  deg    EULER_XYX_B_RAD  31  X''
+Y'  X  --  rad    EULER_XZX_F_DEG  32  X  Z'  X''  --  deg
+EULER_XZX_F_RAD  33  X  Z'  X''  --  rad    EULER_XZX_B_DEG  34  X''
+Z'  X  --  deg    EULER_XZX_B_RAD  35  X''  Z'  X  --  rad
+EULER_YXY_F_DEG  36  Y  X'  Y''  --  deg    EULER_YXY_F_RAD  37  Y  X'
+Y''  --  rad    EULER_YXY_B_DEG  38  Y''  X'  Y  --  deg
+EULER_YXY_B_RAD  39  Y''  X'  Y  --  rad    EULER_YZY_F_DEG  40  Y  Z'
+Y''  --  deg    EULER_YZY_F_RAD  41  Y  Z'  Y''  --  rad
+EULER_YZY_B_DEG  42  Y''  Z'  Y  --  deg    EULER_YZY_B_RAD  43  Y''
+Z'  Y  --  rad    EULER_ZXZ_F_DEG  44  Z  X'  Z''  --  deg
+EULER_ZXZ_F_RAD  45  Z  X'  Z''  --  rad    EULER_ZXZ_B_DEG  46  Z''
+X'  Z  --  deg    EULER_ZXZ_B_RAD  47  Z''  X'  Z  --  rad
+EULER_ZYZ_F_DEG  48  Z  Y'  Z''  --  deg  Kawasaki  EULER_ZYZ_F_RAD
+49  Z  Y'  Z''  --  rad    EULER_ZYZ_B_DEG  50  Z''  Y'  Z  --  deg
+EULER_ZYZ_B_RAD  51  Z''  Y'  Z  --  rad
+
+All pose components (position
+
+and
+
+ rotation) are "int32" scaled by
+
+1,000,000
+
+.
+
+Float to Int: int = round(float * 1000000)
+
+Int to Float: float = int / 1000000.0
+
+Positions in millimeters before scaling
+
+Angles in degrees/radians (per format) before scaling
+
+Quaternions unitless, same scaling
+
+rot_4 unused for Euler/axis-angle (set to 0)
+
+Actions
+
+The following actions can be sent.
+
+GRI actions        Name  Value  Description  STATUS  1  Get system
+readiness; maps readiness to data_2 (1 or 0)  TRIGGER_JOB_SYNC  2
+Execute job synchronously  TRIGGER_JOB_ASYNC  3  Start job
+asynchronously  GET_JOB_STATUS  4  Query async job status (see Job
+status)  GET_NEXT_POSE  5  Retrieve next available result
+GET_RELATED_POSE  6  Retrieve next related pose  HEC_INIT  7
+Initialize hand-eye calibration  HEC_SET_POSE  8  Provide/store
+calibration pose  HEC_CALIBRATE  9  Run calibration and save results
+
+STATUS (1)
+
+Returns system readiness information fetched from the
+
+rc_visard
+
+ in "data_2" (1 if ready, 0 if not).
+
+TRIGGER_JOB_SYNC (2)
+
+Runs the job and returns the
+
+first
+
+ result immediately; additional results are stored for later
+retrieval. On success with results, "error_code" will be zero and the
+pose will be filled. If no results are returned, "error_code" will be
+"NO_POSES_FOUND" (positive warning). It also reports:
+
+data_1 = node's return_code value
+
+data_2 = number of remaining primary objects (see Primary and related
+objects)
+
+data_3 = number of remaining related objects (see Primary and related
+objects)
+
+TRIGGER_JOB_ASYNC (3)
+
+Starts the job and returns immediately. The job's status can be polled
+with "GET_JOB_STATUS" (4) (see
+
+Job status
+
+) and the results can be fetched with "GET_NEXT_POSE" (5), as soon as
+the job is "DONE".
+
+GET_JOB_STATUS (4)
+
+Returns the job status. It reports:
+
+data_1 = node's return_code value
+
+data_2 = job status (see table Job status values)
+
+Error details flow through "error_code".
+
+GET_NEXT_POSE (5)
+
+Returns the next result of the
+
+primary object
+
+. It also reports:
+
+data_1 = node's return_code value
+
+data_2 = number of remaining primary objects (see Primary and related
+objects)
+
+data_3 = number of remaining related objects (see Primary and related
+objects)
+
+When no more primary objects are available, it returns
+"NO_POSES_FOUND" and resets the job.
+
+GET_RELATED_POSE (6)
+
+Returns the next pose of the
+
+related object
+
+ corresponding to the current
+
+primary object
+
+. It also reports:
+
+data_1 = node's return_code value
+
+data_2 = number of remaining primary objects (see Primary and related
+objects)
+
+data_3 = number of remaining related objects (see Primary and related
+objects)
+
+If no related poses were found, it returns "NO_RELATED_POSES".
+
+HEC_INIT (7)
+
+This action initializes the hand-eye calibration. It clears any
+existing calibration data, applies the pipeline's configuration
+parameters and prepares the system for recording new poses. "data_1"
+specifies the target pipeline.
+
+HEC_SET_POSE (8)
+
+This action is to be used eight times to record distinct robot poses
+with visible calibration pattern. The field "data_2" is used to
+specify the image storage slot (0-7). A previous pose in a slot will
+be overwritten if a slot is reused. Each pose must provide a different
+view of the calibration pattern, as described in
+
+Hand-eye calibration
+
+. "data_1" specifies the target pipeline.
+
+HEC_CALIBRATE (9)
+
+This action processes all recorded poses and calculates the
+transformation between camera and robot. It automatically saves
+successful calibration results. "data_1" specifies the target
+pipeline.
+
+Job status
+
+The following job status values can be returned.
+
+Job status values      Name  Value  INACTIVE  1  RUNNING  2  DONE  3
+FAILED  4
+
+Body definitions
+
+There are different body definitions depending on whether it is a
+request that is sent or a response that is received. The request body
+consists of 54 bytes in total and its definition is given in table
+
+Request body definition
+
+.
+
+Request body definition          Field  Type  Size  Description
+header  struct  8  Message header (see Message header (8 bytes))
+job_id  uint16  2  Unique job ID from job configuration  pos_x  int32
+4  Position X (scaled by 10^6)  pos_y  int32  4  Position Y (scaled by
+10^6)  pos_z  int32  4  Position Z (scaled by 10^6)  rot_1  int32  4
+Rotation component 1 (scaled by 10^6)  rot_2  int32  4  Rotation
+component 2 (scaled by 10^6)  rot_3  int32  4  Rotation component 3
+(scaled by 10^6)  rot_4  int32  4  Rotation component 4 (scaled by
+10^6)  data_1  int32  4  Additional parameter 1  data_2  int32  4
+Additional parameter 2  data_3  int32  4  Additional parameter 3
+data_4  int32  4  Additional parameter 4
+
+The job ID is the unique identifier from the job configuration. The
+usage of the fields "data_1...data_4" depends on the action and job.
+They are set to *0* if unused. For
+"TRIGGER_JOB_SYNC"/"TRIGGER_JOB_ASYNC", these fields can be filled
+with robot-provided values via the job's "dynamic_args" configuration,
+see
+
+Returning poses and extra data
+
+.
+
+The response body consists of 80 bytes in total. Its definition is
+given in table
+
+Response body definition
+
+.
+
+Response body definition          Field  Type  Size  Description
+header  struct  8  Protocol header  job_id  uint16  2  Processed job
+number  error_code  int16  2  GRI result status (severity by sign)
+pos_x  int32  4  Position X (scaled by 10^6)  pos_y  int32  4
+Position Y (scaled by 10^6)  pos_z  int32  4  Position Z (scaled by
+10^6)  rot_1  int32  4  Rotation component 1 (scaled by 10^6)  rot_2
+int32  4  Rotation component 2 (scaled by 10^6)  rot_3  int32  4
+Rotation component 3 (scaled by 10^6)  rot_4  int32  4  Rotation
+component 4 (scaled by 10^6)  data_1  int32  4  Node's return code (0
+if none)  data_2  int32  4  Additional result 2  data_3  int32  4
+Additional result 3  data_4  int32  4  Additional result 4  data_5
+int32  4  Additional result 5  data_6  int32  4  Additional result 6
+data_7  int32  4  Additional result 7  data_8  int32  4  Additional
+result 8  data_9  int32  4  Additional result 9  data_10  int32  4
+Additional result 10
+
+Note: For "rc_measure", mean_z is mapped to pos_x/pos_y/pos_z.
+
+The fields "data_4" through "data_10" are filled according to the
+job's "additional_return" configuration, see
+
+Returning poses and extra data
+
+.
+
+Error codes and semantics
+
+The "error_code" is "int16" and encodes errors/warnings by sign:
+
+Negative < 0 = error (failure)
+
+Zero = 0 = success
+
+Positive > 0 = warning (success with caveat)
+
+The tables below give the different error codes and are split by sign
+and sorted.
+
+Success
+
+      Name  Value  Description  NO_ERROR  0  Operation successful
+
+Negative error codes
+
+      Name  Value  Description  UNKNOWN_ERROR  -1  GRI internal,
+unspecified  INTERNAL_ERROR  -2  GRI internal system error
+API_NOT_REACHABLE  -3  Cannot reach API  API_RESPONSE_ERROR  -4  API
+returned a negative code  PIPELINE_NOT_AVAILABLE  -5  Processing
+pipeline unavailable  INVALID_REQUEST_ERROR  -6  Malformed request
+INVALID_REQUEST_LENGTH  -7  Wrong message length  INVALID_ACTION  -8
+Unsupported action  PROCESSING_TIMEOUT  -9  Operation timed out
+UNKNOWN_PROTOCOL_VERSION  -10  Protocol version not supported
+WRONG_PROTOCOL_FOR_JOB  -11  Job does not match protocol version
+JOB_DOES_NOT_EXIST  -12  Invalid job ID  MISCONFIGURED_JOB  -13
+Invalid job configuration  HEC_CONFIG_ERROR  -14  Invalid
+configuration parameters  HEC_INIT_ERROR  -15  Calibration init failed
+HEC_SET_POSE_ERROR  -16  Failed to record pose in specified slot
+HEC_CALIBRATE_ERROR  -17  Unable to compute calibration from recorded
+poses  HEC_INSUFFICIENT_DETECTION  -18  Calibration grid not visible
+or not detected  TYPE_CONVERSION_ERROR  -19  Value not convertible to
+the configured type  UNMAPPED_VALUE_ERROR  -20  Value has no entry in
+the referenced maps table
+
+Positive codes
+
+      Name  Value  Description  NO_POSES_FOUND  1  No results
+available  NO_RELATED_POSES  2  No related data found
+NO_RETURN_SPECIFIED  3  Job configured with no return type
+JOB_STILL_RUNNING  4  Async job not complete  MISSING_ADDITIONAL_DATA
+5  additional_return path not found
+
+Node return code semantics
+
+The modules/nodes may return a "return_code". This node return code is
+placed in the response "data_1" field (defaults to 0 if no code). The
+GRI's primary status is in "error_code" (sign-based semantics).
+
+Integration with a robot
+
+The Generic Robot Interface offers communication on port 7100.
+
+For integrating the GRI communication with a robot, examples for
+different robot languages are given in
+
+https://github.com/roboception/rc_generic_robot_interface_robot
+
+.
+
+Different robot platforms can be supported by implementing a TCP
+socket client following the GRI binary protocol (see
+
+GRI binary protocol specification
+
+). This requires a robot controller with TCP/IP support and the
+ability to pack robot poses into binary messages and to parse binary
+messages into robot poses.
+
+The implementation steps are as follows:
+
+   Create TCP socket connection
+
+   Compose request message:  Set message header (8 bytes)  Set job ID
+   (2 bytes)  Pack position (12 bytes, 3x int32)  Pack rotation (16
+   bytes, 4x int32)  Pack additional data (16 bytes, 4x int32)
+
+   Send request (54 bytes total)
+
+   Receive response (80 bytes total)
+
+   Parse response:  Message header (8 bytes)  Job ID (2 bytes)  Error
+   code (2 bytes)  Position (12 bytes, 3x int32)  Rotation (16 bytes,
+   4x int32)  Additional data (40 bytes, 10x int32)
+
+Byte interpretation in socket communication
+
+Some robot scripting languages interpret individual socket bytes as
+signed values in the range "[-128, 127]" instead of unsigned "[0,
+255]". If this is the case, each byte has to be converted to unsigned
+
+before
+
+ reconstructing "int32" values:
+
+   # Convert signed byte to unsigned
+   if byte_value < 0:
+       byte_value = byte_value + 256
+
+After conversion, reconstruct the "int32" using little-endian byte
+order, then apply signed interpretation to the most significant byte
+(MSB) to determine if the overall "int32" value is negative.
+
+Note: All pose components use scaling as described in
+
+  Pose formats
+
+  .
+
+Job and HEC_config API
+
+The job definitions and the definitions of HEC_configs for hand-eye
+calibration can be set, retrieved and deleted via the following REST-
+API endpoints.
+
+GET /generic_robot_interface/hec_configs
+
+   Get defined hand-eye calibration configurations
+
+   Template request
+
+      GET /api/v2/generic_robot_interface/hec_configs HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "0": {
+          "grid_height": 0.18,
+          "grid_width": 0.26,
+          "robot_mounted": true,
+          "tcp_offset": 0,
+          "tcp_rotation_axis": -1
+        }
+      }
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation
+
+GET /generic_robot_interface/hec_configs/{pipeline}
+
+   Get hand-eye calibration configuration for the selected pipeline
+
+   Template request
+
+      GET /api/v2/generic_robot_interface/hec_configs/<pipeline> HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "grid_height": 0.18,
+        "grid_width": 0.26,
+        "robot_mounted": true,
+        "tcp_offset": 0,
+        "tcp_rotation_axis": -1
+      }
+
+   Parameters:
+      pipeline (string) -- pipeline of the hand-eye calibration
+      configuration (required)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation
+
+PUT /generic_robot_interface/hec_configs/{pipeline}
+
+   Sets a hand-eye calibration configuration for the selected
+   pipeline.
+
+   Template request
+
+      PUT /api/v2/generic_robot_interface/hec_configs/<pipeline> HTTP/1.1
+      Accept: application/json application/ubjson
+
+      {}
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "return_code": {
+          "message": "HEC configuration saved successfully",
+          "value": 0
+        }
+      }
+
+   Parameters:
+      pipeline (string) -- pipeline of the hand-eye calibration
+      configuration (required)
+
+   Request JSON Object:
+      hand-eye calibration configuration (object) -- example args
+      (required)
+
+   Request Headers:
+      Accept -- application/json application/ubjson
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation
+
+DELETE /generic_robot_interface/hec_configs/{pipeline}
+
+   Remove a hand-eye calibration configuration.
+
+   Template request
+
+      DELETE /api/v2/generic_robot_interface/hec_configs/<pipeline> HTTP/1.1
+      Accept: application/json application/ubjson
+
+   Parameters:
+      pipeline (string) -- pipeline of the hand-eye calibration
+      configuration (required)
+
+   Request Headers:
+      Accept -- application/json application/ubjson
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation
+
+      403 Forbidden -- forbidden, e.g. because there is no valid
+      license for this module.
+
+      404 Not Found -- hec config for the given pipeline not found
+
+GET /generic_robot_interface/jobs
+
+   Get defined jobs
+
+   Template request
+
+      GET /api/v2/generic_robot_interface/jobs HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "0": {
+          "args": {
+            "pose_frame": "external",
+            "tags": []
+          },
+          "job_type": "CALL_PIPELINE_SERVICE",
+          "name": "detect_qr_code",
+          "node": "rc_qr_code_detect",
+          "pipeline": "0",
+          "selected_return": "tags",
+          "service": "detect"
+        },
+        "1": {
+          "job_type": "SET_PARAMETERS_SERVICE",
+          "name": "set_depth_full_quality",
+          "node": "rc_stereomatching",
+          "parameters": {
+            "double_shot": true,
+            "quality": "Full"
+          },
+          "pipeline": "0"
+        }
+      }
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation
+
+GET /generic_robot_interface/jobs/{job_id}
+
+   Get selected job definition
+
+   Template request
+
+      GET /api/v2/generic_robot_interface/jobs/<job_id> HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "args": {
+          "pose_frame": "camera",
+          "tags": []
+        },
+        "job_type": "CALL_PIPELINE_SERVICE",
+        "name": "detect_qr_code",
+        "node": "rc_qr_code_detect",
+        "pipeline": "0",
+        "selected_return": "tags",
+        "service": "detect"
+      }
+
+   Parameters:
+      job_id (string) -- ID of the job (required)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation
+
+PUT /generic_robot_interface/jobs/{job_id}
+
+   Sets a job definition for the selected job ID. The required keys
+   depend on the chosen job_type.
+
+   Template request
+
+      PUT /api/v2/generic_robot_interface/jobs/<job_id> HTTP/1.1
+      Accept: application/json application/ubjson
+
+      {}
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "job_id": "1",
+        "return_code": {
+          "message": "Job configuration updated successfully",
+          "value": 0
+        }
+      }
+
+   Parameters:
+      job_id (string) -- ID of the job (required)
+
+   Request JSON Object:
+      job definition (object) -- example args (required)
+
+   Request Headers:
+      Accept -- application/json application/ubjson
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation
+
+DELETE /generic_robot_interface/jobs/{job_id}
+
+   Remove a job definition.
+
+   Template request
+
+      DELETE /api/v2/generic_robot_interface/jobs/<job_id> HTTP/1.1
+      Accept: application/json application/ubjson
+
+   Parameters:
+      job_id (string) -- ID of the job (required)
+
+   Request Headers:
+      Accept -- application/json application/ubjson
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation
+
+      403 Forbidden -- forbidden, e.g. because there is no valid
+      license for this module.
+
+      404 Not Found -- job with given id not found

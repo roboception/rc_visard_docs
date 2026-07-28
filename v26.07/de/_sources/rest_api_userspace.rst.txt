@@ -1,0 +1,6 @@
+UserSpace
+
+UserSpace Informationen einschließlich laufender Apps und ihre
+veröffentlichten Ports können über den userspace Endpunkt abgefragt
+werden. Eine App kann vom Typ ("type") "container" oder "compose"
+(Compose-Stack mit potenziell mehreren Containern) sein.

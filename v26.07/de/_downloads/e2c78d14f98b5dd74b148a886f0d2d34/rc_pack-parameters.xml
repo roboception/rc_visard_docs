@@ -1,0 +1,47 @@
+<ETHERNETKRL>
+  <CONFIGURATION>
+        <EXTERNAL>
+          <IP>x.x.x.x</IP>
+          <PORT>7000</PORT>
+          <TYPE>Server</TYPE>
+        </EXTERNAL>
+        <INTERNAL>
+          <BUFFERING Mode="FIFO" Limit="1"/>
+          <BUFFSIZE Limit="65534"/>
+          <ALIVE Set_Flag="997"/>
+        </INTERNAL>
+      </CONFIGURATION>
+  <SEND>
+    <XML>
+      <ELEMENT Tag="req/node/rc_pack" Type="STRING"/>
+      <ELEMENT Tag="req/parameters/drop_height/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/grasp_filter_orientation_threshold/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/object_padding/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/resolution/@value" Type="REAL"/>
+      <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+    </XML>
+  </SEND>
+  <RECEIVE>
+    <XML>
+      <ELEMENT Tag="res/parameters/drop_height/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/drop_height/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/drop_height/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/drop_height/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grasp_filter_orientation_threshold/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grasp_filter_orientation_threshold/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grasp_filter_orientation_threshold/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grasp_filter_orientation_threshold/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/object_padding/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/object_padding/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/object_padding/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/object_padding/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/resolution/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/resolution/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/resolution/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/resolution/@max" Type="REAL"/>
+      <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+      <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+      <ELEMENT Tag="res" Set_Flag="998"/>
+    </XML>
+  </RECEIVE>
+</ETHERNETKRL>
